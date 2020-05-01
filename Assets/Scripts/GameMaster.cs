@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class GameMaster : MonoBehaviour
 {
     private static GameMaster Instance;
+    public static string prevScene = "";
+    public static string currentScene = "";
     public int savedPlayerHealth = 3;
     void Awake()
     {
@@ -18,9 +20,20 @@ public class GameMaster : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        UpdateCurrentScene();
     }
 
-    public void requestSceneChange(string sceneToLoad, int currHealth) {
+    public void UpdateCurrentScene() {
+        currentScene = SceneManager.GetActiveScene().name;
+    }
+
+    public string getPrevScene() {
+        return prevScene;
+    }
+
+    public void requestSceneChange(string sceneToLoad, int currHealth)
+    {
+        prevScene = currentScene;
         savedPlayerHealth = currHealth;
         SceneManager.LoadScene(sceneToLoad);
     }
