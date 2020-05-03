@@ -5,6 +5,7 @@ using UnityEngine;
 public class ForestMain : MonoBehaviour
 {
     public Transform player;
+    public Transform tanukiSpawnPoint;
 
     // Use this for initialization
     public void Start()
@@ -13,7 +14,7 @@ public class ForestMain : MonoBehaviour
         FindObjectOfType<GameMaster>().UpdateCurrentScene();
         if (gameMaster.getPrevScene() == "Forest_miniboss_tanuki")
         {
-            player.position = new Vector2(230f, 12.5f);
+            player.position = tanukiSpawnPoint.position;
             player.localScale = new Vector3(-1f, 1f, 1f);
         }
     }

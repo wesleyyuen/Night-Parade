@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Pathfinding;
+using UnityEngine;
 
-public class EnemyGFX : MonoBehaviour
-{
+public class EnemyGFX : MonoBehaviour {
+    Transform player;
 
-    public AIPath aIPath;
-    void Update()
-    {
-        if (aIPath.desiredVelocity.x >= 0.01f) {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-        } else if (aIPath.desiredVelocity.x <= 0.01f) {
-            transform.localScale = new Vector3(1f, 1f, 1f);
+    void Start () {
+        player = GameObject.FindGameObjectWithTag ("Player").transform;
+    }
+    void Update () {
+        if (player == null) return;
+        if (transform.position.x > player.position.x) {
+            transform.localScale = new Vector3 (-1f, 1f, 1f);
+        } else if (transform.position.x < player.position.x) {
+            transform.localScale = new Vector3 (1f, 1f, 1f);
         }
     }
 }

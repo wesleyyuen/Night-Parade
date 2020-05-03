@@ -2,28 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
-{
-
-    public int maxHealth = 2;
+public class Enemy : MonoBehaviour {
+    public int maxHealth;
+    public float aggroDistance;
+    public float movementSpeed;
     int currentHealth;
-
-    void Start()
-    {
+    Transform player;
+    Rigidbody2D rb;
+    void Start () {
         currentHealth = maxHealth;
+        player = GameObject.FindGameObjectWithTag ("Player").transform;
+        rb = GetComponent<Rigidbody2D> ();
     }
 
-    public void TakeDamage() {
-        // TODO Animation
-        currentHealth--;
-        if (currentHealth <= 0) {
-            Die();
+    void Update () {
+        if (player != null && Vector2.Distance (player.position, transform.position) < aggroDistance) {
+            move ();
         }
     }
 
-    void Die() {
+    void move () {
+        Vector2 target = new Vector2 (player.position.x, rb.position.y);
+        Vector2 newPosition = Vector2.MoveTowards (rb.position, target, movementSpeed * Time.fixedDeltaTime);
+        rb.position = newPosition;
+    }
+
+    public void TakeDamage () {
         // TODO Animation
-        Debug.Log(gameObject.name + " Died");
-       Destroy(gameObject);
+        currentHealth--;
+        if (currentHealth <= 0) {
+            Die ();
+        }
+    }
+
+    void Die () {
+        // TODO Animation
+        Debug.Log (gameObject.name + " Died");
+        Destroy (gameObject);
     }
 }

@@ -2,28 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
-{
-    public int currHealth {get; private set;}
-    void Awake()
-    {
-        currHealth = FindObjectOfType<GameMaster>().savedPlayerHealth;
+public class PlayerHealth : MonoBehaviour {
+    public int currHealth { get; private set; }
+    public Transform player;
+    public Rigidbody2D rb;
+    void Awake () {
+        currHealth = FindObjectOfType<GameMaster> ().savedPlayerHealth;
     }
-    /*
-    void OnCollisionEnter2D(Collider2D collider) {
-        if (collider.CompareTag("Enemy")) {
-            currHealth--;
-        }
+
+    public void TakeDamage (float takeDamageKnockBackForce) {
+        rb.AddForce (new Vector2 (takeDamageKnockBackForce * -player.localScale.x, 0.0f), ForceMode2D.Impulse);
+        currHealth--;
+        Debug.Log ("Current Health: " + currHealth);
     }
-    */
-    void Update() {
+
+    void Update () {
         if (currHealth <= 0) {
-            Die();
+            Die ();
         }
     }
 
-    void Die() {
-        Destroy(gameObject);
-        Debug.Log("You died");
+    void Die () {
+        Destroy (gameObject);
+        Debug.Log ("You died");
     }
 }
