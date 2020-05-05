@@ -463,7 +463,7 @@ GameObject:
   - component: {fileID: 1059740905}
   - component: {fileID: 1059740906}
   - component: {fileID: 1059740903}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Tanuki
   m_TagString: Tanuki
   m_Icon: {fileID: 0}
@@ -613,7 +613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackOffset: {x: 2.42, y: -0.05, z: 0}
-  attackRange: 10
+  attackRange: 5
   attackMask:
     serializedVersion: 2
     m_Bits: 512
@@ -632,6 +632,7 @@ MonoBehaviour:
   maxHealth: 8
   aggroDistance: 40
   movementSpeed: 0
+  knockBackForce: 0
 --- !u!114 &1059740906
 MonoBehaviour:
   m_ObjectHideFlags: 0

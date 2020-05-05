@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour {
     public int maxHealth;
     public float aggroDistance;
     public float movementSpeed;
+    public float knockBackForce;
     int currentHealth;
     Transform player;
     Rigidbody2D rb;
@@ -29,6 +30,7 @@ public class Enemy : MonoBehaviour {
 
     public void TakeDamage () {
         // TODO Animation
+        rb.AddForce(new Vector2(knockBackForce * -transform.localScale.x, 0f), ForceMode2D.Impulse);
         currentHealth--;
         if (currentHealth <= 0) {
             Die ();

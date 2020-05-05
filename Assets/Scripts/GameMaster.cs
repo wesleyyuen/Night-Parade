@@ -8,6 +8,7 @@ public class GameMaster : MonoBehaviour {
     public static string prevScene = "";
     public static string currentScene = "";
     public int savedPlayerHealth = 5;
+    
     void Awake () {
         if (Instance == null) {
             Instance = this;

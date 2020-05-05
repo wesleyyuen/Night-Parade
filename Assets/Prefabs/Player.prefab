@@ -134,14 +134,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3b4e6a7ff15f5d45a257882374bcd1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 40
-  jumpForce: 60
+  movementSpeed: 42
+  jumpVelocity: 63
   animator: {fileID: 8974115897232062166}
   sr: {fileID: 8974115897232062123}
   rb: {fileID: 8974115897232062160}
   isGrounded: 0
-  fallMultiplier: 3.5
-  lowJumpMultiplier: 4
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 5
 --- !u!95 &8974115897232062166
 Animator:
   serializedVersion: 3
@@ -231,8 +231,7 @@ MonoBehaviour:
   downThrustRange: {x: 7, y: 4}
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 4096
-  attackDmg: 40
+    m_Bits: 12288
   attackRate: 2.2
   horizontalKnockBackForce: 20
   verticalKnockBackForce: 110

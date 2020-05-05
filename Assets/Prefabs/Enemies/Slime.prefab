@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1128662852874068488}
   - component: {fileID: 1128662852874068490}
   - component: {fileID: 1128662852874068493}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: Slime
   m_TagString: Slime
   m_Icon: {fileID: 0}
@@ -98,7 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 2
   aggroDistance: 30
-  movementSpeed: 2.5
+  movementSpeed: 2.6
+  knockBackForce: 40
 --- !u!1 &1128662854364429943
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +111,7 @@ GameObject:
   - component: {fileID: 1128662854364429944}
   - component: {fileID: 1128662854364429945}
   - component: {fileID: 1128662854364429942}
-  m_Layer: 12
+  m_Layer: 13
   m_Name: slimeGFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}

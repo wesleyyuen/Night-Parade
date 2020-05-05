@@ -13,7 +13,6 @@ public class PlayerCombat : MonoBehaviour {
     public Vector2 upThrustRange;
     public Vector2 downThrustRange;
     public LayerMask enemyLayers;
-    public int attackDmg = 40;
     public float attackRate = 2f;
     float nextAttackTime = 0f;
     public float horizontalKnockBackForce = 5f;
