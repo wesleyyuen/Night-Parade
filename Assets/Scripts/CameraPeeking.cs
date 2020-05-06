@@ -4,8 +4,8 @@ using Cinemachine;
 using UnityEngine;
 
 public class CameraPeeking : MonoBehaviour {
-
     CinemachineFramingTransposer transposer;
+    PlayerMovement playerMovement;
     public float originalScreenY;
     public float lookUpScreenY;
     public float lookDownScreenY;
@@ -13,9 +13,11 @@ public class CameraPeeking : MonoBehaviour {
 
     void Start () {
         transposer = FindObjectOfType<CinemachineVirtualCamera> ().GetCinemachineComponent<CinemachineFramingTransposer> ();
+        playerMovement = FindObjectOfType<PlayerMovement> ();
     }
 
     void Update () {
+        if (playerMovement == null || !playerMovement.isGrounded) return;
         float currScreenY = transposer.m_ScreenY;
 
         // Handle flipflopping

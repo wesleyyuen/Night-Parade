@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OnTriggerLoadLevel : MonoBehaviour
 {
-    [SerializeField] private string levelToLoad;
+    [SerializeField] private string levelToLoad = "";
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag("Player"))

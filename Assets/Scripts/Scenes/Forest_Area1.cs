@@ -11,7 +11,7 @@ public class Forest_Area1 : MonoBehaviour
         gameMaster.UpdateCurrentScene ();
         if (gameMaster.getPrevScene () == "Forest_Tutorial") {
             player.position = tutorialAreaSpawnPoint.position;
-            player.localScale = new Vector3 (-1f, 1f, 1f);
+            player.localScale = new Vector3 (1f, 1f, 1f);
         }
     }
 }
