@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Cinemachine;
+﻿using Cinemachine;
 using UnityEngine;
 
 public class CameraPeeking : MonoBehaviour {
@@ -10,15 +8,46 @@ public class CameraPeeking : MonoBehaviour {
     public float lookUpScreenY;
     public float lookDownScreenY;
     public float changeRate;
+    private float startTime = 0f;
+    private float timer = 0f;
+    public float holdTime = 1.0f; // how long you need to hold to trigger the effect
 
     void Start () {
         transposer = FindObjectOfType<CinemachineVirtualCamera> ().GetCinemachineComponent<CinemachineFramingTransposer> ();
         playerMovement = FindObjectOfType<PlayerMovement> ();
     }
 
+    void ReInitializeVariables () {
+        if (transposer == null) {
+            transposer = FindObjectOfType<CinemachineVirtualCamera> ().GetCinemachineComponent<CinemachineFramingTransposer> ();
+        }
+        if (playerMovement == null) {
+            playerMovement = FindObjectOfType<PlayerMovement> ();
+        }
+    }
+
     void Update () {
-        if (playerMovement == null || !playerMovement.isGrounded) return;
+        ReInitializeVariables ();
+        if (transposer == null || playerMovement == null || !playerMovement.isGrounded) return;
         float currScreenY = transposer.m_ScreenY;
+
+        if (Input.GetButtonDown ("Vertical")) {
+            startTime = Time.time;
+            timer = startTime;
+        }
+
+        if (Input.GetButton ("Vertical")) {
+            timer += Time.deltaTime;
+            if (timer > startTime + holdTime) {
+                if (Input.GetAxis ("Vertical") > 0) {
+                    if (currScreenY < lookUpScreenY) transposer.m_ScreenY += changeRate;
+                    else if (currScreenY == lookUpScreenY) return;
+                } else if (Input.GetAxis ("Vertical") < 0) {
+                    if (currScreenY > lookDownScreenY) transposer.m_ScreenY -= changeRate;
+                    else if (currScreenY == lookDownScreenY) return;
+                }
+            }
+        }
 
         // Handle flipflopping
         if (!Input.GetButton ("Vertical") && currScreenY != originalScreenY && currScreenY > originalScreenY - 0.01 && currScreenY < originalScreenY + 0.01) {
@@ -28,14 +57,6 @@ public class CameraPeeking : MonoBehaviour {
         if (!Input.GetButton ("Vertical") && currScreenY != originalScreenY) {
             if (currScreenY > originalScreenY) transposer.m_ScreenY -= changeRate;
             else if (currScreenY < originalScreenY) transposer.m_ScreenY += changeRate;
-        }
-        if (Input.GetButton ("Vertical") && Input.GetAxis ("Vertical") > 0) {
-            if (currScreenY < lookUpScreenY) transposer.m_ScreenY += changeRate;
-            else if (currScreenY == lookUpScreenY) return;
-        } else if (Input.GetButton ("Vertical") && Input.GetAxis ("Vertical") < 0) {
-
-            if (currScreenY > lookDownScreenY) transposer.m_ScreenY -= changeRate;
-            else if (currScreenY == lookDownScreenY) return;
         }
     }
 }

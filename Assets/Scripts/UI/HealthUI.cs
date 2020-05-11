@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 [System.Serializable]
 public class HealthUI : MonoBehaviour {
@@ -24,6 +22,7 @@ public class HealthUI : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+        if (playerHealth == null) playerHealth = FindObjectOfType<PlayerHealth> ();
         if (playerHealth == null) return;
         
         for (int i = 0; i < hearts.Length; i++) {

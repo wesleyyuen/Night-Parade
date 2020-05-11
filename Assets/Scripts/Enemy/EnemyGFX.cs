@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Pathfinding;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyGFX : MonoBehaviour {
     Transform player;

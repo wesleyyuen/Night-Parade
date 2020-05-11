@@ -1,15 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class OnTriggerLoadLevel : MonoBehaviour
-{
+public class OnTriggerLoadLevel : MonoBehaviour {
     [SerializeField] private string levelToLoad = "";
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.CompareTag("Player"))
-        {
-            FindObjectOfType<GameMaster>().requestSceneChange(levelToLoad, FindObjectOfType<PlayerHealth>().currHealth);
+    private void OnTriggerEnter2D (Collider2D collider) {
+        if (collider.CompareTag ("Player")) {
+            FindObjectOfType<GameMaster> ().requestSceneChange (levelToLoad, FindObjectOfType<PlayerHealth> ().currHealth);
         }
     }
 }

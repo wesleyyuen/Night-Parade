@@ -50,7 +50,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 4
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -69,8 +69,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.1607928, y: 0.16130531}
-  m_Size: {x: 3.820449, y: 2.4036896}
+  m_Offset: {x: 1.1607928, y: 0.14293349}
+  m_Size: {x: 3.8204496, y: 2.4404337}
   m_Direction: 1
 --- !u!114 &1128662852874068490
 MonoBehaviour:
@@ -97,9 +97,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 2
-  aggroDistance: 30
-  movementSpeed: 2.6
-  knockBackForce: 40
+  aggroDistance: 35
+  movementSpeed: 3
+  knockBackForce: 25
+  collisionCooldown: 1.5
 --- !u!1 &1128662854364429943
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +170,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -437451589
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 787d0fa430031ea418667b80ff0744a5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

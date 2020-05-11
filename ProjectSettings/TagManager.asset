@@ -8,6 +8,7 @@ TagManager:
   - Slime
   - Tanuki
   - BreakableObstacle
+  - CameraConfindingBound
   layers:
   - Default
   - TransparentFX
@@ -42,11 +43,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Background
     uniqueID: 146639583
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: Player
     uniqueID: 3857515707

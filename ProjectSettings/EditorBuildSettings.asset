@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/_Preload.unity
+    guid: 80ac688ce332abc478261a74540a8038
+  - enabled: 1
     path: Assets/Scenes/Forest_Tutorial.unity
     guid: f0d63b6f13359a943b4f9b4a4665f73c
   - enabled: 1
@@ -14,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Forest_Area2.unity
     guid: 22f9a794502621246a19118f404b5b06
+  - enabled: 1
+    path: Assets/Scenes/Forest_Sacred.unity
+    guid: 7a1dab9ce75a10a44bd98cd3a60587a0
   - enabled: 1
     path: Assets/Scenes/Forest_miniboss_tanuki.unity
     guid: 5fd2a7be725aa4c42a4132603efc1e24

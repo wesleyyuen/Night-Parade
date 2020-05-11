@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -13,7 +11,12 @@ public class PlayerMovement : MonoBehaviour {
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
 
-    void Update () {
+    void Update() {
+        // Jump uses rb.velocity, should be in Update() instead of FixedUpdate()
+        Jump ();
+    }
+
+    void FixedUpdate () {
         float horizontalInput = Input.GetAxisRaw ("Horizontal");
         if (horizontalInput != 0 && horizontalInput > 0) {
             transform.localScale = new Vector3 (1f, 1f, 1f);
@@ -22,8 +25,6 @@ public class PlayerMovement : MonoBehaviour {
         }
         animator.SetFloat ("Horizontal", horizontalInput);
 
-        Jump ();
-
         Vector3 horizontalMovement = new Vector2 (horizontalInput * movementSpeed, 0.0f);
         transform.position += horizontalMovement * Time.deltaTime;
 
@@ -31,7 +32,6 @@ public class PlayerMovement : MonoBehaviour {
 
     void Jump () {
         if (Input.GetButtonDown ("Jump") && isGrounded) {
-            //rb.AddForce (new Vector2 (0.0f, jumpForce), ForceMode2D.Impulse);
             rb.velocity += Vector2.up * jumpVelocity;
         }
         if (rb.velocity.y < 0) {

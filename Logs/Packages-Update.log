@@ -43,3 +43,15 @@ The following packages were added:
   com.unity.textmeshpro@2.0.1
   com.unity.timeline@1.2.10
   com.unity.ugui@1.0.0
+
+=== Wed May  6 18:36:03 2020
+
+Packages were changed.
+Update Mode: mergeDefaultDependencies
+
+The following packages were added:
+  com.unity.ext.nunit@1.0.0
+  com.unity.ide.visualstudio@1.0.11
+  com.unity.package-manager-ui@2.2.0
+  com.unity.postprocessing@2.1.6
+  com.unity.xr.legacyinputhelpers@2.0.2

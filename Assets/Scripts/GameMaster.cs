@@ -1,22 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour {
     private static GameMaster Instance;
+    public string startingScene;
     public static string prevScene = "";
     public static string currentScene = "";
-    public int savedPlayerHealth = 3;
-    
+    public int startingHealth;
+    public int savedPlayerHealth { get; private set; }
+
     void Awake () {
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad (Instance);
+            DontDestroyOnLoad (gameObject);
         } else {
             Destroy (gameObject);
         }
         UpdateCurrentScene ();
+        requestSceneChange (startingScene, startingHealth);
     }
 
     public void UpdateCurrentScene () {

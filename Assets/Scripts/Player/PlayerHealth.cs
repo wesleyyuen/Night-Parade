@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour {
     public int currHealth { get; private set; }
     public Transform player;
     public Rigidbody2D rb;
-    void Awake () {
+    void Start () {
         currHealth = FindObjectOfType<GameMaster> ().savedPlayerHealth;
     }
 
