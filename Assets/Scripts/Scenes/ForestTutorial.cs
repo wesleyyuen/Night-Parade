@@ -7,7 +7,7 @@ public class ForestTutorial : MonoBehaviour {
     public void Start () {
         GameMaster gameMaster = FindObjectOfType<GameMaster> ();
         gameMaster.UpdateCurrentScene ();
-        if (gameMaster.getPrevScene () != "") {
+        if (gameMaster.getPrevScene () == "Forest_Area1" || gameMaster.getPrevScene () == "Forest_Area2") {
             foreach (GameObject obs in GameObject.FindGameObjectsWithTag("BreakableObstacle")) {
                 obs.SetActive(false);
             }

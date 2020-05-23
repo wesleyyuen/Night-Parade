@@ -1,6 +1,5 @@
-- Camera peaking included deadzone where it shouldn't
 - Cinemachine confinder snapping when jumping over to the last strech of road in Forest_Tutorial
-- enemy collision
+- Parallax not working when reloading a scene
  	
 
 

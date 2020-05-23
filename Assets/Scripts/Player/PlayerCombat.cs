@@ -42,7 +42,11 @@ public class PlayerCombat : MonoBehaviour {
         if (hitEnemies.Length == 0) return;
 
         foreach (Collider2D enemy in hitEnemies) {
-            enemy.GetComponent<Enemy> ().TakeDamage ();
+            if (enemy.GetComponent<Enemy> () != null) {
+                enemy.GetComponent<Enemy> ().TakeDamage ();
+                continue;
+            }
+            enemy.GetComponent<BreakableObject> ().TakeDamage ();
         }
         rb.AddForce (new Vector2 (horizontalKnockBackForce * -player.localScale.x, 0.0f), ForceMode2D.Impulse);
     }

@@ -8,6 +8,7 @@ public class GameMaster : MonoBehaviour {
     public static string currentScene = "";
     public int startingHealth;
     public int savedPlayerHealth { get; private set; }
+    public int savedPlayerCoinsOnHand { get; private set; }
 
     void Awake () {
         if (Instance == null) {
@@ -17,7 +18,7 @@ public class GameMaster : MonoBehaviour {
             Destroy (gameObject);
         }
         UpdateCurrentScene ();
-        requestSceneChange (startingScene, startingHealth);
+        requestSceneChange (startingScene, startingHealth, 0);
     }
 
     public void UpdateCurrentScene () {
@@ -28,9 +29,14 @@ public class GameMaster : MonoBehaviour {
         return prevScene;
     }
 
-    public void requestSceneChange (string sceneToLoad, int currHealth) {
+    public void requestSceneChange (string sceneToLoad, int currHealth, int coinsOnHand) {
         prevScene = currentScene;
-        savedPlayerHealth = currHealth;
+        UpdatePlayerVariables(currHealth, coinsOnHand);
         SceneManager.LoadScene (sceneToLoad);
+    }
+
+    void UpdatePlayerVariables(int currHealth, int coinsOnHand) {
+        savedPlayerHealth = currHealth;
+        savedPlayerCoinsOnHand = coinsOnHand;
     }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1128662852874068488}
   - component: {fileID: 1128662852874068490}
   - component: {fileID: 1128662852874068493}
+  - component: {fileID: 7938616563789275635}
   m_Layer: 13
   m_Name: Slime
   m_TagString: Slime
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128662852874068485}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 60.18, y: 4.59, z: 0}
+  m_LocalPosition: {x: 60.18, y: 4.59, z: 60}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1128662854364429944}
@@ -98,9 +99,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 2
   aggroDistance: 35
-  movementSpeed: 3
+  movementSpeed: 10
   knockBackForce: 25
   collisionCooldown: 1.5
+  patrolDistance: 15
+--- !u!114 &7938616563789275635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128662852874068485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a154e650ceaa57c409f80d8667137f6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mon: {fileID: 615396422470690540, guid: 8d2e5dd9eca69244eb52a9dbd6b50599, type: 3}
+  numOfCoinsDrop: 1
+  coinsDropPercent: 0.9
+  heart: {fileID: 1201029992307220987, guid: 67b4dd017a688d04b8e1273bc72b4e68, type: 3}
+  numOfHeartsDrop: 1
+  heartDropPercent: 0.5
 --- !u!1 &1128662854364429943
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +171,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

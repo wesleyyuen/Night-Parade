@@ -9,6 +9,7 @@ TagManager:
   - Tanuki
   - BreakableObstacle
   - CameraConfindingBound
+  - MonText
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Foreground
   - Obstacle
   - Enemies
-  - 
+  - Collectables
   - 
   - 
   - 
@@ -51,6 +52,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3857515707
+    locked: 0
+  - name: Ground
+    uniqueID: 2452016649
     locked: 0
   - name: Foreground
     uniqueID: 3093723295

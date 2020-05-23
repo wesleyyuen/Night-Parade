@@ -20,7 +20,6 @@ public class HealthUI : MonoBehaviour {
         playerHealth = FindObjectOfType<PlayerHealth> ();
     }
 
-    // Update is called once per frame
     void Update () {
         if (playerHealth == null) playerHealth = FindObjectOfType<PlayerHealth> ();
         if (playerHealth == null) return;
