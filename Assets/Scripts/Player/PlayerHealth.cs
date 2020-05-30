@@ -7,7 +7,7 @@ public class PlayerHealth : MonoBehaviour {
     int maxNumOfHeart;
 
     void Start () {
-        currHealth = FindObjectOfType<GameMaster> ().savedPlayerHealth;
+        currHealth = FindObjectOfType<GameMaster> ().savedPlayerVariables.SavedPlayerHealth;
         player = gameObject.transform;
         rb = GetComponent<Rigidbody2D>();
         maxNumOfHeart = FindObjectOfType<HealthUI> ().numOfHearts;

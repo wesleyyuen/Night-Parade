@@ -17,6 +17,9 @@ public class HealthUI : MonoBehaviour {
         } else {
             Destroy (gameObject);
         }
+    }
+
+    void Start() {
         playerHealth = FindObjectOfType<PlayerHealth> ();
     }
 

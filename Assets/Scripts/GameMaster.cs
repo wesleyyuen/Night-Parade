@@ -7,8 +7,7 @@ public class GameMaster : MonoBehaviour {
     public static string prevScene = "";
     public static string currentScene = "";
     public int startingHealth;
-    public int savedPlayerHealth { get; private set; }
-    public int savedPlayerCoinsOnHand { get; private set; }
+    public PlayerVariables savedPlayerVariables { get; private set; }
 
     void Awake () {
         if (Instance == null) {
@@ -18,9 +17,9 @@ public class GameMaster : MonoBehaviour {
             Destroy (gameObject);
         }
         UpdateCurrentScene ();
-        requestSceneChange (startingScene, startingHealth, 0);
+        savedPlayerVariables = new PlayerVariables (startingHealth, 0);
+        requestSceneChange (startingScene, savedPlayerVariables);
     }
-
     public void UpdateCurrentScene () {
         currentScene = SceneManager.GetActiveScene ().name;
     }
@@ -29,14 +28,9 @@ public class GameMaster : MonoBehaviour {
         return prevScene;
     }
 
-    public void requestSceneChange (string sceneToLoad, int currHealth, int coinsOnHand) {
+    public void requestSceneChange (string sceneToLoad, PlayerVariables currPlayerVariables) {
         prevScene = currentScene;
-        UpdatePlayerVariables(currHealth, coinsOnHand);
+        savedPlayerVariables = currPlayerVariables;
         SceneManager.LoadScene (sceneToLoad);
-    }
-
-    void UpdatePlayerVariables(int currHealth, int coinsOnHand) {
-        savedPlayerHealth = currHealth;
-        savedPlayerCoinsOnHand = coinsOnHand;
     }
 }

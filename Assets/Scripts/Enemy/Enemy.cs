@@ -25,6 +25,13 @@ public class Enemy : MonoBehaviour {
     }
 
     void Update () {
+        // Freeze for collisionCooldown after colliding with player
+        if (collisionOnCooldown) {
+            timer += Time.deltaTime;
+            if (timer > startTime + collisionCooldown) {
+                collisionOnCooldown = false;
+            }
+        }
         if (player == null || collisionOnCooldown) return;
         if (Vector2.Distance (player.position, rb.position) < aggroDistance) {
             isPatroling = false;
@@ -35,12 +42,6 @@ public class Enemy : MonoBehaviour {
                 isPatroling = true;
             }
             Patrol ();
-        }
-        if (collisionOnCooldown) {
-            timer += Time.deltaTime;
-            if (timer > startTime + collisionCooldown) {
-                collisionOnCooldown = false;
-            }
         }
     }
 

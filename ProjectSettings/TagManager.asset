@@ -9,7 +9,10 @@ TagManager:
   - Tanuki
   - BreakableObstacle
   - CameraConfindingBound
-  - MonText
+  - DialogueUI
+  - MonUI
+  - HealthUI
+  - Parallax
   layers:
   - Default
   - TransparentFX
