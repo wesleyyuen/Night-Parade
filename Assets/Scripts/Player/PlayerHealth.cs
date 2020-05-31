@@ -2,15 +2,17 @@
 
 public class PlayerHealth : MonoBehaviour {
     public int currHealth { get; private set; }
+    public int maxNumOfHeart { get; private set; }
     Transform player;
     Rigidbody2D rb;
-    int maxNumOfHeart;
 
     void Start () {
-        currHealth = FindObjectOfType<GameMaster> ().savedPlayerVariables.SavedPlayerHealth;
+        currHealth = FindObjectOfType<GameMaster> ().savedPlayerData.SavedPlayerHealth;
+        maxNumOfHeart = FindObjectOfType<GameMaster> ().savedPlayerData.SavedMaxPlayerHealth;
+        Debug.Log("currHealth: " + currHealth);
+        Debug.Log("maxNumOfHeart: " + maxNumOfHeart);
         player = gameObject.transform;
         rb = GetComponent<Rigidbody2D>();
-        maxNumOfHeart = FindObjectOfType<HealthUI> ().numOfHearts;
     }
 
     public void TakeDamage (float takeDamageKnockBackForce) {

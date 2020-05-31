@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OnTriggerLoadLevel : MonoBehaviour {
     [SerializeField] private string levelToLoad = "";
     private void OnTriggerEnter2D (Collider2D collider) {
         if (collider.CompareTag ("Player")) {
-            int health = FindObjectOfType<PlayerHealth> ().currHealth;
-            int coins = FindObjectOfType<PlayerInventory>().coinOnHand;
-            PlayerVariables playerVariables = new PlayerVariables(health, coins);
-            FindObjectOfType<GameMaster> ().requestSceneChange (levelToLoad, playerVariables);
+            PlayerData playerVariables = new PlayerData(collider.gameObject, SceneManager.GetActiveScene ().buildIndex, SaveManager.GetLoadIndex());
+            FindObjectOfType<GameMaster> ().RequestSceneChange (levelToLoad, playerVariables);
         }
     }
 }

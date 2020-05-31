@@ -8,10 +8,10 @@ public class Forest_Area1 : MonoBehaviour {
         GameMaster gameMaster = FindObjectOfType<GameMaster> ();
         gameMaster.UpdateCurrentScene ();
 
-        if (gameMaster.getPrevScene () == "Forest_Tutorial") {
+        if (gameMaster.GetPrevScene () == "Forest_Tutorial") {
             player.position = tutorialAreaSpawnPoint.position;
             player.localScale = new Vector3 (1f, 1f, 1f);
-        } else if (gameMaster.getPrevScene () == "Forest_Sacred") {
+        } else if (gameMaster.GetPrevScene () == "Forest_Sacred") {
             player.position = sacredAreaSpawnPoint.position;
             player.localScale = new Vector3 (-1f, 1f, 1f);
         }

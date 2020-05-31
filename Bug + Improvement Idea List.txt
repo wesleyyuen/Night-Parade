@@ -7,6 +7,10 @@ TODO:
  	
 
 
-Improvements needed:
+Gameplay Improvements needed:
 - Tweak jumping - hovering a bit at peak height
 - Sliding when taking damage (cuz using AddForce)
+
+Programming Improvements needed: (search TODO)
+- Save Point Scene Script uses prevScene == "_Preload" instead of "Main_Menu" (_Preload is loaded for a frame for some reason)
+- Save Point Scene Script load twice (once in MainMenu, once Save Point Scene Script again)

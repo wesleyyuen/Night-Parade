@@ -8,7 +8,7 @@ public class ForestTanuki : MonoBehaviour {
         GameMaster gameMaster = FindObjectOfType<GameMaster> ();
         gameMaster.UpdateCurrentScene ();
 
-        if (gameMaster.getPrevScene () == "Forest_Main") {
+        if (gameMaster.GetPrevScene () == "Forest_Main") {
             player.position = new Vector2 (-59f, 8.5f);
         }
     }

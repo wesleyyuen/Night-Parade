@@ -7,7 +7,7 @@ public class GameMaster : MonoBehaviour {
     public static string prevScene = "";
     public static string currentScene = "";
     public int startingHealth;
-    public PlayerVariables savedPlayerVariables { get; private set; }
+    public PlayerData savedPlayerData;
 
     void Awake () {
         if (Instance == null) {
@@ -17,20 +17,31 @@ public class GameMaster : MonoBehaviour {
             Destroy (gameObject);
         }
         UpdateCurrentScene ();
-        savedPlayerVariables = new PlayerVariables (startingHealth, 0);
-        requestSceneChange (startingScene, savedPlayerVariables);
+        savedPlayerData = new PlayerData (startingHealth, 0);
+        if (startingScene == "Main_Menu") SetUIHelper (false); // can remove if play mode from _preload
+        RequestSceneChange (startingScene, savedPlayerData);
     }
+
     public void UpdateCurrentScene () {
         currentScene = SceneManager.GetActiveScene ().name;
     }
 
-    public string getPrevScene () {
+    public string GetPrevScene () {
         return prevScene;
     }
 
-    public void requestSceneChange (string sceneToLoad, PlayerVariables currPlayerVariables) {
+    public void RequestSceneChange (string sceneToLoad, PlayerData currPlayerData) {
         prevScene = currentScene;
-        savedPlayerVariables = currPlayerVariables;
+        savedPlayerData = currPlayerData;
         SceneManager.LoadScene (sceneToLoad);
+    }
+
+    // can remove if play mode from _preload
+    void SetUIHelper (bool boolean) {
+        FindObjectOfType<CameraPeeking> ().enabled = boolean;
+        FindObjectOfType<DialogueManager> ().enabled = boolean;
+        GameObject.FindGameObjectWithTag ("MonUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
+        GameObject.FindGameObjectWithTag ("HealthUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
+        GameObject.FindGameObjectWithTag ("DialogueUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
     }
 }

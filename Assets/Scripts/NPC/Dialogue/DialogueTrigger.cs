@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour {
-    Transform player;
+    public GameObject player;
     public Dialogue dialogue;
     public float triggerRange;
 
     void Start () {
-        player = GameObject.FindGameObjectWithTag ("Player").transform;
+        player = GameObject.FindGameObjectWithTag ("Player");
     }
-    void Update() {
+    public virtual void Update() {
         bool isTalking = FindObjectOfType<DialogueManager>().isTalking;
-        if (!isTalking && Vector2.Distance(player.position, transform.position) <= triggerRange && Input.GetKeyDown(KeyCode.DownArrow)) {
+        if (!isTalking && Vector2.Distance(player.transform.position, transform.position) <= triggerRange && Input.GetKeyDown(KeyCode.DownArrow)) {
             TriggerDialogue();
         }
     }
 
-    void TriggerDialogue() {
+    public void TriggerDialogue() {
         FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
     }
 }

@@ -13,6 +13,7 @@ TagManager:
   - MonUI
   - HealthUI
   - Parallax
+  - GameManager
   layers:
   - Default
   - TransparentFX
