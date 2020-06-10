@@ -8,12 +8,15 @@ TagManager:
   - Slime
   - Tanuki
   - BreakableObstacle
-  - CameraConfindingBound
   - DialogueUI
   - MonUI
   - HealthUI
   - Parallax
   - GameManager
+  - PauseMenuOptions
+  - PauseMenu
+  - MainVCam
+  - SceneTransition
   layers:
   - Default
   - TransparentFX

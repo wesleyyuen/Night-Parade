@@ -13,15 +13,15 @@ public class CameraPeeking : MonoBehaviour {
     public float holdTime = 1.0f; // how long you need to hold to trigger the effect
 
     void Start () {
-        CinemachineVirtualCamera vcam = FindObjectOfType<CinemachineVirtualCamera> ();
-        if (vcam != null) transposer = vcam.GetCinemachineComponent<CinemachineFramingTransposer> ();
+        GameObject vcam = GameObject.FindGameObjectWithTag("MainVCam");
+        if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer> ();
         playerMovement = FindObjectOfType<PlayerMovement> ();
     }
 
     void ReInitializeVariables () {
         if (transposer == null) {
-            CinemachineVirtualCamera vcam = FindObjectOfType<CinemachineVirtualCamera> ();
-            if (vcam != null) transposer = vcam.GetCinemachineComponent<CinemachineFramingTransposer> ();
+            GameObject vcam = GameObject.FindGameObjectWithTag("MainVCam");
+            if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer> ();
         }
         if (playerMovement == null) playerMovement = FindObjectOfType<PlayerMovement> ();
     }

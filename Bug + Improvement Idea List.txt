@@ -1,13 +1,11 @@
-TODO:
-- Area1 camera hidden treasure
-
-
+Bug:
 - Cinemachine confinder snapping when jumping over to the last strech of road in Forest_Tutorial
-- Parallax not working when reloading a scene
+- Parallax not working when reloading a scene (temp. disabled parallaxing)
  	
 
 
 Gameplay Improvements needed:
+- Camera deadzones tweaks
 - Tweak jumping - hovering a bit at peak height
 - Sliding when taking damage (cuz using AddForce)
 

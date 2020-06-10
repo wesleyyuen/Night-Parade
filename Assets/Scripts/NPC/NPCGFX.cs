@@ -2,16 +2,18 @@
 
 public class NPCGFX : MonoBehaviour {
     Transform player;
+    SpriteRenderer spriteRenderer; // using flipX instead of localScale since textMesh is Children
 
     protected virtual void Start () {
         player = GameObject.FindGameObjectWithTag ("Player").transform;
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     protected virtual void Update () {
         if (player == null) return;
         if (transform.position.x > player.position.x) {
-            transform.localScale = new Vector3 (-1f, 1f, 1f);
+            spriteRenderer.flipX = true;
         } else if (transform.position.x < player.position.x) {
-            transform.localScale = new Vector3 (1f, 1f, 1f);
+            spriteRenderer.flipX = false;
         }
     }
 }

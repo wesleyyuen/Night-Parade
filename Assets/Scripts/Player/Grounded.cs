@@ -1,28 +1,19 @@
 ﻿using UnityEngine;
 
-public class Grounded : MonoBehaviour
-{
+public class Grounded : MonoBehaviour {
 
     GameObject player;
-    // Start is called before the first frame update
-    void Start()
-    {
+    void Start () {
         player = gameObject.transform.parent.gameObject;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "Ground")
-        {
-            player.GetComponent<PlayerMovement>().isGrounded = true;
+    private void OnTriggerStay2D (Collider2D collider) {
+        if (collider.tag == "Ground") {
+            player.GetComponent<PlayerMovement> ().isGrounded = true;
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "Ground")
-        {
-            player.GetComponent<PlayerMovement>().isGrounded = false;
-        }
+    private void OnTriggerExit2D (Collider2D collider) {
+        player.GetComponent<PlayerMovement> ().isGrounded = false;
     }
 }

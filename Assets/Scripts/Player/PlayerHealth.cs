@@ -9,8 +9,6 @@ public class PlayerHealth : MonoBehaviour {
     void Start () {
         currHealth = FindObjectOfType<GameMaster> ().savedPlayerData.SavedPlayerHealth;
         maxNumOfHeart = FindObjectOfType<GameMaster> ().savedPlayerData.SavedMaxPlayerHealth;
-        Debug.Log("currHealth: " + currHealth);
-        Debug.Log("maxNumOfHeart: " + maxNumOfHeart);
         player = gameObject.transform;
         rb = GetComponent<Rigidbody2D>();
     }

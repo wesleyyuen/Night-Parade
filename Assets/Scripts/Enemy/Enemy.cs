@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour {
     public float aggroDistance;
     public float movementSpeed;
     public float knockBackForce;
+    public float collisionKnockBackForceOnPlayer;
     int currentHealth;
     Transform player;
     Rigidbody2D rb;
@@ -75,7 +76,7 @@ public class Enemy : MonoBehaviour {
             collisionOnCooldown = true;
             startTime = Time.time;
             timer = startTime;
-            collision.gameObject.GetComponent<PlayerHealth> ().TakeDamage (35f);
+            collision.gameObject.GetComponent<PlayerHealth> ().TakeDamage (collisionKnockBackForceOnPlayer);
         }
     }
 

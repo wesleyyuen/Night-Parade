@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour {
     public TextMeshProUGUI continueText;
 
     void Start () {
+        SetUIHelper (false);
         if (SaveManager.Load(1) == null) { // TODO if File exists
             continueButton.interactable = false;
             continueText.color = Color.gray;
@@ -19,7 +20,7 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void NewGame () {
-        SceneManager.LoadScene ("Forest_Sacred");
+        SceneManager.LoadScene ("Forest_Tutorial");
         SetUIHelper (true);
     }
 
@@ -28,7 +29,11 @@ public class MainMenu : MonoBehaviour {
         if (playerData == null) return;
         FindObjectOfType<GameMaster>().savedPlayerData = playerData;
         SceneManager.LoadScene (playerData.LastSavePoint);
+    
         SetUIHelper (true);
+        PauseMenu.isPuased = false;
+        GameObject pauseMenu = GameObject.FindGameObjectWithTag ("PauseMenu");
+        if (pauseMenu != null) pauseMenu.SetActive(false);
     }
 
     public void QuitGame () {
@@ -41,6 +46,12 @@ public class MainMenu : MonoBehaviour {
         FindObjectOfType<DialogueManager> ().enabled = boolean;
         GameObject.FindGameObjectWithTag ("MonUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
         GameObject.FindGameObjectWithTag ("HealthUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
-        GameObject.FindGameObjectWithTag ("DialogueUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
+
+        GameObject dialogueUI = GameObject.FindGameObjectWithTag ("DialogueUI");
+        if (dialogueUI != null) dialogueUI.transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
+        GameObject pauseMenu = GameObject.FindGameObjectWithTag ("PauseMenu");
+        if (pauseMenu != null) pauseMenu.transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
+        GameObject pauseMenuOptions = GameObject.FindGameObjectWithTag ("PauseMenuOptions");
+        if (pauseMenuOptions != null) pauseMenuOptions.transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
     }
 }
