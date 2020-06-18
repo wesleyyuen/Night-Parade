@@ -4859,8 +4859,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.09627494, y: -2.3369339}
-  m_Size: {x: 0.69279885, y: 0.21302798}
+  m_Offset: {x: 0.07, y: -2.3}
+  m_Size: {x: 0.38975668, y: 0.077847965}
   m_Direction: 1
 --- !u!114 &8149112104458654234
 MonoBehaviour:
@@ -4874,6 +4874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8c7a7e77bd61cd4287881e5f8047eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startOffGrounded: 1
 --- !u!1 &3426872549260551960
 GameObject:
   m_ObjectHideFlags: 0
@@ -5061,11 +5062,11 @@ GameObject:
   - component: {fileID: 8864900254210590994}
   - component: {fileID: 8606497617345287854}
   - component: {fileID: 1354711362501565212}
-  - component: {fileID: 850275116718462599}
+  - component: {fileID: 3657061942040514845}
   - component: {fileID: 4635589901669011673}
   - component: {fileID: 7510440380890627474}
   - component: {fileID: 7380351532023536337}
-  - component: {fileID: 883086440911590475}
+  - component: {fileID: 433944025805479695}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -5162,17 +5163,13 @@ MonoBehaviour:
   rb: {fileID: 1354711362501565212}
   dustTrail: {fileID: 7045826086754937404}
   grounded: {fileID: 8149112104458654234}
-  audioSource: {fileID: 883086440911590475}
+  audioManager: {fileID: 0}
   movementSpeed: 11
   jumpVelocity: 36
   fallMultiplier: 0.8
   lowJumpMultiplier: 5
   jumpBufferTime: 0.15
   coyoteTime: 0.1
-  footstepsClips:
-  - {fileID: 8300000, guid: 8822d05811d5a5c4491ef03088fae90f, type: 3}
-  - {fileID: 8300000, guid: bfa883a8e8bffd744aac49d2f606f419, type: 3}
-  - {fileID: 8300000, guid: 846ec7285daf6264fbccd3dad01af2a5, type: 3}
 --- !u!95 &8606497617345287854
 Animator:
   serializedVersion: 3
@@ -5213,8 +5210,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!61 &850275116718462599
-BoxCollider2D:
+--- !u!70 &3657061942040514845
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5226,19 +5223,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.04996872, y: -1.1997354}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.8, y: 4.8}
-    newSize: {x: 4.8, y: 4.8}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.8977661, y: 2.401392}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.052198768, y: -1.2053703}
+  m_Size: {x: 0.9050882, y: 2.3892596}
+  m_Direction: 0
 --- !u!114 &4635589901669011673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5290,7 +5277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 603b7421dcbedea438cab67b4041fd87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!82 &883086440911590475
+--- !u!82 &433944025805479695
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

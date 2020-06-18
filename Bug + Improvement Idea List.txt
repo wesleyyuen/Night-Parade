@@ -7,9 +7,6 @@ TODO:
 Bug:
 - Cinemachine confinder snapping when jumping over to the last strech of road in Forest_Tutorial
 - Parallax not working when reloading a scene (temp. disabled parallaxing)
-- Can hang on to corners (lower corners) of platforms
- 	
-
 
 Gameplay Improvements needed:
 - Camera deadzones tweaks

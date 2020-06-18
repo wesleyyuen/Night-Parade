@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour {
     }
 
     void Update () {
-        if (isDead) return;
+        if (isDead) return; // return so it stops moving when dying
         
         // Freeze for collisionCooldown after colliding with player
         if (collisionOnCooldown) {

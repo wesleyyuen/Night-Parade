@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour {
     public Rigidbody2D rb;
     public ParticleSystem dustTrail;
     public Grounded grounded;
-    public AudioSource audioSource;
+    public AudioManager audioManager;
 
     [Header ("Movement Settings")]
     public float movementSpeed;
@@ -19,12 +19,12 @@ public class PlayerMovement : MonoBehaviour {
     public float jumpBufferTime = 0.2f;
     public float coyoteTime = 0.05f;
 
-    [Header ("SFX")]
-    [SerializeField]
-    private AudioClip[] footstepsClips;
-
     float jumpBuffer = 0;
     float coyoteTimer = 0;
+
+    void Awake () {
+        audioManager = FindObjectOfType<AudioManager>();
+    }
 
     void Update () {
         animator.SetBool ("IsGrounded", grounded.isGrounded);
@@ -92,6 +92,6 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void FootstepSFX () {
-        audioSource.PlayOneShot(footstepsClips[Random.Range(0, footstepsClips.Length)]);
+        audioManager.Play("Forest_Footsteps");
     }
 }

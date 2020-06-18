@@ -1,2 +1,5 @@
 # Night-Parade-Remake
-a 2D metroidvania remake of a previous game, Night Parade
+A 2D Metroidvania remake of a previous game, set in the Yokai World, inspired by Spirited Away, Princess Mononoke and Hollow Knight.
+
+Google Drive Link for Quick Access to Latest Build (Updated more frequently than commits):
+https://drive.google.com/drive/folders/10kF9cFUYYPxoNDftxdEgFVeHPSb9-5sc?usp=sharing

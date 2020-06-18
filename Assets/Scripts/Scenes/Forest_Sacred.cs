@@ -9,6 +9,7 @@ public class Forest_Sacred : MonoBehaviour {
     void Start () {
         GameMaster gameMaster = FindObjectOfType<GameMaster> ();
         gameMaster.UpdateCurrentScene ();
+
         Transform background = GameObject.FindGameObjectWithTag ("Parallax").transform;
 
         if (gameMaster.GetPrevScene () == "_Preload") { // TODO should be "Main_Menu" instead of "Main_Menu", but _Preload is loaded for a frame for some reason

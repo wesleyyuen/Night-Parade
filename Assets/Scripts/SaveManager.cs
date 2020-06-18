@@ -12,7 +12,7 @@ public class SaveManager : MonoBehaviour {
     void Awake () {
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad (gameObject);
+            //DontDestroyOnLoad (gameObject); // Handled by Parent
         } else {
             Destroy (gameObject);
         }

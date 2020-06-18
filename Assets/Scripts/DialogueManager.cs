@@ -19,7 +19,7 @@ public class DialogueManager : MonoBehaviour {
     void Awake () {
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad (gameObject);
+            //DontDestroyOnLoad (gameObject); // Handled by Parent
         } else {
             Destroy (gameObject);
         }
@@ -48,8 +48,11 @@ public class DialogueManager : MonoBehaviour {
     public void StartDialogue (Dialogue dialogue) {
         isTalking = true;
         dialogueUI.SetActive(true);
-        FindObjectOfType<PlayerMovement> ().enabled = false;
-        FindObjectOfType<PlayerCombat> ().enabled = false;
+        GameObject player = FindObjectOfType<PlayerMovement> ().gameObject;
+        player.GetComponent<Animator>().SetFloat("Horizontal", 0f);
+        player.GetComponent<PlayerMovement>().enabled = false;
+        player.GetComponent<PlayerCombat> ().enabled = false;
+        
         sentences.Clear ();
         foreach (string sentence in dialogue.sentences) {
             sentences.Enqueue (sentence);
