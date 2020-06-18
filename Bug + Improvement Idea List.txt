@@ -1,6 +1,13 @@
+TODO:
+- Run_Left Animation
+- Attack left animation
+- Attack while running animation
+- no swords in falling or jumping animation
+
 Bug:
 - Cinemachine confinder snapping when jumping over to the last strech of road in Forest_Tutorial
 - Parallax not working when reloading a scene (temp. disabled parallaxing)
+- Can hang on to corners (lower corners) of platforms
  	
 
 
@@ -9,6 +16,13 @@ Gameplay Improvements needed:
 - Tweak jumping - hovering a bit at peak height
 - Sliding when taking damage (cuz using AddForce)
 
+Environment improvements (?):
+- use sprite instead of 2D lights for more control?
+
 Programming Improvements needed: (search TODO)
 - Save Point Scene Script uses prevScene == "_Preload" instead of "Main_Menu" (_Preload is loaded for a frame for some reason)
 - Save Point Scene Script load twice (once in MainMenu, once Save Point Scene Script again)
+
+
+World:
+- Areas should fit a virtue theme (e.g. patience, forgiveness)

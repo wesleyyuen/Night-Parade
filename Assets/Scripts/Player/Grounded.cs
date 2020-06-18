@@ -2,18 +2,15 @@
 
 public class Grounded : MonoBehaviour {
 
-    GameObject player;
-    void Start () {
-        player = gameObject.transform.parent.gameObject;
-    }
+    public bool isGrounded { get; private set; }
 
     private void OnTriggerStay2D (Collider2D collider) {
         if (collider.tag == "Ground") {
-            player.GetComponent<PlayerMovement> ().isGrounded = true;
+            isGrounded = true;
         }
     }
 
     private void OnTriggerExit2D (Collider2D collider) {
-        player.GetComponent<PlayerMovement> ().isGrounded = false;
+        isGrounded = false;
     }
 }

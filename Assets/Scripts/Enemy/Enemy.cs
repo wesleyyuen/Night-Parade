@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
@@ -16,16 +17,22 @@ public class Enemy : MonoBehaviour {
     public float collisionCooldown = 1.5f;
     public float patrolDistance;
     bool isPatroling;
+    bool isDead;
     Vector2 patrolOrigin;
+    public Animator animator;
+    public ParticleSystem deathParticleEffect;
 
     void Awake () {
         currentHealth = maxHealth;
         player = GameObject.FindGameObjectWithTag ("Player").transform;
         rb = GetComponent<Rigidbody2D> ();
         collisionOnCooldown = false;
+        isDead = false;
     }
 
     void Update () {
+        if (isDead) return;
+        
         // Freeze for collisionCooldown after colliding with player
         if (collisionOnCooldown) {
             timer += Time.deltaTime;
@@ -85,14 +92,21 @@ public class Enemy : MonoBehaviour {
         rb.AddForce (new Vector2 (knockBackForce * -transform.localScale.x, 0f), ForceMode2D.Impulse);
         currentHealth--;
         if (currentHealth <= 0) {
-            Die ();
+            isDead = true;
+            deathParticleEffect.Play();
+            animator.SetTrigger("Dead");
+            StartCoroutine(Die());
         }
     }
 
-    void Die () {
+    IEnumerator Die () {
         // TODO Animation
+
+        yield return new WaitForSeconds(0.4f);
         Debug.Log (gameObject.name + " Died");
         GetComponent<EnemyDrop> ().SpawnDrops ();
         Destroy (gameObject);
     }
+
+
 }

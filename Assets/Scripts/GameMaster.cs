@@ -8,6 +8,7 @@ public class GameMaster : MonoBehaviour {
     public static string currentScene = "";
     public int startingHealth;
     public PlayerData savedPlayerData;
+    public bool[][] savedScenesInteractions; 
 
     void Awake () {
         if (Instance == null) {

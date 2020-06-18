@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CameraPeeking : MonoBehaviour {
     CinemachineFramingTransposer transposer;
-    PlayerMovement playerMovement;
+    bool isGrounded;
     public float originalScreenY;
     public float lookUpScreenY;
     public float lookDownScreenY;
@@ -14,8 +14,9 @@ public class CameraPeeking : MonoBehaviour {
 
     void Start () {
         GameObject vcam = GameObject.FindGameObjectWithTag("MainVCam");
+        Grounded grounded = FindObjectOfType<Grounded> ();
         if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer> ();
-        playerMovement = FindObjectOfType<PlayerMovement> ();
+        if (grounded != null) isGrounded = grounded.isGrounded;
     }
 
     void ReInitializeVariables () {
@@ -23,20 +24,21 @@ public class CameraPeeking : MonoBehaviour {
             GameObject vcam = GameObject.FindGameObjectWithTag("MainVCam");
             if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer> ();
         }
-        if (playerMovement == null) playerMovement = FindObjectOfType<PlayerMovement> ();
+        Grounded grounded = FindObjectOfType<Grounded> ();
+        if (grounded != null) isGrounded = grounded.isGrounded;
     }
 
     void Update () {
         ReInitializeVariables ();
-        if (transposer == null || playerMovement == null || !playerMovement.isGrounded) return;
+        if (transposer == null || !isGrounded) return;
         float currScreenY = transposer.m_ScreenY;
 
-        if (Input.GetButtonDown ("Vertical")) {
+        if ((Input.GetButtonDown ("Vertical") && isGrounded) || Input.GetButton("Attack")) {
             startTime = Time.time;
             timer = startTime;
         }
 
-        if (Input.GetButton ("Vertical")) {
+        if (Input.GetButton ("Vertical") && isGrounded && !Input.GetButton("Attack")) {
             timer += Time.deltaTime;
             if (timer > startTime + holdTime) {
                 if (Input.GetAxis ("Vertical") > 0) {

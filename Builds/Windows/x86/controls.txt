@@ -1,0 +1,6 @@
+Temp control tutorial (before implementation):
+
+Arrow Keys - Movement
+Z          - Jump
+X	   - Attack
+Esc	   - Pause

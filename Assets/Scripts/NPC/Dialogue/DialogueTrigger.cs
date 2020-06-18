@@ -13,7 +13,7 @@ public class DialogueTrigger : MonoBehaviour {
         bool isTalking = FindObjectOfType<DialogueManager>().isTalking;
         if (!isTalking && Vector2.Distance(player.transform.position, transform.position) <= triggerRange) {
             textPrompt.enabled = true;
-            if (Input.GetKeyDown(KeyCode.DownArrow)) TriggerDialogue();
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)) TriggerDialogue();
         } else {
             textPrompt.enabled = false;
         }

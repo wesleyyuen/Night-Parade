@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour {
     public Transform player;
@@ -16,20 +17,22 @@ public class PlayerCombat : MonoBehaviour {
     public float horizontalKnockBackForce = 5f;
     public float verticalKnockBackForce = 20f;
 
+    List<int> enemiesAttackedIDs;
+
     void Update () {
         if (Time.time >= nextAttackTime && Input.GetButtonDown ("Attack")) {
+            enemiesAttackedIDs = new List<int> ();
             if (Input.GetAxisRaw ("Vertical") > 0) {
                 UpThrust ();
                 nextAttackTime = Time.time + 1f / attackRate;
                 return;
             }
-            if (Input.GetAxisRaw ("Vertical") < 0 && !GetComponent<PlayerMovement> ().isGrounded) {
+            if (Input.GetAxisRaw ("Vertical") < 0 && !FindObjectOfType<Grounded> ().isGrounded) {
                 DownThrust ();
                 nextAttackTime = Time.time + 1f / attackRate;
                 return;
             }
-
-            Attack ();
+            animator.SetBool ("Attack", true);  // Start attack animation, Attack() will be called from the animation frames
             nextAttackTime = Time.time + 1f / attackRate;
         }
     }
@@ -37,16 +40,17 @@ public class PlayerCombat : MonoBehaviour {
     void Attack () {
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll (attackPoint.position, attackRange, 360, enemyLayers);
 
-        animator.SetBool ("Attack", true);
-
         if (hitEnemies.Length == 0) return;
 
         foreach (Collider2D enemy in hitEnemies) {
-            if (enemy.GetComponent<Enemy> () != null) {
+            if (!enemiesAttackedIDs.Contains(enemy.gameObject.GetInstanceID ())) {
+                if (enemy.GetComponent<Enemy> () != null) {
+                enemiesAttackedIDs.Add (enemy.gameObject.GetInstanceID ());
                 enemy.GetComponent<Enemy> ().TakeDamage ();
                 continue;
             }
             enemy.GetComponent<BreakableObject> ().TakeDamage ();
+            }
         }
         rb.AddForce (new Vector2 (horizontalKnockBackForce * -player.localScale.x, 0.0f), ForceMode2D.Impulse);
     }
@@ -78,6 +82,7 @@ public class PlayerCombat : MonoBehaviour {
 
     void EndAttack () {
         animator.SetBool ("Attack", false);
+        enemiesAttackedIDs.Clear();
     }
 
     void EndUpThrust () {

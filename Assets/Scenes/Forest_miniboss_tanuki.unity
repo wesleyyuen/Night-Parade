@@ -133,6 +133,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2783591323600660584, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.42
+      objectReference: {fileID: 0}
     - target: {fileID: 7440734150883760195, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -906,7 +911,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 698129888}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.24, y: 1.5800009, z: 50}
+  m_LocalPosition: {x: -4.145, y: 2.5800009, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1487580555}
@@ -1320,6 +1325,8 @@ MonoBehaviour:
   collisionKnockBackForceOnPlayer: 0
   collisionCooldown: 1.5
   patrolDistance: 0
+  animator: {fileID: 0}
+  deathParticleEffect: {fileID: 0}
 --- !u!114 &1059740906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1392,7 +1399,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1062210452}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.24, y: 1.5800009, z: 50}
+  m_LocalPosition: {x: -4.145, y: 2.5800009, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 999186797}
