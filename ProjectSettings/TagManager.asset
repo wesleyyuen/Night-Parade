@@ -33,7 +33,7 @@ TagManager:
   - Obstacle
   - Enemies
   - Collectables
-  - 
+  - UnlitAreas
   - 
   - 
   - 
@@ -62,6 +62,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 2452016649
+    locked: 0
+  - name: Unlit Area
+    uniqueID: 3359159347
     locked: 0
   - name: Foreground
     uniqueID: 3093723295

@@ -22,6 +22,7 @@ public class PlayerCombat : MonoBehaviour {
     void Update () {
         if (Time.time >= nextAttackTime && Input.GetButtonDown ("Attack")) {
             enemiesAttackedIDs = new List<int> ();
+            /*      Temp disable upthrust or downthrust as it is not needed at the moment, and require a lot of artwork
             if (Input.GetAxisRaw ("Vertical") > 0) {
                 UpThrust ();
                 nextAttackTime = Time.time + 1f / attackRate;
@@ -32,7 +33,8 @@ public class PlayerCombat : MonoBehaviour {
                 nextAttackTime = Time.time + 1f / attackRate;
                 return;
             }
-            animator.SetBool ("Attack", true);  // Start attack animation, Attack() will be called from the animation frames
+            */
+            animator.SetBool ("Attack", true); // Start attack animation, Attack() will be called from the animation frames
             nextAttackTime = Time.time + 1f / attackRate;
         }
     }
@@ -43,13 +45,13 @@ public class PlayerCombat : MonoBehaviour {
         if (hitEnemies.Length == 0) return;
 
         foreach (Collider2D enemy in hitEnemies) {
-            if (!enemiesAttackedIDs.Contains(enemy.gameObject.GetInstanceID ())) {
-                if (enemy.GetComponent<Enemy> () != null) {
+            if (!enemiesAttackedIDs.Contains (enemy.gameObject.GetInstanceID ())) {
                 enemiesAttackedIDs.Add (enemy.gameObject.GetInstanceID ());
-                enemy.GetComponent<Enemy> ().TakeDamage ();
-                continue;
-            }
-            enemy.GetComponent<BreakableObject> ().TakeDamage ();
+                if (enemy.GetComponent<Enemy> () != null) {
+                    enemy.GetComponent<Enemy> ().TakeDamage ();
+                    continue;
+                }
+                enemy.GetComponent<BreakableObject> ().TakeDamage (gameObject);
             }
         }
         rb.AddForce (new Vector2 (horizontalKnockBackForce * -player.localScale.x, 0.0f), ForceMode2D.Impulse);
@@ -82,7 +84,7 @@ public class PlayerCombat : MonoBehaviour {
 
     void EndAttack () {
         animator.SetBool ("Attack", false);
-        enemiesAttackedIDs.Clear();
+        enemiesAttackedIDs.Clear ();
     }
 
     void EndUpThrust () {

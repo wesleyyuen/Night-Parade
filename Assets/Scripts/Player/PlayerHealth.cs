@@ -1,16 +1,20 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour {
     public int currHealth { get; private set; }
     public int maxNumOfHeart { get; private set; }
+    public float percentOfCoinsLostAfterDeath;
     Transform player;
     Rigidbody2D rb;
+    GameMaster gameMaster;
 
     void Start () {
-        currHealth = FindObjectOfType<GameMaster> ().savedPlayerData.SavedPlayerHealth;
-        maxNumOfHeart = FindObjectOfType<GameMaster> ().savedPlayerData.SavedMaxPlayerHealth;
+        gameMaster = FindObjectOfType<GameMaster> ();
+        currHealth = gameMaster.savedPlayerData.SavedPlayerHealth;
+        maxNumOfHeart = gameMaster.savedPlayerData.SavedMaxPlayerHealth;
         player = gameObject.transform;
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D> ();
     }
 
     public void TakeDamage (float takeDamageKnockBackForce) {
@@ -18,7 +22,7 @@ public class PlayerHealth : MonoBehaviour {
         currHealth--;
         Debug.Log ("Current Health: " + currHealth);
         if (currHealth <= 0) {
-            Die();
+            Die ();
         }
     }
 
@@ -31,5 +35,12 @@ public class PlayerHealth : MonoBehaviour {
     void Die () {
         Destroy (gameObject);
         Debug.Log ("You died");
+        SceneManager.LoadScene ("Main_Menu");
+
+        // TODO: returning to main menu in lieu of a game over screen
+        /*
+        SaveManager.SaveOnDeath (player.gameObject, percentOfCoinsLostAfterDeath);
+        gameMaster.RequestSceneChange("")
+        */
     }
 }

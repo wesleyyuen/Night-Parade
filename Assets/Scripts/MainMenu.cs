@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro;
 
 public class MainMenu : MonoBehaviour {
 
@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour {
 
     void Start () {
         SetUIHelper (false);
-        if (SaveManager.Load(1) == null) { // TODO if File exists
+        if (SaveManager.Load (1) == null) { // TODO if File exists
             continueButton.interactable = false;
             continueText.color = Color.gray;
         } else {
@@ -20,20 +20,22 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void NewGame () {
-        SceneManager.LoadScene ("Forest_Tutorial");
+        GameMaster gameMaster = FindObjectOfType<GameMaster> ();
+        PlayerData playerData = new PlayerData (gameMaster.startingHealth, 0);
+        gameMaster.RequestSceneChange ("Forest_Tutorial", playerData);
         SetUIHelper (true);
     }
 
     public void LoadGameFile (int index) {
         PlayerData playerData = SaveManager.Load (index);
         if (playerData == null) return;
-        FindObjectOfType<GameMaster>().savedPlayerData = playerData;
+        FindObjectOfType<GameMaster> ().savedPlayerData = playerData;
         SceneManager.LoadScene (playerData.LastSavePoint);
-    
+
         SetUIHelper (true);
         PauseMenu.isPuased = false;
         GameObject pauseMenu = GameObject.FindGameObjectWithTag ("PauseMenu");
-        if (pauseMenu != null) pauseMenu.SetActive(false);
+        if (pauseMenu != null) pauseMenu.SetActive (false);
     }
 
     public void QuitGame () {

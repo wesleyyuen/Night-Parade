@@ -4859,8 +4859,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.07, y: -2.3}
-  m_Size: {x: 0.38975668, y: 0.077847965}
+  m_Offset: {x: 0.07057527, y: -2.2989058}
+  m_Size: {x: 0.6530433, y: 0.11849882}
   m_Direction: 1
 --- !u!114 &8149112104458654234
 MonoBehaviour:
@@ -5170,6 +5170,7 @@ MonoBehaviour:
   lowJumpMultiplier: 5
   jumpBufferTime: 0.15
   coyoteTime: 0.1
+  slopeRaycastLength: 3
 --- !u!95 &8606497617345287854
 Animator:
   serializedVersion: 3
@@ -5265,6 +5266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32dbcc8802b5cc949a7d72bfb557ea69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  percentOfCoinsLostAfterDeath: 0.2
 --- !u!114 &7380351532023536337
 MonoBehaviour:
   m_ObjectHideFlags: 0

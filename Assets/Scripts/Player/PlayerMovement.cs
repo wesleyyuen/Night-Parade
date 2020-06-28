@@ -12,18 +12,19 @@ public class PlayerMovement : MonoBehaviour {
     public AudioManager audioManager;
 
     [Header ("Movement Settings")]
-    public float movementSpeed;
-    public float jumpVelocity;
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
-    public float jumpBufferTime = 0.2f;
-    public float coyoteTime = 0.05f;
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private float jumpVelocity;
+    [SerializeField] private float fallMultiplier = 2.5f;
+    [SerializeField] private float lowJumpMultiplier = 2f;
+    [SerializeField] private float jumpBufferTime = 0.2f;
+    [SerializeField] private float coyoteTime = 0.05f;
+    [SerializeField] private float slopeRaycastLength;
 
     float jumpBuffer = 0;
     float coyoteTimer = 0;
 
     void Awake () {
-        audioManager = FindObjectOfType<AudioManager>();
+        audioManager = FindObjectOfType<AudioManager> ();
     }
 
     void Update () {
@@ -55,8 +56,8 @@ public class PlayerMovement : MonoBehaviour {
         animator.SetFloat ("Horizontal", horizontalInput);
         animator.SetFloat ("Vertical", rb.velocity.y);
 
-        Vector3 horizontalMovement = new Vector2 (horizontalInput * movementSpeed, 0.0f);
-        transform.position += horizontalMovement * Time.deltaTime;
+        Vector2 horizontalMovement = new Vector2 (horizontalInput * movementSpeed, 0.0f);
+        rb.position += horizontalMovement * Time.deltaTime;
 
     }
 
@@ -88,10 +89,12 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     void CreateDustTrail () {
-        dustTrail.Play ();
+        if (grounded.isGrounded) {
+            dustTrail.Play ();
+        }
     }
 
     void FootstepSFX () {
-        audioManager.Play("Forest_Footsteps");
+        audioManager.Play ("Forest_Footsteps");
     }
 }

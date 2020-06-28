@@ -156,7 +156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -23.769989}
+  m_AnchoredPosition: {x: 0, y: -250}
   m_SizeDelta: {x: 146, y: 47.539978}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &18882680
@@ -990,7 +990,7 @@ MonoBehaviour:
   sounds:
   - name: Forest_Ambience
     clip:
-    - {fileID: 8300000, guid: 3a9ba69f03694d44a9968f5b7c4abb1c, type: 3}
+    - {fileID: 8300000, guid: 299c7945fa9e10840bb0c505cfd16546, type: 3}
     source: {fileID: 0}
     volume: 0.3
     pitch: 1
@@ -1001,14 +1001,21 @@ MonoBehaviour:
     - {fileID: 8300000, guid: bfa883a8e8bffd744aac49d2f606f419, type: 3}
     - {fileID: 8300000, guid: 846ec7285daf6264fbccd3dad01af2a5, type: 3}
     source: {fileID: 0}
-    volume: 0.7
+    volume: 0.5
     pitch: 1
     loop: 0
   - name: Forest_Landing
     clip:
     - {fileID: 8300000, guid: d6faa682c302a9342a1ec2937d8fc2d8, type: 3}
     source: {fileID: 0}
-    volume: 0.85
+    volume: 0.55
+    pitch: 1
+    loop: 0
+  - name: Found_SecretArea
+    clip:
+    - {fileID: 8300000, guid: 10f62432f41f6d241bb0e169151963e8, type: 3}
+    source: {fileID: 0}
+    volume: 0.1
     pitch: 1
     loop: 0
 --- !u!1 &250347966
@@ -2178,7 +2185,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 97}
+  m_AnchoredPosition: {x: 0, y: 85}
   m_SizeDelta: {x: 350, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &834058593
@@ -2230,7 +2237,18 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &949402954
 GameObject:
   m_ObjectHideFlags: 0
@@ -2489,7 +2507,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -124.4, y: -79.1}
+  m_AnchoredPosition: {x: 117.7, y: -300}
   m_SizeDelta: {x: 146, y: 47.539978}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1073212825
@@ -2765,8 +2783,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000030517578}
-  m_SizeDelta: {x: 1000, y: 392.82056}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1178342450
 MonoBehaviour:
@@ -4120,10 +4138,10 @@ RectTransform:
   m_Father: {fileID: 279210255}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 420}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1925143353
 GameObject:

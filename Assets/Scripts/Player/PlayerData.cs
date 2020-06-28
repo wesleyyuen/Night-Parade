@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class PlayerData {
@@ -11,20 +12,33 @@ public class PlayerData {
 
     // For Initializing
     public PlayerData (int playerHealth, int playerCoinsOnHand) {
-        SaveFileIndex = 1;  // New Game will override first save slot
+        SaveFileIndex = 1; // New Game will override first save slot
         SavedPlayerHealth = playerHealth;
         SavedMaxPlayerHealth = playerHealth;
         SavedPlayerCoinsOnHand = playerCoinsOnHand;
-        LastSavePoint = LastSavePoint;
+        LastSavePoint = 0;
     }
 
     // For Saving and Loading (both inbetween and within session)
-    public PlayerData (GameObject player, int sceneIndex, int loadIndex) {
+    public PlayerData (GameObject player, bool hardSave, int sceneIndex, int loadIndex) {
         SaveFileIndex = loadIndex;
         SavedPlayerHealth = player.GetComponent<PlayerHealth> ().currHealth;
         SavedMaxPlayerHealth = player.GetComponent<PlayerHealth> ().maxNumOfHeart;
-        SavedPlayerCoinsOnHand = player.GetComponent<PlayerInventory>().coinOnHand;
-        if (sceneIndex == 0) LastSavePoint = LastSavePoint;
-        else LastSavePoint = sceneIndex;
+        SavedPlayerCoinsOnHand = player.GetComponent<PlayerInventory> ().coinOnHand;
+        if (hardSave) {
+            Debug.Log ("Changing savepoint from " + SceneManager.GetSceneByBuildIndex (LastSavePoint).name + " to " + SceneManager.GetSceneByBuildIndex (sceneIndex).name);
+            LastSavePoint = sceneIndex;
+        }
     }
+
+    /*
+        // For when player Died, save progress (with percentage of coins) and restart at last save point
+        public PlayerData (GameObject player, float percentOfCoinsLostAfterDeath, int loadIndex) {
+            SaveFileIndex = loadIndex;
+            SavedPlayerHealth = 1;
+            SavedMaxPlayerHealth = player.GetComponent<PlayerHealth> ().maxNumOfHeart;
+            SavedPlayerCoinsOnHand = Mathf.RoundToInt (player.GetComponent<PlayerInventory> ().coinOnHand * (1 - percentOfCoinsLostAfterDeath));
+            //LastSavePoint = LastSavePoint;
+        }
+        */
 }

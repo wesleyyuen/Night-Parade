@@ -103,7 +103,7 @@ public class Enemy : MonoBehaviour {
         // TODO Animation
 
         yield return new WaitForSeconds(0.4f);
-        Debug.Log (gameObject.name + " Died");
+        //Debug.Log (gameObject.name + " Died");
         GetComponent<EnemyDrop> ().SpawnDrops ();
         Destroy (gameObject);
     }
