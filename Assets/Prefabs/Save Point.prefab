@@ -517,9 +517,9 @@ MonoBehaviour:
   player: {fileID: 0}
   dialogue:
     characterName: 
-    sentences:
-    - This is a save Point!
-    - Your progress is being saved now...
+    setSelectionMode: 1
+    currentSetIndex: 0
+    sentenceSets: []
   triggerRange: 3
   textPrompt: {fileID: 5176165489542231743}
 --- !u!222 &5176165491215070244

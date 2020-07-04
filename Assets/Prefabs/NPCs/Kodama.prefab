@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -408,11 +409,9 @@ MonoBehaviour:
   player: {fileID: 0}
   dialogue:
     characterName: Kodama
-    sentences:
-    - Hey! This is working!
-    - This is the second sentence, but I am going to extend it long enough so that
-      I can test whether the typing speeds up when you press 'z' or 'x'.
-    - This is the last sentence! Bye!
+    setSelectionMode: 0
+    currentSetIndex: 0
+    sentenceSets: []
   triggerRange: 2.5
   textPrompt: {fileID: 1696636040880788197}
 --- !u!114 &8117314286234227373
@@ -439,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LightType: 3
+  m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.9960785, g: 0.9960785, b: 0.9960785, a: 1}
@@ -447,7 +446,7 @@ MonoBehaviour:
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 09ce269200000000
   m_LightCookieSprite: {fileID: 0}
-  m_UseNormalMap: 0
+  m_UseNormalMap: 1
   m_LightOrder: 0
   m_AlphaBlendOnOverlap: 0
   m_ShadowIntensity: 0
@@ -456,7 +455,7 @@ MonoBehaviour:
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0.5
   m_PointLightOuterRadius: 1.25
-  m_PointLightDistance: 3
+  m_PointLightDistance: 0.3
   m_PointLightQuality: 1
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
@@ -464,7 +463,10 @@ MonoBehaviour:
   m_ShapeLightFalloffSize: 0.5
   m_ShapeLightFalloffOffset: {x: 0, y: 0}
   m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
+  - {x: -0.21888733, y: -0.3611393, z: 0}
+  - {x: 0.22566223, y: -0.3679123, z: 0}
+  - {x: 0.14323425, y: -0.11720085, z: 0}
+  - {x: 0.30355835, y: 0.15792656, z: 0}
+  - {x: -0.06337738, y: 0.4653473, z: 0}
+  - {x: -0.36819458, y: 0.16730118, z: 0}
+  - {x: -0.17513275, y: -0.1341343, z: 0}

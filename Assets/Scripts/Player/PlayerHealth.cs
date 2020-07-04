@@ -17,8 +17,12 @@ public class PlayerHealth : MonoBehaviour {
         rb = GetComponent<Rigidbody2D> ();
     }
 
-    public void TakeDamage (float takeDamageKnockBackForce) {
-        rb.AddForce (new Vector2 (takeDamageKnockBackForce * -player.localScale.x, 0.0f), ForceMode2D.Impulse);
+    public void TakeDamage (Vector2 enemyPos, float takeDamageKnockBackForce) {
+        // TODO: fix knockback from above
+        // Apply knockback force to player in opposite direction
+        Vector2 knockBackDirection =  Vector3.Normalize(rb.position - enemyPos);
+        rb.AddForce (takeDamageKnockBackForce * knockBackDirection, ForceMode2D.Impulse);
+
         currHealth--;
         Debug.Log ("Current Health: " + currHealth);
         if (currHealth <= 0) {
@@ -30,6 +34,10 @@ public class PlayerHealth : MonoBehaviour {
         if (currHealth < maxNumOfHeart) {
             currHealth++;
         }
+    }
+
+    public void FullHeal () {
+        currHealth = maxNumOfHeart;
     }
 
     void Die () {

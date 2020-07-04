@@ -12,9 +12,15 @@ public class Grounded : MonoBehaviour {
         if (startOffGrounded) isGrounded = true;
     }
 
-    private void OnTriggerStay2D (Collider2D collider) {
+    private void OnTriggerEnter2D (Collider2D collider) { // needed to play grounded audio
         if (collider.tag == "Ground" && !isGrounded) {
             audioManager.Play ("Forest_Landing");
+            isGrounded = true;
+        }
+    }
+
+    private void OnTriggerStay2D (Collider2D collider) {    // needed to fix slope walking
+        if (collider.tag == "Ground" && !isGrounded) {
             isGrounded = true;
         }
     }

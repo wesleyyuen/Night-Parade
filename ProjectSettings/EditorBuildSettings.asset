@@ -15,21 +15,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Forest/Forest_Tutorial.unity
     guid: f0d63b6f13359a943b4f9b4a4665f73c
   - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area1.unity
+    path: Assets/Scenes/Forest/Forest_Area2.unity
     guid: 49d4c8df0ac1cc945865fc3482cbd84d
   - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area2.unity
+    path: Assets/Scenes/Forest/Forest_Area1.unity
     guid: 22f9a794502621246a19118f404b5b06
   - enabled: 1
     path: Assets/Scenes/Forest/Forest_Tree.unity
     guid: 47648c7d35fca7044afa3e71ab3aa81f
   - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area3.unity
-    guid: 44db2bcd3afa63a45a695fdee97dac90
-  - enabled: 1
     path: Assets/Scenes/Forest/Forest_Root.unity
-    guid: 2dd1719983e01d64aac6c1f72a4b18ee
+    guid: 269b033a8bbf640468bbb8685d95af0b
   - enabled: 1
-    path: Assets/Scenes/Forest/Forest_miniboss_tanuki.unity
-    guid: 5fd2a7be725aa4c42a4132603efc1e24
+    path: Assets/Scenes/Forest/Forest_Area3.unity
+    guid: 22ed426be326ea6438877b7a10f2fc52
   m_configObjects: {}

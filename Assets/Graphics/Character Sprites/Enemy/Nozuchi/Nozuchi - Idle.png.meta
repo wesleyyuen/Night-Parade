@@ -1,0 +1,301 @@
+fileFormatVersion: 2
+guid: e5a5b3be8eddb8942bd5cc301eb283e4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5351445764008370011
+    second: Nodachi - Idle_0
+  - first:
+      213: 5836207208607626902
+    second: Nodachi - Idle_1
+  - first:
+      213: 1992672712835798659
+    second: Nodachi - Idle_2
+  - first:
+      213: -2206345906596911259
+    second: Nodachi - Idle_3
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Nodachi - Idle_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1920
+        width: 1280
+        height: 640
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 406.25, y: -307.5}
+        - {x: 412.5, y: -290}
+        - {x: 412.5, y: -272.5}
+        - {x: 370, y: -237.5}
+        - {x: 408.75, y: -211.25}
+        - {x: 412.5, y: -196.25}
+        - {x: 412.5, y: -155}
+        - {x: 321.25, y: -87.5}
+        - {x: 281.25, y: -67.5}
+        - {x: 201.25, y: -37.5}
+        - {x: 72.5, y: -37.5}
+        - {x: -78.75, y: -96.25}
+        - {x: -158.75, y: -122.5}
+        - {x: -181.25, y: -156.25}
+        - {x: -240, y: -157.5}
+        - {x: -252.5, y: -166.25}
+        - {x: -272.5, y: -188.75}
+        - {x: -282.5, y: -210}
+        - {x: -300, y: -260}
+        - {x: -366.25, y: -266.25}
+        - {x: -408.75, y: -233.75}
+        - {x: -442.5, y: -237.5}
+        - {x: -442.5, y: -252.5}
+        - {x: -386.25, y: -313.75}
+        - {x: -371.25, y: -320}
+        - {x: 383.75, y: -320}
+      tessellationDetail: 0.1
+      bones: []
+      spriteID: 5a023894e68dbb5b0800000000000000
+      internalID: -5351445764008370011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Nodachi - Idle_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1280
+        width: 1280
+        height: 640
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 406.25, y: -307.5}
+        - {x: 412.5, y: -290}
+        - {x: 412.5, y: -272.5}
+        - {x: 370, y: -237.5}
+        - {x: 408.75, y: -211.25}
+        - {x: 412.5, y: -196.25}
+        - {x: 412.5, y: -155}
+        - {x: 321.25, y: -87.5}
+        - {x: 281.25, y: -67.5}
+        - {x: 190, y: -37.5}
+        - {x: 95, y: -37.5}
+        - {x: 76.25, y: -40}
+        - {x: -78.75, y: -96.25}
+        - {x: -158.75, y: -122.5}
+        - {x: -181.25, y: -156.25}
+        - {x: -241.25, y: -155}
+        - {x: -276.25, y: -187.5}
+        - {x: -300, y: -258.75}
+        - {x: -318.75, y: -268.75}
+        - {x: -398.75, y: -251.25}
+        - {x: -462.5, y: -257.5}
+        - {x: -462.5, y: -272.5}
+        - {x: -450, y: -282.5}
+        - {x: -366.25, y: -320}
+        - {x: 383.75, y: -320}
+      tessellationDetail: 0.1
+      bones: []
+      spriteID: 696b1a0e88f5ef050800000000000000
+      internalID: 5836207208607626902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Nodachi - Idle_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 640
+        width: 1280
+        height: 640
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 375, y: -320}
+        - {x: 407.5, y: -298.75}
+        - {x: 412.5, y: -282.5}
+        - {x: 412.5, y: -261.25}
+        - {x: 387.5, y: -227.5}
+        - {x: 412.5, y: -182.5}
+        - {x: 412.5, y: -142.5}
+        - {x: 333.75, y: -81.25}
+        - {x: 291.25, y: -67.5}
+        - {x: 200, y: -37.5}
+        - {x: 67.5, y: -37.5}
+        - {x: 46.25, y: -41.25}
+        - {x: -52.5, y: -83.75}
+        - {x: -125, y: -101.25}
+        - {x: -183.75, y: -140}
+        - {x: -243.75, y: -138.75}
+        - {x: -290, y: -197.5}
+        - {x: -316.25, y: -272.5}
+        - {x: -462.5, y: -277.5}
+        - {x: -462.5, y: -295}
+        - {x: -431.25, y: -315}
+        - {x: -371.25, y: -320}
+        - {x: -266.25, y: -320}
+        - {x: -250, y: -312.5}
+        - {x: -246.25, y: -318.75}
+        - {x: -240, y: -320}
+      tessellationDetail: 0.1
+      bones: []
+      spriteID: 3861132564567ab10800000000000000
+      internalID: 1992672712835798659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Nodachi - Idle_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1280
+        height: 640
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 407.5, y: -298.75}
+        - {x: 412.5, y: -282.5}
+        - {x: 412.5, y: -263.75}
+        - {x: 382.5, y: -235}
+        - {x: 412.5, y: -182.5}
+        - {x: 412.5, y: -151.25}
+        - {x: 333.75, y: -81.25}
+        - {x: 291.25, y: -67.5}
+        - {x: 200, y: -37.5}
+        - {x: 67.5, y: -37.5}
+        - {x: 46.25, y: -41.25}
+        - {x: -52.5, y: -83.75}
+        - {x: -125, y: -101.25}
+        - {x: -183.75, y: -140}
+        - {x: -243.75, y: -138.75}
+        - {x: -290, y: -197.5}
+        - {x: -311.25, y: -266.25}
+        - {x: -376.25, y: -266.25}
+        - {x: -398.75, y: -251.25}
+        - {x: -462.5, y: -257.5}
+        - {x: -462.5, y: -272.5}
+        - {x: -450, y: -282.5}
+        - {x: -366.25, y: -320}
+        - {x: 373.75, y: -320}
+      tessellationDetail: 0.1
+      bones: []
+      spriteID: 56767a1761c7161e0800000000000000
+      internalID: -2206345906596911259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

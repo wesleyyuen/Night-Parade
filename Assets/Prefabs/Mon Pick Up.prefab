@@ -147,13 +147,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LightType: 3
+  m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.8679245, g: 0.75689286, b: 0.3725525, a: 1}
-  m_Intensity: 0.8
+  m_Intensity: 1.85
   m_LightVolumeOpacity: 0
-  m_ApplyToSortingLayers: 09ce2692bb04ede5
+  m_ApplyToSortingLayers: bb04ede509ce2692
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
@@ -169,10 +169,14 @@ MonoBehaviour:
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffSize: 0.2
   m_ShapeLightFalloffOffset: {x: 0, y: 0}
   m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
+  - {x: -0.0423337, y: -0.03495182, z: 0}
+  - {x: -0.0033738138, y: -0.054915275, z: 0}
+  - {x: 0.042285826, y: -0.038087882, z: 0}
+  - {x: 0.057428267, y: 0.0015147786, z: 0}
+  - {x: 0.03869009, y: 0.041872367, z: 0}
+  - {x: 0.0012974737, y: 0.059417687, z: 0}
+  - {x: -0.03556757, y: 0.042240106, z: 0}
+  - {x: -0.055828955, y: 0.0026851278, z: 0}

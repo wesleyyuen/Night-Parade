@@ -2812,7 +2812,8 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -40, y: -40}
+      - - {x: -40, y: 40}
+        - {x: -40, y: -40}
         - {x: 40, y: -40}
         - {x: 40, y: 0}
       tessellationDetail: 0
@@ -2839,7 +2840,6 @@ TextureImporter:
       - - {x: -40, y: 0}
         - {x: -40, y: -40}
         - {x: 40, y: -40}
-        - {x: 40, y: 40}
       tessellationDetail: 0
       bones: []
       spriteID: 27ce92e07b74c03e0800000000000000
@@ -2960,7 +2960,8 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: -40, y: -40}
+      - - {x: -40, y: 40}
+        - {x: -40, y: -40}
         - {x: 40, y: -40}
         - {x: 40, y: 0}
       tessellationDetail: 0
@@ -2987,7 +2988,6 @@ TextureImporter:
       - - {x: -40, y: 0}
         - {x: -40, y: -40}
         - {x: 40, y: -40}
-        - {x: 40, y: 40}
       tessellationDetail: 0
       bones: []
       spriteID: 1e22d0728324647a0800000000000000
@@ -3042,6 +3042,56 @@ TextureImporter:
       bones: []
       spriteID: 2ba465560d6fd59d0800000000000000
       internalID: -2783797619731313998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: forest_slopes_12
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 160
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -40, y: 40}
+        - {x: -40, y: -40}
+        - {x: 40, y: -40}
+        - {x: 40, y: 40}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05c8850cb855c4ad0800000000000000
+      internalID: -2716702416495408048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: forest_slopes_13
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 0
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -40, y: 40}
+        - {x: -40, y: -40}
+        - {x: 40, y: -40}
+        - {x: 40, y: 40}
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7113ec973948e6c0800000000000000
+      internalID: -4113957756398792321
       vertices: []
       indices: 
       edges: []

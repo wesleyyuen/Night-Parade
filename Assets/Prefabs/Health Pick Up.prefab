@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1201029992307220984}
   - component: {fileID: 1201029992307220985}
   - component: {fileID: 1201029992307220986}
+  - component: {fileID: 3097237185589702485}
   m_Layer: 0
   m_Name: Health Pick Up
   m_TagString: Untagged
@@ -133,3 +134,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434cc9286862d7b4493ec53fe89a97a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3097237185589702485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201029992307220987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LightType: 1
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_LightVolumeOpacity: 0
+  m_ApplyToSortingLayers: 00000000bb04ede509ce2692
+  m_LightCookieSprite: {fileID: 0}
+  m_UseNormalMap: 0
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_ShadowIntensity: 0
+  m_ShadowVolumeIntensity: 0
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 1
+  m_PointLightDistance: 3
+  m_PointLightQuality: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.2
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.024032164, y: 0.05954969, z: 0}
+  - {x: -0.04180789, y: 0.04831817, z: 0}
+  - {x: -0.053403046, y: 0.03588941, z: 0}
+  - {x: -0.055034973, y: -0.0032724643, z: 0}
+  - {x: 0.0028919696, y: -0.05222476, z: 0}
+  - {x: 0.054970216, y: -0.005857589, z: 0}
+  - {x: 0.055190515, y: 0.03453529, z: 0}
+  - {x: 0.044987727, y: 0.045418236, z: 0}
+  - {x: 0.026622629, y: 0.058341764, z: 0}
+  - {x: 0.000095414915, y: 0.03453529, z: 0}

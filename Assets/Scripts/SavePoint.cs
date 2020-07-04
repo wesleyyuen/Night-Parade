@@ -9,6 +9,7 @@ public class SavePoint : DialogueTrigger {
             textPrompt.enabled = true;
             if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.DownArrow)) {
                 TriggerDialogue ();
+                FindObjectOfType<PlayerHealth> ().FullHeal ();
                 SaveManager.Save (player);
             }
         } else {

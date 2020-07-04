@@ -8,6 +8,9 @@ Bug:
 - Cinemachine confinder snapping when jumping over to the last strech of road in Forest_Tutorial
 - Parallax not working when reloading a scene (temp. disabled parallaxing)
 
+Performance Issue in Build:
+- may have issue with Vsync, build is slower than in Editor (setting vsync to "Don't Count" fix this, but mess up vcam)
+
 Gameplay Improvements needed:
 - Camera deadzones tweaks
 - Tweak jumping - hovering a bit at peak height

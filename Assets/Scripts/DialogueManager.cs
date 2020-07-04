@@ -54,7 +54,16 @@ public class DialogueManager : MonoBehaviour {
         player.GetComponent<PlayerCombat> ().enabled = false;
         
         sentences.Clear ();
-        foreach (string sentence in dialogue.sentences) {
+        originalTypingSpeed = typingSpeed;
+        
+        Dialogue.SentenceSet chosenSet;
+        if (dialogue.setSelectionMode == Dialogue.SetSelectionMode.Random) {
+            chosenSet = dialogue.sentenceSets[UnityEngine.Random.Range (0, dialogue.sentenceSets.Length)];
+        } else { // sentence set chosen sequentially
+            chosenSet = dialogue.sentenceSets[dialogue.currentSetIndex];
+            if (dialogue.currentSetIndex < dialogue.sentenceSets.Length - 1) dialogue.currentSetIndex++;
+        }
+        foreach (string sentence in chosenSet.sentences) {
             sentences.Enqueue (sentence);
         }
         characterNameText.text = dialogue.characterName;

@@ -12,10 +12,10 @@ public class PlayerMovement : MonoBehaviour {
     public AudioManager audioManager;
 
     [Header ("Movement Settings")]
-    [SerializeField] private float movementSpeed;
-    [SerializeField] private float jumpVelocity;
-    [SerializeField] private float fallMultiplier = 2.5f;
-    [SerializeField] private float lowJumpMultiplier = 2f;
+    [SerializeField] private float movementSpeed = 11f;
+    [SerializeField] private float jumpVelocity = 36f;
+    [SerializeField] private float fallMultiplier = 0.8f;
+    [SerializeField] private float lowJumpMultiplier = 5f;
     [SerializeField] private float jumpBufferTime = 0.2f;
     [SerializeField] private float coyoteTime = 0.05f;
     [SerializeField] private float slopeRaycastLength;
@@ -37,19 +37,17 @@ public class PlayerMovement : MonoBehaviour {
         float horizontalInput = Input.GetAxisRaw ("Horizontal");
         Vector3 prevLocalScale = transform.localScale;
 
-        if (horizontalInput != 0) {
-            if (horizontalInput > 0) {
-                if (prevLocalScale.x != 1f) {
-                    CreateDustTrail ();
-                    animator.SetBool ("FacingRight", true);
-                    transform.localScale = new Vector3 (1f, 1f, 1f);
-                }
-            } else if (horizontalInput < 0) {
-                if (prevLocalScale.x != -1f) {
-                    CreateDustTrail ();
-                    animator.SetBool ("FacingRight", false);
-                    transform.localScale = new Vector3 (-1f, 1f, 1f);
-                }
+        if (horizontalInput > 0) {
+            if (prevLocalScale.x != 1f) {
+                CreateDustTrail ();
+                animator.SetBool ("FacingRight", true);
+                transform.localScale = new Vector3 (1f, 1f, 1f);
+            }
+        } else if (horizontalInput < 0) {
+            if (prevLocalScale.x != -1f) {
+                CreateDustTrail ();
+                animator.SetBool ("FacingRight", false);
+                transform.localScale = new Vector3 (-1f, 1f, 1f);
             }
         }
 
@@ -58,7 +56,6 @@ public class PlayerMovement : MonoBehaviour {
 
         Vector2 horizontalMovement = new Vector2 (horizontalInput * movementSpeed, 0.0f);
         rb.position += horizontalMovement * Time.deltaTime;
-
     }
 
     void Jump () {

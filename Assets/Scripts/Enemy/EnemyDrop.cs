@@ -10,7 +10,8 @@ public class EnemyDrop : MonoBehaviour {
     public void SpawnDrops () {
         if (Random.value > 1 - coinsDropPercent) {
             for (int i = 0; i < numOfCoinsDrop; i++) {
-                Instantiate (mon, gameObject.transform.position, Quaternion.identity);
+                GameObject coin = Instantiate (mon, gameObject.transform.position, Quaternion.identity);
+                // Add force to coin at random direction, to avoid stacking
             }
         }
         if (Random.value > 1 - heartDropPercent) {
