@@ -2,10 +2,9 @@
 
 public class Grounded : MonoBehaviour {
 
-    AudioManager audioManager;
-    public bool startOffGrounded;
+    private AudioManager audioManager;
+    [SerializeField] private bool startOffGrounded;
     public bool isGrounded { get; private set; }
-    public bool onSlope { get; private set; }
 
     void Awake () {
         audioManager = FindObjectOfType<AudioManager> ();

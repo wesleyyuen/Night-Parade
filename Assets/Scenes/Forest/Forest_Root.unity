@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -161,7 +161,7 @@ PrefabInstance:
     - target: {fileID: 6913770140389203240, guid: fef9ed33461671547b2cd7403b09911e,
         type: 3}
       propertyPath: m_ApplyToSortingLayers.Array.data[1]
-      value: 0
+      value: -437451589
       objectReference: {fileID: 0}
     - target: {fileID: 6913770140389203240, guid: fef9ed33461671547b2cd7403b09911e,
         type: 3}
@@ -5539,7 +5539,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666774365}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 60}
+  m_LocalPosition: {x: 0, y: 0, z: 60}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 271752768}
@@ -5601,7 +5601,7 @@ Tilemap:
   m_GameObject: {fileID: 666774365}
   m_Enabled: 1
   m_Tiles:
-  - first: {x: -20, y: -33, z: 0}
+  - first: {x: -20, y: -29, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -5610,7 +5610,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
-  - first: {x: -19, y: -33, z: 0}
+  - first: {x: -19, y: -29, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -5619,7 +5619,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
-  - first: {x: -20, y: -32, z: 0}
+  - first: {x: -20, y: -28, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -5628,7 +5628,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
-  - first: {x: -19, y: -32, z: 0}
+  - first: {x: -19, y: -28, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -5637,7 +5637,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
-  - first: {x: -20, y: -31, z: 0}
+  - first: {x: -20, y: -27, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -5646,7 +5646,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
-  - first: {x: -19, y: -31, z: 0}
+  - first: {x: -19, y: -27, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -5655,7 +5655,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       m_AllTileFlags: 1073741825
-  - first: {x: -20, y: -30, z: 0}
+  - first: {x: -20, y: -26, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 0
@@ -5738,26 +5738,36 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 666774371}
     m_ColliderPaths:
-    - - X: -180000000
-        Y: -330000000
-      - X: -180000000
-        Y: -300000000
-      - X: -190000000
-        Y: -300000000
-      - X: -190000000
-        Y: -290000000
-      - X: -200000000
-        Y: -290000000
-      - X: -200000000
-        Y: -330000000
+    - - X: -200000041
+        Y: -290000100
+      - X: -179999959
+        Y: -290000100
+      - X: -179999900
+        Y: -290000041
+      - X: -179999900
+        Y: -259999959
+      - X: -179999959
+        Y: -259999900
+      - X: -189999900
+        Y: -259999900
+      - X: -189999900
+        Y: -249999959
+      - X: -189999959
+        Y: -249999900
+      - X: -200000041
+        Y: -249999900
+      - X: -200000100
+        Y: -249999959
+      - X: -200000100
+        Y: -290000041
   m_CompositePaths:
     m_Paths:
-    - - {x: -18.000029, y: -33}
-      - {x: -18.000029, y: -30}
-      - {x: -19, y: -29.999971}
-      - {x: -19.000029, y: -29}
-      - {x: -20, y: -29.000029}
-      - {x: -19.999971, y: -33}
+    - - {x: -18.000027, y: -29.00001}
+      - {x: -18.000027, y: -25.99999}
+      - {x: -18.99999, y: -25.99996}
+      - {x: -19.000027, y: -24.99999}
+      - {x: -20.00001, y: -25.000027}
+      - {x: -19.999975, y: -29.00001}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &666774370
@@ -5959,11 +5969,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8117314286234227378, guid: b42435f945d1c944d8eca295a88eab4b,
         type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1273249775}
-    - target: {fileID: 8117314286234227378, guid: b42435f945d1c944d8eca295a88eab4b,
-        type: 3}
       propertyPath: dialogue.sentences.Array.data[0]
       value: Wahhh!
       objectReference: {fileID: 0}
@@ -6107,13 +6112,13 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.6
   m_Color: {r: 0.7372549, g: 0.63529414, b: 0.47450984, a: 1}
-  m_Intensity: 5
+  m_Intensity: 7
   m_LightVolumeOpacity: 0.05
   m_ApplyToSortingLayers: bb04ede5df8abd0809ce2692
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 1
   m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
+  m_AlphaBlendOnOverlap: 1
   m_ShadowIntensity: 0
   m_ShadowVolumeIntensity: 0
   m_PointLightInnerAngle: 360
@@ -6333,12 +6338,12 @@ PrefabInstance:
     - target: {fileID: 2783591323600660584, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.88
+      value: -3.62
       objectReference: {fileID: 0}
     - target: {fileID: 2783591323600660584, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -19.55
+      value: -2.58
       objectReference: {fileID: 0}
     - target: {fileID: 2783591323600660584, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
@@ -8519,7 +8524,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1372849145}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.88, y: -20.949999, z: 50}
+  m_LocalPosition: {x: -3.62, y: -3.9800003, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 41743462}
@@ -8605,7 +8610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401211897}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.88, y: -20.949999, z: 50}
+  m_LocalPosition: {x: -3.620181, y: -4.45844, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 237871696}
@@ -8706,6 +8711,36 @@ Transform:
   m_Father: {fileID: 842202252}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1557757070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1557757071}
+  m_Layer: 0
+  m_Name: Orb Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1557757071
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557757070}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.57, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1952551223}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1621938494
 GameObject:
   m_ObjectHideFlags: 0
@@ -8765,10 +8800,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099c5790697504e4386e0facbb1bafd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 0
-  backgrounds:
-  - {fileID: 2054689310}
-  smoothness: 0.5
+  multiplier: 0
+  parallaxMode: 0
 --- !u!114 &1621938499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9038,7 +9071,7 @@ PrefabInstance:
     - target: {fileID: 8117314286234227378, guid: b42435f945d1c944d8eca295a88eab4b,
         type: 3}
       propertyPath: dialogue.sentenceSets.Array.data[0].sentences.Array.data[0]
-      value: W-We-We're are no match for that <color=red>Nodachi</color>
+      value: W-We-We're are no match for that Nozuchi
       objectReference: {fileID: 0}
     - target: {fileID: 8117314286234227378, guid: b42435f945d1c944d8eca295a88eab4b,
         type: 3}
@@ -37710,6 +37743,11 @@ PrefabInstance:
       propertyPath: side
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5923486356403128960, guid: 73478234cfa263c48a7dd5ac928f5a97,
+        type: 3}
+      propertyPath: keyString
+      value: Forest_Root_Nozuchi_Exit
+      objectReference: {fileID: 0}
     - target: {fileID: 5923486356403128963, guid: 73478234cfa263c48a7dd5ac928f5a97,
         type: 3}
       propertyPath: m_SortingLayer
@@ -37887,6 +37925,7 @@ Transform:
   - {fileID: 592514465}
   - {fileID: 869072914}
   - {fileID: 1335614240}
+  - {fileID: 1557757071}
   m_Father: {fileID: 95637738}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -37934,12 +37973,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c09e932ba7db89b449d3e20380aece73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forceMultiplier: 10
   mon: {fileID: 615396422470690540, guid: 8d2e5dd9eca69244eb52a9dbd6b50599, type: 3}
   numOfCoinsDrop: 5
   coinsDropPercent: 1
   heart: {fileID: 1201029992307220987, guid: 67b4dd017a688d04b8e1273bc72b4e68, type: 3}
   numOfHeartsDrop: 2
   heartDropPercent: 1
+  specialDrop: {fileID: 4273434631119377720, guid: a1edc11b0543e784eaf9864286306e11,
+    type: 3}
+  specialDropSpawnPoint: {fileID: 1557757070}
 --- !u!114 &1952551227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37964,9 +38007,6 @@ MonoBehaviour:
   dieTime: 1
   currentHealth: 0
   collisionOnCooldown: 0
-  startTime: 0
-  timer: 0
-  isDead: 0
 --- !u!50 &1952551228
 Rigidbody2D:
   serializedVersion: 4

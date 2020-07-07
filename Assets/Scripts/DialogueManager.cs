@@ -7,14 +7,14 @@ public class DialogueManager : MonoBehaviour {
 
     private static DialogueManager Instance;
 
-    Queue<string> sentences;
-    public GameObject dialogueUI;
-    public TextMeshProUGUI dialogueText;
-    public TextMeshProUGUI characterNameText;
-    public float typingSpeed;
-    float originalTypingSpeed;
-    public bool isTalking {get; private set;}
-    string currentSentence = "";
+    private Queue<string> sentences;
+    [SerializeField] private GameObject dialogueUI;
+    [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private TextMeshProUGUI characterNameText;
+    [SerializeField] private float typingSpeed;
+    private float originalTypingSpeed;
+    public bool isTalking { get; private set; }
+    private string currentSentence = "";
 
     void Awake () {
         if (Instance == null) {
@@ -26,19 +26,20 @@ public class DialogueManager : MonoBehaviour {
     }
     void Start () {
         sentences = new Queue<string> ();
-        dialogueUI.SetActive(false);
+        dialogueUI.SetActive (false);
         originalTypingSpeed = typingSpeed;
         isTalking = false;
     }
 
     void Update () {
         if (isTalking) {
-            if (Input.GetButton ("Attack") || Input.GetButton ("Jump")) {
+            if (Input.GetButtonDown ("Attack") || Input.GetButtonDown ("Jump")) {
                 if (dialogueText.text == currentSentence) {
                     NextSentence ();
-                } else {
-                    typingSpeed = originalTypingSpeed * 3;
                 }
+            }
+            if (Input.GetButton ("Attack") || Input.GetButton ("Jump")) {
+                typingSpeed = originalTypingSpeed * 3;
             } else {
                 typingSpeed = originalTypingSpeed;
             }
@@ -47,15 +48,14 @@ public class DialogueManager : MonoBehaviour {
 
     public void StartDialogue (Dialogue dialogue) {
         isTalking = true;
-        dialogueUI.SetActive(true);
+        dialogueUI.SetActive (true);
         GameObject player = FindObjectOfType<PlayerMovement> ().gameObject;
-        player.GetComponent<Animator>().SetFloat("Horizontal", 0f);
-        player.GetComponent<PlayerMovement>().enabled = false;
+        player.GetComponent<Animator> ().SetFloat ("Horizontal", 0f);
+        player.GetComponent<PlayerMovement> ().enabled = false;
         player.GetComponent<PlayerCombat> ().enabled = false;
-        
+
         sentences.Clear ();
-        originalTypingSpeed = typingSpeed;
-        
+
         Dialogue.SentenceSet chosenSet;
         if (dialogue.setSelectionMode == Dialogue.SetSelectionMode.Random) {
             chosenSet = dialogue.sentenceSets[UnityEngine.Random.Range (0, dialogue.sentenceSets.Length)];
@@ -77,12 +77,13 @@ public class DialogueManager : MonoBehaviour {
             return;
         }
         currentSentence = sentences.Dequeue ();
-        StartCoroutine(TpyingEffect(currentSentence));
+        StartCoroutine (TpyingEffect (currentSentence));
     }
 
     void EndDialogue () {
+        typingSpeed = originalTypingSpeed;
         isTalking = false;
-        dialogueUI.SetActive(false);
+        dialogueUI.SetActive (false);
         FindObjectOfType<PlayerMovement> ().enabled = true;
         FindObjectOfType<PlayerCombat> ().enabled = true;
     }
@@ -93,4 +94,24 @@ public class DialogueManager : MonoBehaviour {
             yield return new WaitForSeconds (1 / typingSpeed);
         }
     }
+
+    /*
+    //TODO: fix typing effect with color, nondeterministic behaviors
+    IEnumerator TpyingEffect (string currentSentence) {
+        //int totalVisibleCharacters = dialogueText.textInfo.characterCount;
+        dialogueText.text = currentSentence;
+        int totalVisibleCharacters = currentSentence.Length;
+        int counter = 0;
+        while (true) {
+            int visibleCount = counter % (totalVisibleCharacters + 1);
+            dialogueText.maxVisibleCharacters = visibleCount;
+            if (visibleCount >= totalVisibleCharacters) {
+                yield return null;
+                break;
+            }
+            counter++;
+            yield return new WaitForSeconds (1 / typingSpeed);
+        }
+    }
+    */
 }

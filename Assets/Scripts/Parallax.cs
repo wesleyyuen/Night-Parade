@@ -1,62 +1,36 @@
 ﻿using UnityEngine;
 
 public class Parallax : MonoBehaviour {
-    public enum ParallaxDirection {
-        vertical,
-        horizontal,
-        verticalAndHorizontal
+    [SerializeField] private float multiplier = 0.0f;
+    private enum ParallaxMode {
+        Horizontal,
+        Vertical,
+        Omnidirectional
     }
-    public ParallaxDirection direction;
 
-    public Transform[] backgrounds;
-    private float[] scales;
-    public float smoothness = 1f;
+    [SerializeField] private ParallaxMode parallaxMode;
 
-    Transform cam;
-    Vector3 previousCameraPosition;
+    private Transform cameraTransform;
 
-    void Awake () {
-        cam = Camera.main.transform;
-    }
+    private Vector3 startCameraPos;
+    private Vector3 startPos;
 
     void Start () {
-        previousCameraPosition = cam.position;
-        scales = new float[backgrounds.Length];
-        for (int i = 0; i < backgrounds.Length; i++) {
-            scales[i] = backgrounds[i].position.z * -1;
-        }
+        cameraTransform = Camera.main.transform;
+        startCameraPos = cameraTransform.position;
+        startPos = transform.position;
     }
 
-    public void FixParallaxOnLoad () {
-        // TODO Move Background By Offset when loading new scene
-        // current by hardcode moving the background in Scene scripts
-    }
-
-    void Update () {
-        if (direction == ParallaxDirection.horizontal) {
-            for (int i = 0; i < backgrounds.Length; i++) {
-                float parralaxX = (previousCameraPosition.x - cam.position.x) * scales[i];
-                float backgroundTargetPosX = backgrounds[i].position.x + parralaxX;
-                Vector3 backgroundTargetPos = new Vector3 (backgroundTargetPosX, backgrounds[i].position.y, backgrounds[i].position.z);
-                backgrounds[i].position = Vector3.Lerp (backgrounds[i].position, backgroundTargetPos, smoothness * Time.deltaTime);
-            }
-        } else if (direction == ParallaxDirection.vertical) {
-            for (int i = 0; i < backgrounds.Length; i++) {
-                float parralaxY = (previousCameraPosition.y - cam.position.y) * scales[i];
-                float backgroundTargetPosY = backgrounds[i].position.y + parralaxY;
-                Vector3 backgroundTargetPos = new Vector3 (backgrounds[i].position.x, backgroundTargetPosY, backgrounds[i].position.z);
-                backgrounds[i].position = Vector3.Lerp (backgrounds[i].position, backgroundTargetPos, smoothness * Time.deltaTime);
-            }
-        } else if (direction == ParallaxDirection.verticalAndHorizontal) {
-            for (int i = 0; i < backgrounds.Length; i++) {
-                float parralaxX = (previousCameraPosition.x - cam.position.x) * scales[i];
-                float backgroundTargetPosX = backgrounds[i].position.x + parralaxX;
-                float parralaxY = (previousCameraPosition.y - cam.position.y) * scales[i];
-                float backgroundTargetPosY = backgrounds[i].position.y + parralaxY;
-                Vector3 backgroundTargetPos = new Vector3 (backgroundTargetPosX, backgroundTargetPosY, backgrounds[i].position.z);
-                backgrounds[i].position = Vector3.Lerp (backgrounds[i].position, backgroundTargetPos, smoothness * Time.deltaTime);
-            }
+    private void LateUpdate () {
+        var position = startPos;
+        if (parallaxMode == ParallaxMode.Horizontal) {
+            position.x += multiplier * (cameraTransform.position.x - startCameraPos.x);
+        } else if (parallaxMode == ParallaxMode.Vertical) {
+            position.y += multiplier * (cameraTransform.position.y - startCameraPos.y);
+        } else {
+            position += multiplier * (cameraTransform.position - startCameraPos);
         }
-        previousCameraPosition = cam.position;
+
+        transform.position = position;
     }
 }

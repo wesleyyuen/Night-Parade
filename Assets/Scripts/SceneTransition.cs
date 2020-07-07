@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SceneTransition : MonoBehaviour {
     
-    public Animator animator;
-    public float transitionTime = 1f;
+    [SerializeField] private Animator animator;
+    [SerializeField] private float transitionTime = 1f;
 
     void Awake() {
         GetComponentInChildren<Canvas>().enabled = true;

@@ -2,15 +2,15 @@
 using UnityEngine;
 
 public class CameraPeeking : MonoBehaviour {
-    CinemachineFramingTransposer transposer;
-    bool isGrounded;
-    public float originalScreenY;
-    public float lookUpScreenY;
-    public float lookDownScreenY;
-    public float changeRate;
+    private CinemachineFramingTransposer transposer;
+    private bool isGrounded;
+    [SerializeField] private float originalScreenY;
+    [SerializeField] private float lookUpScreenY;
+    [SerializeField] private float lookDownScreenY;
+    [SerializeField] private float changeRate;
     private float startTime = 0f;
     private float timer = 0f;
-    public float holdTime = 1.0f; // how long you need to hold to trigger the effect
+    [SerializeField] private float holdTime = 1.0f; // how long you need to hold to trigger the effect
 
     void Start () {
         GameObject vcam = GameObject.FindGameObjectWithTag("MainVCam");

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
 public class NPCGFX : MonoBehaviour {
-    Transform player;
-    SpriteRenderer spriteRenderer; // using flipX instead of localScale since textMesh is Children
+    private Transform player;
+    private SpriteRenderer spriteRenderer; // using flipX instead of localScale since textMesh is Children
 
     protected virtual void Start () {
         player = GameObject.FindGameObjectWithTag ("Player").transform;

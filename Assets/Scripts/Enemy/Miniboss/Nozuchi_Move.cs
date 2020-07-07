@@ -4,9 +4,9 @@ public class Nozuchi_Move : StateMachineBehaviour {
 
     Transform player;
     Rigidbody2D rb;
-    public float movementSpeed;
-    public float distanceToLunge;
-    public float lungeTendency;
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private float distanceToLunge;
+    [SerializeField] private float lungeTendency;
     override public void OnStateEnter (Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         player = GameObject.FindGameObjectWithTag ("Player").transform;
         rb = animator.GetComponentInParent<Rigidbody2D> ();
@@ -19,7 +19,7 @@ public class Nozuchi_Move : StateMachineBehaviour {
         Vector2 newPosition = Vector2.MoveTowards (rb.position, target, movementSpeed * Time.fixedDeltaTime);
         rb.position = newPosition;
 
-        if (Vector2.Distance (rb.position, player.position) <= distanceToLunge && Random.value > (1 - lungeTendency)) {
+        if (Vector2.Distance (rb.position, player.position) <= distanceToLunge && Random.value < lungeTendency) {
             animator.SetTrigger ("Lunge");
         }
     }

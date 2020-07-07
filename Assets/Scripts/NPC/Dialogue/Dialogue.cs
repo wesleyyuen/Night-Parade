@@ -10,7 +10,7 @@ public class Dialogue {
         Sequential
     }
     public SetSelectionMode setSelectionMode;
-    public int currentSetIndex;
+    [HideInInspector] public int currentSetIndex;
 
     [System.Serializable]
     public class SentenceSet {

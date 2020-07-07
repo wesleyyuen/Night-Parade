@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Patrol : MonoBehaviour { // Has to be on same level as enemy
 
-    public float patrolDistance;
+    [SerializeField] private float patrolDistance;
     [HideInInspector] public Vector2 patrolOrigin;
-    float aggroDistance;
-    float movementSpeed;
-    Transform player;
-    Rigidbody2D rb;
-    bool isPatroling;
+    private float aggroDistance;
+    private float movementSpeed;
+    private Transform player;
+    private Rigidbody2D rb;
+    private bool isPatroling;
 
     void Start () { // use start becuase it depends on Enemy
         Enemy enemy = GetComponent<Enemy> ();
@@ -23,6 +23,8 @@ public class Patrol : MonoBehaviour { // Has to be on same level as enemy
     }
 
     void Update () {
+        if (player == null) return;
+        
         if (Vector2.Distance (player.position, rb.position) < aggroDistance) {
             isPatroling = false;
         } else {

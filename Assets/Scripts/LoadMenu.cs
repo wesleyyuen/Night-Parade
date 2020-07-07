@@ -6,21 +6,21 @@ using UnityEngine.UI;
 
 public class LoadMenu : MonoBehaviour {
 
-    public Button saveSlot1;
-    public TextMeshProUGUI saveSlot1Mon;
-    public Image[] saveSlot1Hearts;
-    public Button saveSlot2;
-    public TextMeshProUGUI saveSlot2Mon;
-    public Image[] saveSlot2Hearts;
-    public Button saveSlot3;
-    public TextMeshProUGUI saveSlot3Mon;
-    public Image[] saveSlot3Hearts;
-    public Sprite fullHeart;
-    public Sprite emptyHeart;
+    [SerializeField] private Button saveSlot1;
+    [SerializeField] private TextMeshProUGUI saveSlot1Mon;
+    [SerializeField] private Image[] saveSlot1Hearts;
+    [SerializeField] private Button saveSlot2;
+    [SerializeField] private TextMeshProUGUI saveSlot2Mon;
+    [SerializeField] private Image[] saveSlot2Hearts;
+    [SerializeField] private Button saveSlot3;
+    [SerializeField] private TextMeshProUGUI saveSlot3Mon;
+    [SerializeField] private Image[] saveSlot3Hearts;
+    [SerializeField] private Sprite fullHeart;
+    [SerializeField] private Sprite emptyHeart;
 
-    PlayerData data1;
-    PlayerData data2;
-    PlayerData data3;
+    private PlayerData data1;
+    private PlayerData data2;
+    private PlayerData data3;
 
     void Awake () {
         // TODO if File exists

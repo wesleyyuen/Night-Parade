@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
 public class SavePoint : DialogueTrigger {
-
     public override void Update () {
         bool isTalking = FindObjectOfType<DialogueManager> ().isTalking;
         int loadIndex = FindObjectOfType<GameMaster> ().savedPlayerData.SaveFileIndex;

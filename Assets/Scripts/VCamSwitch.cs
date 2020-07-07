@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VCamSwitch : MonoBehaviour {
 
-    public GameObject vcam;
+    [SerializeField] private GameObject vcam;
 
     void OnTriggerEnter2D (Collider2D other) {
         if (other.CompareTag ("Player") && !other.isTrigger) {

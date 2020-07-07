@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour {
 
     public Button continueButton;
     public TextMeshProUGUI continueText;
+    private GameMaster gameMaster;
 
     void Start () {
         SetUIHelper (false);
@@ -17,11 +18,12 @@ public class MainMenu : MonoBehaviour {
             continueButton.interactable = true;
             continueText.color = Color.white;
         }
+        gameMaster = FindObjectOfType<GameMaster> ();
+        gameMaster.UpdateCurrentScene ();
     }
 
     public void NewGame () {
-        GameMaster gameMaster = FindObjectOfType<GameMaster> ();
-        PlayerData playerData = new PlayerData (gameMaster.startingHealth, 0);
+        PlayerData playerData = new PlayerData (gameMaster.startingHealth);
         gameMaster.RequestSceneChange ("Forest_Tutorial", playerData);
         SetUIHelper (true);
     }
@@ -29,8 +31,8 @@ public class MainMenu : MonoBehaviour {
     public void LoadGameFile (int index) {
         PlayerData playerData = SaveManager.Load (index);
         if (playerData == null) return;
-        FindObjectOfType<GameMaster> ().savedPlayerData = playerData;
-        SceneManager.LoadScene (playerData.LastSavePoint);
+        gameMaster.savedPlayerData = playerData;
+        gameMaster.RequestSceneChange (playerData.LastSavePoint, playerData);
 
         SetUIHelper (true);
         PauseMenu.isPuased = false;
@@ -44,7 +46,6 @@ public class MainMenu : MonoBehaviour {
     }
 
     void SetUIHelper (bool boolean) {
-        FindObjectOfType<CameraPeeking> ().enabled = boolean;
         FindObjectOfType<DialogueManager> ().enabled = boolean;
         GameObject.FindGameObjectWithTag ("MonUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
         GameObject.FindGameObjectWithTag ("HealthUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);

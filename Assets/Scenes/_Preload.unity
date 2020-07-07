@@ -1101,7 +1101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77b1f9b567f57f54cac4cfb3cf06bb0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heartLocalScale: 0.2
   hearts:
   - {fileID: 1229824164}
   - {fileID: 1498412279}
@@ -2059,7 +2058,6 @@ GameObject:
   m_Component:
   - component: {fileID: 789520134}
   - component: {fileID: 789520133}
-  - component: {fileID: 789520132}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: GameManager
@@ -2067,23 +2065,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &789520132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 789520131}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3421fd1245e420499d9a98c9f7a9843, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  originalScreenY: 0.6
-  lookUpScreenY: 1
-  lookDownScreenY: 0
-  changeRate: 0.03
-  holdTime: 0.7
 --- !u!114 &789520133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2098,6 +2079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingScene: Main_Menu
   startingHealth: 5
+  numOfAreas: 5
 --- !u!4 &789520134
 Transform:
   m_ObjectHideFlags: 0

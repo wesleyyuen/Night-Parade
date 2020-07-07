@@ -4,34 +4,37 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour {
 
     public static bool isPuased = false;
-    public GameObject pauseMenuUI;
+    [SerializeField] private GameObject pauseMenuUI;
 
     void Update () {
-        if (SceneManager.GetActiveScene().name != "Main_Menu" && Input.GetKeyDown(KeyCode.Escape)) {
-            if (isPuased) Resume();
-            else Pause();
+        if (SceneManager.GetActiveScene ().name != "Main_Menu" && Input.GetKeyDown (KeyCode.Escape)) {
+            if (isPuased) Resume ();
+            else Pause ();
         }
     }
 
-    public void Resume() {
+    public void Resume () {
         isPuased = false;
-        FindObjectOfType<PlayerCombat>().enabled = true;
-        FindObjectOfType<PlayerMovement>().enabled = true;
+        if (!FindObjectOfType<DialogueManager> ().isTalking) {
+            FindObjectOfType<PlayerCombat> ().enabled = true;
+            FindObjectOfType<PlayerMovement> ().enabled = true;
+        }
+
         Time.timeScale = 1f;
-        pauseMenuUI.SetActive(false);
+        pauseMenuUI.SetActive (false);
     }
 
-    void Pause() {
+    void Pause () {
         isPuased = true;
-        FindObjectOfType<PlayerCombat>().enabled = false;
-        FindObjectOfType<PlayerMovement>().enabled = false;
+        FindObjectOfType<PlayerCombat> ().enabled = false;
+        FindObjectOfType<PlayerMovement> ().enabled = false;
         Time.timeScale = 0f;
-        pauseMenuUI.SetActive(true);
+        pauseMenuUI.SetActive (true);
     }
 
-    public void QuitToMainMenu() {
+    public void QuitToMainMenu () {
         Time.timeScale = 1f;
-        pauseMenuUI.SetActive(false);
-        SceneManager.LoadScene("Main_Menu");
+        pauseMenuUI.SetActive (false);
+        SceneManager.LoadScene ("Main_Menu");
     }
 }

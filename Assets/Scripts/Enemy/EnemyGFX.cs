@@ -5,8 +5,8 @@ using UnityEngine;
 public class EnemyGFX : MonoBehaviour {
     private Transform player;
     private Enemy enemyScript;
-    public float turningTime;
-    float aggroDistance;
+    [SerializeField] private float turningTime;
+    private float aggroDistance;
 
     void Start () {
         player = GameObject.FindGameObjectWithTag ("Player").transform;

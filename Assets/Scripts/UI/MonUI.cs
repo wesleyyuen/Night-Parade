@@ -4,8 +4,8 @@ using UnityEngine;
 public class MonUI : MonoBehaviour {
 
     private static MonUI Instance;
-    public TextMeshProUGUI monText;
-    PlayerInventory playerInventory;
+    private PlayerInventory playerInventory;
+    [SerializeField] private TextMeshProUGUI monText;
 
     void Awake () {
         if (Instance == null) {

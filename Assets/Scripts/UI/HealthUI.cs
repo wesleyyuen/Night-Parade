@@ -3,12 +3,10 @@ using UnityEngine.UI;
 [System.Serializable]
 public class HealthUI : MonoBehaviour {
     private static HealthUI Instance;
-    PlayerHealth playerHealth;
-    public float heartLocalScale = 0.2f;
-
-    public Image[] hearts;
-    public Sprite fullHeart;
-    public Sprite emptyHeart;
+    private PlayerHealth playerHealth;
+    [SerializeField] private Image[] hearts;
+    [SerializeField] private Sprite fullHeart;
+    [SerializeField] private Sprite emptyHeart;
     
     void Awake () {
         if (Instance == null) {

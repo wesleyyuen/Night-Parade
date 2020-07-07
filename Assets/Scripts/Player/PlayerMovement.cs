@@ -4,12 +4,12 @@ using UnityEngine.Audio;
 public class PlayerMovement : MonoBehaviour {
 
     [Header ("References")]
-    public Animator animator;
-    public SpriteRenderer sr;
-    public Rigidbody2D rb;
-    public ParticleSystem dustTrail;
-    public Grounded grounded;
-    public AudioManager audioManager;
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private ParticleSystem dustTrail;
+    [SerializeField] private Grounded grounded;
+    [SerializeField] private AudioManager audioManager;
 
     [Header ("Movement Settings")]
     [SerializeField] private float movementSpeed = 11f;
@@ -20,8 +20,8 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float coyoteTime = 0.05f;
     [SerializeField] private float slopeRaycastLength;
 
-    float jumpBuffer = 0;
-    float coyoteTimer = 0;
+    private float jumpBuffer;
+    private float coyoteTimer;
 
     void Awake () {
         audioManager = FindObjectOfType<AudioManager> ();

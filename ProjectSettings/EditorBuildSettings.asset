@@ -28,5 +28,8 @@ EditorBuildSettings:
     guid: 269b033a8bbf640468bbb8685d95af0b
   - enabled: 1
     path: Assets/Scenes/Forest/Forest_Area3.unity
-    guid: 22ed426be326ea6438877b7a10f2fc52
+    guid: 9499e94b352fb4b49a01eba44b167d55
+  - enabled: 1
+    path: Assets/Scenes/Hatsumura.unity
+    guid: d0b8ab17fbd696d4180798c8034b9e5e
   m_configObjects: {}

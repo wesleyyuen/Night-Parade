@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 public class Tanuki_Attack : MonoBehaviour {
-    public Vector3 attackOffset;
-    public float attackRange = 1f;
-    public LayerMask attackMask;
+    [SerializeField] private Vector3 attackOffset;
+    [SerializeField] private float attackRange = 1f;
+    [SerializeField] private LayerMask attackMask;
 
     public void Attack () {
 

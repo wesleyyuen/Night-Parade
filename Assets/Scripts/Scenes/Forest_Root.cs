@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Forest_Root : MonoBehaviour {
-    public Transform player;
-    public Transform treeAreaSpawnPoint;
+    [SerializeField] private Transform player;
+    [SerializeField] private Transform treeAreaSpawnPoint;
     void Start () {
         GameMaster gameMaster = FindObjectOfType<GameMaster> ();
         gameMaster.UpdateCurrentScene ();
@@ -13,7 +13,5 @@ public class Forest_Root : MonoBehaviour {
             player.position = treeAreaSpawnPoint.position;
             player.localScale = new Vector3 (1f, 1f, 1f);
         }
-
-        GetComponent<Parallax> ().FixParallaxOnLoad ();
     }
 }

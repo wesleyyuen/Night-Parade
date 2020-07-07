@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class AudioManager : MonoBehaviour {
 
     // AudioSource player;  // TODO maybe find the player's audio source and use it
-    public Sound[] sounds;
+    [SerializeField] private Sound[] sounds;
 
     void Awake () {
         foreach (Sound s in sounds) {

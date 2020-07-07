@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour {
     private static SaveManager Instance;
-    public int loadIndex;
-    public string fileName;
-    public string fileExtension;
+    [SerializeField] private int loadIndex;
+    [SerializeField] private string fileName;
+    [SerializeField] private string fileExtension;
 
     void Awake () {
         if (Instance == null) {

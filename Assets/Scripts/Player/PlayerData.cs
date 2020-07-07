@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [System.Serializable]
@@ -9,14 +10,16 @@ public class PlayerData {
     public int SavedMaxPlayerHealth { get; private set; }
     public int SavedPlayerCoinsOnHand { get; private set; }
     public int LastSavePoint { get; private set; }
+    public Dictionary<string, bool> savedAreaPrgress { get; private set; }
 
     // For Initializing
-    public PlayerData (int playerHealth, int playerCoinsOnHand) {
+    public PlayerData (int startingHealth) {
         SaveFileIndex = 1; // New Game will override first save slot
-        SavedPlayerHealth = playerHealth;
-        SavedMaxPlayerHealth = playerHealth;
-        SavedPlayerCoinsOnHand = playerCoinsOnHand;
+        SavedPlayerHealth = startingHealth;
+        SavedMaxPlayerHealth = startingHealth;
+        SavedPlayerCoinsOnHand = 0;
         LastSavePoint = 0;
+        savedAreaPrgress = new Dictionary<string, bool> ();
     }
 
     // For Saving and Loading (both inbetween and within session)
@@ -25,6 +28,7 @@ public class PlayerData {
         SavedPlayerHealth = player.GetComponent<PlayerHealth> ().currHealth;
         SavedMaxPlayerHealth = player.GetComponent<PlayerHealth> ().maxNumOfHeart;
         SavedPlayerCoinsOnHand = player.GetComponent<PlayerInventory> ().coinOnHand;
+        savedAreaPrgress = player.GetComponent<PlayerProgress> ().areaProgress;
         if (hardSave) {
             Debug.Log ("Changing savepoint from " + SceneManager.GetSceneByBuildIndex (LastSavePoint).name + " to " + SceneManager.GetSceneByBuildIndex (sceneIndex).name);
             LastSavePoint = sceneIndex;

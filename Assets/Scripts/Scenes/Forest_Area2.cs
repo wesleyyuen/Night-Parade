@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 public class Forest_Area2 : MonoBehaviour {
-    public Transform player;
-    public Transform area1SpawnPoint;
-    public Transform treeAreaSpawnPoint;
+    [SerializeField] private Transform player;
+    [SerializeField] private Transform area1SpawnPoint;
+    [SerializeField] private Transform treeAreaSpawnPoint;
     void Start () {
         GameMaster gameMaster = FindObjectOfType<GameMaster> ();
         gameMaster.UpdateCurrentScene ();
@@ -15,7 +15,5 @@ public class Forest_Area2 : MonoBehaviour {
             player.position = treeAreaSpawnPoint.position;
             player.localScale = new Vector3 (-1f, 1f, 1f);
         }
-
-        GetComponent<Parallax> ().FixParallaxOnLoad ();
     }
 }

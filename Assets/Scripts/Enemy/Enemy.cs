@@ -3,26 +3,26 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {  // handle ONLY collision and health
     [Header ("References")]
-    public Animator animator;
-    public ParticleSystem deathParticleEffect;
+    [SerializeField] private Animator animator;
+    [SerializeField] private ParticleSystem deathParticleEffect;
     [HideInInspector] public Transform player;
     public Rigidbody2D rb;
 
     [Header ("Behaviors")]
 
-    public int maxHealth;
+    [SerializeField] public int maxHealth;
     public float aggroDistance;  // keep this here for miniboss (miniboss use different movement)
-    public float knockBackOnAttackForce;
-    public float collisionKnockBackForceOnPlayer;
-    public float collisionCooldown = 1.5f;
+    [SerializeField] public float knockBackOnAttackForce;
+    [SerializeField] public float collisionKnockBackForceOnPlayer;
+    [SerializeField] public float collisionCooldown = 1.5f;
     
-    public float dieTime;
+    [SerializeField] public float dieTime;
     [HideInInspector] public int currentHealth;
 
     [HideInInspector] public bool collisionOnCooldown;
-    [HideInInspector] public float startTime;
-    [HideInInspector] public float timer;
-    [HideInInspector] public bool isDead;
+    private float startTime;
+    private float timer;
+    private bool isDead;
 
     public virtual void Awake () {
         currentHealth = maxHealth;
@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour {  // handle ONLY collision and health
         }
     }
 
-    public virtual void OnCollisionEnter2D (Collision2D collision) {
+    public virtual void OnCollisionStay2D (Collision2D collision) {
         if (collisionOnCooldown) return;
         if (collision.gameObject.layer == LayerMask.NameToLayer ("Player") && !collisionOnCooldown) {
             collisionOnCooldown = true;

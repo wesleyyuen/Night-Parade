@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ButtonTutorial : MonoBehaviour {
 
-    public GameObject textPrompt;
+    [SerializeField] private GameObject textPrompt;
 
     void OnTriggerEnter2D (Collider2D other) {
         if (other.CompareTag ("Player")) {

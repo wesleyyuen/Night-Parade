@@ -2,22 +2,22 @@
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour {
-    public Transform player;
-    public Animator animator;
-    public Rigidbody2D rb;
-    public Transform attackPoint;
-    public Transform upThrustPoint;
-    public Transform downThrustPoint;
-    public Vector2 attackRange;
-    public Vector2 upThrustRange;
-    public Vector2 downThrustRange;
-    public LayerMask enemyLayers;
-    public float attackRate = 2f;
-    float nextAttackTime = 0f;
-    public float horizontalKnockBackForce = 5f;
-    public float verticalKnockBackForce = 20f;
+    [SerializeField] private Transform player;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private Transform upThrustPoint;
+    [SerializeField] private Transform downThrustPoint;
+    [SerializeField] private Vector2 attackRange;
+    [SerializeField] private Vector2 upThrustRange;
+    [SerializeField] private Vector2 downThrustRange;
+    [SerializeField] private LayerMask enemyLayers;
+    [SerializeField] private float attackRate = 2f;
+    [SerializeField] private float nextAttackTime = 0f;
+    [SerializeField] private float horizontalKnockBackForce = 5f;
+    [SerializeField] private float verticalKnockBackForce = 20f;
 
-    List<int> enemiesAttackedIDs;
+    private List<int> enemiesAttackedIDs;
 
     void Update () {
         if (Time.time >= nextAttackTime && Input.GetButtonDown ("Attack")) {

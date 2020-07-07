@@ -157,7 +157,7 @@ QualitySettings:
     PS4: 3
     Stadia: 3
     Standalone: 3
-    WebGL: 2
+    WebGL: 3
     Windows Store Apps: 3
     XboxOne: 3
     iPhone: 1

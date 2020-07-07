@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour {
     private static GameMaster Instance;
-    public string startingScene;
-    public static string prevScene = "";
-    public static string currentScene = "";
-    public int startingHealth;
+    public static Dictionary<string, int> areaNameToIndex = new Dictionary<string, int> ();
+    [SerializeField] private string startingScene;
+    private string prevScene = "";
+    private string currentScene = "";
+    public int startingHealth = 5;
+    public int numOfAreas = 5;
     public PlayerData savedPlayerData;
-    public bool[][] savedScenesInteractions; 
 
     void Awake () {
         if (Instance == null) {
@@ -17,8 +19,9 @@ public class GameMaster : MonoBehaviour {
         } else {
             Destroy (gameObject);
         }
+        FillAreaNameToIndexDictionary ();
         UpdateCurrentScene ();
-        savedPlayerData = new PlayerData (startingHealth, 0);
+        savedPlayerData = new PlayerData (startingHealth);
         if (startingScene == "Main_Menu") SetUIHelper (false); // can remove if play mode from _preload
         RequestSceneChange (startingScene, savedPlayerData);
     }
@@ -37,12 +40,22 @@ public class GameMaster : MonoBehaviour {
         SceneManager.LoadScene (sceneToLoad);
     }
 
+    public void RequestSceneChange (int sceneToLoad, PlayerData currPlayerData) {
+        prevScene = currentScene;
+        savedPlayerData = currPlayerData;
+        SceneManager.LoadScene (sceneToLoad);
+    }
+
     // can remove if play mode from _preload
     void SetUIHelper (bool boolean) {
-        FindObjectOfType<CameraPeeking> ().enabled = boolean;
         FindObjectOfType<DialogueManager> ().enabled = boolean;
         GameObject.FindGameObjectWithTag ("MonUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
         GameObject.FindGameObjectWithTag ("HealthUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
         GameObject.FindGameObjectWithTag ("DialogueUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
+    }
+
+    // Add when making a new area
+    private void FillAreaNameToIndexDictionary () {
+        areaNameToIndex.Add ("Forest", 0);
     }
 }
