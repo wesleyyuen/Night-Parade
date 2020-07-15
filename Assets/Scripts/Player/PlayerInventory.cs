@@ -10,9 +10,10 @@ public class PlayerInventory : MonoBehaviour {
 
     void Start () {
         GameMaster gameMaster = FindObjectOfType<GameMaster> ();
+        // Get saved data from Gamemaster
         coinOnHand = gameMaster.savedPlayerData.SavedPlayerCoinsOnHand;
-        inks = new bool[gameMaster.numOfAreas];
-        orbs = 0;
+        inks = gameMaster.savedPlayerData.SavedInks;
+        orbs = gameMaster.savedPlayerData.SavedOrbs;
     }
 
     public void PickUpCoin (int amt) {
@@ -21,7 +22,6 @@ public class PlayerInventory : MonoBehaviour {
 
     public void PickUpInk (int areaIndex) {
         inks[areaIndex] = true;
-        Debug.Log (inks);
     }
 
     public void PickUpOrb () {

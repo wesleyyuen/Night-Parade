@@ -23,6 +23,7 @@ public class Parallax : MonoBehaviour {
 
     private void LateUpdate () {
         var position = startPos;
+        // Move background according to mode
         if (parallaxMode == ParallaxMode.Horizontal) {
             position.x += multiplier * (cameraTransform.position.x - startCameraPos.x);
         } else if (parallaxMode == ParallaxMode.Vertical) {

@@ -13,8 +13,10 @@ public class PauseMenu : MonoBehaviour {
         }
     }
 
-    public void Resume () {
+    private void Resume () {
         isPuased = false;
+
+        // Handle player control
         if (!FindObjectOfType<DialogueManager> ().isTalking) {
             FindObjectOfType<PlayerCombat> ().enabled = true;
             FindObjectOfType<PlayerMovement> ().enabled = true;
@@ -24,10 +26,13 @@ public class PauseMenu : MonoBehaviour {
         pauseMenuUI.SetActive (false);
     }
 
-    void Pause () {
+    private void Pause () {
         isPuased = true;
+
+        // Stop player control
         FindObjectOfType<PlayerCombat> ().enabled = false;
         FindObjectOfType<PlayerMovement> ().enabled = false;
+
         Time.timeScale = 0f;
         pauseMenuUI.SetActive (true);
     }

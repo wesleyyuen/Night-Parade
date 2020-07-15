@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class VCamSwitch : MonoBehaviour {
+    // Switching between Virtual Cameras
 
     [SerializeField] private GameObject vcam;
 

@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerProgress : MonoBehaviour {
     [HideInInspector] public Dictionary<string, bool> areaProgress;
 
-
-    // TODO: fix ordering issue
     void Awake () {
-        areaProgress = FindObjectOfType<GameMaster> ().savedPlayerData.savedAreaPrgress;
+        areaProgress = FindObjectOfType<GameMaster> ().savedPlayerData.SavedAreaPrgress;
+    }
+
+    public float GetPlayTimeInScene () {
+        return FindObjectOfType<GameMaster> ().savedPlayerData.SavedPlayTimeInSecs + Time.timeSinceLevelLoad;
     }
 }

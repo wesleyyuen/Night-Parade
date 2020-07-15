@@ -19,6 +19,7 @@ public class EnemyMovement : MonoBehaviour {
     void Update () {
         if (player == null) return;
         
+        // Move towards player if not freezing after collision
         if (Vector2.Distance (player.position, rb.position) < aggroDistance && !enemy.collisionOnCooldown) {
             Vector2 target = new Vector2 (player.position.x, rb.position.y);
             Vector2 newPosition = Vector2.MoveTowards (rb.position, target, movementSpeed * Time.deltaTime);

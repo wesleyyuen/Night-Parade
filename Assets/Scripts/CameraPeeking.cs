@@ -13,16 +13,16 @@ public class CameraPeeking : MonoBehaviour {
     [SerializeField] private float holdTime = 1.0f; // how long you need to hold to trigger the effect
 
     void Start () {
-        GameObject vcam = GameObject.FindGameObjectWithTag("MainVCam");
+        GameObject vcam = GameObject.FindGameObjectWithTag ("MainVCam");
         Grounded grounded = FindObjectOfType<Grounded> ();
-        if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer> ();
+        if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera> ().GetCinemachineComponent<CinemachineFramingTransposer> ();
         if (grounded != null) isGrounded = grounded.isGrounded;
     }
 
     void ReInitializeVariables () {
         if (transposer == null) {
-            GameObject vcam = GameObject.FindGameObjectWithTag("MainVCam");
-            if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineFramingTransposer> ();
+            GameObject vcam = GameObject.FindGameObjectWithTag ("MainVCam");
+            if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera> ().GetCinemachineComponent<CinemachineFramingTransposer> ();
         }
         Grounded grounded = FindObjectOfType<Grounded> ();
         if (grounded != null) isGrounded = grounded.isGrounded;
@@ -33,12 +33,13 @@ public class CameraPeeking : MonoBehaviour {
         if (transposer == null || !isGrounded) return;
         float currScreenY = transposer.m_ScreenY;
 
-        if ((Input.GetButtonDown ("Vertical") && isGrounded) || Input.GetButton("Attack")) {
+        if ((Input.GetButtonDown ("Vertical") && isGrounded) || Input.GetButton ("Attack")) {
             startTime = Time.time;
             timer = startTime;
         }
 
-        if (Input.GetButton ("Vertical") && isGrounded && !Input.GetButton("Attack")) {
+        // Start moving Camera
+        if (Input.GetButton ("Vertical") && isGrounded && !Input.GetButton ("Attack")) {
             timer += Time.deltaTime;
             if (timer > startTime + holdTime) {
                 if (Input.GetAxis ("Vertical") > 0) {

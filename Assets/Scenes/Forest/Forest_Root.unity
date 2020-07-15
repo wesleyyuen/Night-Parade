@@ -37731,6 +37731,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exitBlock: {fileID: 666774365}
   bossExitShuttingTime: 0.5
+  bossExitShuttingDirection: {x: 0, y: -4}
+  animator: {fileID: 1952551225}
 --- !u!1001 &1911295783
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class DialogueTrigger : MonoBehaviour {
         bool isTalking = FindObjectOfType<DialogueManager> ().isTalking;
         if (textPrompt == null || player == null || triggerOnCollision) return;
         
+        // Control dialogue promopt text
         if (!isTalking && !triggerOnCollision && Vector2.Distance (player.transform.position, transform.position) <= triggerRange) {
             textPrompt.enabled = true;
             if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.DownArrow)) TriggerDialogue ();
@@ -28,7 +29,7 @@ public class DialogueTrigger : MonoBehaviour {
         }
     }
 
-    public void TriggerDialogue () { // Trigger random dialogue for now, TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
+    public void TriggerDialogue () { // TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
         FindObjectOfType<DialogueManager> ().StartDialogue (dialogue);
     }
 

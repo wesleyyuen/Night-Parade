@@ -15,10 +15,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Forest/Forest_Tutorial.unity
     guid: f0d63b6f13359a943b4f9b4a4665f73c
   - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area2.unity
+    path: Assets/Scenes/Forest/Forest_Area1.unity
     guid: 49d4c8df0ac1cc945865fc3482cbd84d
   - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area1.unity
+    path: Assets/Scenes/Forest/Forest_Area2.unity
     guid: 22f9a794502621246a19118f404b5b06
   - enabled: 1
     path: Assets/Scenes/Forest/Forest_Tree.unity

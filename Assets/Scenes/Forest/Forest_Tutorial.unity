@@ -1772,8 +1772,7 @@ GameObject:
   - component: {fileID: 471691482}
   - component: {fileID: 471691481}
   m_Layer: 0
-  m_Name: TMP SubMesh [aoyagireisyosimo_ttf_2_01 SDF Material + LiberationSans SDF
-    Atlas]
+  m_Name: TMP SubMesh [nagayama_kai08 SDF Material + LiberationSans SDF Atlas]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1810,7 +1809,7 @@ MonoBehaviour:
   m_material: {fileID: 0}
   m_sharedMaterial: {fileID: 0}
   m_isDefaultMaterial: 0
-  m_padding: 1.615625
+  m_padding: 1.25
   m_renderer: {fileID: 471691483}
   m_meshFilter: {fileID: 471691482}
   m_TextComponent: {fileID: 1337846324}
@@ -2236,7 +2235,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.61, y: 3.21}
+  m_AnchoredPosition: {x: 1.54, y: 3.18}
   m_SizeDelta: {x: 2.7, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &726148051
@@ -2258,10 +2257,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <size=10>"X"</size> to <size=8>Attack
+  m_text: <size=8>"X"</size> to <size=7>Attack
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ffbdf90f71de1fb46a653672da4bb2eb, type: 2}
-  m_sharedMaterial: {fileID: 4377206449550837666, guid: ffbdf90f71de1fb46a653672da4bb2eb,
+  m_fontAsset: {fileID: 11400000, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1, type: 2}
+  m_sharedMaterial: {fileID: 2140606258194216402, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2287,8 +2286,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 4
+  m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2325,7 +2324,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -1.8295469, w: -0.38976777}
+  m_margin: {x: 0, y: 0, z: -1.997982, w: -0.38976777}
   m_textInfo:
     textComponent: {fileID: 726148051}
     characterCount: 13
@@ -2369,7 +2368,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4377206449550837666, guid: ffbdf90f71de1fb46a653672da4bb2eb, type: 2}
+  - {fileID: 2140606258194216402, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6690,7 +6689,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.12, y: -1.84}
+  m_AnchoredPosition: {x: 2.38, y: -1.98}
   m_SizeDelta: {x: 2.7, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1337846324
@@ -6712,10 +6711,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <size=10>"Z"</size> to <size=8>Jump
+  m_text: <size=8>"Z"</size> to <size=7>Jump
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ffbdf90f71de1fb46a653672da4bb2eb, type: 2}
-  m_sharedMaterial: {fileID: 4377206449550837666, guid: ffbdf90f71de1fb46a653672da4bb2eb,
+  m_fontAsset: {fileID: 11400000, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1, type: 2}
+  m_sharedMaterial: {fileID: 2140606258194216402, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -6741,8 +6740,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 6
-  m_fontSizeBase: 6
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6779,7 +6778,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -1.8295469, w: -0.38976777}
+  m_margin: {x: 0, y: 0, z: -1.339179, w: -0.38976777}
   m_textInfo:
     textComponent: {fileID: 1337846324}
     characterCount: 11
@@ -6823,7 +6822,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4377206449550837666, guid: ffbdf90f71de1fb46a653672da4bb2eb, type: 2}
+  - {fileID: 2140606258194216402, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7049,8 +7048,7 @@ GameObject:
   - component: {fileID: 1412181574}
   - component: {fileID: 1412181573}
   m_Layer: 0
-  m_Name: TMP SubMesh [aoyagireisyosimo_ttf_2_01 SDF Material + LiberationSans SDF
-    Atlas]
+  m_Name: TMP SubMesh [nagayama_kai08 SDF Material + LiberationSans SDF Atlas]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20525,6 +20523,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 8545938579904421452}
   area1SpawnPoint: {fileID: 1441774523}
+  forestText: {fileID: 1918192504}
+  textShowingTime: 4
+  textFadingTime: 1
 --- !u!4 &1746089018
 Transform:
   m_ObjectHideFlags: 0
@@ -21088,6 +21089,176 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1128662852874068484, guid: e56c799e9b5b043448004ca74e49a79b,
     type: 3}
   m_PrefabInstance: {fileID: 1913209200}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1918192503
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260602, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770104309260742, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_Name
+      value: Area Name - Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770105803059460, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_Name
+      value: Shiratani Forest Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770105803059578, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770105803059578, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770105803059578, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770105803059578, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770105803059578, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770105803059578, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_text
+      value: "\u767D\u8C37\u306E\u68EE\nShiratani Forest"
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770105803059578, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 210770105803059578, guid: 6d4c70e25128b9747bb40a7e21356048,
+        type: 3}
+      propertyPath: m_textInfo.materialCount
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6d4c70e25128b9747bb40a7e21356048, type: 3}
+--- !u!1 &1918192504 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 210770105803059460, guid: 6d4c70e25128b9747bb40a7e21356048,
+    type: 3}
+  m_PrefabInstance: {fileID: 1918192503}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1942289551
 GameObject:
@@ -21691,11 +21862,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1354711362501565212, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
-        type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 2783591323600660584, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21751,11 +21917,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8149112104458654234, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
-        type: 3}
-      propertyPath: startOffGrounded
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8165457117528990665, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
       propertyPath: m_Name
@@ -21769,3 +21930,21 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8545938579904421451}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8545938579904421453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8165457117528990665, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
+    type: 3}
+  m_PrefabInstance: {fileID: 8545938579904421451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8545938579904421454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8545938579904421453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d8ab39042cdf64697739b10b811059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -37,8 +37,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.5}
-  m_SizeDelta: {x: 2.1, y: 0.8}
+  m_AnchoredPosition: {x: 0.032, y: 0.5}
+  m_SizeDelta: {x: 2.22, y: 0.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5176165489542231743
 MeshRenderer:
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4377206449550837666, guid: ffbdf90f71de1fb46a653672da4bb2eb, type: 2}
+  - {fileID: 2140606258194216402, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,8 +116,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '- Save -'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ffbdf90f71de1fb46a653672da4bb2eb, type: 2}
-  m_sharedMaterial: {fileID: 4377206449550837666, guid: ffbdf90f71de1fb46a653672da4bb2eb,
+  m_fontAsset: {fileID: 11400000, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1, type: 2}
+  m_sharedMaterial: {fileID: 2140606258194216402, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -231,7 +231,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5176165489556906978}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.76, y: 0, z: 0}
+  m_LocalPosition: {x: 1.76, y: 0.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5176165491215070242}
@@ -250,8 +250,7 @@ GameObject:
   - component: {fileID: 5176165489618214933}
   - component: {fileID: 5176165489618214934}
   m_Layer: 0
-  m_Name: TMP SubMesh [aoyagireisyosimo_ttf_2_01 SDF Material + LiberationSans SDF
-    Atlas]
+  m_Name: TMP SubMesh [nagayama_kai08 SDF Material + LiberationSans SDF Atlas]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -364,7 +363,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5176165490688591135}
   m_LocalRotation: {x: 0, y: 0, z: -1, w: 0}
-  m_LocalPosition: {x: 0.15, y: -0.73, z: 0}
+  m_LocalPosition: {x: 0.02, y: 0.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5176165491215070242}
@@ -388,7 +387,7 @@ MonoBehaviour:
   m_Color: {r: 0.5849056, g: 0.38034844, b: 0, a: 1}
   m_Intensity: 1.2
   m_LightVolumeOpacity: 0
-  m_ApplyToSortingLayers: 09ce2692df8abd0800000000
+  m_ApplyToSortingLayers: 0000000009ce2692
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
@@ -515,11 +514,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  triggerOnCollision: 0
   dialogue:
     characterName: 
     setSelectionMode: 1
     currentSetIndex: 0
-    sentenceSets: []
+    sentenceSets:
+    - sentences:
+      - Now Saving...
   triggerRange: 3
   textPrompt: {fileID: 5176165489542231743}
 --- !u!222 &5176165491215070244

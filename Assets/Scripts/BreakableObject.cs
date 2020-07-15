@@ -14,7 +14,7 @@ public class BreakableObject : MonoBehaviour {
     [HideInInspector] public int currentHealth;
 
     public virtual void Start () {
-        // TODO: this pattern of DestroyedBefore maybe better if abstracted to own script
+        // Do not spawn if player destroyed previously
         bool destroyedBefore;
         FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (keyString, out destroyedBefore);
         if (destroyedBefore) Destroy (gameObject);

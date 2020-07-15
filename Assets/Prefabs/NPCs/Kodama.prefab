@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4377206449550837666, guid: ffbdf90f71de1fb46a653672da4bb2eb, type: 2}
+  - {fileID: 2140606258194216402, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -116,8 +116,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '- Listen -'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ffbdf90f71de1fb46a653672da4bb2eb, type: 2}
-  m_sharedMaterial: {fileID: 4377206449550837666, guid: ffbdf90f71de1fb46a653672da4bb2eb,
+  m_fontAsset: {fileID: 11400000, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1, type: 2}
+  m_sharedMaterial: {fileID: 2140606258194216402, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -220,8 +220,7 @@ GameObject:
   - component: {fileID: 6434760422318732149}
   - component: {fileID: 7110363949672350775}
   m_Layer: 0
-  m_Name: TMP SubMesh [aoyagireisyosimo_ttf_2_01 SDF Material + LiberationSans SDF
-    Atlas]
+  m_Name: TMP SubMesh [nagayama_kai08 SDF Material + LiberationSans SDF Atlas]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -336,7 +335,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8117314286234227377}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 78.2, y: -1.68, z: 60}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -407,11 +406,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  triggerOnCollision: 0
   dialogue:
     characterName: Kodama
-    setSelectionMode: 0
+    setSelectionMode: 1
     currentSetIndex: 0
-    sentenceSets: []
+    sentenceSets:
+    - sentences:
+      - First a giant larva comes barging in...
+      - Now a human child comes running by?
+    - sentences:
+      - Your brother?
+      - Hm...we did see some mean-looking yokais heading East
+      - Maybe they have your brother
   triggerRange: 2.5
   textPrompt: {fileID: 1696636040880788197}
 --- !u!114 &8117314286234227373

@@ -10,6 +10,8 @@ public class NPCGFX : MonoBehaviour {
     }
     protected virtual void Update () {
         if (player == null) return;
+
+        // Flip sprite to face player
         if (transform.position.x > player.position.x) {
             spriteRenderer.flipX = true;
         } else if (transform.position.x < player.position.x) {

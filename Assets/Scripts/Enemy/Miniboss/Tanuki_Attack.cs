@@ -5,6 +5,7 @@ public class Tanuki_Attack : MonoBehaviour {
     [SerializeField] private float attackRange = 1f;
     [SerializeField] private LayerMask attackMask;
 
+    // NOT IN USE RIGHT NOW
     public void Attack () {
 
         Vector3 pos = transform.position;

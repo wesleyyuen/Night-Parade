@@ -8,7 +8,7 @@ public class Grounded : MonoBehaviour {
 
     void Awake () {
         audioManager = FindObjectOfType<AudioManager> ();
-        if (startOffGrounded) isGrounded = true;
+        if (startOffGrounded) isGrounded = true; // not needed if spawn locations are correctly touching the ground
     }
 
     private void OnTriggerEnter2D (Collider2D collider) { // needed to play grounded audio

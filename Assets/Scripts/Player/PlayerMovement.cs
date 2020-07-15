@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour {
         float horizontalInput = Input.GetAxisRaw ("Horizontal");
         Vector3 prevLocalScale = transform.localScale;
 
+        // Flip sprite (TODO: maybe move into child object)
         if (horizontalInput > 0) {
             if (prevLocalScale.x != 1f) {
                 CreateDustTrail ();
@@ -51,21 +52,23 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
+        // Set animation
         animator.SetFloat ("Horizontal", horizontalInput);
         animator.SetFloat ("Vertical", rb.velocity.y);
 
+        // Move player
         Vector2 horizontalMovement = new Vector2 (horizontalInput * movementSpeed, 0.0f);
         rb.position += horizontalMovement * Time.deltaTime;
     }
 
     void Jump () {
-        // Coyote Time
+        // Coyote Time - allow lateinput of jumps after touching the ground
         coyoteTimer -= Time.deltaTime;
         if (FindObjectOfType<Grounded> ().isGrounded) {
             coyoteTimer = coyoteTime;
         }
 
-        // Jump Buffering
+        // Jump Buffering - allow preinput of jumps before touching the ground
         jumpBuffer -= Time.deltaTime;
         if (Input.GetButtonDown ("Jump")) {
             jumpBuffer = jumpBufferTime;

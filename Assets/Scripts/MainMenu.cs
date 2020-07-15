@@ -34,6 +34,7 @@ public class MainMenu : MonoBehaviour {
         gameMaster.savedPlayerData = playerData;
         gameMaster.RequestSceneChange (playerData.LastSavePoint, playerData);
 
+        // Handle Pause Menu (when player pause to quit to main menu and load game)
         SetUIHelper (true);
         PauseMenu.isPuased = false;
         GameObject pauseMenu = GameObject.FindGameObjectWithTag ("PauseMenu");
@@ -46,6 +47,7 @@ public class MainMenu : MonoBehaviour {
     }
 
     void SetUIHelper (bool boolean) {
+        // Turn stuff off in Main_Menu
         FindObjectOfType<DialogueManager> ().enabled = boolean;
         GameObject.FindGameObjectWithTag ("MonUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
         GameObject.FindGameObjectWithTag ("HealthUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);

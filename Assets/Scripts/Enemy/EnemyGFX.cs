@@ -14,6 +14,8 @@ public class EnemyGFX : MonoBehaviour {
     }
     void Update () {
         if (player == null) return;
+
+        // Flip Sprite (using localScale instead of FlipX so children also flips, just in case...)
         if (Vector2.Distance (player.position, transform.position) < aggroDistance) {
             if (transform.position.x > player.position.x) {
                 StartCoroutine (Turning (-1f, turningTime));

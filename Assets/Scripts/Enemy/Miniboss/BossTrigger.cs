@@ -6,22 +6,29 @@ public class BossTrigger : MonoBehaviour {
 
     [SerializeField] private GameObject exitBlock;
     [SerializeField] private float bossExitShuttingTime;
+    [SerializeField] private Vector2 bossExitShuttingDirection;
+    [SerializeField] private Animator animator;
 
     void OnTriggerEnter2D (Collider2D other) {
         if (other.CompareTag ("Player")) {
-            FindObjectOfType<Nozuchi> ().GetComponentInChildren<Animator> ().SetTrigger ("FightStarted");
-            StartCoroutine (BossExitControl (-4f));
+            // Start Boss Engagement
+            animator.SetTrigger ("FightStarted");
+            // Closing Boss Exit
+            StartCoroutine (BossExitControl (bossExitShuttingDirection));
         }
     }
 
-    public void OpenExit() {
-        StartCoroutine (BossExitControl (0f));
+    // Allow it to be called when boss dies
+    public void OpenExit () {
+        StartCoroutine (BossExitControl (new Vector2 (0f, 0f)));
     }
 
-    IEnumerator BossExitControl (float yToMoveTo) {
+    // Coroutine to open or close exit based on direction given
+    IEnumerator BossExitControl (Vector2 direction) {
+        float x = exitBlock.transform.position.x;
         float y = exitBlock.transform.position.y;
         for (float t = 0f; t < 1f; t += Time.deltaTime / bossExitShuttingTime) {
-            exitBlock.transform.position = new Vector3 (exitBlock.transform.position.x, Mathf.SmoothStep (y, yToMoveTo, t), exitBlock.transform.position.z);
+            exitBlock.transform.position = new Vector3 (Mathf.SmoothStep (x, direction.x, t), Mathf.SmoothStep (y, direction.y, t), exitBlock.transform.position.z);
             yield return null;
         }
     }

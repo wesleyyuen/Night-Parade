@@ -50,10 +50,6 @@ public class PlayerHealth : MonoBehaviour {
         Debug.Log ("You died");
         SceneManager.LoadScene ("Main_Menu");
 
-        // TODO: returning to main menu in lieu of a game over screen
-        /*
-        SaveManager.SaveOnDeath (player.gameObject, percentOfCoinsLostAfterDeath);
-        gameMaster.RequestSceneChange("")
-        */
+        // TODO: probably a game over screen
     }
 }

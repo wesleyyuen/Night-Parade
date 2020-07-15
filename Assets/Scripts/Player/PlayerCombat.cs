@@ -19,10 +19,15 @@ public class PlayerCombat : MonoBehaviour {
 
     private List<int> enemiesAttackedIDs;
 
+    // Hashing strings for optimization, but seems to make player falling animaton not play during New Game
+    private int attackHash = Animator.StringToHash("Attack");
+
     void Update () {
         if (Time.time >= nextAttackTime && Input.GetButtonDown ("Attack")) {
+            // Make a list of hit enemies/breakables so it won't double-count
             enemiesAttackedIDs = new List<int> ();
-            /*      Temp disable upthrust or downthrust as it is not needed at the moment, and require a lot of artwork
+            
+            /* Temp disable upthrust or downthrust as it is not needed at the moment, and require a LOT of difficult-to-draw artwork
             if (Input.GetAxisRaw ("Vertical") > 0) {
                 UpThrust ();
                 nextAttackTime = Time.time + 1f / attackRate;
@@ -34,17 +39,23 @@ public class PlayerCombat : MonoBehaviour {
                 return;
             }
             */
-            animator.SetBool ("Attack", true); // Start attack animation, Attack() will be called from the animation frames
+
+            // Start attack animation, Attack() will be called from the animation frames
+            animator.SetBool ("Attack", true);
+
+            // Cooldown for attacks
             nextAttackTime = Time.time + 1f / attackRate;
         }
     }
 
     void Attack () {
+        // Get Colliders of enemies hit
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll (attackPoint.position, attackRange, 360, enemyLayers);
 
         if (hitEnemies.Length == 0) return;
-
+        
         foreach (Collider2D enemy in hitEnemies) {
+            // Damage enemy/breakables only ONCE by adding them into list
             if (!enemiesAttackedIDs.Contains (enemy.gameObject.GetInstanceID ())) {
                 enemiesAttackedIDs.Add (enemy.gameObject.GetInstanceID ());
                 if (enemy.GetComponent<Enemy> () != null) {
@@ -82,6 +93,7 @@ public class PlayerCombat : MonoBehaviour {
         rb.AddForce (new Vector2 (0.0f, verticalKnockBackForce), ForceMode2D.Impulse);
     }
 
+    // Called from animation frame
     void EndAttack () {
         animator.SetBool ("Attack", false);
         enemiesAttackedIDs.Clear ();
@@ -95,6 +107,7 @@ public class PlayerCombat : MonoBehaviour {
         animator.SetBool ("DownThrust", false);
     }
 
+    // visualize attacks ranges
     void OnDrawGizmosSelected () {
         if (attackPoint != null) {
             Gizmos.DrawWireCube (attackPoint.position, attackRange);

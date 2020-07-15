@@ -12,6 +12,7 @@ public class RevealHiddenArea : MonoBehaviour {
     [SerializeField] private bool hideFromLeft;
 
     private void Start () {
+        // Make hidden area semi-transparant when discovered before
         bool discoveredBefore;
         FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (keyString, out discoveredBefore);
         if (discoveredBefore) {
@@ -22,10 +23,12 @@ public class RevealHiddenArea : MonoBehaviour {
 
     private void OnTriggerExit2D (Collider2D other) {
         if (other.CompareTag ("Player")) {
+            // Find direction player enter the trigger from
             Vector3 dir = other.transform.position - gameObject.transform.position;
             if (hideFromLeft && dir.x < 0 || !hideFromLeft && dir.x > 0) {
                 StartCoroutine (FadeTilemap (alphaToFadeTo));
             } else {
+                // Only play sound effect if First time walking into hidden area
                 bool temp;
                 if (!FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (keyString, out temp)) {
                     FindObjectOfType<PlayerProgress> ().areaProgress.Add (keyString, true);
@@ -36,6 +39,7 @@ public class RevealHiddenArea : MonoBehaviour {
         }
     }
 
+    // Fade in/out tilemap
     private IEnumerator FadeTilemap (float targetAlpha) {
         if (lightToTurnOff != null) lightToTurnOff.SetActive (false);
         float alpha = tilemapToHide.color.a;

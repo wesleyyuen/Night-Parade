@@ -15,10 +15,12 @@ public class Nozuchi_Move : StateMachineBehaviour {
     override public void OnStateUpdate (Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         if (player == null) return;
 
+        // Move towards player position
         Vector2 target = new Vector2 (player.position.x, rb.position.y);
         Vector2 newPosition = Vector2.MoveTowards (rb.position, target, movementSpeed * Time.fixedDeltaTime);
         rb.position = newPosition;
 
+        // if within range, have certain percentage to Lunge towards player
         if (Vector2.Distance (rb.position, player.position) <= distanceToLunge && Random.value < lungeTendency) {
             animator.SetTrigger ("Lunge");
         }

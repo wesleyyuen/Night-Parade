@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour {  // handle ONLY collision and health
     public virtual void Update () {
         if (isDead) return;
 
-        // Freeze for collisionCooldown after colliding with player
+        // Freeze for collisionCooldown after colliding with player to avoid constantly colliding with player
         if (collisionOnCooldown) {
             timer += Time.deltaTime;
             if (timer > startTime + collisionCooldown) {
@@ -46,6 +46,8 @@ public class Enemy : MonoBehaviour {  // handle ONLY collision and health
 
     public virtual void OnCollisionStay2D (Collision2D collision) {
         if (collisionOnCooldown) return;
+
+        // Collide with player, then enemy freezes and player takes damage and knockback 
         if (collision.gameObject.layer == LayerMask.NameToLayer ("Player") && !collisionOnCooldown) {
             collisionOnCooldown = true;
             startTime = Time.time;

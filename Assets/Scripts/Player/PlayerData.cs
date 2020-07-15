@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class PlayerData {
@@ -10,7 +9,10 @@ public class PlayerData {
     public int SavedMaxPlayerHealth { get; private set; }
     public int SavedPlayerCoinsOnHand { get; private set; }
     public int LastSavePoint { get; private set; }
-    public Dictionary<string, bool> savedAreaPrgress { get; private set; }
+    public float SavedPlayTimeInSecs { get; private set; }
+    public bool[] SavedInks { get; private set; }
+    public int SavedOrbs { get; private set; }
+    public Dictionary<string, bool> SavedAreaPrgress { get; private set; }
 
     // For Initializing
     public PlayerData (int startingHealth) {
@@ -19,30 +21,27 @@ public class PlayerData {
         SavedMaxPlayerHealth = startingHealth;
         SavedPlayerCoinsOnHand = 0;
         LastSavePoint = 0;
-        savedAreaPrgress = new Dictionary<string, bool> ();
+        SavedPlayTimeInSecs = 0;
+        SavedInks = new bool[GameMaster.numOfAreas];
+        SavedOrbs = 0;
+        SavedAreaPrgress = new Dictionary<string, bool> ();
     }
 
     // For Saving and Loading (both inbetween and within session)
     public PlayerData (GameObject player, bool hardSave, int sceneIndex, int loadIndex) {
         SaveFileIndex = loadIndex;
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth> ();
+        PlayerProgress playerProgress = player.GetComponent<PlayerProgress> ();
         SavedPlayerHealth = player.GetComponent<PlayerHealth> ().currHealth;
         SavedMaxPlayerHealth = player.GetComponent<PlayerHealth> ().maxNumOfHeart;
         SavedPlayerCoinsOnHand = player.GetComponent<PlayerInventory> ().coinOnHand;
-        savedAreaPrgress = player.GetComponent<PlayerProgress> ().areaProgress;
+        SavedPlayTimeInSecs = player.GetComponent<PlayerProgress> ().GetPlayTimeInScene ();
+        SavedInks = player.GetComponent<PlayerInventory>().inks;
+        SavedOrbs = player.GetComponent<PlayerInventory>().orbs;
+        SavedAreaPrgress = player.GetComponent<PlayerProgress> ().areaProgress;
         if (hardSave) {
-            Debug.Log ("Changing savepoint from " + SceneManager.GetSceneByBuildIndex (LastSavePoint).name + " to " + SceneManager.GetSceneByBuildIndex (sceneIndex).name);
+            // change save point to current scene if manual saving i.e. saving at SavePoint
             LastSavePoint = sceneIndex;
-        }
+        } // else do not change last save point
     }
-
-    /*
-        // For when player Died, save progress (with percentage of coins) and restart at last save point
-        public PlayerData (GameObject player, float percentOfCoinsLostAfterDeath, int loadIndex) {
-            SaveFileIndex = loadIndex;
-            SavedPlayerHealth = 1;
-            SavedMaxPlayerHealth = player.GetComponent<PlayerHealth> ().maxNumOfHeart;
-            SavedPlayerCoinsOnHand = Mathf.RoundToInt (player.GetComponent<PlayerInventory> ().coinOnHand * (1 - percentOfCoinsLostAfterDeath));
-            //LastSavePoint = LastSavePoint;
-        }
-        */
 }
