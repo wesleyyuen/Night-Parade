@@ -11,7 +11,7 @@ public class Forest_Tutorial : MonoBehaviour {
     void Start () {
         GameMaster gameMaster = FindObjectOfType<GameMaster> ();
         gameMaster.UpdateCurrentScene ();
-        Debug.Log (gameMaster.GetPrevScene ());
+
         if (gameMaster.GetPrevScene () == "Forest_Area1") {
             player.position = area1SpawnPoint.position;
             player.localScale = new Vector3 (-1f, 1f, 1f);

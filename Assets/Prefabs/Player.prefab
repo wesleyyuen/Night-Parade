@@ -5242,9 +5242,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32dbcc8802b5cc949a7d72bfb557ea69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  rb: {fileID: 0}
-  gameMaster: {fileID: 0}
   isInvulnerable: 0
 --- !u!114 &4635589901669011673
 MonoBehaviour:
@@ -5264,8 +5261,8 @@ MonoBehaviour:
   attackPoint: {fileID: 8483276319588606642}
   upThrustPoint: {fileID: 6051472595067619158}
   downThrustPoint: {fileID: 2958838024095533664}
-  attackRange: {x: 1.63, y: 2.5}
-  upThrustRange: {x: 2, y: 1.75}
+  attackRange: {x: 1.75, y: 2.5}
+  upThrustRange: {x: 2.5, y: 1.75}
   downThrustRange: {x: 2, y: 1.75}
   enemyLayers:
     serializedVersion: 2

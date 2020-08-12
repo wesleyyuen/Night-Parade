@@ -2136,7 +2136,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingScene: Main_Menu
   startingHealth: 5
-  numOfAreas: 5
 --- !u!4 &789520134
 Transform:
   m_ObjectHideFlags: 0
@@ -2274,7 +2273,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1028294721}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: -80
+  m_MinValue: -30
   m_MaxValue: 20
   m_WholeNumbers: 0
   m_Value: 0

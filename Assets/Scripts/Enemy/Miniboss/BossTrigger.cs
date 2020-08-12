@@ -9,7 +9,7 @@ public class BossTrigger : MonoBehaviour {
     [SerializeField] private Vector2 bossExitShuttingDirection;
     [SerializeField] private Animator animator;
 
-    void OnTriggerEnter2D (Collider2D other) {
+    void OnTriggerExit2D (Collider2D other) {
         if (other.CompareTag ("Player")) {
             // Start Boss Engagement
             animator.SetTrigger ("FightStarted");

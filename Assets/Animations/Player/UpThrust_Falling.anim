@@ -22,17 +22,17 @@ AnimationClip:
     - time: 0
       value: {fileID: -6582255830755096556, guid: 9516ebd9d7356f5459d0e2d69db703c3,
         type: 3}
-    - time: 0.16666667
+    - time: 0.083333336
       value: {fileID: 1153211361623245848, guid: 9516ebd9d7356f5459d0e2d69db703c3,
         type: 3}
-    - time: 0.33333334
+    - time: 0.16666667
       value: {fileID: 4535020887613639189, guid: 9516ebd9d7356f5459d0e2d69db703c3,
         type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 24
+  m_SampleRate: 12
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -55,7 +55,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.375
+    m_StopTime: 0.25
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -75,7 +75,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.33333334
+  - time: 0.16666667
     functionName: EndUpThrust
     data: 
     objectReferenceParameter: {fileID: 0}

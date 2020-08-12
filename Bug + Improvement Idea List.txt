@@ -1,13 +1,22 @@
 TODO:
+- Enemy - Ippondatara (programming done)
+- Village => building + background trees + yokai residents (rural)
+- Nozuchi art rework (maybe color scheme change or make it more furry)
+- Area needs more uniqueness (background or add points of interests)
+- Changing aggro checks to using raycast
+
+
+TODO animations:
 - Run_Left Animation
 - Attack left animation
 - Attack while running animation
 - no swords in falling or jumping animation
 
 Bug:
-- Cinemachine confinder snapping when jumping over to the last strech of road in Forest_Tutorial
-- Parallax not working when reloading a scene (temp. disabled parallaxing)
+- able to start dialogue when paused
 - Infinite money bug: Instead of completely hitting the treasure, hit until 1 hit left, then re-enter the area to have all hits again
+- Nozuchi may sink into the ground when stepped on
+- enemy drops clip into ground
 
 Performance Issue in Build:
 - may have issue with Vsync, build is slower than in Editor (setting vsync to "Don't Count" fix this, but mess up vcam)

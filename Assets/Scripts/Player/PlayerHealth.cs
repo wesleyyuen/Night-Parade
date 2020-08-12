@@ -4,17 +4,15 @@ using UnityEngine.SceneManagement;
 public class PlayerHealth : MonoBehaviour {
     public int currHealth { get; private set; }
     public int maxNumOfHeart { get; private set; }
-
-    [SerializeField] private Transform player;
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private GameMaster gameMaster;
+    
+    private Rigidbody2D rb;
+    private GameMaster gameMaster;
     [HideInInspector] public bool isInvulnerable;
 
     void Start () {
         gameMaster = FindObjectOfType<GameMaster> ();
         currHealth = gameMaster.savedPlayerData.SavedPlayerHealth;
         maxNumOfHeart = gameMaster.savedPlayerData.SavedMaxPlayerHealth;
-        player = gameObject.transform;
         rb = GetComponent<Rigidbody2D> ();
     }
 
@@ -22,7 +20,6 @@ public class PlayerHealth : MonoBehaviour {
         if (isInvulnerable) return;
 
         currHealth--;
-        Debug.Log ("Current Health: " + currHealth);
         if (currHealth <= 0) {
             Die ();
         }

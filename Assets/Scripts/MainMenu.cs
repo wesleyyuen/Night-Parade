@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour {
 
     void Start () {
         SetUIHelper (false);
-        if (SaveManager.Load (1) == null) { // TODO if File exists
+        if (!SaveManager.HaveSaveData()) { // TODO if File exists
             continueButton.interactable = false;
             continueText.color = Color.gray;
         } else {

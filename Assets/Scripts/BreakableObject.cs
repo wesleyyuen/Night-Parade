@@ -14,6 +14,9 @@ public class BreakableObject : MonoBehaviour {
     [HideInInspector] public int currentHealth;
 
     public virtual void Start () {
+        if (keyString == "") {
+            Debug.LogError("Error: Key String for Breakable Object " + gameObject.name + " is empty!");
+        }
         // Do not spawn if player destroyed previously
         bool destroyedBefore;
         FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (keyString, out destroyedBefore);

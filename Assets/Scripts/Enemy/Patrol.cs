@@ -5,6 +5,8 @@ using UnityEngine;
 public class Patrol : MonoBehaviour { // Has to be on same level as enemy
 
     [SerializeField] private float patrolDistance;
+
+    [SerializeField] private float patrolSpeed;
     [HideInInspector] public Vector2 patrolOrigin;
     private float aggroDistance;
     private float movementSpeed;
@@ -16,9 +18,8 @@ public class Patrol : MonoBehaviour { // Has to be on same level as enemy
         Enemy enemy = GetComponent<Enemy> ();
         EnemyMovement enemyMovement = GetComponent<EnemyMovement>();
         aggroDistance = enemy.aggroDistance;
-        movementSpeed = enemyMovement.movementSpeed;
-        player = enemy.player;
-        rb = enemy.rb;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        rb = GetComponent<Rigidbody2D>();
         isPatroling = false;
     }
 
@@ -54,7 +55,7 @@ public class Patrol : MonoBehaviour { // Has to be on same level as enemy
             }
 
             // Move towards target location
-            Vector2 newPositionR = Vector2.MoveTowards (rb.position, target, movementSpeed * Time.deltaTime);
+            Vector2 newPositionR = Vector2.MoveTowards (rb.position, target, patrolSpeed * Time.deltaTime);
             rb.position = newPositionR;
         }
     }

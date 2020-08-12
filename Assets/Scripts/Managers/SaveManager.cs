@@ -49,6 +49,13 @@ public class SaveManager : MonoBehaviour {
         }
         */
 
+    public static bool HaveSaveData () {
+        string path1 = Application.dataPath + Instance.fileName + "1" + Instance.fileExtension;
+        string path2 = Application.dataPath + Instance.fileName + "2" + Instance.fileExtension;
+        string path3 = Application.dataPath + Instance.fileName + "3" + Instance.fileExtension;
+        return File.Exists(path1) || File.Exists(path2) || File.Exists(path3);
+    }
+
     public static PlayerData Load (int index) {
         string path = Application.dataPath + Instance.fileName + index + Instance.fileExtension;
         if (File.Exists (path)) {

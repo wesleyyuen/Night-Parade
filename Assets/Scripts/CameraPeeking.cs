@@ -13,6 +13,8 @@ public class CameraPeeking : MonoBehaviour {
     [SerializeField] private float holdTime = 1.0f; // how long you need to hold to trigger the effect
 
     void Start () {
+        this.enabled = false;
+
         GameObject vcam = GameObject.FindGameObjectWithTag ("MainVCam");
         Grounded grounded = FindObjectOfType<Grounded> ();
         if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera> ().GetCinemachineComponent<CinemachineFramingTransposer> ();

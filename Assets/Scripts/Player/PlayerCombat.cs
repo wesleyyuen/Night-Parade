@@ -20,25 +20,24 @@ public class PlayerCombat : MonoBehaviour {
     private List<int> enemiesAttackedIDs;
 
     // Hashing strings for optimization, but seems to make player falling animaton not play during New Game
-    private int attackHash = Animator.StringToHash("Attack");
+    // private int attackHash = Animator.StringToHash ("Attack"); TODO: Not working
 
     void Update () {
         if (Time.time >= nextAttackTime && Input.GetButtonDown ("Attack")) {
             // Make a list of hit enemies/breakables so it won't double-count
             enemiesAttackedIDs = new List<int> ();
-            
-            /* Temp disable upthrust or downthrust as it is not needed at the moment, and require a LOT of difficult-to-draw artwork
+
             if (Input.GetAxisRaw ("Vertical") > 0) {
                 UpThrust ();
                 nextAttackTime = Time.time + 1f / attackRate;
                 return;
             }
+
             if (Input.GetAxisRaw ("Vertical") < 0 && !FindObjectOfType<Grounded> ().isGrounded) {
                 DownThrust ();
                 nextAttackTime = Time.time + 1f / attackRate;
                 return;
             }
-            */
 
             // Start attack animation, Attack() will be called from the animation frames
             animator.SetBool ("Attack", true);
@@ -53,16 +52,16 @@ public class PlayerCombat : MonoBehaviour {
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll (attackPoint.position, attackRange, 360, enemyLayers);
 
         if (hitEnemies.Length == 0) return;
-        
+
         foreach (Collider2D enemy in hitEnemies) {
             // Damage enemy/breakables only ONCE by adding them into list
             if (!enemiesAttackedIDs.Contains (enemy.gameObject.GetInstanceID ())) {
                 enemiesAttackedIDs.Add (enemy.gameObject.GetInstanceID ());
-                if (enemy.GetComponent<Enemy> () != null) {
+                if (enemy.GetComponent<Enemy> () != null)
                     enemy.GetComponent<Enemy> ().TakeDamage ();
-                    continue;
-                }
-                enemy.GetComponent<BreakableObject> ().TakeDamage (gameObject);
+
+                if (enemy.GetComponent<BreakableObject> () != null)
+                    enemy.GetComponent<BreakableObject> ().TakeDamage (gameObject);
             }
         }
         rb.AddForce (new Vector2 (horizontalKnockBackForce * -player.localScale.x, 0.0f), ForceMode2D.Impulse);
@@ -76,7 +75,15 @@ public class PlayerCombat : MonoBehaviour {
         if (hitEnemies.Length == 0) return;
 
         foreach (Collider2D enemy in hitEnemies) {
-            enemy.GetComponent<Enemy> ().TakeDamage ();
+            // Damage enemy/breakables only ONCE by adding them into list
+            if (!enemiesAttackedIDs.Contains (enemy.gameObject.GetInstanceID ())) {
+                enemiesAttackedIDs.Add (enemy.gameObject.GetInstanceID ());
+                if (enemy.GetComponent<Enemy> () != null)
+                    enemy.GetComponent<Enemy> ().TakeDamage ();
+
+                if (enemy.GetComponent<BreakableObject> () != null)
+                    enemy.GetComponent<BreakableObject> ().TakeDamage (gameObject);
+            }
         }
     }
 
@@ -88,7 +95,15 @@ public class PlayerCombat : MonoBehaviour {
         if (hitEnemies.Length == 0) return;
 
         foreach (Collider2D enemy in hitEnemies) {
-            enemy.GetComponent<Enemy> ().TakeDamage ();
+            // Damage enemy/breakables only ONCE by adding them into list
+            if (!enemiesAttackedIDs.Contains (enemy.gameObject.GetInstanceID ())) {
+                enemiesAttackedIDs.Add (enemy.gameObject.GetInstanceID ());
+                if (enemy.GetComponent<Enemy> () != null)
+                    enemy.GetComponent<Enemy> ().TakeDamage ();
+
+                if (enemy.GetComponent<BreakableObject> () != null)
+                    enemy.GetComponent<BreakableObject> ().TakeDamage (gameObject);
+            }
         }
         rb.AddForce (new Vector2 (0.0f, verticalKnockBackForce), ForceMode2D.Impulse);
     }
@@ -101,10 +116,12 @@ public class PlayerCombat : MonoBehaviour {
 
     void EndUpThrust () {
         animator.SetBool ("UpThrust", false);
+        enemiesAttackedIDs.Clear ();
     }
 
     void EndDownThrust () {
         animator.SetBool ("DownThrust", false);
+        enemiesAttackedIDs.Clear ();
     }
 
     // visualize attacks ranges
