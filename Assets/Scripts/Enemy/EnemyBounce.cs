@@ -9,24 +9,14 @@ public class EnemyBounce : EnemyMovement {
     protected override void Start () {
         base.Start();
         enemyGroundCheck = GetComponentInChildren<EnemyGrounded> ();
-    }
-
-    protected override void Update() {
-        if (player == null) return;
-
-        if (Vector2.Distance (player.position, rb.position) < aggroDistance && !enemy.collisionOnCooldown) {
-            if (!isAggro) {
-                isAggro = true;
-                StartCoroutine (FlashExclaimationMark ());
-            }
-        } else {
-            isAggro = false;
-        }
+        enemyAggression = GetComponent<EnemyAggression>();
     }
 
     public void Bounce () {
-        if (Vector2.Distance (player.position, rb.position) < aggroDistance && !enemy.collisionOnCooldown && enemyGroundCheck.isGrounded) {
+        if (enemyAggression.GetIsAggro() && !enemy.collisionOnCooldown && enemyGroundCheck.isGrounded) {
             rb.AddForce (new Vector2 (transform.localScale.x * movementSpeed, bounceForce), ForceMode2D.Impulse);
+        } else {
+            rb.AddForce (new Vector2 (0.0f, bounceForce), ForceMode2D.Impulse);
         }
     }
 }

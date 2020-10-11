@@ -24,6 +24,7 @@ public class DialogueManager : MonoBehaviour {
             Destroy (gameObject);
         }
     }
+    
     void Start () {
         sentences = new Queue<string> ();
         dialogueUI.SetActive (false);

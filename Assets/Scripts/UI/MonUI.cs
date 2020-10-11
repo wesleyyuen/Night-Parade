@@ -20,9 +20,8 @@ public class MonUI : MonoBehaviour {
         playerInventory = FindObjectOfType<PlayerInventory> ();
     }
 
-    void Update () {
-        // Repopulate variables after loading new scene
-        if (playerInventory == null) playerInventory = FindObjectOfType<PlayerInventory> ();
+    public void UpdateMon() {
+        playerInventory = FindObjectOfType<PlayerInventory> ();
         if (playerInventory == null) return;
 
         // Display current coins on hand as text

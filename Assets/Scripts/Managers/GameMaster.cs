@@ -8,9 +8,10 @@ public class GameMaster : MonoBehaviour {
     [SerializeField] private string startingScene;
     private string prevScene = "";
     private string currentScene = "";
-    public int startingHealth = 5;
+    public int startingHearts = 3;
     public const int numOfAreas = 5;
     public PlayerData savedPlayerData;
+    private const int healthPerHeart = 4;
 
     void Awake () {
         if (Instance == null) {
@@ -23,11 +24,11 @@ public class GameMaster : MonoBehaviour {
         // Initialize Dictionary
         FillAreaNameToIndexDictionary ();
         UpdateCurrentScene ();
-        savedPlayerData = new PlayerData (startingHealth);
+        savedPlayerData = new PlayerData (startingHearts * healthPerHeart);
         if (startingScene == "Main_Menu") SetUIHelper (false); // can remove if play mode from _preload
 
         // Load starting scene with saved player data
-        RequestSceneChange (startingScene, savedPlayerData);
+        RequestSceneChange (startingScene, ref savedPlayerData);
     }
 
     public void UpdateCurrentScene () {
@@ -38,14 +39,14 @@ public class GameMaster : MonoBehaviour {
         return prevScene;
     }
 
-    public void RequestSceneChange (string sceneToLoad, PlayerData currPlayerData) {
+    public void RequestSceneChange (string sceneToLoad, ref PlayerData currPlayerData) {
         prevScene = currentScene;
         savedPlayerData = currPlayerData;
         SceneManager.LoadScene (sceneToLoad);
     }
 
     // overload for buildIndex instead of scene Name
-    public void RequestSceneChange (int sceneToLoad, PlayerData currPlayerData) {
+    public void RequestSceneChange (int sceneToLoad, ref PlayerData currPlayerData) {
         prevScene = currentScene;
         savedPlayerData = currPlayerData;
         SceneManager.LoadScene (sceneToLoad);

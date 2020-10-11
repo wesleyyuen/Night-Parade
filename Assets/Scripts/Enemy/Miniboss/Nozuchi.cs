@@ -3,14 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Nozuchi : Enemy {
+    private Animator animator;
+    private EnemyGFX enemyGFX;
+    [SerializeField] private float attackTime;
+    private float timer;
 
     public override void Start () {
         // Do not spawn if player already defeated it before
-        bool destroyedBefore;
-        FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue ("Nozuchi_Defeated", out destroyedBefore);
-        if (destroyedBefore) Destroy (transform.parent.gameObject);
+        bool defeatedBefore;
+        FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue ("Nozuchi_Defeated", out defeatedBefore);
+        if (defeatedBefore) Destroy (transform.parent.gameObject);
 
         base.Start ();
+        animator = GetComponent<Animator>();
+        enemyGFX = GetComponent<EnemyGFX>();
+        timer = 0;
+    }
+
+    public override void Update () {
+        // Only face player if it is not attacking
+        if (animator.GetBool("FightStarted")) {
+            StartCoroutine(enemyGFX.FaceTowardsPlayer(attackTime));
+        }
+
+        base.Update();
     }
 
     public override IEnumerator Die () {

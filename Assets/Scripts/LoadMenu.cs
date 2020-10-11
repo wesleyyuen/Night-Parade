@@ -19,6 +19,9 @@ public class LoadMenu : MonoBehaviour {
     [SerializeField] private Image[] saveSlot3Hearts;
     [SerializeField] private TextMeshProUGUI saveSlot3Time;
     [SerializeField] private Sprite fullHeart;
+    [SerializeField] private Sprite threeQuartersHeart;
+    [SerializeField] private Sprite halfHeart;
+    [SerializeField] private Sprite quarterHeart;
     [SerializeField] private Sprite emptyHeart;
 
     private PlayerData data1;
@@ -41,25 +44,21 @@ public class LoadMenu : MonoBehaviour {
 
     void DisplayHearts () {
         // Save Slot 1
-        if (data1 != null) {
-            for (int i = 0; i < saveSlot1Hearts.Length; i++) {
-                saveSlot1Hearts[i].sprite = (i < data1.SavedPlayerHealth) ? fullHeart : emptyHeart;
-                saveSlot1Hearts[i].enabled = i < data1.SavedMaxPlayerHealth;
-            }
-        }
+        if (data1 != null) DisplayHeartsHelper(data1.SavedPlayerHealth, data1.SavedMaxPlayerHealth, saveSlot1Hearts);
         // Save Slot 2
-        if (data2 != null) {
-            for (int i = 0; i < saveSlot2Hearts.Length; i++) {
-                saveSlot2Hearts[i].sprite = (i < data2.SavedPlayerHealth) ? fullHeart : emptyHeart;
-                saveSlot2Hearts[i].enabled = i < data2.SavedMaxPlayerHealth;
-            }
-        }
+        if (data2 != null) DisplayHeartsHelper(data2.SavedPlayerHealth, data2.SavedMaxPlayerHealth, saveSlot2Hearts);
         // Save Slot 3
-        if (data3 != null) {
-            for (int i = 0; i < saveSlot3Hearts.Length; i++) {
-                saveSlot3Hearts[i].sprite = (i < data3.SavedPlayerHealth) ? fullHeart : emptyHeart;
-                saveSlot3Hearts[i].enabled = i < data3.SavedMaxPlayerHealth;
-            }
+        if (data3 != null) DisplayHeartsHelper(data3.SavedPlayerHealth, data3.SavedMaxPlayerHealth, saveSlot3Hearts);
+    }
+
+    void DisplayHeartsHelper (int currHealth, int maxHealth, Image[] hearts) {
+        int numOfFullHearts = currHealth / 4;
+        int maxHearts = maxHealth / 4;
+
+        // Display hearts
+        for (int i = 0; i < hearts.Length; i++) {
+            hearts[i].sprite = (i < numOfFullHearts) ? fullHeart : emptyHeart;
+            hearts[i].enabled = i < maxHearts;
         }
     }
 

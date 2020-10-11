@@ -6,6 +6,9 @@ public class HealthUI : MonoBehaviour {
     private PlayerHealth playerHealth;
     [SerializeField] private Image[] hearts;
     [SerializeField] private Sprite fullHeart;
+    [SerializeField] private Sprite threeQuartersHeart;
+    [SerializeField] private Sprite halfHeart;
+    [SerializeField] private Sprite quarterHeart;
     [SerializeField] private Sprite emptyHeart;
     
     void Awake () {
@@ -21,17 +24,25 @@ public class HealthUI : MonoBehaviour {
         playerHealth = FindObjectOfType<PlayerHealth> ();
     }
 
-    void Update () {
-        // repopulate variables after loading new scene
-        if (playerHealth == null) playerHealth = FindObjectOfType<PlayerHealth> ();
+    public void UpdateHearts() {
+        playerHealth = FindObjectOfType<PlayerHealth> ();
         if (playerHealth == null) return;
-        
+
+        int numOfFullHearts = playerHealth.currHealth / 4;
+        int maxHearts = playerHealth.maxHealth / 4;
+
         // Display hearts
         for (int i = 0; i < hearts.Length; i++) {
-            // make lost health empty hearts
-            hearts[i].sprite = (i < playerHealth.currHealth) ? fullHeart : emptyHeart;
+            hearts[i].sprite = (i < numOfFullHearts) ? fullHeart : emptyHeart;
+
             // disable hearts that exceed current maximum health
-            hearts[i].enabled = i < playerHealth.maxNumOfHeart;
+            hearts[i].enabled = i < maxHearts;
         }
+
+        // Handle Reminder
+        int reminder = playerHealth.currHealth % 4;
+        if (reminder == 0) return;
+        hearts[numOfFullHearts].sprite = (reminder == 3) ? threeQuartersHeart
+                                                   : (reminder == 2) ? halfHeart : quarterHeart;
     }
 }

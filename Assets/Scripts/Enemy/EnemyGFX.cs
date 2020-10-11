@@ -4,35 +4,42 @@ using UnityEngine;
 
 public class EnemyGFX : MonoBehaviour {
     private Transform player;
-    private Enemy enemyScript;
     public float turningTime;
-    private float aggroDistance;
-    [HideInInspector] public bool isTurning;
-    
+    private EnemyAggression enemyAggression;
+    [HideInInspector] private bool isTurning;
+    [SerializeField] protected GameObject exclaimationMark;
 
-    void Start () {
+    private void Start () {
         player = GameObject.FindGameObjectWithTag ("Player").transform;
-        aggroDistance = gameObject.GetComponent<Enemy> ().aggroDistance;
+        enemyAggression = GetComponent<EnemyAggression>();
     }
-    void Update () {
-        if (player == null) return;
 
-        // Flip Sprite (using localScale instead of FlipX so children also flips, just in case...)
-        if (Vector2.Distance (player.position, transform.position) < aggroDistance) {
-            if (transform.position.x > player.position.x) {
-                if (transform.localScale.x != -1f)
-                    StartCoroutine (Turning (-1f, turningTime));
-            } else {
-                if (transform.localScale.x != 1f)
-                    StartCoroutine (Turning (1f, turningTime));
-            }
+    public IEnumerator FaceTowardsPlayer (float delay) {
+        if (player.position.x >= transform.position.x && transform.localScale.x != 1.0f) {
+            yield return new WaitForSeconds (delay);
+            transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
+        } else if (player.position.x < transform.position.x && transform.localScale.x != -1.0f) {
+            yield return new WaitForSeconds (delay);
+            transform.localScale = new Vector3 (-1.0f, 1.0f, 1.0f);
         }
     }
 
-    IEnumerator Turning (float XScale, float turningTime) {
+    public IEnumerator PatrolTurnAround (bool isInstant) {
         isTurning = true;
-        yield return new WaitForSeconds (turningTime);
-        transform.localScale = new Vector3 (XScale, 1f, 1f);
+        yield return new WaitForSeconds (isInstant ? 0.0f : turningTime);
+        transform.localScale = new Vector3 (-transform.localScale.x, 1f, 1f);
         isTurning = false;
+    }
+
+    public IEnumerator FlashExclaimationMark () {
+        exclaimationMark.SetActive (true);
+        float flashTime = GetComponent<EnemyGFX> ().turningTime;
+        if (flashTime < 0.5f) flashTime = 0.5f;
+        yield return new WaitForSeconds (flashTime);
+        exclaimationMark.SetActive (false);
+    }
+
+    public bool GetIsTurning() {
+        return isTurning;
     }
 }

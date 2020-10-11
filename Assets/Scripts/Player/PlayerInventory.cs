@@ -14,10 +14,15 @@ public class PlayerInventory : MonoBehaviour {
         coinOnHand = gameMaster.savedPlayerData.SavedPlayerCoinsOnHand;
         inks = gameMaster.savedPlayerData.SavedInks;
         orbs = gameMaster.savedPlayerData.SavedOrbs;
+
+        FindObjectOfType<MonUI>().UpdateMon();
     }
 
     public void PickUpCoin (int amt) {
         coinOnHand += amt;
+
+        // Change Mon UI
+        FindObjectOfType<MonUI>().UpdateMon();
     }
 
     public void PickUpInk (int areaIndex) {

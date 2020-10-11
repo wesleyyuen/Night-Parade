@@ -17,7 +17,7 @@ public class Tanuki_Attack : MonoBehaviour {
         if (colInfo.Length == 0) return;
 
         foreach (Collider2D enemy in colInfo) {
-            if (enemy.name == "Player") enemy.GetComponent<PlayerHealth> ().TakeDamage (transform.position, 45f);
+            if (enemy.name == "Player") enemy.GetComponent<PlayerHealth> ().TakeDamage (4, transform.position);
         }
     }
 

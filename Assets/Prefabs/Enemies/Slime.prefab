@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1128662852874068493}
   - component: {fileID: 3863298581046562429}
   - component: {fileID: 7326519521332669852}
+  - component: {fileID: 1916187428271697681}
   - component: {fileID: 5992527074612571849}
   - component: {fileID: 2114970866597042801}
   m_Layer: 13
@@ -57,6 +58,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -162,9 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 3164354762677199800}
   deathParticleEffect: {fileID: 4831144421703825869}
-  player: {fileID: 0}
   maxHealth: 2
-  aggroDistance: 7
+  damageAmount: 1
   knockBackOnAttackForce: 15
   collisionKnockBackForceOnPlayer: 18
   collisionCooldown: 1.5
@@ -185,6 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turningTime: 0.1
+  exclaimationMark: {fileID: 2769964765916749949}
 --- !u!114 &7326519521332669852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,9 +199,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffab7be561038524e81dbd456c67ee65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aggroDistance: 10
-  movementSpeed: 2.5
-  exclaimationMark: {fileID: 2769964765916749949}
+  movementSpeed: 3
+--- !u!114 &1916187428271697681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128662852874068485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bdd694ca2cbef94aa99b3e3259c3889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroRange: 3
+  lineOfSightDistance: 12
+  lineOfSightAngle: 80
+  lineOfSightOriginOffset: {x: 0, y: -1.2}
+  lineOfSightBreakDelay: 1
 --- !u!114 &5992527074612571849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,9 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10f0aa0fb40f9bf40acad94728d7a9a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolDistance: 5
   patrolSpeed: 1.5
-  patrolOrigin: {x: 0, y: 0}
 --- !u!114 &2114970866597042801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,6 +297,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2442,6 +2458,62 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+  LifetimeByEmitterSpeedModule:
+    enabled: 0
+    m_Curve:
+      serializedVersion: 2
+      minMaxState: 1
+      scalar: 1
+      minScalar: 1
+      maxCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: -0.8
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0.2
+          inSlope: -0.8
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      minCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+    m_Range: {x: 0, y: 1}
   ForceModule:
     enabled: 0
     x:
@@ -5023,6 +5095,7 @@ ParticleSystemRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5065,6 +5138,8 @@ ParticleSystemRenderer:
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
+  m_FreeformStretching: 0
+  m_RotateWithStretchDirection: 1
   m_VertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}

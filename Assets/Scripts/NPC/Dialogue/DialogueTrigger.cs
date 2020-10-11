@@ -30,7 +30,8 @@ public class DialogueTrigger : MonoBehaviour {
     }
 
     public void TriggerDialogue () { // TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
-        FindObjectOfType<DialogueManager> ().StartDialogue (dialogue);
+        if (!PauseMenu.isPuased) {
+            FindObjectOfType<DialogueManager> ().StartDialogue (dialogue);
+        }
     }
-
 }

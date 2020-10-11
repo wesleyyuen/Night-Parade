@@ -22,6 +22,8 @@ public class PlayerCombat : MonoBehaviour {
     // Hashing strings for optimization, but seems to make player falling animaton not play during New Game
     // private int attackHash = Animator.StringToHash ("Attack"); TODO: Not working
 
+
+    // TODO: Fixedupdate: change to handle forces in FixedUpdate
     void Update () {
         if (Time.time >= nextAttackTime && Input.GetButtonDown ("Attack")) {
             // Make a list of hit enemies/breakables so it won't double-count

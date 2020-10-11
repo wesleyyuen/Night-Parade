@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private float jumpBuffer;
     private float coyoteTimer;
+    private float horizontalInput;
 
     void Awake () {
         audioManager = FindObjectOfType<AudioManager> ();
@@ -29,12 +30,8 @@ public class PlayerMovement : MonoBehaviour {
 
     void Update () {
         animator.SetBool ("IsGrounded", grounded.isGrounded);
-        // Jump uses rb.velocity, should be in Update() instead of FixedUpdate()
-        Jump ();
-    }
 
-    void FixedUpdate () {
-        float horizontalInput = Input.GetAxisRaw ("Horizontal");
+        horizontalInput = Input.GetAxisRaw ("Horizontal");
         Vector3 prevLocalScale = transform.localScale;
 
         // Flip sprite (TODO: maybe move into child object)
@@ -56,12 +53,18 @@ public class PlayerMovement : MonoBehaviour {
         animator.SetFloat ("Horizontal", horizontalInput);
         animator.SetFloat ("Vertical", rb.velocity.y);
 
+        CoyoteAndJumpBuffering();
+    }
+
+    void FixedUpdate () {
         // Move player
         Vector2 horizontalMovement = new Vector2 (horizontalInput * movementSpeed, 0.0f);
         rb.position += horizontalMovement * Time.deltaTime;
+
+        Jump ();
     }
 
-    void Jump () {
+    void CoyoteAndJumpBuffering() {
         // Coyote Time - allow lateinput of jumps after touching the ground
         coyoteTimer -= Time.deltaTime;
         if (FindObjectOfType<Grounded> ().isGrounded) {
@@ -73,7 +76,9 @@ public class PlayerMovement : MonoBehaviour {
         if (Input.GetButtonDown ("Jump")) {
             jumpBuffer = jumpBufferTime;
         }
+    }
 
+    void Jump () {
         if (jumpBuffer > 0 && coyoteTimer > 0) {
             CreateDustTrail ();
             jumpBuffer = 0;

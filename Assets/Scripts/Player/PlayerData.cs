@@ -15,10 +15,10 @@ public class PlayerData {
     public Dictionary<string, bool> SavedAreaPrgress { get; private set; }
 
     // For Initializing
-    public PlayerData (int startingHealth) {
+    public PlayerData (int startingHearts) {
         SaveFileIndex = 1; // New Game will override first save slot
-        SavedPlayerHealth = startingHealth;
-        SavedMaxPlayerHealth = startingHealth;
+        SavedPlayerHealth = startingHearts;
+        SavedMaxPlayerHealth = startingHearts;
         SavedPlayerCoinsOnHand = 0;
         LastSavePoint = 0;
         SavedPlayTimeInSecs = 0;
@@ -33,7 +33,7 @@ public class PlayerData {
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth> ();
         PlayerProgress playerProgress = player.GetComponent<PlayerProgress> ();
         SavedPlayerHealth = player.GetComponent<PlayerHealth> ().currHealth;
-        SavedMaxPlayerHealth = player.GetComponent<PlayerHealth> ().maxNumOfHeart;
+        SavedMaxPlayerHealth = player.GetComponent<PlayerHealth> ().maxHealth;
         SavedPlayerCoinsOnHand = player.GetComponent<PlayerInventory> ().coinOnHand;
         SavedPlayTimeInSecs = player.GetComponent<PlayerProgress> ().GetPlayTimeInScene ();
         SavedInks = player.GetComponent<PlayerInventory>().inks;

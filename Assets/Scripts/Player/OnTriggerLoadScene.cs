@@ -11,7 +11,7 @@ public class OnTriggerLoadScene : MonoBehaviour {
             PlayerData playerVariables = new PlayerData(collider.gameObject, false, SceneManager.GetActiveScene ().buildIndex, SaveManager.GetLoadIndex());
             
             // Play Scene Transition
-            FindObjectOfType<SceneTransition>().StartSceneTransition(levelToLoad, playerVariables);
+            FindObjectOfType<SceneTransition>().StartSceneTransition(levelToLoad, ref playerVariables);
         }
     }
 }

@@ -23,8 +23,8 @@ public class MainMenu : MonoBehaviour {
     }
 
     public void NewGame () {
-        PlayerData playerData = new PlayerData (gameMaster.startingHealth);
-        gameMaster.RequestSceneChange ("Forest_Tutorial", playerData);
+        PlayerData playerData = new PlayerData (gameMaster.startingHearts * 4);
+        gameMaster.RequestSceneChange ("Forest_Tutorial", ref playerData);
         SetUIHelper (true);
     }
 
@@ -32,7 +32,7 @@ public class MainMenu : MonoBehaviour {
         PlayerData playerData = SaveManager.Load (index);
         if (playerData == null) return;
         gameMaster.savedPlayerData = playerData;
-        gameMaster.RequestSceneChange (playerData.LastSavePoint, playerData);
+        gameMaster.RequestSceneChange (playerData.LastSavePoint, ref playerData);
 
         // Handle Pause Menu (when player pause to quit to main menu and load game)
         SetUIHelper (true);

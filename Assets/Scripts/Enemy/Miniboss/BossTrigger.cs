@@ -12,7 +12,7 @@ public class BossTrigger : MonoBehaviour {
     void OnTriggerExit2D (Collider2D other) {
         if (other.CompareTag ("Player")) {
             // Start Boss Engagement
-            animator.SetTrigger ("FightStarted");
+            animator.SetBool ("FightStarted", true);
             // Closing Boss Exit
             StartCoroutine (BossExitControl (bossExitShuttingDirection));
         }

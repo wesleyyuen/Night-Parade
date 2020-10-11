@@ -1,5 +1,5 @@
-# Night-Parade-Remake
-A 2D Metroidvania remake of a previous game, set in the Yokai World, inspired by Hollow Knight and Studio Ghibli.
+# Night-Parade
+A 2D adventure set in the Yokai World, inspired by Hollow Knight and Studio Ghibli.
 
 Link to Demo Video:
 https://www.youtube.com/watch?v=arpAAmBUDAc

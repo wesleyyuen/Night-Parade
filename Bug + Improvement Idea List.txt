@@ -1,9 +1,9 @@
 TODO:
-- Enemy - Ippondatara (programming done)
+- Changing textbox to semicricle (botw)
 - Village => building + background trees + yokai residents (rural)
-- Nozuchi art rework (maybe color scheme change or make it more furry)
-- Area needs more uniqueness (background or add points of interests)
-- Changing aggro checks to using raycast
+- Design Forest, points of interests
+- Nozuchi art rework (maybe color scheme change or make it more furry) + one more move  (related to/compliment dash)
+- implement blocking? (Iron-related item? increase mass i.e. fall faster + jump lower)
 
 
 TODO animations:
@@ -13,18 +13,28 @@ TODO animations:
 - no swords in falling or jumping animation
 
 Bug:
+- enemies cannot patrol on some platform (will just turn around repeatedly in place)
 - able to start dialogue when paused
-- Infinite money bug: Instead of completely hitting the treasure, hit until 1 hit left, then re-enter the area to have all hits again
+- player animation bugs out when walking down slopes
 - Nozuchi may sink into the ground when stepped on
 - enemy drops clip into ground
+- Infinite money bug: Instead of completely hitting the treasure, hit until 1 hit left, then re-enter the area to have all hits again
+
+Maybe:
+- Look into movement
+
+Play mode bugs:
+- Player shaking
+
+Event Ideas:
+- Ubasute (姥捨て) => 1st see both in village , son unwilling; 2nd see son carrying mom up mountain; 3rd see corpse of mom + son back to village
+
 
 Performance Issue in Build:
 - may have issue with Vsync, build is slower than in Editor (setting vsync to "Don't Count" fix this, but mess up vcam)
 
 Gameplay Improvements needed:
 - Camera deadzones tweaks
-- Tweak jumping - hovering a bit at peak height
-- Sliding when taking damage (cuz using AddForce)
 
 Environment improvements (?):
 - use sprite instead of 2D lights for more control?
@@ -36,3 +46,7 @@ Programming Improvements needed: (search TODO)
 
 World:
 - Areas should fit a virtue theme (e.g. patience, forgiveness)
+
+Boss / Enemies Ideas:
+- Daruma
+- Stack Doll

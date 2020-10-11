@@ -5,16 +5,15 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
     [Header ("References")]
     [SerializeField] private Animator animator;
     [SerializeField] private ParticleSystem deathParticleEffect;
-    [HideInInspector] public Transform player;
+    protected Transform player;
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
 
     [Header ("Behaviors")]
 
     [SerializeField] public int maxHealth;
-    public float aggroDistance; // keep this here for miniboss (miniboss use different movement)
+    [SerializeField] public int damageAmount;
     [SerializeField] public float knockBackOnAttackForce;
-    [SerializeField] public float collisionKnockBackForceOnPlayer;
     [SerializeField] public float collisionCooldown = 1.5f;
 
     [SerializeField] public float dieTime;
@@ -48,14 +47,6 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         }
     }
 
-    private void OnBecameVisible () {
-        enabled = true;
-    }
-
-    private void OnBecameInvisible () {
-        enabled = false;
-    }
-
     public virtual void OnCollisionStay2D (Collision2D collision) {
         if (collisionOnCooldown) return;
 
@@ -64,7 +55,7 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
             collisionOnCooldown = true;
             startTime = Time.time;
             timer = startTime;
-            collision.gameObject.GetComponent<PlayerHealth> ().TakeDamage (rb.position, collisionKnockBackForceOnPlayer);
+            collision.gameObject.GetComponent<PlayerHealth> ().TakeDamage (damageAmount, rb.position);
         }
     }
 
@@ -72,9 +63,13 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         // TODO Animation
         Vector2 knockBackDirection = Vector3.Normalize (rb.position - (Vector2) player.position);
         rb.AddForce (knockBackOnAttackForce * knockBackDirection, ForceMode2D.Impulse);
-        //GetComponent<SpriteRenderer> ().color = new Color (0.69f, 0.16f, 0.16f, 1.0f);
+
+        // Show Damaged Effect
         StartCoroutine (DamagedEffect ());
+
         currentHealth--;
+
+        // Handle Death
         if (currentHealth <= 0) {
             isDead = true;
             deathParticleEffect.Play ();
