@@ -34,7 +34,7 @@ public class PlayerHealth : MonoBehaviour {
         FindObjectOfType<HealthUI>().UpdateHearts();
 
         // Apply knockback force to player in opposite direction based on damage amount
-        Vector2 knockBackDirection = Vector3.Normalize (rb.position - enemyPos);
+        Vector2 knockBackDirection = new Vector2( Vector3.Normalize (rb.position - enemyPos).x, 0f);
         rb.AddForce (damage * damageKnockBackMultiplier * knockBackDirection, ForceMode2D.Impulse);
 
         // Shake Camera based on damage amount

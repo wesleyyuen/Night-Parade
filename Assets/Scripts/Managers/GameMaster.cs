@@ -10,7 +10,7 @@ public class GameMaster : MonoBehaviour {
     private string currentScene = "";
     public int startingHearts = 3;
     public const int numOfAreas = 5;
-    public PlayerData savedPlayerData;
+    [HideInInspector] public PlayerData savedPlayerData;
     private const int healthPerHeart = 4;
 
     void Awake () {

@@ -6,7 +6,6 @@ public class Nozuchi : Enemy {
     private Animator animator;
     private EnemyGFX enemyGFX;
     [SerializeField] private float attackTime;
-    private float timer;
 
     public override void Start () {
         // Do not spawn if player already defeated it before
@@ -17,7 +16,6 @@ public class Nozuchi : Enemy {
         base.Start ();
         animator = GetComponent<Animator>();
         enemyGFX = GetComponent<EnemyGFX>();
-        timer = 0;
     }
 
     public override void Update () {

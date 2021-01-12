@@ -2,9 +2,10 @@
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour {
-    [SerializeField] private Transform player;
-    [SerializeField] private Animator animator;
-    [SerializeField] private Rigidbody2D rb;
+    private Transform player;
+    private Animator animator;
+    private Rigidbody2D rb;
+    [SerializeField] private float baseDamage;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private Transform upThrustPoint;
     [SerializeField] private Transform downThrustPoint;
@@ -12,43 +13,61 @@ public class PlayerCombat : MonoBehaviour {
     [SerializeField] private Vector2 upThrustRange;
     [SerializeField] private Vector2 downThrustRange;
     [SerializeField] private LayerMask enemyLayers;
-    [SerializeField] private float attackRate = 2f;
-    [SerializeField] private float nextAttackTime = 0f;
+    [SerializeField] private float attackCooldown;
+    [SerializeField] private float comboTimeframeAfterAttack;
     [SerializeField] private float horizontalKnockBackForce = 5f;
     [SerializeField] private float verticalKnockBackForce = 20f;
-
+    [HideInInspector] public bool canAttack { get; set; }
+    private float nextAttackTime = 0f;
+    private int comboCounter;
+    private bool nextCombo;
+    private bool isInComboTimeframe;
+    private const int maxComboCount = 3;
     private List<int> enemiesAttackedIDs;
 
     // Hashing strings for optimization, but seems to make player falling animaton not play during New Game
     // private int attackHash = Animator.StringToHash ("Attack"); TODO: Not working
 
+    private void Awake() {
+        player = GetComponent<Transform>();
+        animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        canAttack = true;
+        nextCombo = false;
+        isInComboTimeframe = false;
+    }
 
-    // TODO: Fixedupdate: change to handle forces in FixedUpdate
-    void Update () {
-        if (Time.time >= nextAttackTime && Input.GetButtonDown ("Attack")) {
-            // Make a list of hit enemies/breakables so it won't double-count
-            enemiesAttackedIDs = new List<int> ();
+    private void Update () {
+        if (canAttack && Input.GetButtonDown ("Attack")) {
+            // Handle Combo
+            if (isInComboTimeframe && comboCounter != 0)
+                nextCombo = true;
 
-            if (Input.GetAxisRaw ("Vertical") > 0) {
-                UpThrust ();
-                nextAttackTime = Time.time + 1f / attackRate;
-                return;
+            if (Time.time >= nextAttackTime) {
+                // Start First Attack
+                if (comboCounter == 0) {
+                    animator.SetInteger ("Attack", 1);
+                    comboCounter = 1;
+                }
+
+                // Make a list of hit enemies/breakables so it won't double-count
+                enemiesAttackedIDs = new List<int> ();
+
+                if (Input.GetAxisRaw ("Vertical") > 0) {
+                    UpThrust ();
+                    return;
+                }
+
+                if (Input.GetAxisRaw ("Vertical") < 0 && !FindObjectOfType<PlayerPlatformCollision> ().onGround) {
+                    DownThrust ();
+                    return;
+                }
             }
-
-            if (Input.GetAxisRaw ("Vertical") < 0 && !FindObjectOfType<Grounded> ().isGrounded) {
-                DownThrust ();
-                nextAttackTime = Time.time + 1f / attackRate;
-                return;
-            }
-
-            // Start attack animation, Attack() will be called from the animation frames
-            animator.SetBool ("Attack", true);
-
-            // Cooldown for attacks
-            nextAttackTime = Time.time + 1f / attackRate;
+            
         }
     }
 
+    // Called from Animation frames
     void Attack () {
         // Get Colliders of enemies hit
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll (attackPoint.position, attackRange, 360, enemyLayers);
@@ -60,13 +79,18 @@ public class PlayerCombat : MonoBehaviour {
             if (!enemiesAttackedIDs.Contains (enemy.gameObject.GetInstanceID ())) {
                 enemiesAttackedIDs.Add (enemy.gameObject.GetInstanceID ());
                 if (enemy.GetComponent<Enemy> () != null)
-                    enemy.GetComponent<Enemy> ().TakeDamage ();
+                    enemy.GetComponent<Enemy> ().TakeDamage (baseDamage);
 
                 if (enemy.GetComponent<BreakableObject> () != null)
                     enemy.GetComponent<BreakableObject> ().TakeDamage (gameObject);
             }
         }
         rb.AddForce (new Vector2 (horizontalKnockBackForce * -player.localScale.x, 0.0f), ForceMode2D.Impulse);
+    }
+
+    void AttackAndListenForNextCombo() {
+        isInComboTimeframe = true;
+        Attack();
     }
 
     void UpThrust () {
@@ -81,7 +105,7 @@ public class PlayerCombat : MonoBehaviour {
             if (!enemiesAttackedIDs.Contains (enemy.gameObject.GetInstanceID ())) {
                 enemiesAttackedIDs.Add (enemy.gameObject.GetInstanceID ());
                 if (enemy.GetComponent<Enemy> () != null)
-                    enemy.GetComponent<Enemy> ().TakeDamage ();
+                    enemy.GetComponent<Enemy> ().TakeDamage (baseDamage);
 
                 if (enemy.GetComponent<BreakableObject> () != null)
                     enemy.GetComponent<BreakableObject> ().TakeDamage (gameObject);
@@ -101,7 +125,7 @@ public class PlayerCombat : MonoBehaviour {
             if (!enemiesAttackedIDs.Contains (enemy.gameObject.GetInstanceID ())) {
                 enemiesAttackedIDs.Add (enemy.gameObject.GetInstanceID ());
                 if (enemy.GetComponent<Enemy> () != null)
-                    enemy.GetComponent<Enemy> ().TakeDamage ();
+                    enemy.GetComponent<Enemy> ().TakeDamage (baseDamage);
 
                 if (enemy.GetComponent<BreakableObject> () != null)
                     enemy.GetComponent<BreakableObject> ().TakeDamage (gameObject);
@@ -112,17 +136,31 @@ public class PlayerCombat : MonoBehaviour {
 
     // Called from animation frame
     void EndAttack () {
-        animator.SetBool ("Attack", false);
+        StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => isInComboTimeframe = e, comboTimeframeAfterAttack, true, false));
+
+        if (nextCombo && comboCounter < maxComboCount) {
+            nextCombo = false;
+            comboCounter++;
+            animator.SetInteger ("Attack", comboCounter);
+            nextAttackTime = Time.time + attackCooldown;
+        } else {
+            animator.SetInteger ("Attack", 0);
+            comboCounter = 0;
+            nextAttackTime = Time.time + attackCooldown * 5;
+        }
+
         enemiesAttackedIDs.Clear ();
     }
 
     void EndUpThrust () {
         animator.SetBool ("UpThrust", false);
+        nextAttackTime = Time.time + attackCooldown;
         enemiesAttackedIDs.Clear ();
     }
 
     void EndDownThrust () {
         animator.SetBool ("DownThrust", false);
+        nextAttackTime = Time.time + attackCooldown;
         enemiesAttackedIDs.Clear ();
     }
 

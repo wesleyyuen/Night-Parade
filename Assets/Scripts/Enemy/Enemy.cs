@@ -11,13 +11,13 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
 
     [Header ("Behaviors")]
 
-    [SerializeField] public int maxHealth;
+    [SerializeField] public float maxHealth;
     [SerializeField] public int damageAmount;
     [SerializeField] public float knockBackOnAttackForce;
     [SerializeField] public float collisionCooldown = 1.5f;
 
     [SerializeField] public float dieTime;
-    [HideInInspector] public int currentHealth;
+    [HideInInspector] public float currentHealth;
 
     [HideInInspector] public bool collisionOnCooldown;
     [SerializeField] private float flashDuration;
@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
     private float startTime;
     private float timer;
     public bool isDead { private set; get; }
+    public bool isTakingDmg { private set; get; }
 
     public virtual void Start () {
         currentHealth = maxHealth;
@@ -33,6 +34,7 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         sr = GetComponent<SpriteRenderer> ();
         collisionOnCooldown = false;
         isDead = false;
+        isTakingDmg = false;
     }
 
     public virtual void Update () {
@@ -47,6 +49,11 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         }
     }
 
+    public virtual void OnCollisionEnter2D (Collision2D collision) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer ("Player"))
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+    }
+
     public virtual void OnCollisionStay2D (Collision2D collision) {
         if (collisionOnCooldown) return;
 
@@ -59,7 +66,14 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         }
     }
 
-    public virtual void TakeDamage () {
+    public virtual void OnCollisionExit2D (Collision2D collision) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer ("Player"))
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    public virtual void TakeDamage (float damage) {
+        isTakingDmg = true;
+
         // TODO Animation
         Vector2 knockBackDirection = Vector3.Normalize (rb.position - (Vector2) player.position);
         rb.AddForce (knockBackOnAttackForce * knockBackDirection, ForceMode2D.Impulse);
@@ -67,13 +81,13 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         // Show Damaged Effect
         StartCoroutine (DamagedEffect ());
 
-        currentHealth--;
+        currentHealth -= damage;
 
-        // Handle Death
+        // Death
         if (currentHealth <= 0) {
             isDead = true;
-            deathParticleEffect.Play ();
             StartCoroutine (Die ());
+            deathParticleEffect.Play ();
         }
     }
 
@@ -83,6 +97,7 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
 
         yield return new WaitForSeconds (flashDuration);
         GetComponent<SpriteRenderer> ().color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+        isTakingDmg = false;
     }
 
     public virtual IEnumerator Die () {

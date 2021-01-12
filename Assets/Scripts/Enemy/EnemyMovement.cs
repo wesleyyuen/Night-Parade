@@ -20,7 +20,7 @@ public class EnemyMovement : MonoBehaviour {
     }
 
     protected virtual void FixedUpdate () {
-        if (player == null) return;
+        if (player == null || enemy.isTakingDmg || enemy.isDead) return;
 
         if (enemyAggression.GetIsAggro()) {
             // Only move after enemy is done turning
@@ -32,12 +32,9 @@ public class EnemyMovement : MonoBehaviour {
 
     protected virtual void MoveTowardsPlayer() {
         Vector2 target = new Vector2 (player.bounds.center.x, rb.position.y);
-        /*
+        
         Vector2 direction = (target - (Vector2) transform.position).normalized;
-        rb.MovePosition((Vector2) transform.position + direction * movementSpeed * Time.deltaTime);
-        */
-        Vector2 newPosition = Vector2.MoveTowards (rb.position, target, movementSpeed * Time.deltaTime);
-        rb.position = newPosition;
+        rb.velocity = new Vector2(direction.x * movementSpeed , rb.velocity.y);
     }
 
 }

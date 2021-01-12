@@ -46,7 +46,9 @@ public class EnemyAggression : MonoBehaviour {
             // Drop aggro after a certain delay period without LOS
             if (!inLineOfSight) {
                 delayTimer += Time.deltaTime;
+
                 if (delayTimer >= lineOfSightBreakDelay) {
+                    StartCoroutine (enemyGFX.FlashQuestionMark ());
                     isAggro = false;
                     delayTimer = 0;
                 }

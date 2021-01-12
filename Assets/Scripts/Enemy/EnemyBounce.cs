@@ -13,7 +13,7 @@ public class EnemyBounce : EnemyMovement {
     }
 
     public void Bounce () {
-        if (enemyAggression.GetIsAggro() && !enemy.collisionOnCooldown && enemyGroundCheck.isGrounded) {
+        if (enemyAggression.GetIsAggro() && !enemy.collisionOnCooldown) {
             rb.AddForce (new Vector2 (transform.localScale.x * movementSpeed, bounceForce), ForceMode2D.Impulse);
         } else {
             rb.AddForce (new Vector2 (0.0f, bounceForce), ForceMode2D.Impulse);

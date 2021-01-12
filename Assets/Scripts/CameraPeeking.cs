@@ -16,9 +16,9 @@ public class CameraPeeking : MonoBehaviour {
         this.enabled = false;
 
         GameObject vcam = GameObject.FindGameObjectWithTag ("MainVCam");
-        Grounded grounded = FindObjectOfType<Grounded> ();
+        PlayerPlatformCollision grounded = FindObjectOfType<PlayerPlatformCollision> ();
         if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera> ().GetCinemachineComponent<CinemachineFramingTransposer> ();
-        if (grounded != null) isGrounded = grounded.isGrounded;
+        if (grounded != null) isGrounded = grounded.onGround;
     }
 
     void ReInitializeVariables () {
@@ -26,8 +26,8 @@ public class CameraPeeking : MonoBehaviour {
             GameObject vcam = GameObject.FindGameObjectWithTag ("MainVCam");
             if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera> ().GetCinemachineComponent<CinemachineFramingTransposer> ();
         }
-        Grounded grounded = FindObjectOfType<Grounded> ();
-        if (grounded != null) isGrounded = grounded.isGrounded;
+        PlayerPlatformCollision grounded = FindObjectOfType<PlayerPlatformCollision> ();
+        if (grounded != null) isGrounded = grounded.onGround;
     }
 
     void Update () {

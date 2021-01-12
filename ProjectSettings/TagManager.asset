@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Ground
   - Slime
-  - Tanuki
   - BreakableObstacle
   - DialogueUI
   - MonUI
@@ -17,6 +16,8 @@ TagManager:
   - PauseMenu
   - MainVCam
   - SceneTransition
+  - Unflippable
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -33,7 +34,7 @@ TagManager:
   - Obstacle
   - Enemies
   - Collectables
-  - UnlitAreas
+  - Wall
   - 
   - 
   - 

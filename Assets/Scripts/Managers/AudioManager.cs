@@ -4,6 +4,7 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour {
+    private static AudioManager Instance;
 
     // AudioSource player;  // TODO maybe find the player's audio source and use it
     [SerializeField] private AudioMixer mixer;
@@ -11,6 +12,13 @@ public class AudioManager : MonoBehaviour {
     
 
     void Awake () {
+        if (Instance == null) {
+            Instance = this;
+            //DontDestroyOnLoad (gameObject); // Handled by Parent
+        } else {
+            Destroy (gameObject);
+        }
+
         foreach (Sound s in sounds) {
             // Add a source for each sound
             s.source = gameObject.AddComponent<AudioSource> ();
@@ -47,6 +55,18 @@ public class AudioManager : MonoBehaviour {
             sound.source.clip = sound.clip[UnityEngine.Random.Range (0, sound.clip.Length)];
         }
         sound.source.Play ();
+    }
+
+    public void PauseAll () {
+        foreach (Sound sound in sounds) {
+            sound.source.Pause();
+        }
+    }
+
+    public void UnpauseAll () {
+        foreach (Sound sound in sounds) {
+            sound.source.UnPause();
+        }
     }
 
     public void ChangeVolume (string name, float volume) {

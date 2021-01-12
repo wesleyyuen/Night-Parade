@@ -21,6 +21,7 @@ public class PauseMenu : MonoBehaviour {
             FindObjectOfType<PlayerCombat> ().enabled = true;
             FindObjectOfType<PlayerMovement> ().enabled = true;
         }
+        FindObjectOfType<AudioManager> ().UnpauseAll();
 
         Time.timeScale = 1f;
         pauseMenuUI.SetActive (false);
@@ -32,6 +33,7 @@ public class PauseMenu : MonoBehaviour {
         // Stop player control
         FindObjectOfType<PlayerCombat> ().enabled = false;
         FindObjectOfType<PlayerMovement> ().enabled = false;
+        FindObjectOfType<AudioManager> ().PauseAll();
 
         Time.timeScale = 0f;
         pauseMenuUI.SetActive (true);

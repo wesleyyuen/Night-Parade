@@ -1,10 +1,15 @@
 TODO:
-- Changing textbox to semicricle (botw)
-- Village => building + background trees + yokai residents (rural)
+- Rework lighting in forest (to stress komorebis, flickering/moving sunspots)
+- Village => building + forest background trees + yokai residents (rural)
 - Design Forest, points of interests
 - Nozuchi art rework (maybe color scheme change or make it more furry) + one more move  (related to/compliment dash)
-- implement blocking? (Iron-related item? increase mass i.e. fall faster + jump lower)
+- Think about Yokai summons/abilities
+- implement combo, deflect and blocking
 
+
+TODO later:
+- Fix question mark flashing
+- Changing textbox to semicricle (botw)
 
 TODO animations:
 - Run_Left Animation
@@ -13,15 +18,13 @@ TODO animations:
 - no swords in falling or jumping animation
 
 Bug:
-- enemies cannot patrol on some platform (will just turn around repeatedly in place)
-- able to start dialogue when paused
-- player animation bugs out when walking down slopes
 - Nozuchi may sink into the ground when stepped on
 - enemy drops clip into ground
 - Infinite money bug: Instead of completely hitting the treasure, hit until 1 hit left, then re-enter the area to have all hits again
 
 Maybe:
-- Look into movement
+- Look into movement methods (fixed update + instead of manipulating position)
+- Intro title sequence (parallax background for title)
 
 Play mode bugs:
 - Player shaking
