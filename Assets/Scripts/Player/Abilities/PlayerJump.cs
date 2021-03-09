@@ -7,7 +7,7 @@ public class PlayerJump : MonoBehaviour
     [Header ("References")]
     private Rigidbody2D rb;
     [SerializeField] private ParticleSystem dustTrail;
-    [SerializeField] private PlayerPlatformCollision grounded;
+    private PlayerPlatformCollision coll;
 
     [Header ("Jumping Settings")]
     [SerializeField] private float jumpVelocity = 36f;
@@ -15,25 +15,32 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private float lowJumpMultiplier = 5f;
     [SerializeField] private float jumpBufferTime = 0.2f;
     [SerializeField] private float coyoteTime = 0.05f;
-
+    public bool canJump {get; set;}
     private float jumpBuffer;
     private float coyoteTimer;
 
-    private void Awake() {
+    private void Start() {
         rb = GetComponentInParent<Rigidbody2D>();
+        coll = gameObject.transform.parent.gameObject.GetComponentInChildren<PlayerPlatformCollision>();
+        canJump = true;
     }
 
     private void Update() {
+        if (!canJump) return;
         CoyoteAndJumpBuffering();
     }
 
     private void FixedUpdate() {
+        if (!canJump) return;
+
         if (jumpBuffer > 0 && coyoteTimer > 0) {
             CreateDustTrail ();
             jumpBuffer = 0;
             coyoteTimer = 0;
+            
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.velocity += Vector2.up * jumpVelocity;
+            // rb.AddForce(new Vector2(rb.velocity.x, jumpVelocity), ForceMode2D.Impulse);
         }
 
         // Low Jump
@@ -53,15 +60,20 @@ public class PlayerJump : MonoBehaviour
 
         // Jump Buffering - allow pre-input of jumps before touching the ground
         jumpBuffer -= Time.deltaTime;
-        Transform collTransform = transform.parent.Find("Platform Collision");
-        if (Input.GetButtonDown ("Jump") && collTransform.GetComponent<PlayerPlatformCollision>().onGround) {
+        if (Input.GetButtonDown ("Jump") && coll.onGround) {
             jumpBuffer = jumpBufferTime;
         }
     }
 
     private void CreateDustTrail () {
-        if (grounded.onGround) {
+        if (coll.onGround) {
             dustTrail.Play ();
         }
+    }
+
+    public IEnumerator DisableJumping(float time) {
+        canJump = false;
+        yield return new WaitForSeconds(time);
+        canJump = true;
     }
 }

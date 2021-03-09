@@ -17,11 +17,9 @@ public class PauseMenu : MonoBehaviour {
         isPuased = false;
 
         // Handle player control
-        if (!FindObjectOfType<DialogueManager> ().isTalking) {
-            FindObjectOfType<PlayerCombat> ().enabled = true;
-            FindObjectOfType<PlayerMovement> ().enabled = true;
-        }
-        FindObjectOfType<AudioManager> ().UnpauseAll();
+        if (!DialogueManager.Instance.isTalking)
+            Common.EnablePlayerControl(true);
+        AudioManager.Instance.UnpauseAll();
 
         Time.timeScale = 1f;
         pauseMenuUI.SetActive (false);
@@ -31,15 +29,14 @@ public class PauseMenu : MonoBehaviour {
         isPuased = true;
 
         // Stop player control
-        FindObjectOfType<PlayerCombat> ().enabled = false;
-        FindObjectOfType<PlayerMovement> ().enabled = false;
-        FindObjectOfType<AudioManager> ().PauseAll();
+        Common.EnablePlayerControl(false);
+        AudioManager.Instance.PauseAll();
 
         Time.timeScale = 0f;
         pauseMenuUI.SetActive (true);
     }
 
-    public void QuitToMainMenu () {
+    private void QuitToMainMenu () {
         Time.timeScale = 1f;
         pauseMenuUI.SetActive (false);
         SceneManager.LoadScene ("Main_Menu");

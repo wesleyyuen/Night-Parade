@@ -4,7 +4,10 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour {
-    private static AudioManager Instance;
+    private static AudioManager instance;
+    public static AudioManager Instance {
+        get  {return instance; }
+    }
 
     // AudioSource player;  // TODO maybe find the player's audio source and use it
     [SerializeField] private AudioMixer mixer;
@@ -12,8 +15,8 @@ public class AudioManager : MonoBehaviour {
     
 
     void Awake () {
-        if (Instance == null) {
-            Instance = this;
+        if (instance == null) {
+            instance = this;
             //DontDestroyOnLoad (gameObject); // Handled by Parent
         } else {
             Destroy (gameObject);

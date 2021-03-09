@@ -7,15 +7,14 @@ public class PlayerProgress : MonoBehaviour {
     [HideInInspector] public Dictionary<string, bool> areaProgress;
 
     private void Awake () {
-        gameMaster = FindObjectOfType<GameMaster> ();
+        gameMaster = GameMaster.Instance;
         if (gameMaster) {
             areaProgress = gameMaster.savedPlayerData.SavedAreaPrgress;
         }
     }
-
     private void Update () {
         if (!gameMaster) {
-            gameMaster = FindObjectOfType<GameMaster> ();
+            gameMaster = GameMaster.Instance;
             if (gameMaster) {
             areaProgress = gameMaster.savedPlayerData.SavedAreaPrgress;
         }
@@ -23,6 +22,6 @@ public class PlayerProgress : MonoBehaviour {
     }
 
     public float GetPlayTimeInScene () {
-        return FindObjectOfType<GameMaster> ().savedPlayerData.SavedPlayTimeInSecs + Time.timeSinceLevelLoad;
+        return GameMaster.Instance.savedPlayerData.SavedPlayTimeInSecs + Time.timeSinceLevelLoad;
     }
 }

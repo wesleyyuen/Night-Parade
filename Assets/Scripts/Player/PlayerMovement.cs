@@ -5,16 +5,17 @@ using UnityEngine.Audio;
 public class PlayerMovement : MonoBehaviour {
 
     [Header ("References")]
-    private AudioManager audioManager;
+    private PlayerPlatformCollision coll;
     private Rigidbody2D rb;
 
     [Header ("Movement Settings")]
     [SerializeField] private float movementSpeed = 11f;
     private float horizontalInput;
-    public bool canWalk {get; private set;}
+    public bool canWalk {get; set;}
+    public bool isHandicapped {get; set;}
 
     void Awake () {
-        audioManager = FindObjectOfType<AudioManager> ();
+        coll = GetComponentInChildren<PlayerPlatformCollision>();
         rb = GetComponent<Rigidbody2D>();
         canWalk = true;
     }
@@ -29,7 +30,17 @@ public class PlayerMovement : MonoBehaviour {
         float yRaw = Input.GetAxisRaw("Vertical");
 
         // Move player
-        rb.velocity = new Vector2 (xRaw * movementSpeed, rb.velocity.y);
+        Vector2 newVelocity;
+        if (coll.onGround && coll.onSlope) {
+            newVelocity = new Vector2 (-xRaw * movementSpeed * coll.slopeVector.x, -xRaw * movementSpeed * coll.slopeVector.y);
+        } else { // !coll.onGround
+            newVelocity = new Vector2 (xRaw * movementSpeed, rb.velocity.y);
+        }   
+
+        if (isHandicapped)
+            rb.velocity = Vector2.Lerp(rb.velocity, newVelocity, Time.deltaTime * 0.1f);
+        else 
+            rb.velocity = newVelocity;
     }
 
     public IEnumerator DisableMovement(float time) {
@@ -38,14 +49,9 @@ public class PlayerMovement : MonoBehaviour {
         canWalk = true;
     }
 
-    // public IEnumerator DisableGravityScale(float time) {
-    //     float original = rb.gravityScale;
-    //     rb.gravityScale = 0;
-    //     yield return new WaitForSeconds(time);
-    //     rb.gravityScale = original;
-    // }
-
-    void FootstepSFX () {
-        audioManager.Play ("Forest_Footsteps");
+    public IEnumerator HandicapMovement(float time) {
+        isHandicapped = true;
+        yield return new WaitForSeconds(time);
+        isHandicapped = false;
     }
 }

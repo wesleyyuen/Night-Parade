@@ -2,19 +2,21 @@
 using UnityEngine;
 
 public class Forest_Tutorial : MonoBehaviour {
-    [SerializeField] private Transform player;
+    [SerializeField] private Transform playerGroup;
     [SerializeField] private Transform area1SpawnPoint;
     [SerializeField] private TextMeshProUGUI forestText;
     [SerializeField] private float textShowingTime;
     [SerializeField] private float textFadingTime;
 
     void Start () {
-        GameMaster gameMaster = FindObjectOfType<GameMaster> ();
-        gameMaster.UpdateCurrentScene ();
+        GameMaster.Instance.UpdateCurrentScene ();
 
-        if (gameMaster.GetPrevScene () == "Forest_Area1") {
-            player.position = area1SpawnPoint.position;
-            player.localScale = new Vector3 (-1f, 1f, 1f);
+        if (GameMaster.Instance.GetPrevScene () == "Forest_Area1") {
+            foreach (Transform child in playerGroup) {
+                child.position = area1SpawnPoint.position;
+                if (child.name == "Player")
+                    child.localScale = new Vector3 (-1f, 1f, 1f);
+            }
         } else {
             StartCoroutine (Common.FadeText (forestText, textShowingTime, textFadingTime));
         }

@@ -28,4 +28,12 @@ public class Common : MonoBehaviour {
         yield return new WaitForSeconds(delay);
         variable(endVal);
     }
+    public static void EnablePlayerControl(bool enable) {
+        GameObject player = FindObjectOfType<PlayerMovement> ().gameObject;
+        player.GetComponent<Animator> ().SetFloat ("Horizontal", 0f);
+        player.GetComponent<PlayerAnimations>().canTurn = enable;
+        player.GetComponent<PlayerMovement> ().canWalk = enable;
+        player.GetComponent<PlayerCombat> ().canAttack = enable;
+        player.GetComponentInChildren<PlayerJump>().canJump = enable;
+    }
 }

@@ -11,7 +11,7 @@ public class DialogueTrigger : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag ("Player");
     }
     public virtual void Update () {
-        bool isTalking = FindObjectOfType<DialogueManager> ().isTalking;
+        bool isTalking = DialogueManager.Instance.isTalking;
         if (textPrompt == null || player == null || triggerOnCollision) return;
         
         // Control dialogue promopt text
@@ -31,7 +31,7 @@ public class DialogueTrigger : MonoBehaviour {
 
     public void TriggerDialogue () { // TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
         if (!PauseMenu.isPuased) {
-            FindObjectOfType<DialogueManager> ().StartDialogue (dialogue);
+            DialogueManager.Instance.StartDialogue (dialogue);
         }
     }
 }

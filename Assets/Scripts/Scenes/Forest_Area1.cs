@@ -1,20 +1,25 @@
 ﻿using UnityEngine;
 
 public class Forest_Area1 : MonoBehaviour {
-    [SerializeField] private Transform player;
+    [SerializeField] private Transform playerGroup;
     [SerializeField] private Transform tutorialAreaSpawnPoint;
     [SerializeField] private Transform treeAreaSpawnPoint;
     void Start () {
-        GameMaster gameMaster = FindObjectOfType<GameMaster> ();
-        gameMaster.UpdateCurrentScene ();
+        GameMaster.Instance.UpdateCurrentScene ();
 
-        if (gameMaster.GetPrevScene () == "Forest_Tutorial") {
-            player.position = tutorialAreaSpawnPoint.position;
-            player.localScale = new Vector3 (1f, 1f, 1f);
+        if (GameMaster.Instance.GetPrevScene () == "Forest_Tutorial") {
+            foreach (Transform child in playerGroup) {
+                child.position = tutorialAreaSpawnPoint.position;
+                if (child.name == "Player")
+                    child.localScale = new Vector3 (1f, 1f, 1f);
+            }
         }
-        else if (gameMaster.GetPrevScene () == "Forest_Tree") {
-            player.position = treeAreaSpawnPoint.position;
-            player.localScale = new Vector3 (-1f, 1f, 1f);
+        else if (GameMaster.Instance.GetPrevScene () == "Forest_Tree") {
+            foreach (Transform child in playerGroup) {
+                child.position = treeAreaSpawnPoint.position;
+                if (child.name == "Player")
+                    child.localScale = new Vector3 (-1f, 1f, 1f);
+            }
         }
     }
 }

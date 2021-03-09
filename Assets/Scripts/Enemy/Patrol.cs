@@ -7,7 +7,6 @@ public class Patrol : MonoBehaviour { // Has to be on same level as enemy
     [SerializeField] private float patrolSpeed;
     [SerializeField] private float patrolOriginOffset = 0.1f;
     //[SerializeField] private float groundDetectionOffset
-    private Transform player;
     private Collider2D col;
     private Rigidbody2D rb;
     private Enemy enemy;
@@ -20,14 +19,13 @@ public class Patrol : MonoBehaviour { // Has to be on same level as enemy
         enemyMovement = GetComponent<EnemyMovement>();
         enemyAggression = GetComponent<EnemyAggression>();
         enemyGFX = GetComponent<EnemyGFX>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
     }
 
 
     void FixedUpdate () {
-        if (player == null || enemy.isDead) return;
+        if (enemy.isDead) return;
         
         // Only patrol if enemy is not aggroing
         if (!enemyAggression.GetIsAggro()) {

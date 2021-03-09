@@ -3,7 +3,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour {
-    private static GameMaster Instance;
+    private static GameMaster instance;
+    public static GameMaster Instance {
+        get  {return instance; }
+    }
     public static Dictionary<string, int> areaNameToIndex = new Dictionary<string, int> ();
     [SerializeField] private string startingScene;
     private string prevScene = "";
@@ -14,8 +17,8 @@ public class GameMaster : MonoBehaviour {
     private const int healthPerHeart = 4;
 
     void Awake () {
-        if (Instance == null) {
-            Instance = this;
+        if (instance == null) {
+            instance = this;
             DontDestroyOnLoad (gameObject);
         } else {
             Destroy (gameObject);
@@ -54,7 +57,7 @@ public class GameMaster : MonoBehaviour {
 
     // can remove if play mode from _preload
     void SetUIHelper (bool boolean) {
-        FindObjectOfType<DialogueManager> ().enabled = boolean;
+        DialogueManager.Instance.enabled = boolean;
         GameObject.FindGameObjectWithTag ("MonUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
         GameObject.FindGameObjectWithTag ("HealthUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
         GameObject.FindGameObjectWithTag ("DialogueUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1128662852874068491}
   - component: {fileID: 1128662852874068488}
   - component: {fileID: 1128662852874068493}
+  - component: {fileID: 3851968741168128042}
   - component: {fileID: 3863298581046562429}
   - component: {fileID: 7326519521332669852}
   - component: {fileID: 1916187428271697681}
@@ -63,7 +64,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: eadbc25d62c93a149a513ce987ecf7d3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -172,7 +173,21 @@ MonoBehaviour:
   dieTime: 1
   currentHealth: 0
   collisionOnCooldown: 0
-  flashDuration: 0.2
+  isTakingDmg: 0
+--- !u!114 &3851968741168128042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128662852874068485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2efaac2a3a18b948a88cf395c9cfb4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashColor: {r: 1, g: 1, b: 1, a: 0}
+  flashDuration: 0.5
 --- !u!114 &3863298581046562429
 MonoBehaviour:
   m_ObjectHideFlags: 0

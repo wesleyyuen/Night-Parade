@@ -9,11 +9,10 @@ public class PlayerInventory : MonoBehaviour {
     [HideInInspector] public int orbs;
 
     void Start () {
-        GameMaster gameMaster = FindObjectOfType<GameMaster> ();
         // Get saved data from Gamemaster
-        coinOnHand = gameMaster.savedPlayerData.SavedPlayerCoinsOnHand;
-        inks = gameMaster.savedPlayerData.SavedInks;
-        orbs = gameMaster.savedPlayerData.SavedOrbs;
+        coinOnHand = GameMaster.Instance.savedPlayerData.SavedPlayerCoinsOnHand;
+        inks = GameMaster.Instance.savedPlayerData.SavedInks;
+        orbs = GameMaster.Instance.savedPlayerData.SavedOrbs;
 
         FindObjectOfType<MonUI>().UpdateMon();
     }

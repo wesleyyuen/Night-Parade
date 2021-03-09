@@ -18,6 +18,8 @@ TagManager:
   - SceneTransition
   - Unflippable
   - Wall
+  - Slope
+  - Onibi
   layers:
   - Default
   - TransparentFX

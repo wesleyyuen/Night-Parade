@@ -8,6 +8,7 @@ public class PlayerWallJump : MonoBehaviour {
     private PlayerPlatformCollision collision;
     private PlayerCombat combat;
     private PlayerMovement movement;
+    private PlayerAnimations animations;
     [SerializeField] private Vector2 jumpDirection;
     [SerializeField] private float movementDisableTime;
 
@@ -16,6 +17,7 @@ public class PlayerWallJump : MonoBehaviour {
         anim = GetComponentInParent<PlayerAnimations>();
         combat = GetComponentInParent<PlayerCombat>();
         movement = GetComponentInParent<PlayerMovement>();
+        animations = GetComponentInParent<PlayerAnimations>();
         Transform collTransform = transform.parent.Find("Platform Collision");
         if (collTransform)
             collision = collTransform.GetComponent<PlayerPlatformCollision>();
@@ -25,7 +27,8 @@ public class PlayerWallJump : MonoBehaviour {
         if (Input.GetButtonDown ("Jump")) {
             if (!collision.onGround && (collision.onLeftWall && (Input.GetAxisRaw("Horizontal") < 0) ||
                  (collision.onRightWall && (Input.GetAxisRaw("Horizontal") > 0)))) {
-                StartCoroutine(movement.DisableMovement(movementDisableTime));
+                StartCoroutine(movement.HandicapMovement(movementDisableTime));
+                StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => animations.canTurn = e, movementDisableTime, false, true));
                 StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => GetComponent<PlayerWallSlide>().canSlide = e, movementDisableTime, false, true));
                 WallJump(collision.onLeftWall);
             }
@@ -35,5 +38,8 @@ public class PlayerWallJump : MonoBehaviour {
     private void WallJump(bool isLeftWall) {
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.velocity += new Vector2((isLeftWall ? 1 : -1) * jumpDirection.x, jumpDirection.y);
+        
+        // Turn away from the wall
+        animations.FaceRight(isLeftWall);
     }
 }

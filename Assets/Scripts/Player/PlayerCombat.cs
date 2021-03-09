@@ -5,6 +5,7 @@ public class PlayerCombat : MonoBehaviour {
     private Transform player;
     private Animator animator;
     private Rigidbody2D rb;
+    private PlayerAnimations animations;
     [SerializeField] private float baseDamage;
     [SerializeField] private Transform attackPoint;
     [SerializeField] private Transform upThrustPoint;
@@ -17,11 +18,11 @@ public class PlayerCombat : MonoBehaviour {
     [SerializeField] private float comboTimeframeAfterAttack;
     [SerializeField] private float horizontalKnockBackForce = 5f;
     [SerializeField] private float verticalKnockBackForce = 20f;
-    [HideInInspector] public bool canAttack { get; set; }
+    [HideInInspector] public bool canAttack { get; set; } // for player controls
+    [HideInInspector] public bool isAttacking {get; private set;}
     private float nextAttackTime = 0f;
     private int comboCounter;
     private bool nextCombo;
-    private bool isInComboTimeframe;
     private const int maxComboCount = 3;
     private List<int> enemiesAttackedIDs;
 
@@ -32,36 +33,43 @@ public class PlayerCombat : MonoBehaviour {
         player = GetComponent<Transform>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        animations = GetComponent<PlayerAnimations>();
+        enemiesAttackedIDs = new List<int> (); 
         canAttack = true;
         nextCombo = false;
-        isInComboTimeframe = false;
     }
 
     private void Update () {
         if (canAttack && Input.GetButtonDown ("Attack")) {
             // Handle Combo
-            if (isInComboTimeframe && comboCounter != 0)
-                nextCombo = true;
+            // if (comboCounter != 0)
+            //     nextCombo = true;
 
             if (Time.time >= nextAttackTime) {
                 // Start First Attack
-                if (comboCounter == 0) {
+                // if (comboCounter == 0) {
+                //     animator.SetInteger ("Attack", 1);
+                //     comboCounter = 1;
+                // }
+                if (animator.GetInteger("Attack") == 0) {
                     animator.SetInteger ("Attack", 1);
-                    comboCounter = 1;
+                    isAttacking = true;
+                    canAttack = false;
+                    animations.canTurn = false;
                 }
 
                 // Make a list of hit enemies/breakables so it won't double-count
                 enemiesAttackedIDs = new List<int> ();
 
-                if (Input.GetAxisRaw ("Vertical") > 0) {
-                    UpThrust ();
-                    return;
-                }
+                // if (Input.GetAxisRaw ("Vertical") > 0) {
+                //     UpThrust ();
+                //     return;
+                // }
 
-                if (Input.GetAxisRaw ("Vertical") < 0 && !FindObjectOfType<PlayerPlatformCollision> ().onGround) {
-                    DownThrust ();
-                    return;
-                }
+                // if (Input.GetAxisRaw ("Vertical") < 0 && !FindObjectOfType<PlayerPlatformCollision> ().onGround) {
+                //     DownThrust ();
+                //     return;
+                // }
             }
             
         }
@@ -86,11 +94,6 @@ public class PlayerCombat : MonoBehaviour {
             }
         }
         rb.AddForce (new Vector2 (horizontalKnockBackForce * -player.localScale.x, 0.0f), ForceMode2D.Impulse);
-    }
-
-    void AttackAndListenForNextCombo() {
-        isInComboTimeframe = true;
-        Attack();
     }
 
     void UpThrust () {
@@ -135,19 +138,26 @@ public class PlayerCombat : MonoBehaviour {
     }
 
     // Called from animation frame
-    void EndAttack () {
-        StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => isInComboTimeframe = e, comboTimeframeAfterAttack, true, false));
+    public void EndAttack () {
 
-        if (nextCombo && comboCounter < maxComboCount) {
-            nextCombo = false;
-            comboCounter++;
-            animator.SetInteger ("Attack", comboCounter);
-            nextAttackTime = Time.time + attackCooldown;
-        } else {
-            animator.SetInteger ("Attack", 0);
-            comboCounter = 0;
-            nextAttackTime = Time.time + attackCooldown * 5;
-        }
+        // Combo
+        // if (nextCombo && comboCounter < maxComboCount) {
+        //     nextCombo = false;
+        //     comboCounter++;
+        //     animator.SetInteger ("Attack", comboCounter);
+        //     nextAttackTime = Time.time + attackCooldown;
+        // } else {
+        //     animator.SetInteger ("Attack", 0);
+        //     comboCounter = 0;
+        //     nextAttackTime = Time.time + attackCooldown * 5;
+        // }
+
+        // No Combo
+        animator.SetInteger ("Attack", 0);
+        isAttacking = false;
+        canAttack = true;
+        animations.canTurn = true;
+        nextAttackTime = Time.time + attackCooldown;
 
         enemiesAttackedIDs.Clear ();
     }

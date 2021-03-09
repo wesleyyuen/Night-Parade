@@ -4,19 +4,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour {
-    private static SaveManager Instance;
+    private static SaveManager instance;
+    public static SaveManager Instance {
+        get  {return instance; }
+    }
     [SerializeField] private int loadIndex;
     [SerializeField] private string fileName;
     [SerializeField] private string fileExtension;
 
     void Awake () {
-        if (Instance == null) {
-            Instance = this;
+        if (instance == null) {
+            instance = this;
             //DontDestroyOnLoad (gameObject); // Handled by Parent
         } else {
             Destroy (gameObject);
         }
-        loadIndex = FindObjectOfType<GameMaster> ().savedPlayerData.SaveFileIndex;
+        loadIndex = GameMaster.Instance.savedPlayerData.SaveFileIndex;
     }
 
     public static void Save (GameObject player) {

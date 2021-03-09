@@ -7,7 +7,6 @@ public class MainMenu : MonoBehaviour {
 
     public Button continueButton;
     public TextMeshProUGUI continueText;
-    private GameMaster gameMaster;
 
     void Start () {
         SetUIHelper (false);
@@ -18,21 +17,21 @@ public class MainMenu : MonoBehaviour {
             continueButton.interactable = true;
             continueText.color = Color.white;
         }
-        gameMaster = FindObjectOfType<GameMaster> ();
-        gameMaster.UpdateCurrentScene ();
+
+        GameMaster.Instance.UpdateCurrentScene ();
     }
 
     public void NewGame () {
-        PlayerData playerData = new PlayerData (gameMaster.startingHearts * 4);
-        gameMaster.RequestSceneChange ("Forest_Tutorial", ref playerData);
+        PlayerData playerData = new PlayerData (GameMaster.Instance.startingHearts * 4);
+        GameMaster.Instance.RequestSceneChange ("Forest_Tutorial", ref playerData);
         SetUIHelper (true);
     }
 
     public void LoadGameFile (int index) {
         PlayerData playerData = SaveManager.Load (index);
         if (playerData == null) return;
-        gameMaster.savedPlayerData = playerData;
-        gameMaster.RequestSceneChange (playerData.LastSavePoint, ref playerData);
+        GameMaster.Instance.savedPlayerData = playerData;
+        GameMaster.Instance.RequestSceneChange (playerData.LastSavePoint, ref playerData);
 
         // Handle Pause Menu (when player pause to quit to main menu and load game)
         SetUIHelper (true);
@@ -48,7 +47,7 @@ public class MainMenu : MonoBehaviour {
 
     void SetUIHelper (bool boolean) {
         // Turn stuff off in Main_Menu
-        FindObjectOfType<DialogueManager> ().enabled = boolean;
+        DialogueManager.Instance.enabled = boolean;
         GameObject.FindGameObjectWithTag ("MonUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
         GameObject.FindGameObjectWithTag ("HealthUI").transform.localScale = new Vector3 ((boolean) ? 1f : 0f, 1f, 0f);
 

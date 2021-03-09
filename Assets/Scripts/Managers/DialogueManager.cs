@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour {
 
-    private static DialogueManager Instance;
+    private static DialogueManager instance;
+    public static DialogueManager Instance {
+        get  {return instance; }
+    }
 
     private Queue<string> sentences;
     [SerializeField] private GameObject dialogueUI;
@@ -17,8 +20,8 @@ public class DialogueManager : MonoBehaviour {
     private string currentSentence = "";
 
     void Awake () {
-        if (Instance == null) {
-            Instance = this;
+        if (instance == null) {
+            instance = this;
             //DontDestroyOnLoad (gameObject); // Handled by Parent
         } else {
             Destroy (gameObject);
@@ -55,10 +58,7 @@ public class DialogueManager : MonoBehaviour {
         dialogueUI.SetActive (true);
 
         // Disable player control
-        GameObject player = FindObjectOfType<PlayerMovement> ().gameObject;
-        player.GetComponent<Animator> ().SetFloat ("Horizontal", 0f);
-        player.GetComponent<PlayerMovement> ().enabled = false;
-        player.GetComponent<PlayerCombat> ().enabled = false;
+        Common.EnablePlayerControl(false);
 
         sentences.Clear ();
 
@@ -105,8 +105,7 @@ public class DialogueManager : MonoBehaviour {
         typingSpeed = originalTypingSpeed;
         isTalking = false;
         dialogueUI.SetActive (false);
-        FindObjectOfType<PlayerMovement> ().enabled = true;
-        FindObjectOfType<PlayerCombat> ().enabled = true;
+        Common.EnablePlayerControl(true);
     }
 
     IEnumerator TpyingEffect (string sentence) {

@@ -20,12 +20,11 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
     [HideInInspector] public float currentHealth;
 
     [HideInInspector] public bool collisionOnCooldown;
-    [SerializeField] private float flashDuration;
 
     private float startTime;
     private float timer;
     public bool isDead { private set; get; }
-    public bool isTakingDmg { private set; get; }
+    [HideInInspector] public bool isTakingDmg;
 
     public virtual void Start () {
         currentHealth = maxHealth;
@@ -79,7 +78,8 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         rb.AddForce (knockBackOnAttackForce * knockBackDirection, ForceMode2D.Impulse);
 
         // Show Damaged Effect
-        StartCoroutine (DamagedEffect ());
+        // StartCoroutine (DamagedEffect ());
+        GetComponent<SpriteFlash>().Flash();
 
         currentHealth -= damage;
 
@@ -91,14 +91,14 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         }
     }
 
-    public virtual IEnumerator DamagedEffect () {
-        // TODO: fix changing colors for slime
-        GetComponent<SpriteRenderer> ().color = new Color (0.69f, 0.16f, 0.16f, 1.0f);
+    // public virtual IEnumerator DamagedEffect () {
+    //     // TODO: fix changing colors for slime
+    //     GetComponent<SpriteRenderer> ().color = new Color (0.69f, 0.16f, 0.16f, 1.0f);
 
-        yield return new WaitForSeconds (flashDuration);
-        GetComponent<SpriteRenderer> ().color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
-        isTakingDmg = false;
-    }
+    //     yield return new WaitForSeconds (flashDuration);
+    //     GetComponent<SpriteRenderer> ().color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+    //     isTakingDmg = false;
+    // }
 
     public virtual IEnumerator Die () {
         // Ignore Player Collision to avoid player taking dmg when running into dying enemy

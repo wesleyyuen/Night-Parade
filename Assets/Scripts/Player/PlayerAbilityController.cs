@@ -11,17 +11,27 @@ public class PlayerAbilityController : MonoBehaviour
     public enum Ability {
         Jump,
         WallSlide,
+        WallJump,
         Dash
     }
 
     private PlayerJump jump;
-    private PlayerWallSlide playerWallSlide;
-    // private Dash dash;
+    private PlayerWallSlide wallSlide;
+    private PlayerWallJump wallJump;
+    private PlayerDash dash;
 
 
     private void Awake() {
-        jump = GetComponentInChildren<PlayerJump>();
-        playerWallSlide = GetComponentInChildren<PlayerWallSlide>();
+        jump = abilitiesGB.GetComponent<PlayerJump>();
+        wallSlide = abilitiesGB.GetComponent<PlayerWallSlide>();
+        wallJump = abilitiesGB.GetComponent<PlayerWallJump>();
+        dash = abilitiesGB.GetComponent<PlayerDash>();
+
+        // Enable Abilities
+        EnableAbility(Ability.Jump, true);
+        EnableAbility(Ability.WallJump, true);
+        EnableAbility(Ability.WallSlide, true);
+        EnableAbility(Ability.Dash, true);
     }
 
 
@@ -32,11 +42,15 @@ public class PlayerAbilityController : MonoBehaviour
                 break;
 
             case Ability.WallSlide:
-                playerWallSlide.enabled = enable;
+                wallSlide.enabled = enable;
+                break;
+
+            case Ability.WallJump:
+                wallJump.enabled = enable;
                 break;
                 
             case Ability.Dash:
-                // dash.enabled = enable;
+                dash.enabled = enable;
                 break;
 
             default:

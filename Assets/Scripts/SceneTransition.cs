@@ -18,6 +18,6 @@ public class SceneTransition : MonoBehaviour {
     IEnumerator SceneTransitionCoroutine (string levelToLoad, PlayerData playerVariables) {
         animator.SetTrigger ("Start");
         yield return new WaitForSeconds (transitionTime);
-        FindObjectOfType<GameMaster> ().RequestSceneChange (levelToLoad, ref playerVariables);
+        GameMaster.Instance.RequestSceneChange (levelToLoad, ref playerVariables);
     }
 }

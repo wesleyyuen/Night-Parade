@@ -50,6 +50,6 @@ public class RevealHiddenArea : MonoBehaviour {
     }
 
     private void FoundSecretSFX () {
-        FindObjectOfType<AudioManager> ().Play ("Found_SecretArea");
+        AudioManager.Instance.Play ("Found_SecretArea");
     }
 }

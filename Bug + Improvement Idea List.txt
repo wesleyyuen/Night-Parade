@@ -31,7 +31,8 @@ Play mode bugs:
 
 Event Ideas:
 - Ubasute (姥捨て) => 1st see both in village , son unwilling; 2nd see son carrying mom up mountain; 3rd see corpse of mom + son back to village
-
+- King Midas - Greedy man turning more possessions to jade/gold
+- Elder impossible tasks (like digging gold) for long time, unwilling to use technology
 
 Performance Issue in Build:
 - may have issue with Vsync, build is slower than in Editor (setting vsync to "Don't Count" fix this, but mess up vcam)
@@ -51,5 +52,5 @@ World:
 - Areas should fit a virtue theme (e.g. patience, forgiveness)
 
 Boss / Enemies Ideas:
-- Daruma
+- Daruma (single eye colored in)
 - Stack Doll

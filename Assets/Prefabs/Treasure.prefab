@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3395679925701237581}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 166.55716, y: -145.44, z: 60}
+  m_LocalPosition: {x: 166.55716, y: -145.44, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -49,6 +49,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -147,7 +148,6 @@ MonoBehaviour:
   numOfHitsToDestroy: 3
   side: 2
   currentHealth: 0
-  rb: {fileID: 0}
   numOfMonsPerHit: 2
   mon: {fileID: 615396422470690540, guid: 8d2e5dd9eca69244eb52a9dbd6b50599, type: 3}
   forceMultiplier: 7
