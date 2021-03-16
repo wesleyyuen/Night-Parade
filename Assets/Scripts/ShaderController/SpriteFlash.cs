@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// by Ilham Effendi
+// modified from Ilham Effendi
 // https://github.com/ilhamhe/UnitySpriteFlash
 public class SpriteFlash : MonoBehaviour {
     [SerializeField] private Color flashColor;
@@ -20,11 +20,19 @@ public class SpriteFlash : MonoBehaviour {
         mat.SetColor("_FlashColor", flashColor);
     }
 
-    public void Flash() {
+    public void PlayDamagedFlashEffect() {
         if (coroutine != null)
             StopCoroutine(coroutine);
 
         coroutine = ActuallyFlash();
+        StartCoroutine(coroutine);
+    }
+
+    public void PlayDeathFlashEffect(float duration) {
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+
+        coroutine = ActuallyFade(duration);
         StartCoroutine(coroutine);
     }
 
@@ -40,5 +48,18 @@ public class SpriteFlash : MonoBehaviour {
 
         mat.SetFloat("_FlashAmount", 0);
         enemy.isTakingDmg = false;
+    }
+
+    private IEnumerator ActuallyFade(float duration) {
+        float lerpTime = 0;
+
+        while (lerpTime < duration) {
+            lerpTime += Time.deltaTime;
+            float percent = lerpTime / duration;
+            mat.SetFloat("_FlashAmount", percent);
+            yield return null;
+        }
+
+        mat.SetFloat("_FlashAmount", 0);
     }
 }

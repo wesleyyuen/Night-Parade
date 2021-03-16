@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour {
 
     [Header ("Movement Settings")]
     [SerializeField] private float movementSpeed = 11f;
-    private float horizontalInput;
     public bool canWalk {get; set;}
     public bool isHandicapped {get; set;}
 

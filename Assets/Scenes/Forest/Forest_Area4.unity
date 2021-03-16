@@ -36492,7 +36492,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 907221332}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -60}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1122907604}
@@ -36516,7 +36516,7 @@ PlayableDirector:
   - key: {fileID: -4377732496214337359, guid: 131cf6859d2c3534bacaad50a8471ceb, type: 2}
     value: {fileID: 0}
   - key: {fileID: -4377732496214337359, guid: 6ad2ed2ddcf51924c9a2fbc91936b37a, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 1110033667}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &1032000794
@@ -39318,6 +39318,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6932902100290574385, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8545938580317052811, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
       propertyPath: m_RootOrder
@@ -39394,6 +39399,12 @@ Transform:
 --- !u!4 &1110033666 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1667546716646033129, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1110033664}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1110033667 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6014521512346841851, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
     type: 3}
   m_PrefabInstance: {fileID: 1110033664}
   m_PrefabAsset: {fileID: 0}
@@ -39980,7 +39991,7 @@ PlayableDirector:
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: -4377732496214337359, guid: 131cf6859d2c3534bacaad50a8471ceb, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 1110033667}
   m_ExposedReferences:
     m_References: []
 --- !u!1001 &1487495676

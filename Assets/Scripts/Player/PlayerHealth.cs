@@ -36,8 +36,8 @@ public class PlayerHealth : MonoBehaviour {
 
 
         // Apply knockback force to player in opposite direction based on damage amount
-        Vector2 knockBackDirection = new Vector2 (rb.position.x > enemyPos.x ? 1f : -1f, 0.6f).normalized;
-        Debug.Log(knockBackDirection);
+        Vector2 knockBackDirection = new Vector2 (rb.position.x > enemyPos.x ? 1f : -1f, 0.4f).normalized;
+        // Debug.Log(knockBackDirection);
         rb.velocity = Vector2.zero;
         rb.AddForce (damage * damageKnockBackMultiplier * knockBackDirection, ForceMode2D.Impulse);
 

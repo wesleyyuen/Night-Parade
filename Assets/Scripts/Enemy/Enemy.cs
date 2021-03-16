@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
     [Header ("References")]
     [SerializeField] private Animator animator;
     [SerializeField] private ParticleSystem deathParticleEffect;
+    [SerializeField] private ParticleSystem damagedParticleEffect;
     protected Transform player;
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
@@ -77,10 +78,6 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         Vector2 knockBackDirection = Vector3.Normalize (rb.position - (Vector2) player.position);
         rb.AddForce (knockBackOnAttackForce * knockBackDirection, ForceMode2D.Impulse);
 
-        // Show Damaged Effect
-        // StartCoroutine (DamagedEffect ());
-        GetComponent<SpriteFlash>().Flash();
-
         currentHealth -= damage;
 
         // Death
@@ -88,29 +85,22 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
             isDead = true;
             StartCoroutine (Die ());
             deathParticleEffect.Play ();
+            // Die();
+
+        } else {
+            GetComponent<SpriteFlash>().PlayDamagedFlashEffect();
+            // damagedParticleEffect.transform.localScale = new Vector3(-player.localScale.x, damagedParticleEffect.transform.localScale.y, damagedParticleEffect.transform.localScale.z);
+            damagedParticleEffect.Play();
         }
     }
-
-    // public virtual IEnumerator DamagedEffect () {
-    //     // TODO: fix changing colors for slime
-    //     GetComponent<SpriteRenderer> ().color = new Color (0.69f, 0.16f, 0.16f, 1.0f);
-
-    //     yield return new WaitForSeconds (flashDuration);
-    //     GetComponent<SpriteRenderer> ().color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
-    //     isTakingDmg = false;
-    // }
 
     public virtual IEnumerator Die () {
         // Ignore Player Collision to avoid player taking dmg when running into dying enemy
         Physics2D.IgnoreCollision (player.GetComponent<Collider2D> (), GetComponent<Collider2D> ());
 
-        // Dying Animation
-        for (float t = 0f; t < 1f; t += Time.deltaTime / dieTime) {
-            sr.color = new Color (Mathf.Lerp (1, 0, t), Mathf.Lerp (1, 0, t), Mathf.Lerp (1, 0, t), 1.0f);
-            yield return null;
-        }
+        GetComponent<SpriteFlash>().PlayDeathFlashEffect(dieTime);
+        yield return new WaitForSeconds(dieTime);
 
-        //yield return new WaitForSeconds (dieTime);
         GetComponent<EnemyDrop> ().SpawnDrops ();
         Destroy (gameObject);
     }
