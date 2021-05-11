@@ -9,6 +9,7 @@ public class EnemyMovement : MonoBehaviour {
     protected Enemy enemy;
     protected EnemyGFX enemyGFX;
     protected EnemyAggression enemyAggression;
+    public bool isFrozen;
 
     protected virtual void Start () {
         enemy = GetComponent<Enemy> ();
@@ -16,15 +17,14 @@ public class EnemyMovement : MonoBehaviour {
         enemyAggression = GetComponent<EnemyAggression>();
         player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D> ();
-
     }
 
     protected virtual void FixedUpdate () {
-        if (player == null || enemy.isTakingDmg || enemy.isDead) return;
+        if (player == null || enemy.isTakingDmg || enemy.isDead || isFrozen) return;
 
         if (enemyAggression.GetIsAggro()) {
             // Only move after enemy is done turning
-            if (!enemyGFX.GetIsTurning() && !enemy.collisionOnCooldown) {
+            if (!enemyGFX.GetIsTurning()) {
                 MoveTowardsPlayer();
             }
         }

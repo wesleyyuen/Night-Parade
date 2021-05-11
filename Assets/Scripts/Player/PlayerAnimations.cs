@@ -13,7 +13,8 @@ public class PlayerAnimations : MonoBehaviour
     private PlayerCombat combat;
     [HideInInspector] public bool canTurn;
 
-    private void Awake() {
+    private void Awake()
+    {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
@@ -21,7 +22,18 @@ public class PlayerAnimations : MonoBehaviour
         canTurn = true;
     }
 
-    private void Update() {
+    public void EnablePlayerTurning(bool enabled, float time = 0f)
+    {
+        if (canTurn == enabled) return;
+
+        if (time == 0)
+            canTurn = enabled;
+        else
+            StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => canTurn = e, time, enabled, !enabled));
+    }
+
+    private void Update()
+    {
         animator.SetBool ("IsGrounded", grounded.onGround);
         animator.SetFloat ("Vertical", rb.velocity.y);
 
@@ -45,7 +57,6 @@ public class PlayerAnimations : MonoBehaviour
 
     public void FaceRight(bool faceRight) {
         animator.SetBool ("FacingRight", faceRight);
-        
         transform.localScale = new Vector3 (faceRight ? 1f : -1f, 1f, 1f);
     } 
 

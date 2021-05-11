@@ -38,10 +38,4 @@ public class PlayerWallSlide : MonoBehaviour {
     private void WallSlide(float speed) {
         rb.velocity = new Vector2(rb.velocity.x, -speed);
     }
-
-    // public IEnumerator DisableWallSlide(float time) {
-    //     canSlide = false;
-    //     yield return new WaitForSeconds(time);
-    //     canSlide = true;
-    // }
 }

@@ -47,7 +47,7 @@ public class SpriteFlash : MonoBehaviour {
         }
 
         mat.SetFloat("_FlashAmount", 0);
-        enemy.isTakingDmg = false;
+        if (enemy) enemy.isTakingDmg = false;
     }
 
     private IEnumerator ActuallyFade(float duration) {

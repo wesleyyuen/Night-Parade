@@ -31,9 +31,9 @@ public class Common : MonoBehaviour {
     public static void EnablePlayerControl(bool enable) {
         GameObject player = FindObjectOfType<PlayerMovement> ().gameObject;
         player.GetComponent<Animator> ().SetFloat ("Horizontal", 0f);
-        player.GetComponent<PlayerAnimations>().canTurn = enable;
-        player.GetComponent<PlayerMovement> ().canWalk = enable;
-        player.GetComponent<PlayerCombat> ().canAttack = enable;
-        player.GetComponentInChildren<PlayerJump>().canJump = enable;
+        player.GetComponent<PlayerAnimations>().EnablePlayerTurning(enable);
+        player.GetComponent<PlayerMovement> ().EnablePlayerMovement(enable);
+        player.GetComponent<PlayerCombat> ().EnablePlayerCombat(enable);
+        player.GetComponent<PlayerAbilityController>().EnableAbility(PlayerAbilityController.Ability.Jump , enable);
     }
 }

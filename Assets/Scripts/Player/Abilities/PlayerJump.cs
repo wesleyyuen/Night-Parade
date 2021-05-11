@@ -25,6 +25,16 @@ public class PlayerJump : MonoBehaviour
         canJump = true;
     }
 
+    public void EnablePlayerJump(bool enabled, float time = 0f)
+    {
+        if (canJump == enabled) return;
+
+        if (time == 0)
+            canJump = enabled;
+        else
+            StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => canJump = e, time, enabled, !enabled));
+    }
+
     private void Update() {
         if (!canJump) return;
         CoyoteAndJumpBuffering();
@@ -69,11 +79,5 @@ public class PlayerJump : MonoBehaviour
         if (coll.onGround) {
             dustTrail.Play ();
         }
-    }
-
-    public IEnumerator DisableJumping(float time) {
-        canJump = false;
-        yield return new WaitForSeconds(time);
-        canJump = true;
     }
 }

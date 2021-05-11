@@ -35,10 +35,10 @@ public class PlayerAbilityController : MonoBehaviour
     }
 
 
-    public void EnableAbility (Ability ability, bool enable) {
+    public void EnableAbility (Ability ability, bool enable, float time = 0) {
         switch (ability) {
             case Ability.Jump:
-                jump.enabled = enable;
+                jump.EnablePlayerJump(enable, time);
                 break;
 
             case Ability.WallSlide:

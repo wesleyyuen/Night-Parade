@@ -169,7 +169,7 @@ MonoBehaviour:
   damagedParticleEffect: {fileID: 2317079193809844325}
   maxHealth: 15
   damageAmount: 1
-  knockBackOnAttackForce: 35
+  knockBackOnAttackForce: 20
   collisionCooldown: 1.5
   dieTime: 1
   currentHealth: 0
@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 4
+  isFrozen: 0
 --- !u!114 &1916187428271697681
 MonoBehaviour:
   m_ObjectHideFlags: 0

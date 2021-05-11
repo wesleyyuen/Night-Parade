@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
     protected Transform player;
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
+    protected EnemyMovement movement;
 
     [Header ("Behaviors")]
 
@@ -22,8 +23,6 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
 
     [HideInInspector] public bool collisionOnCooldown;
 
-    private float startTime;
-    private float timer;
     public bool isDead { private set; get; }
     [HideInInspector] public bool isTakingDmg;
 
@@ -32,21 +31,14 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
         player = GameObject.FindGameObjectWithTag ("Player").transform;
         rb = GetComponent<Rigidbody2D> ();
         sr = GetComponent<SpriteRenderer> ();
+        movement = GetComponent<EnemyMovement>();
         collisionOnCooldown = false;
         isDead = false;
         isTakingDmg = false;
     }
 
     public virtual void Update () {
-        if (isDead) return;
 
-        // Freeze for collisionCooldown after colliding with player to avoid constantly colliding with player
-        if (collisionOnCooldown) {
-            timer += Time.deltaTime;
-            if (timer > startTime + collisionCooldown) {
-                collisionOnCooldown = false;
-            }
-        }
     }
 
     public virtual void OnCollisionEnter2D (Collision2D collision) {
@@ -59,9 +51,9 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
 
         // Collide with player, then enemy freezes and player takes damage and knockback 
         if (collision.gameObject.layer == LayerMask.NameToLayer ("Player") && !collisionOnCooldown) {
-            collisionOnCooldown = true;
-            startTime = Time.time;
-            timer = startTime;
+            StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => collisionOnCooldown = e, collisionCooldown, true, false));
+
+            StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => movement.isFrozen = e, collisionCooldown, true, false));
             collision.gameObject.GetComponent<PlayerHealth> ().TakeDamage (damageAmount, rb.position);
         }
     }
@@ -72,11 +64,13 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
     }
 
     public virtual void TakeDamage (float damage) {
+        if (isDead) return;
+        
         isTakingDmg = true;
 
-        // TODO Animation
-        Vector2 knockBackDirection = Vector3.Normalize (rb.position - (Vector2) player.position);
-        rb.AddForce (knockBackOnAttackForce * knockBackDirection, ForceMode2D.Impulse);
+        StartCoroutine(Common.ChangeVariableAfterDelay<float>(e => rb.drag = e, collisionCooldown, knockBackOnAttackForce * 0.1f, 0));
+        bool playerOnLeft = rb.position.x > player.position.x;
+        rb.AddForce (knockBackOnAttackForce * (playerOnLeft ? Vector2.right : Vector2.left), ForceMode2D.Impulse);
 
         currentHealth -= damage;
 
@@ -85,11 +79,9 @@ public class Enemy : MonoBehaviour { // handle ONLY collision and health
             isDead = true;
             StartCoroutine (Die ());
             deathParticleEffect.Play ();
-            // Die();
 
         } else {
             GetComponent<SpriteFlash>().PlayDamagedFlashEffect();
-            // damagedParticleEffect.transform.localScale = new Vector3(-player.localScale.x, damagedParticleEffect.transform.localScale.y, damagedParticleEffect.transform.localScale.z);
             damagedParticleEffect.Play();
         }
     }

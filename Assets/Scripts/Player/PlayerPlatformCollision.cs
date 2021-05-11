@@ -83,11 +83,13 @@ public class PlayerPlatformCollision : MonoBehaviour {
         animations.CreateDustTrail();
 
         // Big Fall
+        const float bigFallHandicapDuration = 1f;
         const float bigFallVelocity = -40;
         if (lastYVelocity < bigFallVelocity) {
-            StartCoroutine(movement.DisableMovement(1f));
-            StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => animations.canTurn = e, 1f, false, true));
-            StartCoroutine(jump.DisableJumping(1f));
+            movement.EnablePlayerMovement(false, bigFallHandicapDuration);
+            animations.EnablePlayerTurning(false, bigFallHandicapDuration);
+            jump.EnablePlayerJump(false, bigFallHandicapDuration);
+            CameraShake.Instance.ShakeCamera(0.5f, bigFallHandicapDuration * 0.25f);
         }
     }
 

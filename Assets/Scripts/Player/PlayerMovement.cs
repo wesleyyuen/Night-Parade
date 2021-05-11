@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -7,26 +7,44 @@ public class PlayerMovement : MonoBehaviour {
     [Header ("References")]
     private PlayerPlatformCollision coll;
     private Rigidbody2D rb;
+    private PlayerCombat combat;
 
     [Header ("Movement Settings")]
     [SerializeField] private float movementSpeed = 11f;
-    public bool canWalk {get; set;}
+    public bool canWalk {get; private set;}
     public bool isHandicapped {get; set;}
+    private float xRaw, yRaw;
 
-    void Awake () {
+    void Awake ()
+    {
         coll = GetComponentInChildren<PlayerPlatformCollision>();
         rb = GetComponent<Rigidbody2D>();
+        combat = GetComponent<PlayerCombat>();
         canWalk = true;
     }
 
-    void FixedUpdate () {
-        if (!canWalk)
-           return;
+    public void EnablePlayerMovement(bool enabled, float time = 0)
+    {
+        if (canWalk == enabled) return;
 
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        float xRaw = Input.GetAxisRaw("Horizontal");
-        float yRaw = Input.GetAxisRaw("Vertical");
+        if (time == 0)
+            canWalk = enabled;
+        else
+            StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => canWalk = e, time, enabled, !enabled));
+    }
+
+    private void Update()
+    {
+        if (combat.isAttacking)
+            canWalk = !coll.onGround;
+
+        xRaw = Input.GetAxisRaw("Horizontal");
+        yRaw = Input.GetAxisRaw("Vertical");
+    }
+
+    void FixedUpdate ()
+    {
+        if (!canWalk) return;
 
         // Move player
         Vector2 newVelocity;
@@ -42,15 +60,19 @@ public class PlayerMovement : MonoBehaviour {
             rb.velocity = newVelocity;
     }
 
-    public IEnumerator DisableMovement(float time) {
-        canWalk = false;
-        yield return new WaitForSeconds(time);
-        canWalk = true;
-    }
-
-    public IEnumerator HandicapMovement(float time) {
+    public IEnumerator HandicapMovement(float time)
+    {
         isHandicapped = true;
         yield return new WaitForSeconds(time);
         isHandicapped = false;
+    }
+
+    public void StepForward(float dist, float time)
+    {
+        if (coll.onGround && xRaw != 0) {
+            bool facingRight = transform.localScale.x > 0;
+            rb.velocity = Vector2.zero;
+            rb.MovePosition(rb.position + new Vector2((facingRight ? 1 : -1) * dist, 0));
+        }
     }
 }
