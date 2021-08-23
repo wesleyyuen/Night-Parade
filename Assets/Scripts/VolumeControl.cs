@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class VolumeControl : MonoBehaviour {
+public class VolumeControl : MonoBehaviour
+{
+    [SerializeField] AudioMixer mixer;
 
-    [SerializeField] private AudioMixer mixer;
-
-    public void SetVolume (float volume) {
+    public void SetVolume (float volume)
+    {
         mixer.SetFloat ("MasterVolume", volume);
     }
 }

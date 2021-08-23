@@ -1,48 +1,79 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-[System.Serializable]
-public class HealthUI : MonoBehaviour {
-    private static HealthUI Instance;
-    private PlayerHealth playerHealth;
-    [SerializeField] private Image[] hearts;
-    [SerializeField] private Sprite fullHeart;
-    [SerializeField] private Sprite threeQuartersHeart;
-    [SerializeField] private Sprite halfHeart;
-    [SerializeField] private Sprite quarterHeart;
-    [SerializeField] private Sprite emptyHeart;
+
+public class HealthUI : MonoBehaviour
+{
+    static HealthUI _instance;
+    public static HealthUI Instance {
+        get  {return _instance; }
+    }
+    PlayerHealth _playerHealth;
+    [SerializeField] Image[] hearts;
+    [SerializeField] Sprite fullHeart;
+    [SerializeField] Sprite threeQuartersHeart;
+    [SerializeField] Sprite halfHeart;
+    [SerializeField] Sprite quarterHeart;
+    [SerializeField] Sprite emptyHeart;
+    const float kFadeInDuration = 0.85f;
+    const float kFadeInOffsetDuration = 0.3f;
     
-    void Awake () {
-        if (Instance == null) {
-            Instance = this;
-            DontDestroyOnLoad (Instance);
+    void Awake()
+    {
+        if (_instance == null) {
+            _instance = this;
+            DontDestroyOnLoad (gameObject);
         } else {
             Destroy (gameObject);
         }
     }
 
-    void Start() {
-        playerHealth = FindObjectOfType<PlayerHealth> ();
+    public void Intro()
+    {
+        FadeUI(true);
     }
 
-    public void UpdateHearts() {
-        playerHealth = FindObjectOfType<PlayerHealth> ();
-        if (playerHealth == null) return;
+    public void Outro()
+    {
+        FadeUI(false, true);
+    }
 
-        int numOfFullHearts = playerHealth.currHealth / 4;
-        int maxHearts = playerHealth.maxHealth / 4;
+    private void FadeUI(bool fadeIn, bool isInstant = false)
+    {
+        StopAllCoroutines();
+
+        float from = fadeIn ? 0f : 1f;
+        float to = fadeIn ? 1f : 0f;
+        for (int i = 0; i < hearts.Length; i++) {
+            if (isInstant) {
+                hearts[i].color = new Color(1f, 1f, 1f, to);
+            } else {
+                hearts[i].color = new Color(1f, 1f, 1f, from);
+                StartCoroutine(Utility.FadeImage(hearts[i], from, to, kFadeInDuration + kFadeInOffsetDuration * i));
+            }
+        }
+    }
+
+    public void UpdateHeartsUI()
+    {
+        _playerHealth = FindObjectOfType<PlayerHealth> ();
+        if (_playerHealth == null) return;
+
+        int numOfFullHearts = _playerHealth.currHealth / 4;
+        int maxHearts = _playerHealth.maxHealth / 4;
 
         // Display hearts
         for (int i = 0; i < hearts.Length; i++) {
             hearts[i].sprite = (i < numOfFullHearts) ? fullHeart : emptyHeart;
-
+                
             // disable hearts that exceed current maximum health
             hearts[i].enabled = i < maxHearts;
         }
 
         // Handle Reminder
-        int reminder = playerHealth.currHealth % 4;
-        if (reminder == 0) return;
-        hearts[numOfFullHearts].sprite = (reminder == 3) ? threeQuartersHeart
-                                                   : (reminder == 2) ? halfHeart : quarterHeart;
+        int reminder = _playerHealth.currHealth % 4;
+        if (reminder != 0) {
+            hearts[numOfFullHearts].sprite = (reminder == 3) ? threeQuartersHeart
+                                                    : (reminder == 2) ? halfHeart : quarterHeart;
+        }
     }
 }

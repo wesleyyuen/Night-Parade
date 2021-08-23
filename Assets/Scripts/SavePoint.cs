@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-public class SavePoint : DialogueTrigger {
-    public override void Update () {
+public class SavePoint : DialogueTrigger
+{
+    public override void Update ()
+    {
         bool isTalking = DialogueManager.Instance.isTalking;
         int loadIndex = GameMaster.Instance.savedPlayerData.SaveFileIndex;
 

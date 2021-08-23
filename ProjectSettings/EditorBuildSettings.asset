@@ -15,30 +15,35 @@ EditorBuildSettings:
     path: Assets/Scenes/Forest/Forest_Cave.unity
     guid: 9792301c25b9ae14d9afb58c959cd21e
   - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Tutorial.unity
+    path: Assets/Scenes/Forest/Forest_Area1.unity
+    guid: e75c995a705965844bb11f9e7e06082c
+  - enabled: 0
+    path: Assets/Scenes/Forest/Old/Forest_Tutorial.unity
     guid: f7210b03ef574474fa584efcbe49cb60
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area1.unity
+  - enabled: 0
+    path: Assets/Scenes/Forest/Old/Forest_Area1.unity
     guid: 49d4c8df0ac1cc945865fc3482cbd84d
-  - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Tree.unity
+  - enabled: 0
+    path: Assets/Scenes/Forest/Old/Forest_Tree.unity
     guid: 47648c7d35fca7044afa3e71ab3aa81f
-  - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Root.unity
+  - enabled: 0
+    path: Assets/Scenes/Forest/Old/Forest_Root.unity
     guid: 269b033a8bbf640468bbb8685d95af0b
-  - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area2.unity
+  - enabled: 0
+    path: Assets/Scenes/Forest/Old/Forest_Area2.unity
     guid: 22f9a794502621246a19118f404b5b06
-  - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area3.unity
+  - enabled: 0
+    path: Assets/Scenes/Forest/Old/Forest_Area3.unity
     guid: 9499e94b352fb4b49a01eba44b167d55
-  - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area4.unity
+  - enabled: 0
+    path: Assets/Scenes/Forest/Old/Forest_Area4.unity
     guid: c6bdbbd64be991245830e73b2a7bdf4b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Hatsumura.unity
     guid: d0b8ab17fbd696d4180798c8034b9e5e
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: d80537ac7b2d8f64e9b89d831c896c15,
+      type: 2}

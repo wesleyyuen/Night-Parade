@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class RevealHiddenArea : MonoBehaviour {
-    [SerializeField] private string keyString;
-    [SerializeField] private Tilemap tilemapToHide;
-    [SerializeField] private GameObject lightToTurnOff;
-    [SerializeField] private float alphaToFadeTo;
-    [SerializeField] private float fadingTime;
-    [SerializeField] private bool hideFromLeft;
+public class RevealHiddenArea : MonoBehaviour
+{
+    [SerializeField] string keyString;
+    [SerializeField] Tilemap tilemapToHide;
+    [SerializeField] GameObject lightToTurnOff;
+    [SerializeField] float alphaToFadeTo;
+    [SerializeField] float fadingTime;
+    [SerializeField] bool hideFromLeft;
 
-    private void Start () {
+    void Start ()
+    {
         // Make hidden area semi-transparant when discovered before
         bool discoveredBefore;
         FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (keyString, out discoveredBefore);
@@ -21,7 +23,8 @@ public class RevealHiddenArea : MonoBehaviour {
         }
     }
 
-    private void OnTriggerExit2D (Collider2D other) {
+    void OnTriggerExit2D (Collider2D other)
+    {
         if (other.CompareTag ("Player")) {
             // Find direction player enter the trigger from
             Vector3 dir = other.transform.position - gameObject.transform.position;
@@ -40,7 +43,8 @@ public class RevealHiddenArea : MonoBehaviour {
     }
 
     // Fade in/out tilemap
-    private IEnumerator FadeTilemap (float targetAlpha) {
+    IEnumerator FadeTilemap (float targetAlpha)
+    {
         if (lightToTurnOff != null) lightToTurnOff.SetActive (false);
         float alpha = tilemapToHide.color.a;
         for (float t = 0f; t < 1f; t += Time.deltaTime / fadingTime) {
@@ -49,7 +53,8 @@ public class RevealHiddenArea : MonoBehaviour {
         }
     }
 
-    private void FoundSecretSFX () {
-        AudioManager.Instance.Play ("Found_SecretArea");
+    void FoundSecretSFX ()
+    {
+        SoundManager.Instance.Play ("Found_SecretArea");
     }
 }

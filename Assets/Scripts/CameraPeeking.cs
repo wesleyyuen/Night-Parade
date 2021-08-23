@@ -1,18 +1,20 @@
 ﻿using Cinemachine;
 using UnityEngine;
 
-public class CameraPeeking : MonoBehaviour {
-    private CinemachineFramingTransposer transposer;
-    private bool isGrounded;
-    [SerializeField] private float originalScreenY;
-    [SerializeField] private float lookUpScreenY;
-    [SerializeField] private float lookDownScreenY;
-    [SerializeField] private float changeRate;
-    private float startTime = 0f;
-    private float timer = 0f;
-    [SerializeField] private float holdTime = 1.0f; // how long you need to hold to trigger the effect
+public class CameraPeeking : MonoBehaviour
+{
+    CinemachineFramingTransposer transposer;
+    bool isGrounded;
+    [SerializeField] float originalScreenY;
+    [SerializeField] float lookUpScreenY;
+    [SerializeField] float lookDownScreenY;
+    [SerializeField] float changeRate;
+    float startTime = 0f;
+    float timer = 0f;
+    [SerializeField] float holdTime = 1.0f; // how long you need to hold to trigger the effect
 
-    void Start () {
+    void Start ()
+    {
         this.enabled = false;
 
         GameObject vcam = GameObject.FindGameObjectWithTag ("MainVCam");
@@ -21,7 +23,8 @@ public class CameraPeeking : MonoBehaviour {
         if (grounded != null) isGrounded = grounded.onGround;
     }
 
-    void ReInitializeVariables () {
+    void ReInitializeVariables ()
+    {
         if (transposer == null) {
             GameObject vcam = GameObject.FindGameObjectWithTag ("MainVCam");
             if (vcam != null) transposer = vcam.GetComponent<CinemachineVirtualCamera> ().GetCinemachineComponent<CinemachineFramingTransposer> ();
@@ -30,7 +33,8 @@ public class CameraPeeking : MonoBehaviour {
         if (grounded != null) isGrounded = grounded.onGround;
     }
 
-    void Update () {
+    void Update ()
+    {
         ReInitializeVariables ();
         if (transposer == null || !isGrounded) return;
         float currScreenY = transposer.m_ScreenY;

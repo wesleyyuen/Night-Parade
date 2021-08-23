@@ -2,40 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallSlide : MonoBehaviour {
-    private Rigidbody2D rb;
-    private PlayerAnimations anim;
-    private PlayerPlatformCollision collision;
-    private PlayerCombat combat;
-    [SerializeField] private float slideSpeed;
+public class PlayerWallSlide : MonoBehaviour
+{
+    Rigidbody2D _rb;
+    PlayerAnimations _anim;
+    PlayerPlatformCollision _collision;
+    WeaponFSM _weaponFSM;
+    [SerializeField] float slideSpeed;
     [HideInInspector] public bool canSlide;
 
-    private void Awake() {
-        rb = GetComponentInParent<Rigidbody2D>();
-        anim = GetComponentInParent<PlayerAnimations>();
-        combat = GetComponentInParent<PlayerCombat>();
-        Transform collTransform = transform.parent.Find("Platform Collision");
-        if (collTransform)
-            collision = collTransform.GetComponent<PlayerPlatformCollision>();
+    void Awake()
+    {
+        _rb = GetComponentInParent<Rigidbody2D>();
+        _anim = GetComponentInParent<PlayerAnimations>();
+        _weaponFSM = transform.parent.GetComponentInChildren<WeaponFSM>();
+        _collision = GetComponentInParent<PlayerPlatformCollision>();
+        canSlide = true;
     }
 
-    private void Update() {
+    void Update()
+    {
         if (!canSlide) return;
 
         // Only disable attack if player is wallsliding
-        combat.canAttack = true;
+        _weaponFSM.canAttack = true;
 
-        if (!collision.onGround && collision.onWall) {
+        if (!_collision.onGround && _collision.onWall) {
             // press against wall, slow down sliding
-            if ((collision.onLeftWall && (Input.GetAxisRaw("Horizontal") < 0)) ||
-                (collision.onRightWall && (Input.GetAxisRaw("Horizontal") > 0))) {
-                combat.canAttack = false;
+            if ((_collision.onLeftWall && (Input.GetAxisRaw("Horizontal") < 0)) ||
+                (_collision.onRightWall && (Input.GetAxisRaw("Horizontal") > 0))) {
+                _weaponFSM.canAttack = false;
                 WallSlide(slideSpeed);
             }
         }
     }
 
-    private void WallSlide(float speed) {
-        rb.velocity = new Vector2(rb.velocity.x, -speed);
+    void WallSlide(float speed)
+    {
+        _rb.velocity = new Vector2(_rb.velocity.x, -speed);
     }
 }

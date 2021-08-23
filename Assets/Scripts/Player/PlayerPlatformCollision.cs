@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
 public class PlayerPlatformCollision : MonoBehaviour {  
-    private PlayerAudio playerAudio;
-    [SerializeField] private bool startOffGrounded;
-    [SerializeField] private float colliderRadius;
-    [SerializeField] private PhysicsMaterial2D oneFriction;
+    PlayerAudio _playerAudio;
+    [SerializeField] bool startOffGrounded;
+    [SerializeField] float colliderRadius;
+    [SerializeField] PhysicsMaterial2D oneFriction;
 
     public bool onGround { get; private set; }
     public bool onSlope { get; private set; }
@@ -12,55 +12,66 @@ public class PlayerPlatformCollision : MonoBehaviour {
     public bool onWall { get; private set; }
     public bool onLeftWall { get; private set; }
     public bool onRightWall { get; private set; }
-    private PlayerMovement movement;
-    private PlayerAnimations animations;
-    private Collider2D coll;
-    private Rigidbody2D rb;
-    private PlayerJump jump;
-    private Vector2 groundDetectionPoint;
-    private Vector2 leftDetectionPoint;
-    private Vector2 rightDetectionPoint;
+    PlayerMovement _movement;
+    PlayerAnimations _animations;
+    Collider2D _coll;
+    Rigidbody2D _rb;
+    PlayerJump _jump;
+    Vector2 _groundDetectionPoint;
+    Vector2 _leftWallUpperDetectionPoint;
+    Vector2 _leftWallMidDetectionPoint;
+    Vector2 _leftWallLowerDetectionPoint;
+    Vector2 _rightWallUpperDetectionPoint;
+    Vector2 _rightWallMidDetectionPoint;
+    Vector2 _rightWallLowerDetectionPoint;
 
-    private float lastYVelocity;
 
-    private void Awake () {
-        playerAudio = FindObjectOfType<PlayerAudio> ();
-        coll = GetComponentInParent<Collider2D>();
-        rb = GetComponentInParent<Rigidbody2D>();
-        movement = GetComponentInParent<PlayerMovement>();
-        animations = GetComponentInParent<PlayerAnimations>();
-        jump = transform.parent.GetComponentInChildren<PlayerJump>();
+    float lastYVelocity;
+
+    void Awake () {
+        _playerAudio = FindObjectOfType<PlayerAudio> ();
+        _coll = GetComponentInParent<Collider2D>();
+        _rb = GetComponentInParent<Rigidbody2D>();
+        _movement = GetComponentInParent<PlayerMovement>();
+        _animations = GetComponentInParent<PlayerAnimations>();
+        _jump = transform.parent.GetComponentInChildren<PlayerJump>();
 
         if (startOffGrounded)
             onGround = true;
     }
 
-    private void Update() {
+    void Update() {
         bool prevOnGround = onGround;
         bool prevOnSlope = onSlope;
         bool prevOnLeftWall = onLeftWall;
         bool prevOnRightWall = onRightWall;
         bool prevOnWall = onWall;
 
-        groundDetectionPoint = new Vector2 (coll.bounds.center.x, coll.bounds.min.y);
-        leftDetectionPoint = new Vector2 (coll.bounds.min.x, coll.bounds.center.y);
-        rightDetectionPoint = new Vector2 (coll.bounds.max.x, coll.bounds.center.y);
+        _groundDetectionPoint = new Vector2 (_coll.bounds.center.x, _coll.bounds.min.y);
+        _leftWallUpperDetectionPoint = new Vector2 (_coll.bounds.min.x, _coll.bounds.max.y);
+        _leftWallMidDetectionPoint = new Vector2 (_coll.bounds.min.x, _coll.bounds.center.y);
+        _leftWallLowerDetectionPoint = new Vector2 (_coll.bounds.min.x, _coll.bounds.min.y);
+        _rightWallUpperDetectionPoint = new Vector2 (_coll.bounds.max.x, _coll.bounds.max.y);
+        _rightWallMidDetectionPoint = new Vector2 (_coll.bounds.max.x, _coll.bounds.center.y);
+        _rightWallLowerDetectionPoint = new Vector2 (_coll.bounds.max.x, _coll.bounds.min.y);
 
-        Collider2D groundHit = Physics2D.OverlapCircle(groundDetectionPoint, colliderRadius, LayerMask.GetMask("Ground"));
+        Collider2D groundHit = Physics2D.OverlapCircle(_groundDetectionPoint, colliderRadius, LayerMask.GetMask("Ground"));
         onGround = groundHit;
         onSlope = groundHit ? groundHit.CompareTag("Slope") : false;
         if (onSlope) {
-            RaycastHit2D hit = Physics2D.Raycast(groundDetectionPoint, Vector2.down, colliderRadius, LayerMask.GetMask("Ground"));
+            RaycastHit2D hit = Physics2D.Raycast(_groundDetectionPoint, Vector2.down, colliderRadius, LayerMask.GetMask("Ground"));
             if (hit && hit.collider.CompareTag("Slope")) {
                 slopeVector = Vector2.Perpendicular(hit.normal).normalized;
             }
         } else {
             slopeVector = Vector2.left;
         }
-        onLeftWall = Physics2D.Raycast(leftDetectionPoint, Vector2.left, colliderRadius, LayerMask.GetMask("Wall"));
-        //Physics2D.OverlapCircle(leftDetectionPoint, colliderRadius, LayerMask.GetMask("Wall"));
-        onRightWall = Physics2D.Raycast(rightDetectionPoint, -Vector2.left, colliderRadius, LayerMask.GetMask("Wall"));
-        //Physics2D.OverlapCircle(rightDetectionPoint, colliderRadius, LayerMask.GetMask("Wall"));
+        onLeftWall = Physics2D.Raycast(_leftWallUpperDetectionPoint, Vector2.left, colliderRadius, LayerMask.GetMask("Wall")) ||
+                     Physics2D.Raycast(_leftWallMidDetectionPoint, Vector2.left, colliderRadius, LayerMask.GetMask("Wall")) ||
+                     Physics2D.Raycast(_leftWallLowerDetectionPoint, Vector2.left, colliderRadius, LayerMask.GetMask("Wall"));
+        onRightWall = Physics2D.Raycast(_rightWallUpperDetectionPoint, -Vector2.left, colliderRadius, LayerMask.GetMask("Wall")) ||
+                      Physics2D.Raycast(_rightWallMidDetectionPoint, Vector2.left, colliderRadius, LayerMask.GetMask("Wall")) ||
+                      Physics2D.Raycast(_rightWallLowerDetectionPoint, -Vector2.left, colliderRadius, LayerMask.GetMask("Wall"));
         onWall = onLeftWall || onRightWall;
 
         // onGround callbacks
@@ -75,33 +86,36 @@ public class PlayerPlatformCollision : MonoBehaviour {
         if (onSlope)
             groundHit.sharedMaterial = Input.GetAxisRaw("Horizontal") == 0 ? oneFriction : null;
 
-        lastYVelocity = rb.velocity.y;
+        lastYVelocity = _rb.velocity.y;
     }
 
-    private void OnGroundEnter() {
-        playerAudio.FootstepSFX();
-        animations.CreateDustTrail();
+    void OnGroundEnter() {
+        _playerAudio.PlayFootstepSFX();
+        _animations.CreateDustTrail();
 
         // Big Fall
         const float bigFallHandicapDuration = 1f;
         const float bigFallVelocity = -40;
         if (lastYVelocity < bigFallVelocity) {
-            movement.EnablePlayerMovement(false, bigFallHandicapDuration);
-            animations.EnablePlayerTurning(false, bigFallHandicapDuration);
-            jump.EnablePlayerJump(false, bigFallHandicapDuration);
+            _movement.EnablePlayerMovement(false, bigFallHandicapDuration);
+            _animations.EnablePlayerTurning(false, bigFallHandicapDuration);
+            _jump.EnablePlayerJump(false, bigFallHandicapDuration);
             CameraShake.Instance.ShakeCamera(0.5f, bigFallHandicapDuration * 0.25f);
         }
     }
 
-    private void OnGroundExit() {
-
+    void OnGroundExit() {
+        // TODO: not working
+        // animations.CreateDustTrail();
     }
 
-    private void OnDrawGizmos() {
+    void OnDrawGizmos() {
         Gizmos.color = Color.green;
 
-        Gizmos.DrawRay(groundDetectionPoint, Vector2.down * colliderRadius);
-        Gizmos.DrawRay(leftDetectionPoint,  Vector2.left * colliderRadius);
-        Gizmos.DrawRay(rightDetectionPoint,  -Vector2.left * colliderRadius);
+        Gizmos.DrawRay(_groundDetectionPoint, Vector2.down * colliderRadius);
+        Gizmos.DrawRay(_leftWallUpperDetectionPoint,  Vector2.left * colliderRadius);
+        Gizmos.DrawRay(_leftWallLowerDetectionPoint,  -Vector2.left * colliderRadius);
+        Gizmos.DrawRay(_rightWallUpperDetectionPoint,  Vector2.left * colliderRadius);
+        Gizmos.DrawRay(_rightWallLowerDetectionPoint,  -Vector2.left * colliderRadius);
     }
 }

@@ -2,23 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OnibiMovement : MonoBehaviour {
-    [Header ("References")]
-    private Transform player;
-    private Rigidbody2D rb;
-    [Header ("Parameters")]
-    [SerializeField] private float distanceFromPlayer;
-    private Vector2 refPosition;
-    private float refRotation;
-    private Vector2 desiredPoint;
+public class OnibiMovement : MonoBehaviour
+{
+    Transform _player;
+    Rigidbody2D _rb;
 
-    void Start() {
-        player = transform.parent.Find("Player");
-        rb = GetComponent<Rigidbody2D>();
-        transform.position = new Vector3(player.position.x + (player.localScale.x == 1 ? -distanceFromPlayer : distanceFromPlayer),
-                                         player.position.y + distanceFromPlayer / 2,
+    [Header ("Parameters")]
+    [SerializeField] Vector2 offsetFromPlayer;
+    Vector2 _refPosition;
+    Vector2 _desiredPoint;
+
+    void Start()
+    {
+        _player = transform.parent.Find("Player");
+        _rb = GetComponent<Rigidbody2D>();
+        transform.position = new Vector3(_player.position.x + (_player.localScale.x == 1 ? offsetFromPlayer.x : -offsetFromPlayer.x),
+                                         _player.position.y + offsetFromPlayer.y,
                                          0);
-        desiredPoint = transform.position;
+        _desiredPoint = transform.position;
 
         // Overclock glow intensity
         Material mat = GetComponent<SpriteRenderer>().material;
@@ -26,9 +27,10 @@ public class OnibiMovement : MonoBehaviour {
         mat.color = new Color(mat.color.r * factor, mat.color.g * factor, mat.color.b * factor, mat.color.a);
     }
 
-    void FixedUpdate() {
-        desiredPoint = new Vector2(player.position.x + (player.localScale.x == 1 ? -distanceFromPlayer : distanceFromPlayer),
-                                   player.position.y /*+ distanceFromPlayer / 2*/ + Mathf.Sin(Time.time * Random.value) * 0.3f);
-        rb.position = Vector2.SmoothDamp(rb.position, desiredPoint, ref refPosition, 0.3f, 15, Time.deltaTime); 
+    void FixedUpdate()
+    {
+        _desiredPoint = new Vector2(_player.position.x + (_player.localScale.x == 1 ? offsetFromPlayer.x : -offsetFromPlayer.x),
+                                   _player.position.y + offsetFromPlayer.y + Mathf.Sin(Time.time * Random.value) * 0.5f);
+        _rb.position = Vector2.SmoothDamp(_rb.position, _desiredPoint, ref _refPosition, 0.3f, 15, Time.deltaTime); 
     }
 }

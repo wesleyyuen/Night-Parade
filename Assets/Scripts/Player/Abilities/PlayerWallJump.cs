@@ -2,44 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallJump : MonoBehaviour {
-    private Rigidbody2D rb;
-    private PlayerAnimations anim;
-    private PlayerPlatformCollision collision;
-    private PlayerCombat combat;
-    private PlayerMovement movement;
-    private PlayerAnimations animations;
-    [SerializeField] private Vector2 jumpDirection;
-    [SerializeField] private float movementDisableTime;
+public class PlayerWallJump : MonoBehaviour
+{
+    Rigidbody2D _rb;
+    PlayerAnimations _anim;
+    PlayerPlatformCollision _collision;
+    PlayerMovement _movement;
+    PlayerAnimations _animations;
+    [SerializeField] Vector2 jumpDirection;
+    [SerializeField] float movementDisableTime;
 
-    private void Awake() {
-        rb = GetComponentInParent<Rigidbody2D>();
-        anim = GetComponentInParent<PlayerAnimations>();
-        combat = GetComponentInParent<PlayerCombat>();
-        movement = GetComponentInParent<PlayerMovement>();
-        animations = GetComponentInParent<PlayerAnimations>();
-        Transform collTransform = transform.parent.Find("Platform Collision");
-        if (collTransform)
-            collision = collTransform.GetComponent<PlayerPlatformCollision>();
+    void Awake()
+    {
+        _rb = GetComponentInParent<Rigidbody2D>();
+        _anim = GetComponentInParent<PlayerAnimations>();
+        _movement = GetComponentInParent<PlayerMovement>();
+        _animations = GetComponentInParent<PlayerAnimations>();
+        _collision = GetComponentInParent<PlayerPlatformCollision>();
     }
 
-    private void Update() {
-        if (Input.GetButtonDown ("Jump")) {
-            if (!collision.onGround && (collision.onLeftWall && (Input.GetAxisRaw("Horizontal") < 0) ||
-                 (collision.onRightWall && (Input.GetAxisRaw("Horizontal") > 0)))) {
-                StartCoroutine(movement.HandicapMovement(movementDisableTime));
-                StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => animations.canTurn = e, movementDisableTime, false, true));
-                StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => GetComponent<PlayerWallSlide>().canSlide = e, movementDisableTime, false, true));
-                WallJump(collision.onLeftWall);
-            }
+    void Update()
+    {
+        if (!_collision.onGround && (_collision.onLeftWall && (Input.GetAxisRaw("Horizontal") < 0) ||
+                (_collision.onRightWall && (Input.GetAxisRaw("Horizontal") > 0))) && Input.GetButtonDown ("Jump")) {
+            StartCoroutine(_movement.HandicapMovement(movementDisableTime));
+            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _animations.canTurn = e, movementDisableTime, false, true));
+            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => GetComponent<PlayerWallSlide>().canSlide = e, movementDisableTime, false, true));
+            WallJump(_collision.onLeftWall);
         }
     }
 
-    private void WallJump(bool isLeftWall) {
-        rb.velocity = new Vector2(rb.velocity.x, 0);
-        rb.velocity += new Vector2((isLeftWall ? 1 : -1) * jumpDirection.x, jumpDirection.y);
+    void WallJump(bool isLeftWall)
+    {
+        _rb.velocity = new Vector2(_rb.velocity.x, 0);
+        _rb.velocity += new Vector2((isLeftWall ? 1 : -1) * jumpDirection.x, jumpDirection.y);
         
         // Turn away from the wall
-        animations.FaceRight(isLeftWall);
+        _animations.FaceRight(isLeftWall);
     }
 }

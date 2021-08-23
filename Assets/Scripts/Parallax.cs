@@ -1,27 +1,30 @@
 ﻿using UnityEngine;
 
-public class Parallax : MonoBehaviour {
-    [SerializeField] private float multiplier = 0.0f;
-    private enum ParallaxMode {
+public class Parallax : MonoBehaviour
+{
+    [SerializeField] float multiplier = 0.0f;
+    enum ParallaxMode {
         Horizontal,
         Vertical,
         Omnidirectional
     }
 
-    [SerializeField] private ParallaxMode parallaxMode;
+    [SerializeField] ParallaxMode parallaxMode;
 
-    private Transform cameraTransform;
+    Transform cameraTransform;
 
-    private Vector3 startCameraPos;
-    private Vector3 startPos;
+    Vector3 startCameraPos;
+    Vector3 startPos;
 
-    void Start () {
+    void Start ()
+    {
         cameraTransform = Camera.main.transform;
         startCameraPos = cameraTransform.position;
         startPos = transform.position;
     }
 
-    private void LateUpdate () {
+    void LateUpdate ()
+    {
         var position = startPos;
         // Move background according to mode
         if (parallaxMode == ParallaxMode.Horizontal) {

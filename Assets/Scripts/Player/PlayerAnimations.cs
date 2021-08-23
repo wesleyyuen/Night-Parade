@@ -4,68 +4,112 @@ using UnityEngine;
 
 public class PlayerAnimations : MonoBehaviour
 {
-    [SerializeField] private PlayerPlatformCollision grounded;
-    [SerializeField] private ParticleSystem dustTrail;
-
-    private Animator animator;
-    private Rigidbody2D rb;
-    private PlayerMovement movement;
-    private PlayerCombat combat;
+    [SerializeField] ParticleSystem dustTrail;
+    [SerializeField] Animator swordAnimator;
+    PlayerPlatformCollision _grounded;
+    Animator _playerAnimator;
+    Rigidbody2D _rb;
+    PlayerMovement _movement;
     [HideInInspector] public bool canTurn;
 
-    private void Awake()
+    void Awake()
     {
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        movement = GetComponent<PlayerMovement>();
-        combat = GetComponent<PlayerCombat>();
+        _grounded = GetComponent<PlayerPlatformCollision>();
+        _playerAnimator = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody2D>();
+        _movement = GetComponent<PlayerMovement>();
         canTurn = true;
     }
 
-    public void EnablePlayerTurning(bool enabled, float time = 0f)
+    public void EnablePlayerTurning(bool enable, float time = 0f)
     {
-        if (canTurn == enabled) return;
-
         if (time == 0)
-            canTurn = enabled;
+            canTurn = enable;
         else
-            StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => canTurn = e, time, enabled, !enabled));
+            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => canTurn = e, time, enable, !enable));
     }
 
-    private void Update()
+    public void FreezePlayerAnimation(float time)
     {
-        animator.SetBool ("IsGrounded", grounded.onGround);
-        animator.SetFloat ("Vertical", rb.velocity.y);
+        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _playerAnimator.enabled = e, time, false, true));
+        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => swordAnimator.enabled = e, time, false, true));
+    }
+
+    void Update()
+    {
+        SetJumpFallAnimation();
 
         if (!canTurn) return;
+
         float horizontalInput = Input.GetAxisRaw ("Horizontal");
         Vector3 prevLocalScale = transform.localScale;
 
         // Flip sprite (TODO: maybe move into child object)
         if (horizontalInput > 0 && prevLocalScale.x != 1f) {
-            //CreateDustTrail ();
             FaceRight(true);
         } else if (horizontalInput < 0 && prevLocalScale.x != -1f) {
-            //CreateDustTrail ();
             FaceRight(false);
         }
 
         // Set animations
-        if (movement.canWalk)
-            animator.SetFloat ("Horizontal", horizontalInput);
+        if (_movement.canWalk) {
+            SetRunAnimation(horizontalInput);
+        }
     }
 
-    public void FaceRight(bool faceRight) {
-        animator.SetBool ("FacingRight", faceRight);
+    void SetBool(string name, bool val)
+    {
+        _playerAnimator.SetBool(name, val);
+        swordAnimator.SetBool(name, val);
+    }
+
+    void SetFloat(string name, float val)
+    {
+        _playerAnimator.SetFloat(name, val);
+        swordAnimator.SetFloat(name, val);
+    }
+
+    void SetInteger(string name, int val)
+    {
+        _playerAnimator.SetInteger(name, val);
+        swordAnimator.SetInteger(name, val);
+    }
+
+    public void FaceRight(bool faceRight)
+    {
+        swordAnimator.SetBool ("FacingRight", faceRight);
         transform.localScale = new Vector3 (faceRight ? 1f : -1f, 1f, 1f);
-    } 
-
-    public void SetTrigger(string trigger) {
-        animator.SetTrigger(trigger);
     }
 
-    public void CreateDustTrail () {
-        if (grounded.onGround) {
+    public void SetRunAnimation(float horizontalInput)
+    {
+        SetFloat ("Horizontal", horizontalInput);
+    }
+
+    public void SetJumpFallAnimation()
+    {
+        SetBool ("IsGrounded", _grounded.onGround);
+        SetFloat ("Vertical", _rb.velocity.y);
+    }
+
+    public void SetAttackAnimation(int count)
+    {
+        SetInteger("Attack", count);
+    }
+
+    public void SetBlockAnimation(bool val)
+    {
+        SetBool("IsBlocking", val);
+    }
+
+    public int GetCurrentAttackAnimation()
+    {
+        return _playerAnimator.GetInteger("Attack");
+    }
+
+    public void CreateDustTrail ()
+    {
+        if (_grounded.onGround) {
             dustTrail.Play ();
         }
     }

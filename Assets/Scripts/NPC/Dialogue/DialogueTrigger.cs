@@ -1,16 +1,20 @@
 ﻿using UnityEngine;
 
-public class DialogueTrigger : MonoBehaviour {
+public class DialogueTrigger : MonoBehaviour
+{
     [HideInInspector] public GameObject player;
-    [SerializeField] private bool triggerOnCollision; // trigger without pressing interact
-    [SerializeField] private Dialogue dialogue;
+    [SerializeField] bool triggerOnCollision; // trigger without pressing interact
+    [SerializeField] Dialogue dialogue;
     public float triggerRange;
     public MeshRenderer textPrompt;
 
-    void Start () {
+    void Start ()
+    {
         player = GameObject.FindGameObjectWithTag ("Player");
     }
-    public virtual void Update () {
+
+    public virtual void Update ()
+    {
         bool isTalking = DialogueManager.Instance.isTalking;
         if (textPrompt == null || player == null || triggerOnCollision) return;
         
@@ -23,13 +27,16 @@ public class DialogueTrigger : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter2D (Collider2D other) {
+    void OnTriggerEnter2D (Collider2D other)
+    {
         if (triggerOnCollision && other.CompareTag ("Player")) {
             TriggerDialogue ();
         }
     }
 
-    public void TriggerDialogue () { // TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
+    public void TriggerDialogue ()
+    { 
+        // TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
         if (!PauseMenu.isPuased) {
             DialogueManager.Instance.StartDialogue (dialogue);
         }

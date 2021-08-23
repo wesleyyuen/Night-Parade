@@ -6,55 +6,78 @@ public class PlayerAbilityController : MonoBehaviour
 {
     // New ability scripts in child of player
     // This controller manages their activations
-    [SerializeField] private GameObject abilitiesGB;
-
     public enum Ability {
         Jump,
         WallSlide,
         WallJump,
         Dash
     }
+    public float currStamina { get; private set; }
+    public float maxStamina { get; private set; }
+    GameObject _abilitiesGB;
+    PlayerJump _jump;
+    PlayerWallSlide _wallSlide;
+    PlayerWallJump _wallJump;
+    PlayerDash _dash;
+    float _deltaTime;
 
-    private PlayerJump jump;
-    private PlayerWallSlide wallSlide;
-    private PlayerWallJump wallJump;
-    private PlayerDash dash;
+    void Start()
+    {
+        currStamina = GameMaster.Instance.savedPlayerData.MaxStamina;
+        maxStamina = GameMaster.Instance.savedPlayerData.MaxStamina;
 
-
-    private void Awake() {
-        jump = abilitiesGB.GetComponent<PlayerJump>();
-        wallSlide = abilitiesGB.GetComponent<PlayerWallSlide>();
-        wallJump = abilitiesGB.GetComponent<PlayerWallJump>();
-        dash = abilitiesGB.GetComponent<PlayerDash>();
+        _abilitiesGB = transform.Find("Abilities").gameObject;
+        _jump = _abilitiesGB.GetComponent<PlayerJump>();
+        _wallSlide = _abilitiesGB.GetComponent<PlayerWallSlide>();
+        _wallJump = _abilitiesGB.GetComponent<PlayerWallJump>();
+        _dash = _abilitiesGB.GetComponent<PlayerDash>();
 
         // Enable Abilities
         EnableAbility(Ability.Jump, true);
-        EnableAbility(Ability.WallJump, true);
-        EnableAbility(Ability.WallSlide, true);
-        EnableAbility(Ability.Dash, true);
+        EnableAbility(Ability.WallJump, false);
+        EnableAbility(Ability.WallSlide, false);
+        EnableAbility(Ability.Dash, false);
     }
 
+    void Update()
+    {
+        _deltaTime = Time.deltaTime;
 
-    public void EnableAbility (Ability ability, bool enable, float time = 0) {
+        // Update Stamina UI
+        StaminaUI.Instance.UpdateStaminaUI(currStamina / maxStamina);
+    }
+
+    public void EnableAbility (Ability ability, bool enable, float time = 0)
+    {
         switch (ability) {
             case Ability.Jump:
-                jump.EnablePlayerJump(enable, time);
+                _jump.EnablePlayerJump(enable, time);
                 break;
 
             case Ability.WallSlide:
-                wallSlide.enabled = enable;
+                _wallSlide.enabled = enable;
                 break;
 
             case Ability.WallJump:
-                wallJump.enabled = enable;
+                _wallJump.enabled = enable;
                 break;
                 
             case Ability.Dash:
-                dash.enabled = enable;
+                _dash.enabled = enable;
                 break;
 
             default:
                 break;
         }
+    }
+
+    public void RegenerateStamina()
+    {
+        currStamina = Mathf.Min(currStamina + _deltaTime, maxStamina);
+    }
+
+    public void UseStamina()
+    {
+        currStamina = Mathf.Max(currStamina - _deltaTime, 0);
     }
 }

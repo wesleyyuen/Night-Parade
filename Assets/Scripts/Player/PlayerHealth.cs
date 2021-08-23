@@ -2,34 +2,39 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerHealth : MonoBehaviour {
+public class PlayerHealth : MonoBehaviour
+{
     public int currHealth { get; private set; }
     public int maxHealth { get; private set; }
     
-    private Rigidbody2D rb;
-    private Animator animator;
-    private PlayerMovement movement;
+    Rigidbody2D _rb;
+    Animator _animator;
+    PlayerMovement _movement;
+    WeaponFSM _weaponFSM;
     [HideInInspector] public bool isInvulnerable;
-    [SerializeField] private float damageKnockBackMultiplier;
-    [SerializeField] private float cameraShakeMultiplier;
-    [SerializeField] private float damageCameraShakeTimer;
+    [SerializeField] float _damageKnockBackMultiplier;
+    [SerializeField] float _cameraShakeMultiplier;
+    [SerializeField] float _damageCameraShakeTimer;
 
-    void Start () {
-        currHealth = GameMaster.Instance.savedPlayerData.SavedPlayerHealth;
-        maxHealth = GameMaster.Instance.savedPlayerData.SavedMaxPlayerHealth;
-        rb = GetComponent<Rigidbody2D> ();
-        animator = GetComponent<Animator>();
-        movement = GetComponent<PlayerMovement>();
+    void Start ()
+    {
+        currHealth = GameMaster.Instance.savedPlayerData.CurrentHealth;
+        maxHealth = GameMaster.Instance.savedPlayerData.MaxHealth;
+        
+        _rb = GetComponent<Rigidbody2D> ();
+        _animator = GetComponent<Animator>();
+        _movement = GetComponent<PlayerMovement>();
+        _weaponFSM = GetComponentInChildren<WeaponFSM>();
 
         // Change Health UI
-        FindObjectOfType<HealthUI>().UpdateHearts();
+        HealthUI.Instance.UpdateHeartsUI();
     }
 
-    public void TakeDamage (int damage, Vector2 enemyPos) {
+    public void TakeDamage(int damage, Vector2 enemyPos)
+    {
         if (isInvulnerable) return;
 
-        // Freeze frame effect
-        StartCoroutine( Common.ChangeVariableAfterDelay<float>(e => Time.timeScale = e, 0.01f, 0.05f, Time.timeScale));
+        float frozenTime = 0.35f;
 
         currHealth -= damage;
         if (currHealth <= 0) {
@@ -37,20 +42,24 @@ public class PlayerHealth : MonoBehaviour {
             return;
         }
 
-        // Change Health UI
-        FindObjectOfType<HealthUI>().UpdateHearts();
+        // Disable Player Control
+        Utility.EnablePlayerControl(false, frozenTime);
 
-        // Apply knockback force to player in opposite direction
-        movement.EnablePlayerMovement(false, 0.35f);
-        StartCoroutine(Common.ChangeVariableAfterDelay<float>(e => rb.drag = e, 0.1f, damageKnockBackMultiplier * 0.1f, 0));
-        Vector2 knockBackDirection = new Vector2 (rb.position.x > enemyPos.x ? 1f : -1f, 1f).normalized;
-        rb.AddForce (damageKnockBackMultiplier * knockBackDirection, ForceMode2D.Impulse);
+        // Freeze frame effect
+        StartCoroutine(Utility.ChangeVariableAfterDelay<float>(e => Time.timeScale = e, 0.02f, 0.05f, Time.timeScale));
 
         // Shake Camera
-        CameraShake.Instance.ShakeCamera(cameraShakeMultiplier, damageCameraShakeTimer);
+        StartCoroutine(CameraShake.Instance.ShakeCameraAfterDelay(.02f, _cameraShakeMultiplier, _damageCameraShakeTimer));
+
+        // Change Health UI
+        HealthUI.Instance.UpdateHeartsUI();
+
+        // Apply knockback force to player in opposite direction
+        Vector2 dir = new Vector2 (_rb.position.x > enemyPos.x ? 1f : -1f, 1f);
+        _movement.ApplyKnockback(dir, _damageKnockBackMultiplier, frozenTime);
 
         // Invulnerability Frames
-        FindObjectOfType<InvulnerabilityFrames> ().Flash ();
+        FindObjectOfType<InvulnerabilityFrames>().Flash();
     }
 
     public void PickUpHealth () {
@@ -59,20 +68,21 @@ public class PlayerHealth : MonoBehaviour {
         }
 
         // Change Health UI
-        FindObjectOfType<HealthUI>().UpdateHearts();
+        HealthUI.Instance.UpdateHeartsUI();
     }
 
     public void FullHeal () {
         currHealth = maxHealth;
 
         // Change Health UI
-        FindObjectOfType<HealthUI>().UpdateHearts();
+        HealthUI.Instance.UpdateHeartsUI();
     }
 
-    private void Die () {
+    void Die () {
         Destroy (gameObject);
         Debug.Log ("You died");
-        SceneManager.LoadScene ("Main_Menu");
+
+        GameMaster.Instance.RequestSceneChangeToMainMenu();
 
         // TODO: probably a game over screen
     }

@@ -20,6 +20,9 @@ TagManager:
   - Wall
   - Slope
   - Onibi
+  - GroundEdges
+  - StaminaUI
+  - UICanvas
   layers:
   - Default
   - TransparentFX
@@ -33,11 +36,11 @@ TagManager:
   - Player
   - Ground
   - Foreground
-  - Obstacle
+  - Breakables
   - Enemies
   - Collectables
   - Wall
-  - 
+  - VFX
   - 
   - 
   - 
@@ -66,9 +69,12 @@ TagManager:
   - name: Ground
     uniqueID: 2452016649
     locked: 0
-  - name: Unlit Area
-    uniqueID: 3359159347
-    locked: 0
   - name: Foreground
     uniqueID: 3093723295
+    locked: 0
+  - name: VFX
+    uniqueID: 4250307961
+    locked: 0
+  - name: UI
+    uniqueID: 1117897069
     locked: 0

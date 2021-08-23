@@ -2,26 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerProgress : MonoBehaviour {
-    private GameMaster gameMaster;
+public class PlayerProgress : MonoBehaviour
+{
+    GameMaster _gameMaster;
     [HideInInspector] public Dictionary<string, bool> areaProgress;
 
-    private void Awake () {
-        gameMaster = GameMaster.Instance;
-        if (gameMaster) {
-            areaProgress = gameMaster.savedPlayerData.SavedAreaPrgress;
+    void Awake ()
+    {
+        _gameMaster = GameMaster.Instance;
+        if (_gameMaster) {
+            areaProgress = _gameMaster.savedPlayerData.SavedAreaPrgress;
         }
     }
-    private void Update () {
-        if (!gameMaster) {
-            gameMaster = GameMaster.Instance;
-            if (gameMaster) {
-            areaProgress = gameMaster.savedPlayerData.SavedAreaPrgress;
-        }
-        }
-    }
+    // void Update ()
+    // {
+    //     if (!_gameMaster) {
+    //         _gameMaster = GameMaster.Instance;
+    //         if (_gameMaster)
+    //             areaProgress = _gameMaster.savedPlayerData.SavedAreaPrgress;
+    //     }
+    // }
 
-    public float GetPlayTimeInScene () {
-        return GameMaster.Instance.savedPlayerData.SavedPlayTimeInSecs + Time.timeSinceLevelLoad;
+    public float GetPlayTimeInScene ()
+    {
+        return GameMaster.Instance.savedPlayerData.SavedPlayTime + Time.timeSinceLevelLoad;
     }
 }

@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossTrigger : MonoBehaviour {
+public class BossTrigger : MonoBehaviour
+{
+    [SerializeField] GameObject exitBlock;
+    [SerializeField] float bossExitShuttingTime;
+    [SerializeField] Vector2 bossExitShuttingDirection;
+    [SerializeField] Animator animator;
 
-    [SerializeField] private GameObject exitBlock;
-    [SerializeField] private float bossExitShuttingTime;
-    [SerializeField] private Vector2 bossExitShuttingDirection;
-    [SerializeField] private Animator animator;
-
-    void OnTriggerExit2D (Collider2D other) {
+    void OnTriggerExit2D (Collider2D other)
+    {
         if (other.CompareTag ("Player")) {
             // Start Boss Engagement
             animator.SetBool ("FightStarted", true);
@@ -19,12 +20,14 @@ public class BossTrigger : MonoBehaviour {
     }
 
     // Allow it to be called when boss dies
-    public void OpenExit () {
+    public void OpenExit ()
+    {
         StartCoroutine (BossExitControl (new Vector2 (0f, 0f)));
     }
 
     // Coroutine to open or close exit based on direction given
-    IEnumerator BossExitControl (Vector2 direction) {
+    IEnumerator BossExitControl (Vector2 direction)
+    {
         float x = exitBlock.transform.position.x;
         float y = exitBlock.transform.position.y;
         for (float t = 0f; t < 1f; t += Time.deltaTime / bossExitShuttingTime) {

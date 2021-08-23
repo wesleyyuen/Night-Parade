@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class CameraShake : MonoBehaviour {
-
+public class CameraShake : MonoBehaviour
+{
     public static CameraShake Instance {get; private set;}
-    private CinemachineBasicMultiChannelPerlin perlin;
-    private float shakeTimer;
-    private float shakeTimerTotal;
-    private float startingIntensity;
+    CinemachineBasicMultiChannelPerlin perlin;
+    float shakeTimer;
+    float shakeTimerTotal;
+    float startingIntensity;
 
-    private void Awake () {
+    void Awake()
+    {
         Instance = this;
         perlin = GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
-    private void Update () {
+    void Update()
+    {
         // Count down timer
         if (shakeTimer > 0f) {
             shakeTimer -= Time.deltaTime;
@@ -28,7 +30,14 @@ public class CameraShake : MonoBehaviour {
         }
     }
 
-    public void ShakeCamera (float intensity, float time) {
+    public IEnumerator ShakeCameraAfterDelay(float delay, float intensity, float time)
+    {
+        yield return new WaitForSeconds(delay);
+        ShakeCamera(intensity, time);
+    }
+
+    public void ShakeCamera(float intensity, float time)
+    {
         // Set Camera Shake Intensity
         perlin.m_AmplitudeGain = intensity;
 
@@ -36,5 +45,4 @@ public class CameraShake : MonoBehaviour {
         shakeTimerTotal = time;
         shakeTimer = time;
     }
-    
 }

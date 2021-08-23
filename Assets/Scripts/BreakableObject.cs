@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class BreakableObject : MonoBehaviour {
+public class BreakableObject : MonoBehaviour
+{
     public string keyString;
-
     public int numOfHitsToDestroy;
     public enum breakableSide {
         left,
@@ -13,7 +13,8 @@ public class BreakableObject : MonoBehaviour {
     public breakableSide side;
     [HideInInspector] public int currentHealth;
 
-    public virtual void Start () {
+    public virtual void Start ()
+    {
         if (keyString == "") {
             Debug.LogError("Error: Key String for Breakable Object " + gameObject.name + " is empty!");
         }
@@ -25,11 +26,11 @@ public class BreakableObject : MonoBehaviour {
         currentHealth = numOfHitsToDestroy;
     }
 
-    public virtual void TakeDamage (GameObject player) {
-        float dir = player.transform.position.x - gameObject.transform.position.x;
+    public virtual void TakeDamage (bool fromLeft)
+    {
         if (side == breakableSide.both || // attack from either side is fine
-            (dir < 0 && side == breakableSide.left) || // attack from left
-            (dir > 0 && side == breakableSide.right)) { // attack from right
+            (fromLeft && side == breakableSide.left) || // attack from left
+            (!fromLeft && side == breakableSide.right)) { // attack from right
             currentHealth--;
             if (currentHealth <= 0) {
                 Break ();
@@ -39,7 +40,8 @@ public class BreakableObject : MonoBehaviour {
         }
     }
 
-    public void Break () {
+    public void Break ()
+    {
         FindObjectOfType<PlayerProgress> ().areaProgress.Add (keyString, true);
         Destroy (gameObject);
     }

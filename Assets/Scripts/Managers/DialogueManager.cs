@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class DialogueManager : MonoBehaviour {
-
-    private static DialogueManager instance;
+public class DialogueManager : MonoBehaviour
+{
+    static DialogueManager instance;
     public static DialogueManager Instance {
         get  {return instance; }
     }
 
-    private Queue<string> sentences;
-    [SerializeField] private GameObject dialogueUI;
-    [SerializeField] private TextMeshProUGUI dialogueText;
-    [SerializeField] private TextMeshProUGUI characterNameText;
-    [SerializeField] private float typingSpeed;
-    private float originalTypingSpeed;
+    Queue<Dialogue.Sentence> sentences;
+    [SerializeField] GameObject dialogueUI;
+    [SerializeField] TextMeshProUGUI dialogueText;
+    [SerializeField] TextMeshProUGUI characterNameText;
+    [SerializeField] float typingSpeed;
+    float _originalTypingSpeed;
     public bool isTalking { get; private set; }
-    private string currentSentence = "";
+    Dialogue.Sentence currentSentence;
 
-    void Awake () {
+    void Awake ()
+    {
         if (instance == null) {
             instance = this;
             //DontDestroyOnLoad (gameObject); // Handled by Parent
@@ -28,37 +29,41 @@ public class DialogueManager : MonoBehaviour {
         }
     }
     
-    void Start () {
-        sentences = new Queue<string> ();
+    void Start ()
+    {
+        sentences = new Queue<Dialogue.Sentence> ();
+        currentSentence = new Dialogue.Sentence("", null);
         dialogueUI.SetActive (false);
-        originalTypingSpeed = typingSpeed;
+        _originalTypingSpeed = typingSpeed;
         isTalking = false;
     }
 
-    void Update () {
+    void Update ()
+    {
         if (isTalking) {
             if (Input.GetButtonDown ("Attack") || Input.GetButtonDown ("Jump")) {
                 // Next sentence if entire sentence is done displaying
-                if (dialogueText.text == currentSentence) {
+                if (dialogueText.text == currentSentence.sentence) {
                     NextSentence ();
                 }
             }
 
             // Hold to changing Text speed
             if (Input.GetButton ("Attack") || Input.GetButton ("Jump")) {
-                typingSpeed = originalTypingSpeed * 3;
+                typingSpeed = _originalTypingSpeed * 3;
             } else {
-                typingSpeed = originalTypingSpeed;
+                typingSpeed = _originalTypingSpeed;
             }
         }
     }
 
-    public void StartDialogue (Dialogue dialogue) {
+    public void StartDialogue (Dialogue dialogue)
+    {
         isTalking = true;
         dialogueUI.SetActive (true);
 
         // Disable player control
-        Common.EnablePlayerControl(false);
+        Utility.EnablePlayerControl(false);
 
         sentences.Clear ();
 
@@ -72,7 +77,7 @@ public class DialogueManager : MonoBehaviour {
         }
 
         // Queue up sentences in set
-        foreach (string sentence in chosenSet.sentences) {
+        foreach (Dialogue.Sentence sentence in chosenSet.sentences) {
             sentences.Enqueue (sentence);
         }
 
@@ -83,7 +88,8 @@ public class DialogueManager : MonoBehaviour {
         NextSentence ();
     }
 
-    public void NextSentence () {
+    public void NextSentence ()
+    {
         // Reset Dialogue UI textbox
         dialogueText.text = "";
 
@@ -96,19 +102,26 @@ public class DialogueManager : MonoBehaviour {
         // Get next sentence
         currentSentence = sentences.Dequeue ();
 
+        // Call Callback if any
+        if (currentSentence.callback != null) {
+            currentSentence.callback.Invoke();
+        }
+
         // Start typing coroutine
-        StartCoroutine (TpyingEffect (currentSentence));
+        StartCoroutine (TpyingEffect (currentSentence.sentence));
     }
 
-    void EndDialogue () {
+    void EndDialogue ()
+    {
         // Reset + reenable player controls
-        typingSpeed = originalTypingSpeed;
+        typingSpeed = _originalTypingSpeed;
         isTalking = false;
         dialogueUI.SetActive (false);
-        Common.EnablePlayerControl(true);
+        Utility.EnablePlayerControl(true);
     }
 
-    IEnumerator TpyingEffect (string sentence) {
+    IEnumerator TpyingEffect (string sentence)
+    {
         // DOES NOT HAVE COLOR OPTIONS
         foreach (char letter in sentence.ToCharArray ()) {
             dialogueText.text += letter;

@@ -1,0 +1,300 @@
+fileFormatVersion: 2
+guid: 552ad579d8f631543a79ca01afe042bb
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4231761869200655093
+    second: Nodachi_Lunge_0
+  - first:
+      213: 4124141881971526732
+    second: Nodachi_Lunge_1
+  - first:
+      213: 5855090484711868926
+    second: Nodachi_Lunge_2
+  - first:
+      213: 1074107050926769679
+    second: Nodachi_Lunge_3
+  - first:
+      213: 8227235614895928551
+    second: Nodachi_Lunge_4
+  - first:
+      213: -4993656950703513424
+    second: Nodachi_Lunge_5
+  - first:
+      213: 7684927711960524356
+    second: Nodachi_Lunge_6
+  - first:
+      213: -431857428297625658
+    second: Nodachi_Lunge_7
+  - first:
+      213: -6230753390806953172
+    second: Nozuchi_Lunge_0
+  - first:
+      213: 8361582582727575959
+    second: Nozuchi_Lunge_1
+  - first:
+      213: -2968398427584792576
+    second: Nozuchi_Lunge_2
+  - first:
+      213: -8444762589336093375
+    second: Nozuchi_Lunge_3
+  - first:
+      213: 8431266263853700875
+    second: Nozuchi_Lunge_4
+  - first:
+      213: -5185460139294812305
+    second: Nozuchi_Lunge_5
+  - first:
+      213: 8967395627045917251
+    second: Nozuchi_Lunge_6
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Nozuchi_Lunge_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 858
+        width: 860
+        height: 300
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2314e19dcae789a0800000000000000
+      internalID: -6230753390806953172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Nozuchi_Lunge_1
+      rect:
+        serializedVersion: 2
+        x: 862
+        y: 858
+        width: 800
+        height: 309
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7990293be0f4a0470800000000000000
+      internalID: 8361582582727575959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Nozuchi_Lunge_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 545
+        width: 770
+        height: 310
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 008fafb7b512ec6d0800000000000000
+      internalID: -2968398427584792576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Nozuchi_Lunge_3
+      rect:
+        serializedVersion: 2
+        x: 772
+        y: 545
+        width: 740
+        height: 310
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14d3d12da2d2eca80800000000000000
+      internalID: -8444762589336093375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Nozuchi_Lunge_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 273
+        width: 860
+        height: 270
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b071cb70fffd10570800000000000000
+      internalID: 8431266263853700875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Nozuchi_Lunge_5
+      rect:
+        serializedVersion: 2
+        x: 862
+        y: 274
+        width: 855
+        height: 270
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6792602a7b8908b0800000000000000
+      internalID: -5185460139294812305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Nozuchi_Lunge_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 880
+        height: 270
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 342967ebfc6927c70800000000000000
+      internalID: 8967395627045917251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

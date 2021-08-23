@@ -2,33 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour {
-
+public class PlayerInventory : MonoBehaviour
+{
     public int coinOnHand { get; private set; }
-    [HideInInspector] public bool[] inks;
-    [HideInInspector] public int orbs;
+    public bool[] inks { get; private set; }
+    public int orbs { get; private set; }
 
-    void Start () {
+    void Start ()
+    {
         // Get saved data from Gamemaster
         coinOnHand = GameMaster.Instance.savedPlayerData.SavedPlayerCoinsOnHand;
         inks = GameMaster.Instance.savedPlayerData.SavedInks;
         orbs = GameMaster.Instance.savedPlayerData.SavedOrbs;
-
-        FindObjectOfType<MonUI>().UpdateMon();
     }
 
-    public void PickUpCoin (int amt) {
+    public void PickUpCoin (int amt)
+    {
         coinOnHand += amt;
 
         // Change Mon UI
-        FindObjectOfType<MonUI>().UpdateMon();
+        MonUI.Instance.ShowMonChange();
+        // FindObjectOfType<MonUI>().ShowMonChange();
     }
 
-    public void PickUpInk (int areaIndex) {
+    public void PickUpInk (int areaIndex)
+    {
         inks[areaIndex] = true;
     }
 
-    public void PickUpOrb () {
+    public void PickUpOrb ()
+    {
         orbs++;
     }
 }

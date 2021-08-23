@@ -4,55 +4,55 @@ using UnityEngine;
 
 public class PlayerDash : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private PlayerAnimations anim;
-    private PlayerPlatformCollision collision;
-    private PlayerMovement movement;
-    private PlayerAbilityController abilities;
+    Rigidbody2D _rb;
+    PlayerAnimations _anim;
+    PlayerPlatformCollision _collision;
+    PlayerMovement _movement;
+    PlayerAbilityController _abilities;
     [HideInInspector] public bool isDashing;
-    [SerializeField] private float dashSpeed;
-    [SerializeField] private float dashTime;
-    [SerializeField] private float cooldown;
-    [SerializeField] private float freezeDuration;
-    [SerializeField] private ParticleSystem afterimage;
-    private float nextDashTime;
-    private bool canDash;
+    [SerializeField] float dashSpeed;
+    [SerializeField] float dashTime;
+    [SerializeField] float cooldown;
+    [SerializeField] float freezeDuration;
+    [SerializeField] ParticleSystem afterimage;
+    float _nextDashTime;
+    bool _canDash;
 
-    private void Awake()
+    void Awake()
     {
-        rb = GetComponentInParent<Rigidbody2D>();
-        anim = GetComponentInParent<PlayerAnimations>();
-        movement = GetComponentInParent<PlayerMovement>();
-        abilities = GetComponentInParent<PlayerAbilityController>();
+        _rb = GetComponentInParent<Rigidbody2D>();
+        _anim = GetComponentInParent<PlayerAnimations>();
+        _movement = GetComponentInParent<PlayerMovement>();
+        _abilities = GetComponentInParent<PlayerAbilityController>();
         Transform collTransform = transform.parent.Find("Platform Collision");
-        canDash = true;
+        _canDash = true;
         if (collTransform)
-            collision = collTransform.GetComponent<PlayerPlatformCollision>();
+            _collision = collTransform.GetComponent<PlayerPlatformCollision>();
     }
 
-    private void Update()
+    void Update()
     {
-        if (!canDash) return;
+        if (!_canDash) return;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > nextDashTime) {
-            nextDashTime = Time.time + cooldown;
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > _nextDashTime) {
+            _nextDashTime = Time.time + cooldown;
             Vector2 dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             if (dir == Vector2.zero)
-                dir = -rb.transform.localScale.x * Vector2.left;
+                dir = -_rb.transform.localScale.x * Vector2.left;
             StartCoroutine(StartDash(dir));
         }
     }
 
-    private IEnumerator StartDash(Vector2 dir)
+    IEnumerator StartDash(Vector2 dir)
     {
         // Freeze position effect
-        StartCoroutine( Common.ChangeVariableAfterDelay<RigidbodyConstraints2D>(e => rb.constraints = e, freezeDuration, RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation, RigidbodyConstraints2D.FreezeRotation));
+        StartCoroutine( Utility.ChangeVariableAfterDelay<RigidbodyConstraints2D>(e => _rb.constraints = e, freezeDuration, RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation, RigidbodyConstraints2D.FreezeRotation));
 
         yield return new WaitForSeconds(freezeDuration);
         StartCoroutine(Dash(dir));
     }
     
-    private IEnumerator Dash (Vector2 dir)
+    IEnumerator Dash (Vector2 dir)
     {
         isDashing = true;
 
@@ -60,26 +60,26 @@ public class PlayerDash : MonoBehaviour
         afterimage.GetComponent<ParticleSystemRenderer>().flip = new Vector3(dir.x > 0 ? 0f : 1f, 0f, 0f);
         afterimage.Play();
 
-        abilities.EnableAbility(PlayerAbilityController.Ability.Jump, false);
-        movement.EnablePlayerMovement(false);
-        rb.drag = dashSpeed * 0.1f;
-        rb.gravityScale = 0;
+        _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, false);
+        _movement.EnablePlayerMovement(false);
+        _rb.drag = dashSpeed * 0.1f;
+        _rb.gravityScale = 0;
 
-        rb.velocity = Vector2.zero;
-        rb.velocity += dir.normalized * dashSpeed;
+        _rb.velocity = Vector2.zero;
+        _rb.velocity += dir.normalized * dashSpeed;
 
         yield return new WaitForSeconds(dashTime);
 
         DashEnd();
     }
 
-    private void DashEnd()
+    void DashEnd()
     {
-        StartCoroutine( Common.ChangeVariableAfterDelay<RigidbodyConstraints2D>(e => rb.constraints = e, freezeDuration, RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation, RigidbodyConstraints2D.FreezeRotation));
+        StartCoroutine( Utility.ChangeVariableAfterDelay<RigidbodyConstraints2D>(e => _rb.constraints = e, freezeDuration, RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation, RigidbodyConstraints2D.FreezeRotation));
         // TODO: lerp drag maybe
-        rb.drag = 0;
-        movement.EnablePlayerMovement(true);
-        abilities.EnableAbility(PlayerAbilityController.Ability.Jump, true);
-        rb.gravityScale = 1;
+        _rb.drag = 0;
+        _movement.EnablePlayerMovement(true);
+        _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, true);
+        _rb.gravityScale = 1;
     }
 }

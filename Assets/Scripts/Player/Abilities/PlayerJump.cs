@@ -5,79 +5,72 @@ using UnityEngine;
 public class PlayerJump : MonoBehaviour
 {
     [Header ("References")]
-    private Rigidbody2D rb;
-    [SerializeField] private ParticleSystem dustTrail;
-    private PlayerPlatformCollision coll;
+    Rigidbody2D _rb;
+    [SerializeField] ParticleSystem dustTrail;
+    PlayerPlatformCollision _coll;
 
     [Header ("Jumping Settings")]
-    [SerializeField] private float jumpVelocity = 36f;
-    [SerializeField] private float fallMultiplier = 0.8f;
-    [SerializeField] private float lowJumpMultiplier = 5f;
-    [SerializeField] private float jumpBufferTime = 0.2f;
-    [SerializeField] private float coyoteTime = 0.05f;
-    public bool canJump {get; set;}
-    private float jumpBuffer;
-    private float coyoteTimer;
+    [SerializeField] float jumpVelocity = 36f;
+    [SerializeField] float fallMultiplier = 0.8f;
+    [SerializeField] float lowJumpMultiplier = 5f;
+    [SerializeField] float jumpBufferTime = 0.2f;
+    [SerializeField] float coyoteTime = 0.05f;
+    bool _canJump;
+    float _jumpBuffer;
+    float _coyoteTimer;
 
-    private void Start() {
-        rb = GetComponentInParent<Rigidbody2D>();
-        coll = gameObject.transform.parent.gameObject.GetComponentInChildren<PlayerPlatformCollision>();
-        canJump = true;
+    void Start()
+    {
+        _rb = GetComponentInParent<Rigidbody2D>();
+        _coll = gameObject.transform.parent.gameObject.GetComponentInChildren<PlayerPlatformCollision>();
+        _canJump = true;
     }
 
-    public void EnablePlayerJump(bool enabled, float time = 0f)
+    public void EnablePlayerJump(bool enable, float time = 0f)
     {
-        if (canJump == enabled) return;
+        if (_canJump == enable) return;
 
         if (time == 0)
-            canJump = enabled;
+            _canJump = enable;
         else
-            StartCoroutine(Common.ChangeVariableAfterDelay<bool>(e => canJump = e, time, enabled, !enabled));
+            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _canJump = e, time, enable, !enable));
     }
 
-    private void Update() {
-        if (!canJump) return;
-        CoyoteAndJumpBuffering();
-    }
+    void Update()
+    {
+        if (!_canJump) return;
 
-    private void FixedUpdate() {
-        if (!canJump) return;
-
-        if (jumpBuffer > 0 && coyoteTimer > 0) {
-            CreateDustTrail ();
-            jumpBuffer = 0;
-            coyoteTimer = 0;
-            
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.velocity += Vector2.up * jumpVelocity;
-            // rb.AddForce(new Vector2(rb.velocity.x, jumpVelocity), ForceMode2D.Impulse);
-        }
-
-        // Low Jump
-        if (rb.velocity.y < 0) {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        } else if (rb.velocity.y > 0 && !Input.GetButton ("Jump")) {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
-    }
-
-    private void CoyoteAndJumpBuffering() {
         // Coyote Time - allow late-input of jumps after touching the ground
-        coyoteTimer -= Time.deltaTime;
-        if (FindObjectOfType<PlayerPlatformCollision> ().onGround) {
-            coyoteTimer = coyoteTime;
+        _coyoteTimer -= Time.deltaTime;
+        if (_coll.onGround) {
+            _coyoteTimer = coyoteTime;
         }
 
         // Jump Buffering - allow pre-input of jumps before touching the ground
-        jumpBuffer -= Time.deltaTime;
-        if (Input.GetButtonDown ("Jump") && coll.onGround) {
-            jumpBuffer = jumpBufferTime;
+        _jumpBuffer -= Time.deltaTime;
+        if (Input.GetButtonDown ("Jump") && _coll.onGround) {
+            _jumpBuffer = jumpBufferTime;
         }
     }
 
-    private void CreateDustTrail () {
-        if (coll.onGround) {
-            dustTrail.Play ();
+    void FixedUpdate()
+    {
+        if (!_canJump) return;
+
+        if (_jumpBuffer > 0 && _coyoteTimer > 0) {
+            _jumpBuffer = 0;
+            _coyoteTimer = 0;
+            dustTrail.Play();
+            
+            _rb.velocity = new Vector2(_rb.velocity.x, 0);
+            _rb.velocity += Vector2.up * jumpVelocity;
+        }
+
+        // Low Jump
+        if (_rb.velocity.y < 0) {
+            _rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        } else if (_rb.velocity.y > 0 && !Input.GetButton ("Jump")) {
+            _rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }
 }

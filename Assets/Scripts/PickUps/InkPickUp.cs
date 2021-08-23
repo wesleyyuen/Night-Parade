@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InkPickUp : PickUp {
+public class InkPickUp : PickUp
+{
+    [SerializeField] string area;
 
-    [SerializeField] private string area;
-
-    public override void Start () {
+    public override void Start ()
+    {
         // Do not spawn if player already picked it up
         bool pickedUpBefore;
         FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (area + "_Ink", out pickedUpBefore);
@@ -14,7 +15,8 @@ public class InkPickUp : PickUp {
 
         base.Start ();
     }
-    private void OnTriggerEnter2D (Collider2D other) {
+    void OnTriggerEnter2D (Collider2D other)
+    {
         if (other.CompareTag ("Player")) {
             // Add to player Inventory
             other.GetComponent<PlayerInventory> ().PickUpInk (GameMaster.areaNameToIndex[area]);

@@ -1,34 +1,49 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // modified from Ilham Effendi
 // https://github.com/ilhamhe/UnitySpriteFlash
-public class SpriteFlash : MonoBehaviour {
-    [SerializeField] private Color flashColor;
-	[SerializeField] private float flashDuration;
-	private Material mat;
-    private Enemy enemy;
-    private IEnumerator coroutine;
+public class SpriteFlash : MonoBehaviour
+{
+    [SerializeField] Material flashMaterial;
+    [SerializeField] Color[] flashColor;
+	[SerializeField] float flashDuration;
+    int flashColorIndex;
+	Material mat;
+    SpriteRenderer render;
+    Material originalMaterial;
+    IEnumerator coroutine;
 
-    private void Awake() {
-        mat = GetComponent<SpriteRenderer>().material;
-        enemy = GetComponent<Enemy>();
+    void Awake()
+    {
+        flashColorIndex = 0;
+        render = GetComponent<SpriteRenderer>();
+        originalMaterial = render.material;
+        mat = new Material(flashMaterial);
+        mat.SetColor("_FlashColor", flashColor[flashColorIndex]);
     }
 
-    private void Start() {
-        mat.SetColor("_FlashColor", flashColor);
-    }
+    public void PlayDamagedFlashEffect()
+    {
+        // Set Next Color
+        flashColorIndex++;
+        flashColorIndex = flashColorIndex % flashColor.Length;
+        mat.SetColor("_FlashColor", flashColor[flashColorIndex]);
 
-    public void PlayDamagedFlashEffect() {
+        render.material = mat;
+
         if (coroutine != null)
             StopCoroutine(coroutine);
 
-        coroutine = ActuallyFlash();
+        coroutine = ActuallyPlayDamagedFlashEffect();
         StartCoroutine(coroutine);
     }
 
-    public void PlayDeathFlashEffect(float duration) {
+    public void PlayDeathFlashEffect(float duration)
+    {
+        mat.SetColor("_FlashColor", flashColor[flashColorIndex]);
+        render.material = mat;
+        
         if (coroutine != null)
             StopCoroutine(coroutine);
 
@@ -36,7 +51,24 @@ public class SpriteFlash : MonoBehaviour {
         StartCoroutine(coroutine);
     }
 
-    private IEnumerator ActuallyFlash() {
+    IEnumerator ActuallyPlayDamagedFlashEffect()
+    {
+        float lerpTime = 0;
+
+        while (lerpTime < flashDuration) {
+            // Set Alpha
+            lerpTime += Time.deltaTime;
+            float percent = lerpTime / flashDuration;
+            mat.SetFloat("_FlashAmount", 1f - percent);
+            yield return null;
+        }
+
+        render.material = originalMaterial;
+        mat.SetFloat("_FlashAmount", 0);
+    }
+
+    IEnumerator ActuallyFlash()
+    {
         float lerpTime = 0;
 
         while (lerpTime < flashDuration) {
@@ -46,11 +78,12 @@ public class SpriteFlash : MonoBehaviour {
             yield return null;
         }
 
+        render.material = originalMaterial;
         mat.SetFloat("_FlashAmount", 0);
-        if (enemy) enemy.isTakingDmg = false;
     }
 
-    private IEnumerator ActuallyFade(float duration) {
+    IEnumerator ActuallyFade(float duration)
+    {
         float lerpTime = 0;
 
         while (lerpTime < duration) {
@@ -60,6 +93,7 @@ public class SpriteFlash : MonoBehaviour {
             yield return null;
         }
 
+        render.material = originalMaterial;
         mat.SetFloat("_FlashAmount", 0);
     }
 }

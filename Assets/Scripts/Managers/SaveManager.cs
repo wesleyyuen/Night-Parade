@@ -3,16 +3,18 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SaveManager : MonoBehaviour {
-    private static SaveManager instance;
+public class SaveManager : MonoBehaviour
+{
+    static SaveManager instance;
     public static SaveManager Instance {
         get  {return instance; }
     }
-    [SerializeField] private int loadIndex;
-    [SerializeField] private string fileName;
-    [SerializeField] private string fileExtension;
+    [SerializeField] int loadIndex;
+    [SerializeField] string fileName;
+    [SerializeField] string fileExtension;
 
-    void Awake () {
+    void Awake ()
+    {
         if (instance == null) {
             instance = this;
             //DontDestroyOnLoad (gameObject); // Handled by Parent
@@ -22,7 +24,8 @@ public class SaveManager : MonoBehaviour {
         loadIndex = GameMaster.Instance.savedPlayerData.SaveFileIndex;
     }
 
-    public static void Save (GameObject player) {
+    public static void Save (GameObject player)
+    {
         BinaryFormatter formatter = new BinaryFormatter ();
 
         string path = Application.dataPath + Instance.fileName + Instance.loadIndex + Instance.fileExtension;
@@ -52,14 +55,16 @@ public class SaveManager : MonoBehaviour {
         }
         */
 
-    public static bool HaveSaveData () {
+    public static bool HaveSaveData ()
+    {
         string path1 = Application.dataPath + Instance.fileName + "1" + Instance.fileExtension;
         string path2 = Application.dataPath + Instance.fileName + "2" + Instance.fileExtension;
         string path3 = Application.dataPath + Instance.fileName + "3" + Instance.fileExtension;
         return File.Exists(path1) || File.Exists(path2) || File.Exists(path3);
     }
 
-    public static PlayerData Load (int index) {
+    public static PlayerData Load (int index)
+    {
         string path = Application.dataPath + Instance.fileName + index + Instance.fileExtension;
         if (File.Exists (path)) {
             BinaryFormatter formatter = new BinaryFormatter ();
@@ -77,7 +82,8 @@ public class SaveManager : MonoBehaviour {
         }
     }
 
-    public static int GetLoadIndex () {
+    public static int GetLoadIndex ()
+    {
         return Instance.loadIndex;
     }
 }
