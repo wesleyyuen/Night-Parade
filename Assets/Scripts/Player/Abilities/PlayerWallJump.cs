@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerWallJump : MonoBehaviour
 {
@@ -9,22 +10,29 @@ public class PlayerWallJump : MonoBehaviour
     PlayerPlatformCollision _collision;
     PlayerMovement _movement;
     PlayerAnimations _animations;
+    InputMaster _input;
     [SerializeField] Vector2 jumpDirection;
     [SerializeField] float movementDisableTime;
 
-    void Awake()
+    void Start()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
         _anim = GetComponentInParent<PlayerAnimations>();
         _movement = GetComponentInParent<PlayerMovement>();
         _animations = GetComponentInParent<PlayerAnimations>();
         _collision = GetComponentInParent<PlayerPlatformCollision>();
+
+        // Handle Input
+        _input = new InputMaster();
+        _input.Player.Movement.Enable();
+        _input.Player.Jump.Enable();
+        _input.Player.Jump.started += OnWallJump;
     }
 
-    void Update()
+    void OnWallJump(InputAction.CallbackContext context)
     {
-        if (!_collision.onGround && (_collision.onLeftWall && (Input.GetAxisRaw("Horizontal") < 0) ||
-                (_collision.onRightWall && (Input.GetAxisRaw("Horizontal") > 0))) && Input.GetButtonDown ("Jump")) {
+        float xRaw = _input.Player.Movement.ReadValue<Vector2>().x;
+        if (!_collision.onGround && (_collision.onLeftWall && (xRaw < 0) || (_collision.onRightWall && (xRaw > 0)))) {
             StartCoroutine(_movement.HandicapMovement(movementDisableTime));
             StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _animations.canTurn = e, movementDisableTime, false, true));
             StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => GetComponent<PlayerWallSlide>().canSlide = e, movementDisableTime, false, true));

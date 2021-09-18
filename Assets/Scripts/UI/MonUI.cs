@@ -11,7 +11,7 @@ public class MonUI : MonoBehaviour
     }
     PlayerInventory playerInventory;
     [SerializeField] TextMeshProUGUI monText;
-    [SerializeField] CanvasGroup canvas;
+    [SerializeField] GameObject canvas;
 
     [SerializeField] float showingDuration;
     [SerializeField] float fadingDuration;
@@ -20,15 +20,20 @@ public class MonUI : MonoBehaviour
     {
         if (_instance == null) {
             _instance = this;
-            DontDestroyOnLoad (gameObject);
+            DontDestroyOnLoad(gameObject);
         } else {
-            Destroy (gameObject);
+            Destroy(gameObject);
         }
     }
 
-    void Start()
+    public void Intro()
     {
-        canvas.alpha = 0;
+        Utility.SetAlphaRecursively(canvas, 0f);
+    }
+
+    public void Outro()
+    {
+        Utility.SetAlphaRecursively(canvas, 0f);
     }
 
     public void ShowMonChange()
@@ -36,23 +41,21 @@ public class MonUI : MonoBehaviour
         StartCoroutine(ShowMonChangeCoroutine());
     }
 
+    public void FixCoroutineDeath()
+    {
+        Utility.SetAlphaRecursively(canvas, 0f);
+    }
+
     IEnumerator ShowMonChangeCoroutine()
     {
-        // Fade in gameObject
-        for (float t = 0f; t < 1f; t += Time.deltaTime / fadingDuration * 2) {
-            canvas.alpha = Mathf.Lerp (0f, 1f, t);
-            yield return null;
-        }
+        Utility.FadeGameObjectRecursively(canvas, 0f, 1f, fadingDuration);
 
         // Display text
+        yield return new WaitForSeconds (showingDuration * 0.2f);
         UpdateMon();
-        yield return new WaitForSeconds (showingDuration);
+        yield return new WaitForSeconds (showingDuration * 0.8f);
 
-        // Fade out text
-        for (float t = 0f; t < 1f; t += Time.deltaTime / fadingDuration) {
-            canvas.alpha = Mathf.Lerp (1f, 0f, t);
-            yield return null;
-        }
+        Utility.FadeGameObjectRecursively(canvas, 1f, 0f, fadingDuration);
     }
 
     void UpdateMon()

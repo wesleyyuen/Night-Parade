@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   mode:
     m_OverrideState: 1
@@ -84,8 +84,8 @@ MonoBehaviour:
   components:
   - {fileID: -7375915739060113668}
   - {fileID: -8475394391301550443}
-  - {fileID: 2589403471344072969}
---- !u!114 &2589403471344072969
+  - {fileID: 1751000524013423390}
+--- !u!114 &1751000524013423390
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   postExposure:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.4
   contrast:
     m_OverrideState: 0
     m_Value: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
     max: 100
   colorFilter:
     m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 1.1486983, g: 1.1486983, b: 1.1486983, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1

@@ -30,7 +30,7 @@ public class SceneExitTrigger : MonoBehaviour
             // Play Scene Transition
             SceneTransition transition = GetComponentInChildren<SceneTransition>();
             if (transition != null)
-                transition.StartSceneTransition(levelToLoad, ref playerVariables);
+                transition.StartSceneTransitionOut(levelToLoad, ref playerVariables);
             else
                 Debug.LogError("Missing Scene Transition in " + currentScene.name + "!");
         }

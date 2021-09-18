@@ -14,17 +14,21 @@ public class PlayerAbilityController : MonoBehaviour
     }
     public float currStamina { get; private set; }
     public float maxStamina { get; private set; }
+    public PlayerPlatformCollision _collision;
     GameObject _abilitiesGB;
     PlayerJump _jump;
     PlayerWallSlide _wallSlide;
     PlayerWallJump _wallJump;
     PlayerDash _dash;
     float _deltaTime;
+    bool _isStopUpdatingStamina;
 
     void Start()
     {
-        currStamina = GameMaster.Instance.savedPlayerData.MaxStamina;
+        currStamina = GameMaster.Instance.savedPlayerData.CurrentStamina;
         maxStamina = GameMaster.Instance.savedPlayerData.MaxStamina;
+
+        _isStopUpdatingStamina = false;
 
         _abilitiesGB = transform.Find("Abilities").gameObject;
         _jump = _abilitiesGB.GetComponent<PlayerJump>();
@@ -44,10 +48,16 @@ public class PlayerAbilityController : MonoBehaviour
         _deltaTime = Time.deltaTime;
 
         // Update Stamina UI
-        StaminaUI.Instance.UpdateStaminaUI(currStamina / maxStamina);
+        if (!_isStopUpdatingStamina)
+            StaminaUI.Instance.UpdateStaminaUI(currStamina / maxStamina);
     }
 
-    public void EnableAbility (Ability ability, bool enable, float time = 0)
+    public void StopUpdatingStamina()
+    {
+        _isStopUpdatingStamina = true;
+    }
+
+    public void EnableAbility(Ability ability, bool enable, float time = 0)
     {
         switch (ability) {
             case Ability.Jump:
@@ -73,11 +83,13 @@ public class PlayerAbilityController : MonoBehaviour
 
     public void RegenerateStamina()
     {
-        currStamina = Mathf.Min(currStamina + _deltaTime, maxStamina);
+        if (!_isStopUpdatingStamina)
+            currStamina = Mathf.Min(currStamina + _deltaTime, maxStamina);
     }
 
     public void UseStamina()
     {
-        currStamina = Mathf.Max(currStamina - _deltaTime, 0);
+        if (!_isStopUpdatingStamina)
+            currStamina = Mathf.Max(currStamina - _deltaTime, 0);
     }
 }

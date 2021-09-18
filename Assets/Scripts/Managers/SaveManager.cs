@@ -24,15 +24,16 @@ public class SaveManager : MonoBehaviour
         loadIndex = GameMaster.Instance.savedPlayerData.SaveFileIndex;
     }
 
-    public static void Save (GameObject player)
+    public static void Save(GameObject player)
     {
         BinaryFormatter formatter = new BinaryFormatter ();
 
         string path = Application.dataPath + Instance.fileName + Instance.loadIndex + Instance.fileExtension;
-        if (File.Exists (path)) File.Delete (path); // TODO maybe overwrite instead of delete and create
+        if (File.Exists(path))
+            File.Delete(path); // TODO maybe overwrite instead of delete and create
         FileStream fileStream = new FileStream (path, FileMode.Create);
 
-        PlayerData playerData = new PlayerData (player, true, SceneManager.GetActiveScene ().buildIndex, Instance.loadIndex);
+        PlayerData playerData = new PlayerData(player, true, SceneManager.GetActiveScene().buildIndex, Instance.loadIndex);
         Debug.Log ("Now Saving...");
         formatter.Serialize (fileStream, playerData);
         fileStream.Close ();

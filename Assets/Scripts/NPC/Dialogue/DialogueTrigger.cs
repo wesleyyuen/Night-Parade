@@ -1,44 +1,59 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [HideInInspector] public GameObject player;
-    [SerializeField] bool triggerOnCollision; // trigger without pressing interact
+    [SerializeField] bool _isAutoTrigger; // trigger without pressing interact
     [SerializeField] Dialogue dialogue;
-    public float triggerRange;
-    public MeshRenderer textPrompt;
+    [SerializeField] protected float triggerRange;
+    [SerializeField] protected GameObject textPrompt;
+    protected GameObject _player;
+    protected bool _isInRange;
+    protected bool _isDialogueTriggered;
+
 
     void Start ()
     {
-        player = GameObject.FindGameObjectWithTag ("Player");
+        _player = GameObject.FindGameObjectWithTag("Player");
+        Utility.SetAlphaRecursively(textPrompt, 0f);
+
+        // Handle Input
+        InputMaster input = new InputMaster();
+        input.Player.Interact.Enable();
+        input.Player.Interact.started += OnTriggerDialogue;
     }
 
-    public virtual void Update ()
+    protected virtual void Update ()
     {
-        bool isTalking = DialogueManager.Instance.isTalking;
-        if (textPrompt == null || player == null || triggerOnCollision) return;
-        
-        // Control dialogue promopt text
-        if (!isTalking && !triggerOnCollision && Vector2.Distance (player.transform.position, transform.position) <= triggerRange) {
-            textPrompt.enabled = true;
-            if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.DownArrow)) TriggerDialogue ();
-        } else {
-            textPrompt.enabled = false;
+        if (textPrompt == null || _player == null) return;
+
+        bool wasInRange = _isInRange;
+        _isInRange = Vector2.Distance(_player.transform.position, transform.position) <= triggerRange;
+
+        // Trigger Text Prompt
+        if (!wasInRange && _isInRange) {
+            Utility.FadeGameObjectRecursively(textPrompt, 0f, 1f, 0.25f);
+            if (!_isDialogueTriggered && _isAutoTrigger)
+                TriggerDialogue();
+
+        } else if (wasInRange && !_isInRange) {
+            Utility.FadeGameObjectRecursively(textPrompt, 1f, 0f, 0.25f);
+            _isDialogueTriggered = false;
         }
     }
 
-    void OnTriggerEnter2D (Collider2D other)
+    protected virtual void OnTriggerDialogue(InputAction.CallbackContext context)
     {
-        if (triggerOnCollision && other.CompareTag ("Player")) {
-            TriggerDialogue ();
-        }
+        if (_isInRange && !DialogueManager.Instance.isTalking && !_isAutoTrigger)
+           TriggerDialogue();
     }
 
     public void TriggerDialogue ()
     { 
         // TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
         if (!PauseMenu.isPuased) {
-            DialogueManager.Instance.StartDialogue (dialogue);
+            _isDialogueTriggered = true;
+            DialogueManager.Instance.StartDialogue(dialogue);
         }
     }
 }

@@ -22,9 +22,9 @@ public class GameMaster : MonoBehaviour
     {
         if (_instance == null) {
             _instance = this;
-            DontDestroyOnLoad (gameObject);
+            DontDestroyOnLoad(gameObject); // Contains all managers
         } else {
-            Destroy (gameObject);
+            Destroy(gameObject);
         }
         
         // Initialize Dictionary
@@ -58,6 +58,7 @@ public class GameMaster : MonoBehaviour
 
     public void RequestSceneChangeToMainMenu()
     {
+        SoundManager.Instance.PauseAll();
         PlayerData emptyData = new PlayerData();
         RequestSceneChange("Main_Menu", ref emptyData);
     }
@@ -67,16 +68,20 @@ public class GameMaster : MonoBehaviour
     {
         DialogueManager.Instance.enabled = boolean;
 
+        // Handle cursor
+        Cursor.visible = !boolean;
+        Cursor.lockState = !boolean ? CursorLockMode.Confined : CursorLockMode.Locked;
+
         if (boolean) {
-            FindObjectOfType<HealthUI>().Intro();
-            FindObjectOfType<StaminaUI>().Intro();
+            HealthUI.Instance.Intro();
+            StaminaUI.Instance.Intro();
+            MonUI.Instance.Intro();
         } else {
-            FindObjectOfType<HealthUI>().Outro();
-            FindObjectOfType<StaminaUI>().Outro();
+            HealthUI.Instance.Outro();
+            StaminaUI.Instance.Outro();
+            MonUI.Instance.Outro();
         }
 
-        GameObject monUI = GameObject.FindGameObjectWithTag ("MonUI");
-        if (monUI != null) monUI.SetActive(boolean);
         GameObject dialogueUI = GameObject.FindGameObjectWithTag ("DialogueUI");
         if (dialogueUI != null) dialogueUI.SetActive(boolean);
     }

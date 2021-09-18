@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OkkaAgrroState : EnemyState
+public class OkkaAgrroState : IEnemyState
 {
     float _delayTimer;
-    public override void EnterState(EnemyFSM fsm)
+    public void EnterState(EnemyFSM fsm)
     {
         _delayTimer = 0;
 
         fsm.GFX.SetAnimatorBoolean("IsPatrolling", true);
         fsm.GFX.SetAnimatorSpeed(fsm.enemyData.aggroMovementSpeed / fsm.enemyData.patrolSpeed * 0.75f);
 
-        if (fsm.previousState != fsm.states[EnemyFSM.StateType.StillState])
+        if (fsm.previousState == fsm.states[EnemyFSM.StateType.PatrolState])
             fsm.GFX.FlashExclaimationMark();
     }
 
-    public override void Update(EnemyFSM fsm)
+    public void Update(EnemyFSM fsm)
     {
         // check Line of Sight
         bool inLineOfSight = fsm.IsInLineOfSight();
@@ -35,10 +35,14 @@ public class OkkaAgrroState : EnemyState
         }
     }
 
-    public override void FixedUpdate(EnemyFSM fsm)
+    public void FixedUpdate(EnemyFSM fsm)
     {
-        if (!fsm.GFX.IsTurning())
-            MoveTowardsPlayer(ref fsm);
+        if (!fsm.GFX.IsTurning()) {
+            if (Vector2.Distance(fsm.player.attachedRigidbody.position, fsm.rb.position) <= fsm.enemyData.attackDistance && fsm.IsInLineOfSight())
+                fsm.SetState(fsm.states[EnemyFSM.StateType.AttackState]);
+            else
+                MoveTowardsPlayer(ref fsm);
+        }
     }
 
     void MoveTowardsPlayer(ref EnemyFSM fsm)
@@ -49,11 +53,11 @@ public class OkkaAgrroState : EnemyState
         fsm.rb.velocity = new Vector2(direction.x * fsm.enemyData.aggroMovementSpeed , fsm.rb.velocity.y);
     }
 
-    public override void OnCollisionEnter2D(EnemyFSM fsm, Collision2D collision) {}
-    public override void OnCollisionStay2D(EnemyFSM fsm, Collision2D collision) {}
-    public override void OnCollisionExit2D(EnemyFSM fsm, Collision2D collision) {}
+    public void OnCollisionEnter2D(EnemyFSM fsm, Collision2D collision) {}
+    public void OnCollisionStay2D(EnemyFSM fsm, Collision2D collision) {}
+    public void OnCollisionExit2D(EnemyFSM fsm, Collision2D collision) {}
     
-    public override void ExitState(EnemyFSM fsm)
+    public void ExitState(EnemyFSM fsm)
     {
         fsm.GFX.SetAnimatorSpeed(1f);
     }

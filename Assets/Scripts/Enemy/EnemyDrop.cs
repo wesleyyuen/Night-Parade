@@ -18,16 +18,16 @@ public class EnemyDrop : MonoBehaviour
         // Drop Coins
         if (Random.value > 1 - coinsDropPercent) {
             for (int i = 0; i < numOfCoinsDrop; i++) {
-                GameObject coin = Instantiate (mon, gameObject.transform.position + (Vector3) spawnPositionOffset, Quaternion.identity);
-                coin.GetComponent<Rigidbody2D> ().AddForce(new Vector2 (force.x * Random.Range (-1, 1), force.y));
+                GameObject coin = Instantiate(mon, gameObject.transform.position + (Vector3) spawnPositionOffset, Quaternion.identity);
+                coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x * Random.Range(-1, 1), force.y));
             }
         }
 
         // Drop Health
         if (Random.value > 1 - heartDropPercent) {
             for (int i = 0; i < numOfHeartsDrop; i++) {
-                GameObject health = Instantiate (heart, gameObject.transform.position + (Vector3) spawnPositionOffset, Quaternion.identity);
-                health.GetComponent<Rigidbody2D> ().AddForce(new Vector2 (force.x * Random.Range (-1, 1), force.y));
+                GameObject health = Instantiate(heart, gameObject.transform.position + (Vector3) spawnPositionOffset, Quaternion.identity);
+                health.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x * Random.Range(-1, 1), force.y));
             }
         }
 

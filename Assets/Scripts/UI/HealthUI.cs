@@ -25,6 +25,10 @@ public class HealthUI : MonoBehaviour
         } else {
             Destroy (gameObject);
         }
+
+        for (int i = 0; i < hearts.Length; i++) {
+            Utility.SetAlphaRecursively(hearts[i].gameObject, 0f, false);
+        }
     }
 
     public void Intro()
@@ -37,7 +41,7 @@ public class HealthUI : MonoBehaviour
         FadeUI(false, true);
     }
 
-    private void FadeUI(bool fadeIn, bool isInstant = false)
+    void FadeUI(bool fadeIn, bool isInstant = false)
     {
         StopAllCoroutines();
 
@@ -45,10 +49,10 @@ public class HealthUI : MonoBehaviour
         float to = fadeIn ? 1f : 0f;
         for (int i = 0; i < hearts.Length; i++) {
             if (isInstant) {
-                hearts[i].color = new Color(1f, 1f, 1f, to);
+                Utility.SetAlphaRecursively(hearts[i].gameObject, to, false);
             } else {
-                hearts[i].color = new Color(1f, 1f, 1f, from);
-                StartCoroutine(Utility.FadeImage(hearts[i], from, to, kFadeInDuration + kFadeInOffsetDuration * i));
+                // Utility.FadeGameObjectRecursively(hearts[i].gameObject, from, to, kFadeInDuration + kFadeInOffsetDuration * i, false);
+                StartCoroutine(Utility.FadeGameObject(hearts[i].gameObject, from, to, kFadeInDuration + kFadeInOffsetDuration * i));
             }
         }
     }

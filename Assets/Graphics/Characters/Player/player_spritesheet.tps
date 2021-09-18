@@ -186,9 +186,6 @@
             <key type="filename">Sprite~/player_attack_2.png</key>
             <key type="filename">Sprite~/player_attack_3.png</key>
             <key type="filename">Sprite~/player_attack_4.png</key>
-            <key type="filename">Sprite~/player_attack_5.png</key>
-            <key type="filename">Sprite~/player_attack_6.png</key>
-            <key type="filename">Sprite~/player_attack_7.png</key>
             <key type="filename">Sprite~/player_attack_end_0.png</key>
             <key type="filename">Sprite~/player_falling_0.png</key>
             <key type="filename">Sprite~/player_jumping_0.png</key>
@@ -254,9 +251,6 @@
             <filename>Sprite~/player_attack_2.png</filename>
             <filename>Sprite~/player_attack_3.png</filename>
             <filename>Sprite~/player_attack_4.png</filename>
-            <filename>Sprite~/player_attack_5.png</filename>
-            <filename>Sprite~/player_attack_6.png</filename>
-            <filename>Sprite~/player_attack_7.png</filename>
             <filename>Sprite~/player_attack_end_0.png</filename>
             <filename>Sprite~/player_falling_0.png</filename>
             <filename>Sprite~/player_jumping_0.png</filename>

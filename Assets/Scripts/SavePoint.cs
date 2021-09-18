@@ -1,26 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SavePoint : DialogueTrigger
 {
-    public override void Update ()
+    protected override void OnTriggerDialogue(InputAction.CallbackContext context)
     {
-        bool isTalking = DialogueManager.Instance.isTalking;
-        int loadIndex = GameMaster.Instance.savedPlayerData.SaveFileIndex;
+        if (_isInRange && !DialogueManager.Instance.isTalking) {
+            // Fully Heal player
+            _player.GetComponent<PlayerHealth>().FullHeal();
 
-        // Show save prompt
-        if (!isTalking && Vector2.Distance (player.transform.position, transform.position) <= triggerRange) {
-            textPrompt.enabled = true;
-            if (Input.GetKeyDown (KeyCode.UpArrow) || Input.GetKeyDown (KeyCode.DownArrow)) {
-                TriggerDialogue ();
-
-                // Fully Heal player
-                FindObjectOfType<PlayerHealth> ().FullHeal ();
-
-                // Manually Save
-                SaveManager.Save (player);
-            }
-        } else {
-            textPrompt.enabled = false;
+            // Manually Save
+            SaveManager.Save(_player);
         }
     }
 }

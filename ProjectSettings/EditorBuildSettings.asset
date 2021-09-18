@@ -12,10 +12,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Main_Menu.unity
     guid: 2899441d1c724494fab2d15f6eabaac0
   - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Cave.unity
+    path: Assets/Scenes/Forest/Forest_Cave/Forest_Cave.unity
     guid: 9792301c25b9ae14d9afb58c959cd21e
   - enabled: 1
-    path: Assets/Scenes/Forest/Forest_Area1.unity
+    path: Assets/Scenes/Forest/Forest_Area1/Forest_Area1.unity
     guid: e75c995a705965844bb11f9e7e06082c
   - enabled: 0
     path: Assets/Scenes/Forest/Old/Forest_Tutorial.unity
@@ -45,5 +45,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Hatsumura.unity
     guid: d0b8ab17fbd696d4180798c8034b9e5e
   m_configObjects:
-    com.unity.input.settings: {fileID: 11400000, guid: d80537ac7b2d8f64e9b89d831c896c15,
+    com.unity.input.settings: {fileID: 11400000, guid: aca44e4eb0e7d314396d922a979c520f,
       type: 2}

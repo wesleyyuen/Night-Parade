@@ -11,6 +11,7 @@ public class OnibiMovement : MonoBehaviour
     [SerializeField] Vector2 offsetFromPlayer;
     Vector2 _refPosition;
     Vector2 _desiredPoint;
+    bool _isMerging;
 
     void Start()
     {
@@ -25,12 +26,24 @@ public class OnibiMovement : MonoBehaviour
         Material mat = GetComponent<SpriteRenderer>().material;
         float factor = Mathf.Pow(2, 3);
         mat.color = new Color(mat.color.r * factor, mat.color.g * factor, mat.color.b * factor, mat.color.a);
+        _isMerging = false;
     }
 
     void FixedUpdate()
     {
-        _desiredPoint = new Vector2(_player.position.x + (_player.localScale.x == 1 ? offsetFromPlayer.x : -offsetFromPlayer.x),
+        _desiredPoint = _isMerging ? _desiredPoint : new Vector2(_player.position.x + (_player.localScale.x == 1 ? offsetFromPlayer.x : -offsetFromPlayer.x),
                                    _player.position.y + offsetFromPlayer.y + Mathf.Sin(Time.time * Random.value) * 0.5f);
         _rb.position = Vector2.SmoothDamp(_rb.position, _desiredPoint, ref _refPosition, 0.3f, 15, Time.deltaTime); 
+    }
+
+    public void StartMerging(Vector2 weaponPos)
+    {
+        _isMerging = true;
+        _desiredPoint = weaponPos;
+    }
+
+    public void EndMerging()
+    {
+        _isMerging = false;
     }
 }

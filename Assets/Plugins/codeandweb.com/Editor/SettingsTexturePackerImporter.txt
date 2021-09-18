@@ -3,12 +3,15 @@ importPivots: 1
 tpsheetFileNames:
 - Assets/Graphics/Characters/Enemy/Okka/okka_spritesheet.tpsheet
 - Assets/Graphics/Characters/Player/player_spritesheet.tpsheet
+- Assets/Graphics/Characters/Player/Wakizashi/wakizashi_emission_map.tpsheet
 - Assets/Graphics/Characters/Player/Wakizashi/wakizashi_spritesheet.tpsheet
 textureFileNames:
 - Assets/Graphics/Characters/Enemy/Okka/okka_spritesheet.png
 - Assets/Graphics/Characters/Player/player_spritesheet.png
+- Assets/Graphics/Characters/Player/Wakizashi/wakizashi_emission_map.png
 - Assets/Graphics/Characters/Player/Wakizashi/wakizashi_spritesheet.png
 normalmapFileNames:
+- 
 - 
 - 
 - 

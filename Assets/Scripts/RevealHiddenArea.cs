@@ -11,15 +11,15 @@ public class RevealHiddenArea : MonoBehaviour
     [SerializeField] float alphaToFadeTo;
     [SerializeField] float fadingTime;
     [SerializeField] bool hideFromLeft;
+    PlayerProgress _progress;
 
     void Start ()
     {
+        _progress = FindObjectOfType<PlayerProgress>();
         // Make hidden area semi-transparant when discovered before
-        bool discoveredBefore;
-        FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (keyString, out discoveredBefore);
-        if (discoveredBefore) {
+        if (_progress.HasPlayerProgress(keyString)) {
             tilemapToHide.color = new Color (1, 1, 1, alphaToFadeTo);
-            Destroy (lightToTurnOff);
+            Destroy(lightToTurnOff);
         }
     }
 
@@ -32,9 +32,8 @@ public class RevealHiddenArea : MonoBehaviour
                 StartCoroutine (FadeTilemap (alphaToFadeTo));
             } else {
                 // Only play sound effect if First time walking into hidden area
-                bool temp;
-                if (!FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (keyString, out temp)) {
-                    FindObjectOfType<PlayerProgress> ().areaProgress.Add (keyString, true);
+                if (!_progress.HasPlayerProgress(keyString)) {
+                    _progress.AddPlayerProgress(keyString, 1);
                     FoundSecretSFX ();
                 }
                 StartCoroutine (FadeTilemap (0f));

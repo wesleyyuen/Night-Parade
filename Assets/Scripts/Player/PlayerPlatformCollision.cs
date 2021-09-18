@@ -14,17 +14,15 @@ public class PlayerPlatformCollision : MonoBehaviour {
     public bool onRightWall { get; private set; }
     PlayerMovement _movement;
     PlayerAnimations _animations;
+    InputMaster _input;
     Collider2D _coll;
     Rigidbody2D _rb;
     PlayerJump _jump;
-    Vector2 _groundDetectionPoint;
-    Vector2 _leftWallUpperDetectionPoint;
-    Vector2 _leftWallMidDetectionPoint;
-    Vector2 _leftWallLowerDetectionPoint;
-    Vector2 _rightWallUpperDetectionPoint;
-    Vector2 _rightWallMidDetectionPoint;
-    Vector2 _rightWallLowerDetectionPoint;
+    Vector2 _groundDetectionPoint,
+            _leftWallUpperDetectionPoint, _leftWallMidDetectionPoint,_leftWallLowerDetectionPoint,
+            _rightWallUpperDetectionPoint, _rightWallMidDetectionPoint, _rightWallLowerDetectionPoint;
 
+    int _groundLayerMask, _wallLayerMask;
 
     float lastYVelocity;
 
@@ -35,9 +33,15 @@ public class PlayerPlatformCollision : MonoBehaviour {
         _movement = GetComponentInParent<PlayerMovement>();
         _animations = GetComponentInParent<PlayerAnimations>();
         _jump = transform.parent.GetComponentInChildren<PlayerJump>();
+        _groundLayerMask = LayerMask.GetMask("Ground");
+        _wallLayerMask = LayerMask.GetMask("Wall");
 
         if (startOffGrounded)
             onGround = true;
+
+        // Handle Inputs
+        _input = new InputMaster();
+        _input.Player.Movement.Enable();
     }
 
     void Update() {
@@ -55,23 +59,23 @@ public class PlayerPlatformCollision : MonoBehaviour {
         _rightWallMidDetectionPoint = new Vector2 (_coll.bounds.max.x, _coll.bounds.center.y);
         _rightWallLowerDetectionPoint = new Vector2 (_coll.bounds.max.x, _coll.bounds.min.y);
 
-        Collider2D groundHit = Physics2D.OverlapCircle(_groundDetectionPoint, colliderRadius, LayerMask.GetMask("Ground"));
+        Collider2D groundHit = Physics2D.OverlapCircle(_groundDetectionPoint, colliderRadius, _groundLayerMask);
         onGround = groundHit;
         onSlope = groundHit ? groundHit.CompareTag("Slope") : false;
         if (onSlope) {
-            RaycastHit2D hit = Physics2D.Raycast(_groundDetectionPoint, Vector2.down, colliderRadius, LayerMask.GetMask("Ground"));
+            RaycastHit2D hit = Physics2D.Raycast(_groundDetectionPoint, Vector2.down, colliderRadius, _groundLayerMask);
             if (hit && hit.collider.CompareTag("Slope")) {
                 slopeVector = Vector2.Perpendicular(hit.normal).normalized;
             }
         } else {
             slopeVector = Vector2.left;
         }
-        onLeftWall = Physics2D.Raycast(_leftWallUpperDetectionPoint, Vector2.left, colliderRadius, LayerMask.GetMask("Wall")) ||
-                     Physics2D.Raycast(_leftWallMidDetectionPoint, Vector2.left, colliderRadius, LayerMask.GetMask("Wall")) ||
-                     Physics2D.Raycast(_leftWallLowerDetectionPoint, Vector2.left, colliderRadius, LayerMask.GetMask("Wall"));
-        onRightWall = Physics2D.Raycast(_rightWallUpperDetectionPoint, -Vector2.left, colliderRadius, LayerMask.GetMask("Wall")) ||
-                      Physics2D.Raycast(_rightWallMidDetectionPoint, Vector2.left, colliderRadius, LayerMask.GetMask("Wall")) ||
-                      Physics2D.Raycast(_rightWallLowerDetectionPoint, -Vector2.left, colliderRadius, LayerMask.GetMask("Wall"));
+        onLeftWall = Physics2D.Raycast(_leftWallUpperDetectionPoint, Vector2.left, colliderRadius, _wallLayerMask) ||
+                     Physics2D.Raycast(_leftWallMidDetectionPoint, Vector2.left, colliderRadius, _wallLayerMask) ||
+                     Physics2D.Raycast(_leftWallLowerDetectionPoint, Vector2.left, colliderRadius, _wallLayerMask);
+        onRightWall = Physics2D.Raycast(_rightWallUpperDetectionPoint, -Vector2.left, colliderRadius, _wallLayerMask) ||
+                      Physics2D.Raycast(_rightWallMidDetectionPoint, Vector2.left, colliderRadius, _wallLayerMask) ||
+                      Physics2D.Raycast(_rightWallLowerDetectionPoint, -Vector2.left, colliderRadius, _wallLayerMask);
         onWall = onLeftWall || onRightWall;
 
         // onGround callbacks
@@ -84,7 +88,7 @@ public class PlayerPlatformCollision : MonoBehaviour {
 
         // Handle Slope
         if (onSlope)
-            groundHit.sharedMaterial = Input.GetAxisRaw("Horizontal") == 0 ? oneFriction : null;
+            groundHit.sharedMaterial = _input.Player.Movement.ReadValue<Vector2>().x == 0 ? oneFriction : null;
 
         lastYVelocity = _rb.velocity.y;
     }

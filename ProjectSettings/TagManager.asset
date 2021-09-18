@@ -23,6 +23,7 @@ TagManager:
   - GroundEdges
   - StaminaUI
   - UICanvas
+  - Weapon
   layers:
   - Default
   - TransparentFX

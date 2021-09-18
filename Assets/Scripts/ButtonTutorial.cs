@@ -1,34 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
+﻿using UnityEngine;
 
 public class ButtonTutorial : MonoBehaviour
 {
-    [SerializeField] float duration;
-    TextMeshPro text;
-    KeyIcon icon;
-
+    [SerializeField] string _progressKey;
+    [SerializeField] GameObject _button;
+    PlayerProgress _progress;
+    bool _hasShown;
     void Awake()
     {
-        text = GetComponentInChildren<TextMeshPro>();
-        text.color = new Color(text.color.r, text.color.g, text.color.b, 0f);
-        icon = GetComponentInChildren<KeyIcon>();
+        Utility.SetAlphaRecursively(_button, 0f);
+        _button.SetActive(true);
+    }
+
+    void Start()
+    {
+        _progress = FindObjectOfType<PlayerProgress>();
+        _hasShown = _progress.HasPlayerProgress(_progressKey);
+        if (_hasShown)
+            Destroy(gameObject);
     }
 
     void OnTriggerEnter2D (Collider2D other)
     {
-        if (other.CompareTag ("Player")) {
-            icon.Fade(true, duration);
-            StartCoroutine(Utility.FadeText(text, 0f, 1f, duration));
+        if (other.CompareTag ("Player") && !_hasShown) {
+            Utility.FadeGameObjectRecursively(_button, 0f, 1f, 0.25f);
+            _progress.AddPlayerProgress(_progressKey, 1);
         }
     }
 
     void OnTriggerExit2D (Collider2D other)
     {
-        if (other.CompareTag ("Player")) {
-            icon.Fade(false, duration);
-            StartCoroutine(Utility.FadeText(text, 1f, 0f, duration));
-        }
+        if (other.CompareTag ("Player") && !_hasShown)
+            Utility.FadeGameObjectRecursively(_button, 1f, 0f, 0.25f);
     }
 }

@@ -22,12 +22,23 @@ public class EnemyData
     public Vector2 lineOfSightOriginOffset;
     public float lineOfSightBreakDelay;
     public float timeFrozenAfterLOSBreak;
+
+    // Attack
+    public float attackDistance;
+    public float attackForce;
+    public float attackChargeTime;
+    public float attackTime; // Excluding charge Time
     public float timeFrozenAfterDamagingPlayer;
 
-    // Damaged
-    public float knockBackOnAttackedForce;
+    // Stunned
     public float knockBackOnParriedForce;
     public float timeStunnedAfterParried;
+    public float knockBackOnBlockedForce;
+    public float timeStunnedAfterBlocked;
+
+
+    // Damaged
+    public float knockBackOnTakingDamageForce;
     public float timeFrozenAfterTakingDamage;
     public float dieTime;
 }

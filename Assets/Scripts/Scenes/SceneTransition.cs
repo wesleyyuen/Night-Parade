@@ -4,15 +4,33 @@ using UnityEngine;
 public class SceneTransition : MonoBehaviour
 {
     [SerializeField] protected float _transitionTime = 1f;
+    protected Animator _animator;
 
-    public void StartSceneTransition(string levelToLoad, ref PlayerData playerVariables)
+    protected virtual void Awake()
     {
-        StartCoroutine(SceneTransitionCoroutine(levelToLoad, playerVariables));
+        _animator = GetComponentInChildren<Animator>();
+        _animator.speed = 1f/_transitionTime;
     }
 
-    protected virtual IEnumerator SceneTransitionCoroutine(string levelToLoad, PlayerData playerVariables)
+    public void StartSceneTransitionIn()
     {
-        GetComponentInChildren<Animator>().SetTrigger("Start");
+        StartCoroutine(SceneTransitionInCoroutine());
+    }
+
+    public void StartSceneTransitionOut( string levelToLoad, ref PlayerData playerVariables)
+    {
+        StartCoroutine(SceneTransitionOutCoroutine(levelToLoad, playerVariables));
+    }
+
+    protected virtual IEnumerator SceneTransitionInCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(_transitionTime);
+    }
+
+    protected virtual IEnumerator SceneTransitionOutCoroutine(string levelToLoad, PlayerData playerVariables)
+    {
+        _animator.speed = 1f/_transitionTime;
+        _animator.SetTrigger("Start");
         yield return new WaitForSecondsRealtime(_transitionTime);
         GameMaster.Instance.RequestSceneChange(levelToLoad, ref playerVariables);
     }

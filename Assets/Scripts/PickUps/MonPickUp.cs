@@ -7,12 +7,12 @@ public class MonPickUp : PickUp
     void OnCollisionEnter2D (Collision2D other)
     {
         if (other.gameObject.CompareTag ("Player")) {
-            other.gameObject.GetComponent<PlayerInventory> ().PickUpCoin (amount);
+            other.gameObject.GetComponent<PlayerInventory>().PickUpCoin (amount);
 
             // Update Mon UI
-            FindObjectOfType<MonUI>().ShowMonChange();
+            MonUI.Instance.ShowMonChange();
 
-            Destroy (gameObject);
+            Destroy(gameObject);
         }
     }
 }

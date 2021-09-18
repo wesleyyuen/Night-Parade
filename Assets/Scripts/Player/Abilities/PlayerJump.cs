@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerJump : MonoBehaviour
 {
@@ -8,14 +9,15 @@ public class PlayerJump : MonoBehaviour
     Rigidbody2D _rb;
     [SerializeField] ParticleSystem dustTrail;
     PlayerPlatformCollision _coll;
+    InputMaster _input;
 
     [Header ("Jumping Settings")]
-    [SerializeField] float jumpVelocity = 36f;
-    [SerializeField] float fallMultiplier = 0.8f;
-    [SerializeField] float lowJumpMultiplier = 5f;
-    [SerializeField] float jumpBufferTime = 0.2f;
-    [SerializeField] float coyoteTime = 0.05f;
-    bool _canJump;
+    [SerializeField] float jumpVelocity;
+    [SerializeField] float fallMultiplier;
+    [SerializeField] float lowJumpMultiplier;
+    [SerializeField] float jumpBufferTime;
+    [SerializeField] float coyoteTime;
+    bool _canJump = true;
     float _jumpBuffer;
     float _coyoteTimer;
 
@@ -24,7 +26,13 @@ public class PlayerJump : MonoBehaviour
         _rb = GetComponentInParent<Rigidbody2D>();
         _coll = gameObject.transform.parent.gameObject.GetComponentInChildren<PlayerPlatformCollision>();
         _canJump = true;
+
+        // Handle Inputs
+        _input = new InputMaster();
+        _input.Player.Jump.Enable();
+        _input.Player.Jump.started += OnJump;
     }
+
 
     public void EnablePlayerJump(bool enable, float time = 0f)
     {
@@ -34,6 +42,13 @@ public class PlayerJump : MonoBehaviour
             _canJump = enable;
         else
             StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _canJump = e, time, enable, !enable));
+    }
+
+    void OnJump(InputAction.CallbackContext context)
+    {
+        if (_coll.onGround) {
+            _jumpBuffer = jumpBufferTime;
+        }
     }
 
     void Update()
@@ -48,9 +63,6 @@ public class PlayerJump : MonoBehaviour
 
         // Jump Buffering - allow pre-input of jumps before touching the ground
         _jumpBuffer -= Time.deltaTime;
-        if (Input.GetButtonDown ("Jump") && _coll.onGround) {
-            _jumpBuffer = jumpBufferTime;
-        }
     }
 
     void FixedUpdate()
@@ -69,7 +81,7 @@ public class PlayerJump : MonoBehaviour
         // Low Jump
         if (_rb.velocity.y < 0) {
             _rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        } else if (_rb.velocity.y > 0 && !Input.GetButton ("Jump")) {
+        } else if (_rb.velocity.y > 0 && _input.Player.Jump.ReadValue<float>() <= 0.5f) {
             _rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }

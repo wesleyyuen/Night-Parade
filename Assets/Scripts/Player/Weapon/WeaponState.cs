@@ -1,7 +1,8 @@
-public abstract class WeaponState
+public interface IWeaponState
 {
-    public abstract void EnterState(WeaponFSM fsm);
-    public abstract void Update(WeaponFSM fsm);
-    public abstract void FixedUpdate(WeaponFSM fsm);
-    public abstract void ExitState(WeaponFSM fsm);
+    void Awake(WeaponFSM fsm);
+    void EnterState(WeaponFSM fsm);
+    void Update(WeaponFSM fsm);
+    void FixedUpdate(WeaponFSM fsm);
+    void ExitState(WeaponFSM fsm);
 }

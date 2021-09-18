@@ -1,24 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerAnimations : MonoBehaviour
 {
-    [SerializeField] ParticleSystem dustTrail;
-    [SerializeField] Animator swordAnimator;
+    [SerializeField] ParticleSystem _dustTrail;
     PlayerPlatformCollision _grounded;
     Animator _playerAnimator;
+    Animator _weaponAnimator;
     Rigidbody2D _rb;
     PlayerMovement _movement;
+    InputMaster _input;
+    float _xRaw;
     [HideInInspector] public bool canTurn;
 
     void Awake()
     {
         _grounded = GetComponent<PlayerPlatformCollision>();
         _playerAnimator = GetComponent<Animator>();
+
+        foreach (Transform obj in transform) {
+            if (obj.tag == "Weapon")
+                _weaponAnimator = obj.GetComponent<Animator>();
+        }
+        
         _rb = GetComponent<Rigidbody2D>();
         _movement = GetComponent<PlayerMovement>();
         canTurn = true;
+
+        // Handle Input
+        _input = new InputMaster();
+        _input.Player.Movement.Enable();
     }
 
     public void EnablePlayerTurning(bool enable, float time = 0f)
@@ -32,64 +42,80 @@ public class PlayerAnimations : MonoBehaviour
     public void FreezePlayerAnimation(float time)
     {
         StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _playerAnimator.enabled = e, time, false, true));
-        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => swordAnimator.enabled = e, time, false, true));
+        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _weaponAnimator.enabled = e, time, false, true));
     }
 
     void Update()
     {
+        ReattachAnimatorReference();
         SetJumpFallAnimation();
 
         if (!canTurn) return;
 
-        float horizontalInput = Input.GetAxisRaw ("Horizontal");
         Vector3 prevLocalScale = transform.localScale;
+        _xRaw = _input.Player.Movement.ReadValue<Vector2>().x;
 
         // Flip sprite (TODO: maybe move into child object)
-        if (horizontalInput > 0 && prevLocalScale.x != 1f) {
+        if (_xRaw > 0 && prevLocalScale.x != 1f) {
             FaceRight(true);
-        } else if (horizontalInput < 0 && prevLocalScale.x != -1f) {
+            Utility.UnflipGameObjectRecursively(gameObject, true, true);
+        } else if (_xRaw < 0 && prevLocalScale.x != -1f) {
             FaceRight(false);
+            Utility.UnflipGameObjectRecursively(gameObject, false, true);
         }
 
         // Set animations
         if (_movement.canWalk) {
-            SetRunAnimation(horizontalInput);
+            SetRunAnimation(_xRaw);
+        }
+    }
+
+    void ReattachAnimatorReference()
+    {
+        if (_playerAnimator == null)
+            _playerAnimator = GetComponent<Animator>();
+
+        if (_weaponAnimator == null) {
+            foreach (Transform obj in transform) {
+                if (obj.tag == "Weapon")
+                    _weaponAnimator = obj.GetComponent<Animator>();
+            }
         }
     }
 
     void SetBool(string name, bool val)
     {
         _playerAnimator.SetBool(name, val);
-        swordAnimator.SetBool(name, val);
+        _weaponAnimator.SetBool(name, val);
     }
 
     void SetFloat(string name, float val)
     {
         _playerAnimator.SetFloat(name, val);
-        swordAnimator.SetFloat(name, val);
+        _weaponAnimator.SetFloat(name, val);
     }
 
     void SetInteger(string name, int val)
     {
         _playerAnimator.SetInteger(name, val);
-        swordAnimator.SetInteger(name, val);
+        _weaponAnimator.SetInteger(name, val);
     }
 
     public void FaceRight(bool faceRight)
     {
-        swordAnimator.SetBool ("FacingRight", faceRight);
+        _weaponAnimator.SetBool ("FacingRight", faceRight);
         transform.localScale = new Vector3 (faceRight ? 1f : -1f, 1f, 1f);
     }
 
     public void SetRunAnimation(float horizontalInput)
     {
-        SetFloat ("Horizontal", horizontalInput);
+        SetFloat("Horizontal", horizontalInput);
     }
 
     public void SetJumpFallAnimation()
     {
-        SetBool ("IsGrounded", _grounded.onGround);
-        SetFloat ("Vertical", _rb.velocity.y);
+        SetBool("IsGrounded", _grounded.onGround);
+        SetFloat("Vertical", _rb.velocity.y);
     }
 
     public void SetAttackAnimation(int count)
@@ -110,7 +136,7 @@ public class PlayerAnimations : MonoBehaviour
     public void CreateDustTrail ()
     {
         if (_grounded.onGround) {
-            dustTrail.Play ();
+            _dustTrail.Play ();
         }
     }
 }

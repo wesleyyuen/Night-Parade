@@ -5,81 +5,67 @@ using UnityEngine;
 // https://github.com/ilhamhe/UnitySpriteFlash
 public class SpriteFlash : MonoBehaviour
 {
-    [SerializeField] Material flashMaterial;
-    [SerializeField] Color[] flashColor;
-	[SerializeField] float flashDuration;
-    int flashColorIndex;
-	Material mat;
-    SpriteRenderer render;
-    Material originalMaterial;
-    IEnumerator coroutine;
+    [SerializeField] Material _flashMaterial;
+    [SerializeField] Color[] _flashColors;
+	[SerializeField] float _flashDuration;
+    int _flashColorIndex;
+	Material _material;
+    SpriteRenderer _sr;
+    Material _originalMaterial;
+    IEnumerator _coroutine;
 
     void Awake()
     {
-        flashColorIndex = 0;
-        render = GetComponent<SpriteRenderer>();
-        originalMaterial = render.material;
-        mat = new Material(flashMaterial);
-        mat.SetColor("_FlashColor", flashColor[flashColorIndex]);
+        _flashColorIndex = 0;
+        _sr = GetComponent<SpriteRenderer>();
+        _originalMaterial = _sr.material;
+        _material = new Material(_flashMaterial);
+        _material.SetColor("_FlashColor", _flashColors[_flashColorIndex]);
     }
 
-    public void PlayDamagedFlashEffect()
+    public void PlayDamagedFlashEffect(float duration = 0f)
     {
         // Set Next Color
-        flashColorIndex++;
-        flashColorIndex = flashColorIndex % flashColor.Length;
-        mat.SetColor("_FlashColor", flashColor[flashColorIndex]);
+        _flashColorIndex++;
+        _flashColorIndex = _flashColorIndex % _flashColors.Length;
+        _material.SetColor("_FlashColor", _flashColors[_flashColorIndex]);
 
-        render.material = mat;
+        _sr.material = _material;
 
-        if (coroutine != null)
-            StopCoroutine(coroutine);
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
 
-        coroutine = ActuallyPlayDamagedFlashEffect();
-        StartCoroutine(coroutine);
+        _coroutine = ActuallyFlash(duration == 0 ? _flashDuration : duration);
+        StartCoroutine(_coroutine);
     }
 
+    // For Enemy
     public void PlayDeathFlashEffect(float duration)
     {
-        mat.SetColor("_FlashColor", flashColor[flashColorIndex]);
-        render.material = mat;
+        _material.SetColor("_FlashColor", new Color(1f, 1f, 1f, 0f));
+        _sr.material = _material;
+        _sr.color = Color.black;
         
-        if (coroutine != null)
-            StopCoroutine(coroutine);
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
 
-        coroutine = ActuallyFade(duration);
-        StartCoroutine(coroutine);
+        _coroutine = ActuallyFlash(duration);
+        StartCoroutine(_coroutine);
     }
 
-    IEnumerator ActuallyPlayDamagedFlashEffect()
+    IEnumerator ActuallyFlash(float duration)
     {
         float lerpTime = 0;
 
-        while (lerpTime < flashDuration) {
-            // Set Alpha
+        while (lerpTime < duration) {
             lerpTime += Time.deltaTime;
-            float percent = lerpTime / flashDuration;
-            mat.SetFloat("_FlashAmount", 1f - percent);
+            float percent = lerpTime / duration;
+            _material.SetFloat("_FlashAmount", 1f - percent);
             yield return null;
         }
 
-        render.material = originalMaterial;
-        mat.SetFloat("_FlashAmount", 0);
-    }
-
-    IEnumerator ActuallyFlash()
-    {
-        float lerpTime = 0;
-
-        while (lerpTime < flashDuration) {
-            lerpTime += Time.deltaTime;
-            float percent = lerpTime / flashDuration;
-            mat.SetFloat("_FlashAmount", 1f - percent);
-            yield return null;
-        }
-
-        render.material = originalMaterial;
-        mat.SetFloat("_FlashAmount", 0);
+        _sr.material = _originalMaterial;
+        _material.SetFloat("_FlashAmount", 0);
     }
 
     IEnumerator ActuallyFade(float duration)
@@ -89,11 +75,11 @@ public class SpriteFlash : MonoBehaviour
         while (lerpTime < duration) {
             lerpTime += Time.deltaTime;
             float percent = lerpTime / duration;
-            mat.SetFloat("_FlashAmount", percent);
+            _material.SetFloat("_FlashAmount", percent);
             yield return null;
         }
 
-        render.material = originalMaterial;
-        mat.SetFloat("_FlashAmount", 0);
+        _sr.material = _originalMaterial;
+        _material.SetFloat("_FlashAmount", 0);
     }
 }

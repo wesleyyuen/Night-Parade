@@ -22,7 +22,6 @@ public class PlayerInventory : MonoBehaviour
 
         // Change Mon UI
         MonUI.Instance.ShowMonChange();
-        // FindObjectOfType<MonUI>().ShowMonChange();
     }
 
     public void PickUpInk (int areaIndex)

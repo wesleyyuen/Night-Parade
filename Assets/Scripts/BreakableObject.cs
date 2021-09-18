@@ -2,35 +2,37 @@
 
 public class BreakableObject : MonoBehaviour
 {
-    public string keyString;
-    public int numOfHitsToDestroy;
-    public enum breakableSide {
+    [SerializeField] string keyString;
+    [SerializeField] int numOfHitsToDestroy;
+    public enum BreakableSide {
         left,
         right,
         both
     }
 
-    public breakableSide side;
-    [HideInInspector] public int currentHealth;
+    [SerializeField] BreakableSide side;
+    [HideInInspector] public int currentHealth {get; protected set;}
+    PlayerProgress _progress;
 
-    public virtual void Start ()
+    protected virtual void Start ()
     {
         if (keyString == "") {
             Debug.LogError("Error: Key String for Breakable Object " + gameObject.name + " is empty!");
         }
+        _progress = FindObjectOfType<PlayerProgress>();
+
         // Do not spawn if player destroyed previously
-        bool destroyedBefore;
-        FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (keyString, out destroyedBefore);
-        if (destroyedBefore) Destroy (gameObject);
+        if (_progress.HasPlayerProgress(keyString))
+            Destroy (gameObject);
 
         currentHealth = numOfHitsToDestroy;
     }
 
     public virtual void TakeDamage (bool fromLeft)
     {
-        if (side == breakableSide.both || // attack from either side is fine
-            (fromLeft && side == breakableSide.left) || // attack from left
-            (!fromLeft && side == breakableSide.right)) { // attack from right
+        if (side == BreakableSide.both || // attack from either side is fine
+            (fromLeft && side == BreakableSide.left) || // attack from left
+            (!fromLeft && side == BreakableSide.right)) { // attack from right
             currentHealth--;
             if (currentHealth <= 0) {
                 Break ();
@@ -40,9 +42,9 @@ public class BreakableObject : MonoBehaviour
         }
     }
 
-    public void Break ()
+    protected void Break ()
     {
-        FindObjectOfType<PlayerProgress> ().areaProgress.Add (keyString, true);
-        Destroy (gameObject);
+        _progress.AddPlayerProgress(keyString, 1);
+        Destroy(gameObject);
     }
 }

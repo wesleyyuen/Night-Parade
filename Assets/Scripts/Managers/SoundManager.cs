@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -15,7 +14,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] Sound[] sounds;
     
 
-    void Awake ()
+    void Awake()
     {
         if (instance == null) {
             instance = this;
@@ -36,41 +35,35 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // TODO: better way of handling play than start and update; maybe in scene script
-    void Start ()
-    {
-        Play ("Forest_Ambience");
-    }
-
     public void Play(string name)
     {
-        Sound sound = Array.Find (sounds, s => s.name == name);
+        Sound sound = Array.Find(sounds, s => s.name == name);
         if (sound == null) {
-            Debug.Log ("Sound " + name + " Not found in SoundManager Array");
+            Debug.Log("Sound " + name + " Not found in SoundManager Array");
             return;
         }
 
         if (sound.clip.Length > 1) { // Randomly choose a clip to play
-            sound.source.clip = sound.clip[UnityEngine.Random.Range (0, sound.clip.Length)];
+            sound.source.clip = sound.clip[UnityEngine.Random.Range(0, sound.clip.Length)];
         }
-        sound.source.Play ();
+        sound.source.Play();
     }
 
-    public void PauseAll ()
+    public void PauseAll()
     {
         foreach (Sound sound in sounds) {
             sound.source.Pause();
         }
     }
 
-    public void UnpauseAll ()
+    public void UnpauseAll()
     {
         foreach (Sound sound in sounds) {
             sound.source.UnPause();
         }
     }
 
-    public void ChangeVolume (string name, float volume)
+    public void ChangeVolume(string name, float volume)
     {
         Sound sound = Array.Find (sounds, s => s.name == name);
         if (sound == null) {

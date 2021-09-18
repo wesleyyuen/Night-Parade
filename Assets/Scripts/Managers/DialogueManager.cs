@@ -57,7 +57,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue (Dialogue dialogue)
+    public void StartDialogue(Dialogue dialogue)
     {
         isTalking = true;
         dialogueUI.SetActive (true);

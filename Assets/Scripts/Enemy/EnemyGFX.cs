@@ -41,20 +41,14 @@ public class EnemyGFX : MonoBehaviour
             transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
 
             // Flip question mark back
-            foreach (Transform child in transform) {
-            if (child.CompareTag("Unflippable"))
-                child.localScale = new Vector3 (Mathf.Abs(child.localScale.x), Mathf.Abs (child.localScale.y), 1.0f);
-            }
+            Utility.UnflipGameObjectRecursively(gameObject, true, true);
 
         } else if (_player.position.x < transform.position.x && transform.localScale.x != -1.0f) {
             yield return new WaitForSeconds (delay);
             transform.localScale = new Vector3 (-1.0f, 1.0f, 1.0f);
             
             // Flip question mark back
-            foreach (Transform child in transform) {
-            if (child.CompareTag("Unflippable"))
-                child.localScale = new Vector3 (-Mathf.Abs(child.localScale.x), Mathf.Abs (child.localScale.y), 1.0f);
-            }
+            Utility.UnflipGameObjectRecursively(gameObject, false, true);
         }
     }
 
@@ -70,10 +64,7 @@ public class EnemyGFX : MonoBehaviour
         transform.localScale = new Vector3 (-transform.localScale.x, 1f, 1f);
 
         // Flip question mark back
-        foreach (Transform child in transform) {
-            if (child.CompareTag("Unflippable"))
-                child.localScale = new Vector3 (-child.localScale.x , Mathf.Abs (child.localScale.y), 1.0f);
-        }
+        Utility.UnflipGameObjectRecursively(gameObject, false, false);
         _isTurning = false;
     }
 
@@ -109,7 +100,7 @@ public class EnemyGFX : MonoBehaviour
 
         // Flash at least 0.5 seconds
         if (flashTime < 0.5f) flashTime = 0.5f;
-        yield return new WaitForSeconds (flashTime);
+        yield return new WaitForSeconds(flashTime);
         sr.enabled = false;
     }
 
@@ -122,8 +113,22 @@ public class EnemyGFX : MonoBehaviour
 
     public void PlayDeathEffect(float dieTime)
     {
-        GetComponent<SpriteFlash>().PlayDeathFlashEffect(dieTime);
+        // GetComponent<SpriteFlash>().PlayDeathFlashEffect(dieTime);
+        _animator.enabled = false;
+        StartCoroutine(DeathEffectCoroutine(dieTime));
         _deathParticleEffect.Play();
+    }
+
+    IEnumerator DeathEffectCoroutine(float dieTime)
+    {
+        float flashDuration = 0.25f;
+        SpriteFlash spriteFlash = GetComponent<SpriteFlash>();
+
+        while (dieTime >= flashDuration) {
+            yield return new WaitForSeconds (flashDuration);
+            spriteFlash.PlayDeathFlashEffect(flashDuration);
+            dieTime -= flashDuration;
+        }
     }
 
     public bool IsTurning()

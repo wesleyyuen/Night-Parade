@@ -195,10 +195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2efaac2a3a18b948a88cf395c9cfb4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashMaterial: {fileID: 2100000, guid: eadbc25d62c93a149a513ce987ecf7d3, type: 2}
-  flashColor:
-  - {r: 1, g: 1, b: 1, a: 1}
-  flashDuration: 0.25
+  _flashMaterial: {fileID: 2100000, guid: eadbc25d62c93a149a513ce987ecf7d3, type: 2}
+  _flashColors:
+  - {r: 1, g: 1, b: 1, a: 0}
+  _flashDuration: 0.35
 --- !u!114 &3863298581046562429
 MonoBehaviour:
   m_ObjectHideFlags: 0

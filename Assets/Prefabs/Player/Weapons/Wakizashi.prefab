@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4574042551467922008}
   m_Layer: 9
   m_Name: Wakizashi
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canAttack: 0
+  attackCooldownTimer: 0
   canBlock: 0
-  isBlockOnCooldown: 0
-  staminaLeft: 0
+  blockCooldownTimer: 0
   currentBlockTimer: 0

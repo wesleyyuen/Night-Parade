@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -8,6 +9,7 @@ public class PlayerMovement : MonoBehaviour {
     Rigidbody2D _rb;
     PlayerAnimations _animations;
     PlayerAudio _audio;
+    InputMaster _input;
 
     [Header ("Movement Settings")]
     [SerializeField] float _movementSpeed = 14f;
@@ -15,6 +17,7 @@ public class PlayerMovement : MonoBehaviour {
     public bool isHandicapped {get; set;}
     float _xRaw, _yRaw;
     bool _isLetRBMove;
+    float _originalMovementSpeed;
 
     void Awake ()
     {
@@ -24,6 +27,11 @@ public class PlayerMovement : MonoBehaviour {
         _audio = GetComponent<PlayerAudio>();
         canWalk = true;
         _isLetRBMove = false;
+        _originalMovementSpeed = _movementSpeed;
+
+        // Handle Inputs
+        _input = new InputMaster();
+        _input.Player.Movement.Enable();
     }
 
     public void EnablePlayerMovement(bool enable, float time = 0)
@@ -34,16 +42,35 @@ public class PlayerMovement : MonoBehaviour {
             StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => canWalk = e, time, enable, !enable));
     }
 
+    public void ChangePlayerMovementSpeed(bool changing, float speedMultiplier, float time)
+    {
+        if (changing) {
+            if (time == 0)
+                _movementSpeed = _originalMovementSpeed * speedMultiplier;
+            else
+                StartCoroutine(Utility.ChangeVariableAfterDelay<float>(e => _movementSpeed = e, time, _originalMovementSpeed * speedMultiplier, _originalMovementSpeed));
+        } else {
+            _movementSpeed = _originalMovementSpeed;
+        }
+    }
+
     public void FreezePlayerPosition(float time)
     {
-        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _isLetRBMove = e, time, true, false));
+        LetRigidbodyMoveForSeconds(time);
+        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _rb.isKinematic = e, time, true, false));
         StartCoroutine(Utility.ChangeVariableAfterDelay<Vector2>(e => _rb.velocity = e, time, Vector2.zero, _rb.velocity));
+    }
+
+    public void LetRigidbodyMoveForSeconds(float time)
+    {
+        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _isLetRBMove = e, time, true, false));
     }
 
     void Update()
     {
-        _xRaw = Input.GetAxisRaw("Horizontal");
-        _yRaw = Input.GetAxisRaw("Vertical");
+        Vector2 inputVector = _input.Player.Movement.ReadValue<Vector2>();
+        _xRaw = inputVector.x;
+        _yRaw = inputVector.y;
     }
 
     void FixedUpdate ()
@@ -103,6 +130,7 @@ public class PlayerMovement : MonoBehaviour {
         if (_coll.onGround && _xRaw != 0) {
             bool facingRight = transform.localScale.x > 0;
             _rb.velocity = Vector2.zero;
+            _rb.angularVelocity = 0f;
             _rb.MovePosition(_rb.position + new Vector2((facingRight ? 1f : -1f) * dist, 0f));
             _audio.PlayFootstepSFX();
         }
@@ -110,12 +138,12 @@ public class PlayerMovement : MonoBehaviour {
 
     public void ApplyKnockback(Vector2 dir, float force, float time)
     {
-        
         _animations.EnablePlayerTurning(false, time);
-        EnablePlayerMovement(false, time);
-        StartCoroutine(Utility.ChangeVariableAfterDelay<float>(e => _rb.drag = e, time == 0 ? 0.1f : time, 3f, 0));
-        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _isLetRBMove = e, time == 0 ? 0.1f : time, true, false));
-
+        LetRigidbodyMoveForSeconds(time == 0 ? 0.1f : time);
+        StartCoroutine(Utility.ChangeVariableAfterDelay<float>(e => _rb.drag = e, time == 0 ? 0.1f : time, force * 0.1f, 1f));
+        
+        _rb.velocity = Vector2.zero;
+        _rb.angularVelocity = 0f;
         _rb.AddForce(dir.normalized * force, ForceMode2D.Impulse);
     }
 }

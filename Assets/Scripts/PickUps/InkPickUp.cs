@@ -5,13 +5,15 @@ using UnityEngine;
 public class InkPickUp : PickUp
 {
     [SerializeField] string area;
+    PlayerProgress _progress;
 
-    public override void Start ()
+    protected override void Start ()
     {
+        _progress = FindObjectOfType<PlayerProgress>();
+        
         // Do not spawn if player already picked it up
-        bool pickedUpBefore;
-        FindObjectOfType<PlayerProgress> ().areaProgress.TryGetValue (area + "_Ink", out pickedUpBefore);
-        if (pickedUpBefore) Destroy (transform.parent.gameObject);
+        if (_progress.HasPlayerProgress(area + "_Ink"))
+            Destroy (transform.parent.gameObject);
 
         base.Start ();
     }
@@ -20,8 +22,10 @@ public class InkPickUp : PickUp
         if (other.CompareTag ("Player")) {
             // Add to player Inventory
             other.GetComponent<PlayerInventory> ().PickUpInk (GameMaster.areaNameToIndex[area]);
+
             // Set flag so it won't spawn again
-            FindObjectOfType<PlayerProgress> ().areaProgress.Add (area + "_Ink", true);
+            _progress.AddPlayerProgress(area + "_Ink", 1);
+
             Destroy (gameObject);
         }
     }

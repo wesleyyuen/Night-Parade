@@ -20,9 +20,10 @@ public class EnemyFSM : MonoBehaviour
     public Collider2D col {get; private set;}
     public EnemyGFX GFX {get; private set;}
     public Collider2D player {get; private set;}
-    public Dictionary<StateType, EnemyState> states;
-    EnemyState _currentState;
-    public EnemyState previousState {get; private set;}
+    public Dictionary<StateType, IEnemyState> states;
+    IEnemyState _currentState;
+    public IEnemyState previousState {get; private set;}
+    bool _isLetRBMove;
     bool _isDead;
 
     protected virtual void Awake()
@@ -31,7 +32,8 @@ public class EnemyFSM : MonoBehaviour
         col = GetComponent<Collider2D>();
         GFX = GetComponent<EnemyGFX>();
         player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Collider2D>();
-        states = new Dictionary<StateType, EnemyState>();
+        states = new Dictionary<StateType, IEnemyState>();
+        _isLetRBMove = false;
         _isDead = false;
     }
 
@@ -41,14 +43,14 @@ public class EnemyFSM : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (_currentState == null || player == null) return;
+        if (_currentState == null || player == null || _isLetRBMove) return;
 
         _currentState.Update(this);
     }
 
     protected virtual void FixedUpdate()
     {
-        if (_currentState == null || player == null) return;
+        if (_currentState == null || player == null || _isLetRBMove) return;
 
         _currentState.FixedUpdate(this);
     }
@@ -67,7 +69,7 @@ public class EnemyFSM : MonoBehaviour
         GameObject go = collision.gameObject;
         if (go.layer == LayerMask.NameToLayer("Player")) {
             SetState(states[StateType.StillState]);
-            go.GetComponent<PlayerHealth>().TakeDamage(enemyData.damageAmount, rb.position);
+            go.GetComponent<PlayerHealth>().HandleDamage(enemyData.damageAmount, rb.position);
         }
 
         _currentState.OnCollisionStay2D(this, collision);
@@ -80,8 +82,10 @@ public class EnemyFSM : MonoBehaviour
         _currentState.OnCollisionExit2D(this, collision);
     }
 
-    public void SetState(EnemyState state)
+    public void SetState(IEnemyState state)
     {
+        if (state == null) return;
+        
         if (_currentState != null) {
             _currentState.ExitState(this);
             previousState = _currentState;
@@ -95,6 +99,13 @@ public class EnemyFSM : MonoBehaviour
     {
         return _currentState == states[state];
     }
+
+    public void StunForSeconds(float duration)
+    {
+        OkkaStunnedState stunnedState = (OkkaStunnedState) states[StateType.StunnedState];
+        stunnedState.stunnedDuration = duration;
+        SetState(states[StateType.StunnedState]);
+    }   
 
     public bool IsInLineOfSight()
     {
@@ -130,9 +141,18 @@ public class EnemyFSM : MonoBehaviour
         return false;
     }
 
-    public void ApplyKnockback(Vector2 dir, float force)
+    public void LetRigidbodyMoveForSeconds(float time)
     {
-        StartCoroutine(Utility.ChangeVariableAfterDelay<float>(e => rb.drag = e, 0.1f, 3f, 0));
+        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _isLetRBMove = e, time, true, false));
+    }
+
+    public void ApplyForce(Vector2 dir, float force, float time = 0)
+    {
+        StartCoroutine(Utility.ChangeVariableAfterDelay<float>(e => rb.drag = e, time == 0 ? 0.1f : time, force * 0.1f, 1f));
+        LetRigidbodyMoveForSeconds(time == 0 ? 0.1f : time);
+        
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0f;
         rb.AddForce(dir.normalized * force, ForceMode2D.Impulse);
     }
 
@@ -147,14 +167,26 @@ public class EnemyFSM : MonoBehaviour
             _isDead = true;
             SetState(states[StateType.DeathState]);
         } else {
-            SetState(states[StateType.DamagedState]);
+            if (Constant.stunEnemyAfterAttack) {
+                // Can use StunForSeconds
+                SetState(states[StateType.DamagedState]);
+            } else {
+                // Play Damaged Effect
+                GFX.PlayDamagedEffect();
+
+                // Apply Knock back
+                if (!IsCurrentState(StateType.AttackState)) {
+                    bool playerOnLeft = rb.position.x > player.transform.position.x;
+                    ApplyForce(playerOnLeft ? Vector2.right : Vector2.left, enemyData.knockBackOnTakingDamageForce, enemyData.timeFrozenAfterTakingDamage);
+                }
+            }
         }
     }
 
     public void Die()
     {
-        GetComponent<EnemyDrop>().SpawnDrops ();
-        Destroy (gameObject);
+        GetComponent<EnemyDrop>().SpawnDrops();
+        Destroy(gameObject);
     }
 
     public bool IsDead()

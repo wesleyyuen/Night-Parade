@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -8,7 +7,7 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth { get; private set; }
     
     Rigidbody2D _rb;
-    Animator _animator;
+    PlayerAnimations _anim;
     PlayerMovement _movement;
     WeaponFSM _weaponFSM;
     [HideInInspector] public bool isInvulnerable;
@@ -16,13 +15,13 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] float _cameraShakeMultiplier;
     [SerializeField] float _damageCameraShakeTimer;
 
-    void Start ()
+    void Start()
     {
         currHealth = GameMaster.Instance.savedPlayerData.CurrentHealth;
         maxHealth = GameMaster.Instance.savedPlayerData.MaxHealth;
         
         _rb = GetComponent<Rigidbody2D> ();
-        _animator = GetComponent<Animator>();
+        _anim = GetComponent<PlayerAnimations>();
         _movement = GetComponent<PlayerMovement>();
         _weaponFSM = GetComponentInChildren<WeaponFSM>();
 
@@ -30,11 +29,17 @@ public class PlayerHealth : MonoBehaviour
         HealthUI.Instance.UpdateHeartsUI();
     }
 
+    public void HandleDamage(int damage, Vector2 enemyPos)
+    {
+        if (!(isInvulnerable || _weaponFSM.IsCurrentState(WeaponFSM.StateType.ParryState) || _weaponFSM.IsCurrentState(WeaponFSM.StateType.BlockState)))
+            TakeDamage(damage, enemyPos);
+    }
+
     public void TakeDamage(int damage, Vector2 enemyPos)
     {
         if (isInvulnerable) return;
 
-        float frozenTime = 0.35f;
+        float frozenTime = 0.5f;
 
         currHealth -= damage;
         if (currHealth <= 0) {
@@ -44,9 +49,10 @@ public class PlayerHealth : MonoBehaviour
 
         // Disable Player Control
         Utility.EnablePlayerControl(false, frozenTime);
+        _anim.SetRunAnimation(0f);
 
-        // Freeze frame effect
-        StartCoroutine(Utility.ChangeVariableAfterDelay<float>(e => Time.timeScale = e, 0.02f, 0.05f, Time.timeScale));
+        // Slow Motion effect
+        StartCoroutine(Utility.SlowTimeForSeconds(0.1f, 0.5f));
 
         // Shake Camera
         StartCoroutine(CameraShake.Instance.ShakeCameraAfterDelay(.02f, _cameraShakeMultiplier, _damageCameraShakeTimer));
@@ -62,7 +68,7 @@ public class PlayerHealth : MonoBehaviour
         FindObjectOfType<InvulnerabilityFrames>().Flash();
     }
 
-    public void PickUpHealth () {
+    public void PickUpHealth() {
         if (currHealth < maxHealth) {
             currHealth += 4;
         }
@@ -71,14 +77,14 @@ public class PlayerHealth : MonoBehaviour
         HealthUI.Instance.UpdateHeartsUI();
     }
 
-    public void FullHeal () {
+    public void FullHeal() {
         currHealth = maxHealth;
 
         // Change Health UI
         HealthUI.Instance.UpdateHeartsUI();
     }
 
-    void Die () {
+    void Die() {
         Destroy (gameObject);
         Debug.Log ("You died");
 

@@ -189,6 +189,7 @@
             <key type="filename">Sprite~/wakizashi_attack_5.png</key>
             <key type="filename">Sprite~/wakizashi_attack_6.png</key>
             <key type="filename">Sprite~/wakizashi_attack_7.png</key>
+            <key type="filename">Sprite~/wakizashi_attack_8.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,1</point_f>
@@ -302,6 +303,7 @@
             <filename>Sprite~/wakizashi_run_r_5.png</filename>
             <filename>Sprite~/wakizashi_run_r_6.png</filename>
             <filename>Sprite~/wakizashi_run_r_7.png</filename>
+            <filename>Sprite~/wakizashi_attack_8.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

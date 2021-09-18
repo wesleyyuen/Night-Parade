@@ -1,13 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class WakizashiBlockState : WeaponState
+public class WakizashiBlockState : IWeaponState
 {
     // LayerMask layers;
     bool _wasBlocking;
     bool _isBlockReleasedBeforeMinDuration;
-    public override void EnterState(WeaponFSM fsm)
+    WakizashiFSM _fsm;
+
+    public void Awake(WeaponFSM fsm)
+    {
+        _fsm = (WakizashiFSM) fsm;
+        fsm.inputActions.Player.Block.canceled += OnReleaseBlock;
+    }
+
+    public void EnterState(WeaponFSM fsm)
     {
         // Ignore 'Breakables'
         // layers = fsm.weaponData.enemyLayers;
@@ -20,17 +29,22 @@ public class WakizashiBlockState : WeaponState
         fsm.movement.EnablePlayerMovement(false);
     }
 
-    public override void Update(WeaponFSM fsm)
+    void OnReleaseBlock(InputAction.CallbackContext context)
+    {
+        if (!_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)
+            _fsm.SetState(_fsm.states[WeaponFSM.StateType.IdleState]);
+    }
+
+    public void Update(WeaponFSM fsm)
     {
         fsm.currentBlockTimer += Time.deltaTime;
         fsm.abilityController.UseStamina();
 
-        if (!Input.GetButton("Block") && !_isBlockReleasedBeforeMinDuration && fsm.currentBlockTimer < fsm.weaponData.blockMinDuration) {
+        if (fsm.inputActions.Player.Block.ReadValue<float>() <= 0.5f && !_isBlockReleasedBeforeMinDuration && fsm.currentBlockTimer < fsm.weaponData.blockMinDuration) {
             _isBlockReleasedBeforeMinDuration = true;
         }
 
         if (fsm.abilityController.currStamina <= 0
-            || (Input.GetButtonUp("Block") && !_isBlockReleasedBeforeMinDuration && fsm.currentBlockTimer >= fsm.weaponData.blockMinDuration)
             || (_isBlockReleasedBeforeMinDuration && fsm.currentBlockTimer >= fsm.weaponData.blockMinDuration)) {
             fsm.SetState(fsm.states[WeaponFSM.StateType.IdleState]);
         }
@@ -45,8 +59,10 @@ public class WakizashiBlockState : WeaponState
 
         foreach (Collider2D hit in blocked) {
             EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
-            if (enemy != null && !enemy.IsDead() && !enemy.IsCurrentState(EnemyFSM.StateType.StillState)) {
-                enemy.SetState(enemy.states[EnemyFSM.StateType.StillState]);
+            if (enemy != null && !enemy.IsDead()) {
+                Vector2 dir = new Vector2(fsm.player.transform.localScale.x, 0f);
+                enemy.ApplyForce(dir, enemy.enemyData.knockBackOnBlockedForce, enemy.enemyData.timeStunnedAfterBlocked);
+                enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterBlocked);
             }
         }
         if (!_wasBlocking && isBlocking) {
@@ -57,11 +73,11 @@ public class WakizashiBlockState : WeaponState
         _wasBlocking = isBlocking;
     }
 
-    public override void FixedUpdate(WeaponFSM fsm)
+    public void FixedUpdate(WeaponFSM fsm)
     {
     }
 
-    public override void ExitState(WeaponFSM fsm)
+    public void ExitState(WeaponFSM fsm)
     {
         fsm.animations.SetBlockAnimation(false);
         fsm.animations.EnablePlayerTurning(true);
