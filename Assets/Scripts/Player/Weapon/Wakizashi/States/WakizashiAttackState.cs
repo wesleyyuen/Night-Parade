@@ -37,7 +37,7 @@ public class WakizashiAttackState : IWeaponState
         // Begin First Attack
         _currentAttackCount = 1;
         fsm.animations.SetAttackAnimation(_currentAttackCount);
-        fsm.movement.StepForward(1f);
+        fsm.movement.StepForward(1.5f);
     }
 
     void OnNextAttack(InputAction.CallbackContext context)
@@ -142,7 +142,7 @@ public class WakizashiAttackState : IWeaponState
         if (_hasNextAttack) {
             _currentAttackCount = (_currentAttackCount % _kMaxComboCount) + 1;
             _fsm.animations.SetAttackAnimation(_currentAttackCount);
-            _fsm.movement.StepForward(1);
+            _fsm.movement.StepForward(1.5f);
             _hasNextAttack = false;
             _playedMissSFX = false;
         }

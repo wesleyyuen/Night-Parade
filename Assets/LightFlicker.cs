@@ -6,7 +6,7 @@ public class LightFlicker : MonoBehaviour
 {
     [SerializeField] float _maxReduction = 0.2f;
     [SerializeField] float _maxIncrease = 0.2f;
-    [SerializeField] float _rateDamping = 0.3f;
+    // [SerializeField] float _rateDamping = 0.3f;
     [SerializeField] float _strength = 300f;
     bool _stopFlickering;
     Light2D _lightSource;

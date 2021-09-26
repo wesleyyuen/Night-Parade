@@ -87,8 +87,10 @@ public class PlayerPlatformCollision : MonoBehaviour {
         }
 
         // Handle Slope
-        if (onSlope)
-            groundHit.sharedMaterial = _input.Player.Movement.ReadValue<Vector2>().x == 0 ? oneFriction : null;
+        if (groundHit) {
+            PhysicsMaterial2D original = groundHit.sharedMaterial;
+            groundHit.sharedMaterial = onSlope && _input.Player.Movement.ReadValue<Vector2>().x == 0 ? oneFriction : original;
+        }
 
         lastYVelocity = _rb.velocity.y;
     }

@@ -53,7 +53,9 @@ public class GameMaster : MonoBehaviour
         prevScene = currentScene;
         if (currPlayerData.IsValid())
             savedPlayerData = currPlayerData;
-        SceneManager.LoadSceneAsync(sceneToLoad);
+        // SceneManager.LoadSceneAsync(sceneToLoad);
+        // TODO: For some reason LoadSceneAsync causes flickering again, still flicker now
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     public void RequestSceneChangeToMainMenu()

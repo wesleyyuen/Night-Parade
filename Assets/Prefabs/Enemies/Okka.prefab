@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2978997918406893341}
   - component: {fileID: 3164354762677199800}
   - component: {fileID: 1128662852874068491}
-  - component: {fileID: 1128662852874068488}
+  - component: {fileID: 3346168485296308580}
   - component: {fileID: 7152990504715176864}
   - component: {fileID: 3851968741168128042}
   - component: {fileID: 3863298581046562429}
@@ -136,8 +136,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!70 &1128662852874068488
-CapsuleCollider2D:
+--- !u!61 &3346168485296308580
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -149,9 +149,19 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.12, y: 0.7}
-  m_Size: {x: 2, y: 1.4}
-  m_Direction: 1
+  m_Offset: {x: 0, y: 0.75}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 2.5, y: 1.5}
+    newSize: {x: 3, y: 2.25}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.5, y: 1.5}
+  m_EdgeRadius: 0
 --- !u!114 &7152990504715176864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,12 +187,19 @@ MonoBehaviour:
     lineOfSightOriginOffset: {x: 0, y: 0}
     lineOfSightBreakDelay: 0
     timeFrozenAfterLOSBreak: 0
+    attackDistance: 0
+    attackForce: 0
+    attackChargeTime: 0
+    attackTime: 0
     timeFrozenAfterDamagingPlayer: 0
-    knockBackOnAttackedForce: 0
     knockBackOnParriedForce: 0
     timeStunnedAfterParried: 0
+    knockBackOnBlockedForce: 0
+    timeStunnedAfterBlocked: 0
+    knockBackOnTakingDamageForce: 0
     timeFrozenAfterTakingDamage: 0
     dieTime: 0
+  _variant: 0
 --- !u!114 &3851968741168128042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10148,7 +10165,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.35
+  m_Intensity: 0.05
   m_LightVolumeIntensity: 0
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000

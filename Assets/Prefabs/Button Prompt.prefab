@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 819981679085427033}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,9 +46,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4813518850936080747}
   - component: {fileID: 1130783508196252685}
-  m_Layer: 0
+  - component: {fileID: 8993958426518293861}
+  m_Layer: 5
   m_Name: Button Prompt
-  m_TagString: Untagged
+  m_TagString: Unflippable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,7 +72,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.35, y: 0}
+  m_AnchoredPosition: {x: -1.35, y: 1.7}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1130783508196252685
@@ -100,6 +101,25 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!95 &8993958426518293861
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6383159951949570944}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3a14b79f3e7c6d34fb6dc96d1140d834, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8432739186578041073
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,8 +195,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1117897069
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &8432739186578041075
@@ -279,6 +299,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 819981679085427033}
     m_Modifications:
+    - target: {fileID: 4898238282333211103, guid: 2a9ed15803deaf348a3997fc7b73d267,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898238282634438873, guid: 2a9ed15803deaf348a3997fc7b73d267,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898238282634438875, guid: 2a9ed15803deaf348a3997fc7b73d267,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898238283788739358, guid: 2a9ed15803deaf348a3997fc7b73d267,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 4898238283788739359, guid: 2a9ed15803deaf348a3997fc7b73d267,
         type: 3}
       propertyPath: m_RootOrder
@@ -293,6 +333,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5519967223025483596, guid: 2a9ed15803deaf348a3997fc7b73d267,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a9ed15803deaf348a3997fc7b73d267, type: 3}

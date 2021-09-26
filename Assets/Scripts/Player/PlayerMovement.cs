@@ -73,12 +73,12 @@ public class PlayerMovement : MonoBehaviour {
         _yRaw = inputVector.y;
     }
 
-    void FixedUpdate ()
+    void FixedUpdate()
     {
-        if (_isLetRBMove) {
-            return;
-        } else if (!canWalk && _coll.onGround) {
+        if (!_isLetRBMove && !canWalk && _coll.onGround) {
             _rb.velocity = new Vector2 (0f, _rb.velocity.y);
+            return;
+        } else if (_isLetRBMove) {
             return;
         }
 

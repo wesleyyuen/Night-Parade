@@ -6,7 +6,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] bool _isAutoTrigger; // trigger without pressing interact
     [SerializeField] Dialogue dialogue;
     [SerializeField] protected float triggerRange;
-    [SerializeField] protected GameObject textPrompt;
+    [SerializeField] protected Animator textPrompt;
     protected GameObject _player;
     protected bool _isInRange;
     protected bool _isDialogueTriggered;
@@ -15,7 +15,6 @@ public class DialogueTrigger : MonoBehaviour
     void Start ()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        Utility.SetAlphaRecursively(textPrompt, 0f);
 
         // Handle Input
         InputMaster input = new InputMaster();
@@ -32,12 +31,12 @@ public class DialogueTrigger : MonoBehaviour
 
         // Trigger Text Prompt
         if (!wasInRange && _isInRange) {
-            Utility.FadeGameObjectRecursively(textPrompt, 0f, 1f, 0.25f);
+            textPrompt.SetTrigger("Open");
             if (!_isDialogueTriggered && _isAutoTrigger)
                 TriggerDialogue();
 
         } else if (wasInRange && !_isInRange) {
-            Utility.FadeGameObjectRecursively(textPrompt, 1f, 0f, 0.25f);
+            textPrompt.SetTrigger("Close");
             _isDialogueTriggered = false;
         }
     }

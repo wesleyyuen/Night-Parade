@@ -13,7 +13,7 @@ public class EnemyDrop : MonoBehaviour
     [SerializeField] GameObject specialDrop;
     [SerializeField] GameObject specialDropSpawnPoint;
 
-    public void SpawnDrops ()
+    public void SpawnDrops()
     {
         // Drop Coins
         if (Random.value > 1 - coinsDropPercent) {

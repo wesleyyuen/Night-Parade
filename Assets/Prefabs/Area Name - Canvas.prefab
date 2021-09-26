@@ -167,7 +167,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u521D\u6751\nHatsumura"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 994dfae3117b3c04188d0b632a405daf, type: 2}
   m_sharedMaterial: {fileID: 2140606258194216402, guid: 5bbfc47ca18c1e44ca4cc34e3e0227e1,
     type: 2}
   m_fontSharedMaterials: []

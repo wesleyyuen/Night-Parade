@@ -43,7 +43,7 @@ public class PlayerHealth : MonoBehaviour
 
         currHealth -= damage;
         if (currHealth <= 0) {
-            Die ();
+            Die();
             return;
         }
 
@@ -85,7 +85,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
     void Die() {
-        Destroy (gameObject);
+        Destroy(gameObject);
         Debug.Log ("You died");
 
         GameMaster.Instance.RequestSceneChangeToMainMenu();
