@@ -19,31 +19,27 @@ public class LoadMenu : MonoBehaviour
     [SerializeField] Image[] saveSlot3Hearts;
     [SerializeField] TextMeshProUGUI saveSlot3Time;
     [SerializeField] Sprite fullHeart;
-    [SerializeField] Sprite threeQuartersHeart;
-    [SerializeField] Sprite halfHeart;
-    [SerializeField] Sprite quarterHeart;
-    [SerializeField] Sprite emptyHeart;
 
     PlayerData data1;
     PlayerData data2;
     PlayerData data3;
 
-    void Awake ()
+    void Awake()
     {
         // TODO if File exists
-        data1 = SaveManager.Load (1);
-        data2 = SaveManager.Load (2);
-        data3 = SaveManager.Load (3);
-        saveSlot1.gameObject.SetActive (data1 != null);
-        saveSlot2.gameObject.SetActive (data2 != null);
-        saveSlot3.gameObject.SetActive (data3 != null);
+        data1 = SaveManager.Load(1);
+        data2 = SaveManager.Load(2);
+        data3 = SaveManager.Load(3);
+        saveSlot1.gameObject.SetActive(data1 != null);
+        saveSlot2.gameObject.SetActive(data2 != null);
+        saveSlot3.gameObject.SetActive(data3 != null);
 
-        DisplayHearts ();
-        DisplayMons ();
-        DisplayPlayTime ();
+        DisplayHearts();
+        DisplayMons();
+        DisplayPlayTime();
     }
 
-    void DisplayHearts ()
+    void DisplayHearts()
     {
         // Save Slot 1
         if (data1 != null) DisplayHeartsHelper(data1.CurrentHealth, data1.MaxHealth, saveSlot1Hearts);
@@ -53,33 +49,33 @@ public class LoadMenu : MonoBehaviour
         if (data3 != null) DisplayHeartsHelper(data3.CurrentHealth, data3.MaxHealth, saveSlot3Hearts);
     }
 
-    void DisplayHeartsHelper (int currHealth, int maxHealth, Image[] hearts)
+    void DisplayHeartsHelper(int currHealth, int maxHealth, Image[] hearts)
     {
         int numOfFullHearts = currHealth / 4;
         int maxHearts = maxHealth / 4;
 
         // Display hearts
         for (int i = 0; i < hearts.Length; i++) {
-            hearts[i].sprite = (i < numOfFullHearts) ? fullHeart : emptyHeart;
+            hearts[i].sprite = fullHeart;
             hearts[i].enabled = i < maxHearts;
         }
     }
 
-    void DisplayMons ()
+    void DisplayMons()
     {
-        if (data1 != null) saveSlot1Mon.text = data1.SavedPlayerCoinsOnHand.ToString ();
-        if (data2 != null) saveSlot2Mon.text = data2.SavedPlayerCoinsOnHand.ToString ();
-        if (data3 != null) saveSlot3Mon.text = data3.SavedPlayerCoinsOnHand.ToString ();
+        if (data1 != null) saveSlot1Mon.text = data1.CoinsOnHand.ToString ();
+        if (data2 != null) saveSlot2Mon.text = data2.CoinsOnHand.ToString ();
+        if (data3 != null) saveSlot3Mon.text = data3.CoinsOnHand.ToString ();
     }
 
-    void DisplayPlayTime ()
+    void DisplayPlayTime()
     {
-        if (data1 != null) saveSlot1Time.text = SecondsToStringHelper (data1.SavedPlayTime);
-        if (data2 != null) saveSlot2Time.text = SecondsToStringHelper (data2.SavedPlayTime);
-        if (data3 != null) saveSlot3Time.text = SecondsToStringHelper (data3.SavedPlayTime);
+        if (data1 != null) saveSlot1Time.text = SecondsToStringHelper (data1.PlayTime);
+        if (data2 != null) saveSlot2Time.text = SecondsToStringHelper (data2.PlayTime);
+        if (data3 != null) saveSlot3Time.text = SecondsToStringHelper (data3.PlayTime);
     }
 
-    string SecondsToStringHelper (float time)
+    string SecondsToStringHelper(float time)
     {
         int hours = Mathf.FloorToInt (time / 3600F);
         int minutes = Mathf.FloorToInt ((time % 3600F) / 60F);

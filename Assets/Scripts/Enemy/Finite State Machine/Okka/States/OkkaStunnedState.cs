@@ -18,7 +18,13 @@ public class OkkaStunnedState : IEnemyState
         _timer += Time.deltaTime;
 
         if (_timer >= stunnedDuration) {
-            if (fsm.IsInLineOfSight() || fsm.IsInAggroRange())
+            bool isInLOS = fsm.IsInLineOfSight();
+
+            /*if (Vector2.Distance(fsm.player.attachedRigidbody.position, fsm.rb.position) <= fsm.enemyData.attackDistance
+                && isInLOS
+                && fsm.states[EnemyFSM.StateType.AttackState] != null)
+                fsm.SetState(fsm.states[EnemyFSM.StateType.AttackState]);
+            else */if ((isInLOS || fsm.IsInAggroRange()) && fsm.states[EnemyFSM.StateType.AggroState] != null)
                 fsm.SetState(fsm.states[EnemyFSM.StateType.AggroState]);
             else
                 fsm.SetState(fsm.states[EnemyFSM.StateType.PatrolState]);

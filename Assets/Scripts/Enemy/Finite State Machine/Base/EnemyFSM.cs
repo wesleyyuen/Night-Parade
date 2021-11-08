@@ -31,7 +31,7 @@ public class EnemyFSM : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         GFX = GetComponent<EnemyGFX>();
-        player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Collider2D>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
         states = new Dictionary<StateType, IEnemyState>();
         _isLetRBMove = false;
         _isDead = false;
@@ -39,6 +39,15 @@ public class EnemyFSM : MonoBehaviour
 
     protected virtual void Start()
     {
+        // Don't spawn enemies if before timestamp
+        SceneData data = SaveManager.Instance.GetSceneData(GameMaster.Instance.currentScene);
+        Dictionary<string, float> timestamps = data.EnemySpawnTimestamps;
+        if (timestamps.ContainsKey(gameObject.name)) {
+            if (Time.time < timestamps[gameObject.name])
+                Destroy(gameObject);
+        } else {
+            SaveManager.Instance.UpdateSpawnTimestamp(gameObject.name, 0f);
+        }
     }
 
     protected virtual void Update()
@@ -115,7 +124,7 @@ public class EnemyFSM : MonoBehaviour
         if (enemyToPlayerVector.magnitude > enemyData.lineOfSightDistance) return false;
 
         // Check Line of sight angle
-        float angle = Vector2.Angle(enemyToPlayerVector, transform.localScale.x * transform.right);
+        float angle = Vector2.Angle(enemyToPlayerVector, GFX.GetEnemyScale().x * transform.right);
         if (angle > enemyData.lineOfSightAngle) return false;
 
         // Check Line of sight with raycast2d
@@ -186,6 +195,9 @@ public class EnemyFSM : MonoBehaviour
     public void Die()
     {
         GetComponent<EnemyDrop>().SpawnDrops();
+
+        SaveManager.Instance.UpdateSpawnTimestamp(gameObject.name, Time.time + enemyData.spawnCooldown);
+
         Destroy(gameObject);
     }
 

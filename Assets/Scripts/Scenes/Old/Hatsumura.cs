@@ -10,7 +10,6 @@ public class Hatsumura : MonoBehaviour {
     [SerializeField] private float textShowingTime;
     [SerializeField] private float textFadingTime;
     void Start () {
-        GameMaster.Instance.UpdateCurrentScene ();
         StartCoroutine (Utility.FadeTextInAndOut(hatsumuraText, textShowingTime, textFadingTime));
 
         if (GameMaster.Instance.prevScene == "Forest_Area3") {

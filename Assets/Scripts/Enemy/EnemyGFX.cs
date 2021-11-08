@@ -1,27 +1,38 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyGFX : MonoBehaviour
 {
     Transform _player;
     Animator _animator;
+    SpriteRenderer _spriteRenderer;
     public float turningTime;
     bool _isTurning;
-    [SerializeField] protected GameObject _exclaimationMark;
-    [SerializeField] protected GameObject _questionMark;
+    [SerializeField] protected SpriteRenderer _exclaimationMark;
+    [SerializeField] protected SpriteRenderer _questionMark;
     [SerializeField] protected ParticleSystem _deathParticleEffect;
     [SerializeField] protected ParticleSystem _damagedParticleEffect;
 
-    void Start ()
+    void Start()
     {
-        _player = GameObject.FindGameObjectWithTag ("Player").transform;
-        _animator = GetComponent<Animator>();
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        foreach (Transform obj in transform) {
+            if (obj.tag == "Sprite") {
+                _animator = obj.GetComponent<Animator>();
+                _spriteRenderer = obj.GetComponent<SpriteRenderer>();
+                break;
+            }
+        }
     }
 
     public void SetAnimatorBoolean(string param, bool boolean)
     {
+        if (!_animator)
+            _animator = GetComponentInChildren<Animator>();
+            
         _animator.SetBool(param, boolean);
+
     }
 
     public void SetAnimatorSpeed(float speed)
@@ -29,26 +40,34 @@ public class EnemyGFX : MonoBehaviour
         _animator.speed = speed;
     }
 
+    public Vector2 GetEnemyScale()
+    {
+        return (Vector2)_spriteRenderer.transform.localScale;
+    }
+
+    public void SetEnemyColor(Color color)
+    {
+        _spriteRenderer.color = color;
+    }
+
     public void FaceTowardsPlayer(float delay)
     {
         StartCoroutine(FaceTowardsPlayerCoroutine(delay));
     }
 
-    public IEnumerator FaceTowardsPlayerCoroutine (float delay)
+    IEnumerator FaceTowardsPlayerCoroutine(float delay)
     {
-        if (_player.position.x >= transform.position.x && transform.localScale.x != 1.0f) {
+        // Face Right
+        if (_player.position.x >= _spriteRenderer.transform.position.x && _spriteRenderer.transform.localScale.x != 1.0f) {
             yield return new WaitForSeconds (delay);
-            transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
-
-            // Flip question mark back
-            Utility.UnflipGameObjectRecursively(gameObject, true, true);
-
-        } else if (_player.position.x < transform.position.x && transform.localScale.x != -1.0f) {
+            _spriteRenderer.transform.localScale = new Vector3(1f, 1f, 1f);
+            _questionMark.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        // Face Left
+        else if (_player.position.x < _spriteRenderer.transform.position.x && _spriteRenderer.transform.localScale.x != -1.0f) {
             yield return new WaitForSeconds (delay);
-            transform.localScale = new Vector3 (-1.0f, 1.0f, 1.0f);
-            
-            // Flip question mark back
-            Utility.UnflipGameObjectRecursively(gameObject, false, true);
+            _spriteRenderer.transform.localScale = new Vector3(-1f, 1f, 1f);
+            _questionMark.transform.localScale = new Vector3(-1f, 1f, 1f);
         }
     }
 
@@ -61,10 +80,9 @@ public class EnemyGFX : MonoBehaviour
     {
         _isTurning = true;
         yield return new WaitForSeconds (isInstant ? 0.0f : turningTime);
-        transform.localScale = new Vector3 (-transform.localScale.x, 1f, 1f);
+        _spriteRenderer.transform.localScale = new Vector3(-_spriteRenderer.transform.localScale.x, 1f, 1f);
+        _questionMark.transform.localScale = new Vector3(_spriteRenderer.transform.localScale.x, 1f, 1f);
 
-        // Flip question mark back
-        Utility.UnflipGameObjectRecursively(gameObject, false, false);
         _isTurning = false;
     }
 
@@ -74,16 +92,14 @@ public class EnemyGFX : MonoBehaviour
     }
     IEnumerator FlashExclaimationMarkCoroutine()
     {
-        SpriteRenderer sr = _exclaimationMark.GetComponent<SpriteRenderer>();
-
-        _questionMark.GetComponent<SpriteRenderer>().enabled = false;
-        sr.enabled = true;
+        _questionMark.enabled = false;
+        _exclaimationMark.enabled = true;
         float flashTime = turningTime;
 
         // Flash at least 0.5 seconds
         if (flashTime < 0.5f) flashTime = 0.5f;
         yield return new WaitForSeconds (flashTime);
-        sr.enabled = false;
+        _exclaimationMark.enabled = false;
     }
 
     public void FlashQuestionMark()
@@ -92,16 +108,14 @@ public class EnemyGFX : MonoBehaviour
     }
     public IEnumerator FlashQuestionMarkCoroutine ()
     {
-        SpriteRenderer sr = _questionMark.GetComponent<SpriteRenderer>();
-
         _exclaimationMark.GetComponent<SpriteRenderer>().enabled = false;
-        sr.enabled = true;
+        _questionMark.enabled = true;
         float flashTime = turningTime;
 
         // Flash at least 0.5 seconds
         if (flashTime < 0.5f) flashTime = 0.5f;
         yield return new WaitForSeconds(flashTime);
-        sr.enabled = false;
+        _questionMark.enabled = false;
     }
 
     public void PlayDamagedEffect()
@@ -113,7 +127,6 @@ public class EnemyGFX : MonoBehaviour
 
     public void PlayDeathEffect(float dieTime)
     {
-        // GetComponent<SpriteFlash>().PlayDeathFlashEffect(dieTime);
         _animator.enabled = false;
         StartCoroutine(DeathEffectCoroutine(dieTime));
         _deathParticleEffect.Play();

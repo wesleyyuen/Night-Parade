@@ -9,8 +9,6 @@ public class Forest_Tutorial : MonoBehaviour {
     [SerializeField] private float textFadingTime;
 
     void Start () {
-        GameMaster.Instance.UpdateCurrentScene ();
-
         if (GameMaster.Instance.prevScene == "Forest_Area1") {
             foreach (Transform child in playerGroup) {
                 child.position = area1SpawnPoint.position;

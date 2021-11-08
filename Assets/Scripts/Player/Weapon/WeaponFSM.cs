@@ -14,6 +14,7 @@ public class WeaponFSM : MonoBehaviour
     public WeaponData weaponData;
     public Rigidbody2D player {get; private set;}
     public PlayerMovement movement {get; private set;}
+    public PlayerPlatformCollision collision {get; private set;}
     public PlayerAbilityController abilityController {get; private set;}
     public PlayerAnimations animations {get; private set;}
     public Dictionary<StateType, IWeaponState> states;
@@ -23,6 +24,8 @@ public class WeaponFSM : MonoBehaviour
     [HideInInspector] public bool canAttack;
     [HideInInspector] public float attackCooldownTimer;
     [HideInInspector] public bool canBlock;
+    [HideInInspector] public bool hasBlocked;
+    [HideInInspector] public bool hasParried;
     [HideInInspector] public float blockCooldownTimer;
     [HideInInspector] public float currentBlockTimer; // Duration of the current block action
     public IWeaponState previousState {get; private set;}
@@ -34,6 +37,7 @@ public class WeaponFSM : MonoBehaviour
         Transform playerGameObject = transform.parent;
         player = playerGameObject.GetComponent<Rigidbody2D>();
         movement = playerGameObject.GetComponent<PlayerMovement>();
+        collision = playerGameObject.GetComponent<PlayerPlatformCollision>();
         abilityController = playerGameObject.GetComponent<PlayerAbilityController>();
         animations = playerGameObject.GetComponent<PlayerAnimations>();
         foreach (Transform obj in playerGameObject.parent.transform) {
@@ -45,6 +49,7 @@ public class WeaponFSM : MonoBehaviour
         canAttack = true;
         attackCooldownTimer = weaponData.attackCooldown;
         canBlock = true;
+        hasBlocked = false;
         blockCooldownTimer = weaponData.blockCooldown;
         currentBlockTimer = 0f;
 
@@ -86,6 +91,16 @@ public class WeaponFSM : MonoBehaviour
         _currentState.FixedUpdate(this);
     }
 
+    public bool IsCurrentState(StateType type)
+    {
+        return _currentState == states[type];
+    }
+
+    public IWeaponState GetStateByType(StateType type)
+    {
+        return states[type];
+    }
+
     public void SetState(IWeaponState state)
     {
         if (_currentState != null) {
@@ -97,9 +112,18 @@ public class WeaponFSM : MonoBehaviour
         _currentState.EnterState(this);
     }
 
-    public bool IsCurrentState(StateType state)
+    public void SetStateAfterDelay(StateType state, float delay)
     {
-        return _currentState == states[state];
+        StartCoroutine(SetStateAfterDelayCoroutine(state, delay));
+    }
+
+    IEnumerator SetStateAfterDelayCoroutine(StateType state, float delay)
+    {
+        // Only Set State if no one set another state before the delay ends
+        IWeaponState curr = _currentState;
+        yield return new WaitForSeconds(delay);
+        if (_currentState == curr)
+            SetState(states[state]);
     }
 
     public void EnablePlayerCombat(bool enable, float time = 0f)
@@ -127,7 +151,7 @@ public class WeaponFSM : MonoBehaviour
     {
         if (_currentState == states[StateType.AttackState]) {
             WakizashiAttackState state = (WakizashiAttackState) _currentState;
-            state.Attack(Constant.hasCombo ? isListeningForNextAttack != 0 : true);
+            state.Attack(Constant.hasTimedCombo ? isListeningForNextAttack != 0 : true);
         }
     }
 
@@ -138,26 +162,6 @@ public class WeaponFSM : MonoBehaviour
             WakizashiAttackState state = (WakizashiAttackState) _currentState;
             state.EndAttack();
         }
-    }
-
-    public void Parry(bool isParryLeft, EnemyFSM fsm)
-    {
-        // Slow Time effect
-        StartCoroutine(Utility.ChangeVariableAfterDelayInRealTime<float>(e => Time.timeScale = e, 1f, 0.15f, 1f));
-
-        Vector2 dir = new Vector2 (isParryLeft ? 1f : -1f, 0f);
-        movement.ApplyKnockback(dir, weaponData.parryKnockback, 0.05f);
-        fsm.ApplyForce(-dir, fsm.enemyData.knockBackOnParriedForce, fsm.enemyData.timeStunnedAfterParried);
-        fsm.StunForSeconds(fsm.enemyData.timeStunnedAfterParried);
-        // fsm.SetState(fsm.states[EnemyFSM.StateType.StunnedState]);
-
-        StartCoroutine(SetStateAfterDelay(WeaponFSM.StateType.IdleState, 1f));
-    }
-
-    IEnumerator SetStateAfterDelay(StateType state, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        SetState(states[state]);
     }
 
     // Onibi Interactions

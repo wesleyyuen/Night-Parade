@@ -16,11 +16,11 @@ public class MonUI : MonoBehaviour
     [SerializeField] float showingDuration;
     [SerializeField] float fadingDuration;
 
-    void Awake ()
+    void Awake()
     {
         if (_instance == null) {
             _instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
         }
@@ -33,17 +33,15 @@ public class MonUI : MonoBehaviour
 
     public void Outro()
     {
+        StopAllCoroutines();
         Utility.SetAlphaRecursively(canvas, 0f);
     }
 
     public void ShowMonChange()
     {
+        // Set Text Once from save data
+        monText.text = SaveManager.Instance.savedPlayerData.CoinsOnHand.ToString() + " ";
         StartCoroutine(ShowMonChangeCoroutine());
-    }
-
-    public void FixCoroutineDeath()
-    {
-        Utility.SetAlphaRecursively(canvas, 0f);
     }
 
     IEnumerator ShowMonChangeCoroutine()

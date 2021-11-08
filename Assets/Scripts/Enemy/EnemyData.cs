@@ -40,5 +40,8 @@ public class EnemyData
     // Damaged
     public float knockBackOnTakingDamageForce;
     public float timeFrozenAfterTakingDamage;
-    public float dieTime;
+    public float dieTime; // in seconds
+
+    // Spawn
+    public float spawnCooldown; // in seconds
 }

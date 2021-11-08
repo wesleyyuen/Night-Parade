@@ -9,23 +9,21 @@ public class Nozuchi : MonoBehaviour
     protected EnemyFSM fsm;
     Animator animator;
     EnemyGFX enemyGFX;
-    PlayerProgress _progress;
     [SerializeField] float attackTime;
     [HideInInspector] public bool collisionOnCooldown;
     public bool isDead { private set; get; }
 
-    public void Start ()
+    void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         rb = GetComponent<Rigidbody2D>();
         fsm = GetComponent<EnemyFSM>();
         collisionOnCooldown = false;
         isDead = false;
-        _progress = player.GetComponent<PlayerProgress>();
 
         // Do not spawn if player already defeated it before
-        if (_progress.HasPlayerProgress("Nozuchi_Defeated")) {
-            Destroy (transform.parent.gameObject);
+        if (SaveManager.Instance.HasOverallProgress("Nozuchi_Defeated")) {
+            Destroy(transform.parent.gameObject);
             return;
         }
 
@@ -34,7 +32,7 @@ public class Nozuchi : MonoBehaviour
         enemyGFX = GetComponent<EnemyGFX>();
     }
 
-    public void Update ()
+    void Update()
     {
         // Only face player if it is not attacking
         if (animator.GetBool("FightStarted"))
@@ -43,7 +41,7 @@ public class Nozuchi : MonoBehaviour
         // base.Update();
     }
 
-    public IEnumerator Die ()
+    IEnumerator Die()
     {
         // Ignore Player Collision to avoid player taking dmg when running into dying enemy
         Physics2D.IgnoreCollision(player.GetComponent<Collider2D> (), GetComponent<Collider2D> ());
@@ -52,9 +50,9 @@ public class Nozuchi : MonoBehaviour
         GetComponent<SpriteFlash>().PlayDeathFlashEffect(fsm.enemyData.dieTime);
         yield return new WaitForSeconds(fsm.enemyData.dieTime);
 
-        FindObjectOfType<BossTrigger>().OpenExit (); // reopen exit
-        GetComponent<EnemyDrop>().SpawnDrops ();
-        _progress.AddPlayerProgress("Nozuchi_Defeated", 1);
-        Destroy (gameObject);
+        FindObjectOfType<BossTrigger>().OpenExit(); // reopen exit
+        GetComponent<EnemyDrop>().SpawnDrops();
+        SaveManager.Instance.AddOverallProgress("Nozuchi_Defeated", 1);
+        Destroy(gameObject);
     }
 }

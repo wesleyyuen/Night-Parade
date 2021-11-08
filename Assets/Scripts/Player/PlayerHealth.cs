@@ -17,8 +17,8 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
-        currHealth = GameMaster.Instance.savedPlayerData.CurrentHealth;
-        maxHealth = GameMaster.Instance.savedPlayerData.MaxHealth;
+        currHealth = SaveManager.Instance.savedPlayerData.CurrentHealth;
+        maxHealth = SaveManager.Instance.savedPlayerData.MaxHealth;
         
         _rb = GetComponent<Rigidbody2D> ();
         _anim = GetComponent<PlayerAnimations>();
@@ -26,13 +26,18 @@ public class PlayerHealth : MonoBehaviour
         _weaponFSM = GetComponentInChildren<WeaponFSM>();
 
         // Change Health UI
-        HealthUI.Instance.UpdateHeartsUI();
+        HealthUI.Instance.UpdateHeartsUI(0f);
     }
 
     public void HandleDamage(int damage, Vector2 enemyPos)
     {
-        if (!(isInvulnerable || _weaponFSM.IsCurrentState(WeaponFSM.StateType.ParryState) || _weaponFSM.IsCurrentState(WeaponFSM.StateType.BlockState)))
+        if (!isInvulnerable || !_weaponFSM.hasBlocked) {
+            // Stop attack
+            if (_weaponFSM.IsCurrentState(WeaponFSM.StateType.AttackState))
+                _weaponFSM.SetState(_weaponFSM.GetStateByType(WeaponFSM.StateType.IdleState));
+
             TakeDamage(damage, enemyPos);
+        }
     }
 
     public void TakeDamage(int damage, Vector2 enemyPos)
@@ -49,6 +54,8 @@ public class PlayerHealth : MonoBehaviour
 
         // Disable Player Control
         Utility.EnablePlayerControl(false, frozenTime);
+        _anim.SetAttackAnimation(0);
+        _anim.SetBlockAnimation(false);
         _anim.SetRunAnimation(0f);
 
         // Slow Motion effect
@@ -71,17 +78,20 @@ public class PlayerHealth : MonoBehaviour
     public void PickUpHealth() {
         if (currHealth < maxHealth) {
             currHealth += 4;
-        }
+            currHealth = Mathf.Min(currHealth, maxHealth);
 
-        // Change Health UI
-        HealthUI.Instance.UpdateHeartsUI();
+            // Change Health UI
+            HealthUI.Instance.UpdateHeartsUI();
+        }
     }
 
     public void FullHeal() {
-        currHealth = maxHealth;
+        if (currHealth < maxHealth) {
+            currHealth = maxHealth;
 
-        // Change Health UI
-        HealthUI.Instance.UpdateHeartsUI();
+            // Change Health UI
+            HealthUI.Instance.UpdateHeartsUI();
+        }
     }
 
     void Die() {

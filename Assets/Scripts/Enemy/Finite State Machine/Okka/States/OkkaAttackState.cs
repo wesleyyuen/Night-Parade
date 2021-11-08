@@ -12,7 +12,7 @@ public class OkkaAttackState : IEnemyState
     {
         _fsm = (OkkaFSM) fsm;
         _hasAttacked = false;
-        _attackAngle = new Vector2(fsm.player.attachedRigidbody.position.x >= fsm.rb.position.x ? 1f : -1f, 1f);
+        _attackAngle = new Vector2(fsm.player.attachedRigidbody.position.x >= fsm.rb.position.x ? 1f : -1f, 0f);
 
         fsm.GFX.SetAnimatorBoolean("IsPatrolling", false);
 
@@ -31,7 +31,26 @@ public class OkkaAttackState : IEnemyState
 
     IEnumerator Attack()
     {
-        yield return new WaitForSeconds(_fsm.enemyData.attackChargeTime);
+        float time = _fsm.enemyData.attackChargeTime * 0.4f,
+              timer = 0f,
+              speed = _fsm.enemyData.aggroMovementSpeed;
+
+        bool facingRight = _fsm.GFX.GetEnemyScale().x > 0;
+        _fsm.rb.velocity = Vector2.zero;
+        _fsm.rb.angularVelocity = 0f;
+
+        // Wind up
+        while (timer < time) {
+            timer += Time.deltaTime;
+            _fsm.rb.velocity = new Vector2((facingRight ? -1f : 1f) * speed, 0f);
+            yield return null;
+        }
+
+        // Stop Winding
+        _fsm.rb.velocity = Vector2.zero;
+        yield return new WaitForSeconds(_fsm.enemyData.attackChargeTime * 0.6f);
+
+        // Lunge
         _fsm.ApplyForce(_attackAngle, _fsm.enemyData.attackForce, _fsm.enemyData.attackTime);
         _hasAttacked = true;
     }

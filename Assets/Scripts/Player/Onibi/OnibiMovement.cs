@@ -15,7 +15,7 @@ public class OnibiMovement : MonoBehaviour
 
     void Start()
     {
-        _player = transform.parent.Find("Player");
+        _player = transform.parent.Find("Player").Find("Sprite");
         _rb = GetComponent<Rigidbody2D>();
         transform.position = new Vector3(_player.position.x + (_player.localScale.x == 1 ? offsetFromPlayer.x : -offsetFromPlayer.x),
                                          _player.position.y + offsetFromPlayer.y,

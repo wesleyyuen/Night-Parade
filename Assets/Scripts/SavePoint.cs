@@ -10,7 +10,20 @@ public class SavePoint : DialogueTrigger
             _player.GetComponent<PlayerHealth>().FullHeal();
 
             // Manually Save
-            SaveManager.Save(_player);
+            if (SaveManager.Save(_player)) {
+                OnSaveComplete();
+            } else {
+                OnSaveFailed();
+            }
         }
+    }
+    void OnSaveComplete()
+    {
+        
+    }
+
+    void OnSaveFailed()
+    {
+
     }
 }

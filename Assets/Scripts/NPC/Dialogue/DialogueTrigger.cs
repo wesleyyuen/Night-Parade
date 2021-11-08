@@ -12,7 +12,7 @@ public class DialogueTrigger : MonoBehaviour
     protected bool _isDialogueTriggered;
 
 
-    void Start ()
+    void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
 
@@ -22,7 +22,7 @@ public class DialogueTrigger : MonoBehaviour
         input.Player.Interact.started += OnTriggerDialogue;
     }
 
-    protected virtual void Update ()
+    protected virtual void Update()
     {
         if (textPrompt == null || _player == null) return;
 
@@ -47,7 +47,7 @@ public class DialogueTrigger : MonoBehaviour
            TriggerDialogue();
     }
 
-    public void TriggerDialogue ()
+    public void TriggerDialogue()
     { 
         // TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
         if (!PauseMenu.isPuased) {

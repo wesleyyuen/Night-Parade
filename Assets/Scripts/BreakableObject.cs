@@ -12,23 +12,21 @@ public class BreakableObject : MonoBehaviour
 
     [SerializeField] BreakableSide side;
     [HideInInspector] public int currentHealth {get; protected set;}
-    PlayerProgress _progress;
 
-    protected virtual void Start ()
+    protected virtual void Start()
     {
         if (keyString == "") {
             Debug.LogError("Error: Key String for Breakable Object " + gameObject.name + " is empty!");
         }
-        _progress = FindObjectOfType<PlayerProgress>();
 
         // Do not spawn if player destroyed previously
-        if (_progress.HasPlayerProgress(keyString))
-            Destroy (gameObject);
+        if (SaveManager.Instance.HasScenePermaProgress(GameMaster.Instance.currentScene, keyString))
+            Destroy(gameObject);
 
         currentHealth = numOfHitsToDestroy;
     }
 
-    public virtual void TakeDamage (bool fromLeft)
+    public virtual void TakeDamage(bool fromLeft)
     {
         if (side == BreakableSide.both || // attack from either side is fine
             (fromLeft && side == BreakableSide.left) || // attack from left
@@ -42,9 +40,9 @@ public class BreakableObject : MonoBehaviour
         }
     }
 
-    protected void Break ()
+    protected void Break()
     {
-        _progress.AddPlayerProgress(keyString, 1);
+        SaveManager.Instance.AddOverallProgress(keyString, 1);
         Destroy(gameObject);
     }
 }

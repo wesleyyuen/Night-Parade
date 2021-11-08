@@ -13,11 +13,14 @@ public class StaminaUI : MonoBehaviour
 
     void Awake()
     {
+        if (!Constant.hasStamina)
+            enabled = false;
+            
         if (_instance == null) {
             _instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
         } else {
-            Destroy (gameObject);
+            Destroy(gameObject);
         }
 
         Utility.SetAlphaRecursively(UIObject, 0f);

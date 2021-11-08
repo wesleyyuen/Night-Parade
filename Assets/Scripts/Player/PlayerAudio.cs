@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PlayerAudio : MonoBehaviour
 {
+    PlayerAnimations _anim;
+
+    void Awake()
+    {
+        _anim = GetComponentInParent<PlayerAnimations>();
+    }
+    
     public void PlayFootstepSFX()
     {
         if (GameMaster.Instance.currentScene == "Forest_Cave")
@@ -11,6 +18,6 @@ public class PlayerAudio : MonoBehaviour
         else
             SoundManager.Instance.Play("Forest_Soft_Footsteps");
 
-        GetComponent<PlayerAnimations>().CreateDustTrail();
+        _anim.CreateDustTrail();
     }
 }

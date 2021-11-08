@@ -10,15 +10,14 @@ public class SpriteFlash : MonoBehaviour
 	[SerializeField] float _flashDuration;
     int _flashColorIndex;
 	Material _material;
-    SpriteRenderer _sr;
+    [SerializeField] SpriteRenderer _spriteRenderer;
     Material _originalMaterial;
     IEnumerator _coroutine;
 
     void Awake()
     {
         _flashColorIndex = 0;
-        _sr = GetComponent<SpriteRenderer>();
-        _originalMaterial = _sr.material;
+        _originalMaterial = _spriteRenderer.material;
         _material = new Material(_flashMaterial);
         _material.SetColor("_FlashColor", _flashColors[_flashColorIndex]);
     }
@@ -30,7 +29,7 @@ public class SpriteFlash : MonoBehaviour
         _flashColorIndex = _flashColorIndex % _flashColors.Length;
         _material.SetColor("_FlashColor", _flashColors[_flashColorIndex]);
 
-        _sr.material = _material;
+        _spriteRenderer.material = _material;
 
         if (_coroutine != null)
             StopCoroutine(_coroutine);
@@ -43,8 +42,8 @@ public class SpriteFlash : MonoBehaviour
     public void PlayDeathFlashEffect(float duration)
     {
         _material.SetColor("_FlashColor", new Color(1f, 1f, 1f, 0f));
-        _sr.material = _material;
-        _sr.color = Color.black;
+        _spriteRenderer.material = _material;
+        _spriteRenderer.color = Color.black;
         
         if (_coroutine != null)
             StopCoroutine(_coroutine);
@@ -64,7 +63,7 @@ public class SpriteFlash : MonoBehaviour
             yield return null;
         }
 
-        _sr.material = _originalMaterial;
+        _spriteRenderer.material = _originalMaterial;
         _material.SetFloat("_FlashAmount", 0);
     }
 
@@ -79,7 +78,7 @@ public class SpriteFlash : MonoBehaviour
             yield return null;
         }
 
-        _sr.material = _originalMaterial;
+        _spriteRenderer.material = _originalMaterial;
         _material.SetFloat("_FlashAmount", 0);
     }
 }

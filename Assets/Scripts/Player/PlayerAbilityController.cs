@@ -25,10 +25,10 @@ public class PlayerAbilityController : MonoBehaviour
 
     void Start()
     {
-        currStamina = GameMaster.Instance.savedPlayerData.CurrentStamina;
-        maxStamina = GameMaster.Instance.savedPlayerData.MaxStamina;
+        currStamina = SaveManager.Instance.savedPlayerData.CurrentStamina;
+        maxStamina = SaveManager.Instance.savedPlayerData.MaxStamina;
 
-        _isStopUpdatingStamina = false;
+        _isStopUpdatingStamina = !Constant.hasStamina;
 
         _abilitiesGB = transform.Find("Abilities").gameObject;
         _jump = _abilitiesGB.GetComponent<PlayerJump>();
@@ -40,7 +40,7 @@ public class PlayerAbilityController : MonoBehaviour
         EnableAbility(Ability.Jump, true);
         EnableAbility(Ability.WallJump, false);
         EnableAbility(Ability.WallSlide, false);
-        EnableAbility(Ability.Dash, false);
+        EnableAbility(Ability.Dash, true);
     }
 
     void Update()
@@ -83,13 +83,13 @@ public class PlayerAbilityController : MonoBehaviour
 
     public void RegenerateStamina()
     {
-        if (!_isStopUpdatingStamina)
+        if (Constant.hasStamina && !_isStopUpdatingStamina)
             currStamina = Mathf.Min(currStamina + _deltaTime, maxStamina);
     }
 
     public void UseStamina()
     {
-        if (!_isStopUpdatingStamina)
+        if (Constant.hasStamina && !_isStopUpdatingStamina)
             currStamina = Mathf.Max(currStamina - _deltaTime, 0);
     }
 }

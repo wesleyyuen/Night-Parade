@@ -5,17 +5,17 @@ public class OkkaData : EnemyData
     public OkkaData()
     {
         // Health
-        maxHealth = 15;
+        maxHealth = 10;
         currentHealth = maxHealth;
 
         // Patrol
-        patrolSpeed = 2f;
+        patrolSpeed = 1.75f;
         patrolOriginOffset = 0.1f;
 
         // Aggression
         damageAmount = 1;
-        aggroDistance = 7f;
-        aggroMovementSpeed = 5f;
+        aggroDistance = 10f;
+        aggroMovementSpeed = 4.75f;
         lineOfSightDistance = 15f;
         lineOfSightAngle = 25f;
         lineOfSightOriginOffset = new Vector2(0f, 0.4f);
@@ -23,21 +23,24 @@ public class OkkaData : EnemyData
         timeFrozenAfterLOSBreak = 0.5f;
 
         // Attack
-        attackDistance = 4f;
+        attackDistance = 3f;
         attackForce = 25f;
-        attackChargeTime = 0.3f;
-        attackTime = 0.6f;
-        timeFrozenAfterDamagingPlayer = 1.5f;
+        attackChargeTime = 0.45f;
+        attackTime = 1.25f;
+        timeFrozenAfterDamagingPlayer = 1.25f;
 
         // Stunned
-        knockBackOnParriedForce = 12f;
-        timeStunnedAfterParried = 2.5f;
+        knockBackOnParriedForce = 13f;
+        timeStunnedAfterParried = 1.5f;
         knockBackOnBlockedForce = 6f;
-        timeStunnedAfterBlocked = 0.4f;
+        timeStunnedAfterBlocked = 0.6f;
 
         // Damaged
         knockBackOnTakingDamageForce = 10f;
-        timeFrozenAfterTakingDamage = 0.5f;
-        dieTime = 1f;
+        timeFrozenAfterTakingDamage = 0.15f;
+        dieTime = 0.75f;
+
+        // Spawn
+        spawnCooldown = 90f;
     }
 }

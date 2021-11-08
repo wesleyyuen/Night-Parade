@@ -9,6 +9,7 @@ public class PlayerDash : MonoBehaviour
     PlayerAnimations _anim;
     PlayerMovement _movement;
     PlayerAbilityController _abilities;
+    PlayerPlatformCollision _collision;
     InputMaster _input;
     [HideInInspector] public bool isDashing;
     [SerializeField] float dashSpeed;
@@ -16,6 +17,7 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] float cooldown;
     [SerializeField] float freezeDuration;
     [SerializeField] ParticleSystem afterimage;
+    ParticleSystemRenderer _particleRenderer;
     float _nextDashTime;
     bool _canDash = true;
 
@@ -32,6 +34,8 @@ public class PlayerDash : MonoBehaviour
         _anim = GetComponentInParent<PlayerAnimations>();
         _movement = GetComponentInParent<PlayerMovement>();
         _abilities = GetComponentInParent<PlayerAbilityController>();
+        _collision = GetComponentInParent<PlayerPlatformCollision>();
+        _particleRenderer = afterimage.GetComponent<ParticleSystemRenderer>();
     }
 
     void OnEnable()
@@ -52,7 +56,7 @@ public class PlayerDash : MonoBehaviour
             _nextDashTime = Time.time + cooldown;
             Vector2 dir = _input.Player.Movement.ReadValue<Vector2>();
             if (dir == Vector2.zero)
-                dir = -_rb.transform.localScale.x * Vector2.left;
+                dir = -_anim.GetPlayerScale().x * Vector2.left;
             StartCoroutine(Dash(dir));
         }
     }
@@ -68,7 +72,7 @@ public class PlayerDash : MonoBehaviour
         isDashing = true;
 
         // Effects
-        afterimage.GetComponent<ParticleSystemRenderer>().flip = new Vector3(dir.x > 0 ? 0f : 1f, 0f, 0f);
+        _particleRenderer.flip = new Vector3(dir.x > 0 ? 0f : 1f, 0f, 0f);
         afterimage.Play();
 
         _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, false);
@@ -86,6 +90,7 @@ public class PlayerDash : MonoBehaviour
         _movement.FreezePlayerPosition(freezeDuration);
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemies"), false);
         yield return new WaitForSeconds(freezeDuration);
+        _collision.UpdateFallPosition();
         _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, true);
         _rb.drag = 1f;
         _rb.gravityScale = 1;

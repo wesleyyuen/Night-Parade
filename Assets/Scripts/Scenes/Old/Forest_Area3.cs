@@ -12,7 +12,7 @@ public class Forest_Area3 : MonoBehaviour
     [SerializeField] private float textFadingTime;
     void Start ()
     {
-        GameMaster.Instance.UpdateCurrentScene ();
+        
 
         if (GameMaster.Instance.prevScene == "Forest_Area2") {
             foreach (Transform child in playerGroup) {

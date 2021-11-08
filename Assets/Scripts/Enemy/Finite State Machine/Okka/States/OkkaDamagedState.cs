@@ -24,7 +24,10 @@ public class OkkaDamagedState : IEnemyState
         _timer += Time.deltaTime;
 
         if (_timer >= fsm.enemyData.timeFrozenAfterTakingDamage) {
-            fsm.SetState(fsm.states[EnemyFSM.StateType.AggroState]);
+            if (fsm.states[EnemyFSM.StateType.AggroState] != null)
+                fsm.SetState(fsm.states[EnemyFSM.StateType.AggroState]);
+            else
+                fsm.SetState(fsm.states[EnemyFSM.StateType.PatrolState]);
         }
     }
 
@@ -32,6 +35,5 @@ public class OkkaDamagedState : IEnemyState
     public void OnCollisionEnter2D(EnemyFSM fsm, Collision2D collision) {}
     public void OnCollisionStay2D(EnemyFSM fsm, Collision2D collision) {}
     public void OnCollisionExit2D(EnemyFSM fsm, Collision2D collision) {}
-
     public void ExitState(EnemyFSM fsm) {}
 }

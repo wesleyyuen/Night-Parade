@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 8993958426518293861}
   m_Layer: 5
   m_Name: Button Prompt
-  m_TagString: Unflippable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

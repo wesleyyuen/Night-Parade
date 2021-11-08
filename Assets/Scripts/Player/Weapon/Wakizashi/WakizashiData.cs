@@ -27,7 +27,7 @@ public class WakizashiData : WeaponData
         blockRange = new Vector2(0.4f, 2.85f);
         blockCooldown = 0.5f;
         blockMinDuration = 0.5f;  // parryWindow < blockMinDuration
-        blockKnockback = 20f;
+        blockKnockback = 25f;
 
         // Audio
         missSFX = "Wakizashi_Miss";

@@ -10,8 +10,6 @@ public class Forest_Tree : MonoBehaviour {
     [SerializeField] private Transform rootSpawnPoint;
     [SerializeField] private PlayableDirector rootSpawnAnimation;
     void Start () {
-        GameMaster.Instance.UpdateCurrentScene ();
-
         // TODO: should be "Main_Menu" instead of "Main_Menu", but _Preload is loaded for a frame for some reason
         if (GameMaster.Instance.prevScene == "_Preload" || GameMaster.Instance.prevScene == "Main_Menu") { 
             foreach (Transform child in playerGroup) {

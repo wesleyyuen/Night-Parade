@@ -1,4 +1,5 @@
 ﻿using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -8,42 +9,53 @@ public class MainMenu : MonoBehaviour
     public Button continueButton;
     public TextMeshProUGUI continueText;
 
-    void Start ()
+    void Start()
     {
-        if (!SaveManager.HaveSaveData()) { // TODO if File exists
+        if (!SaveManager.Instance.HaveSaveData()) { // TODO if File exists
             continueButton.interactable = false;
             continueText.color = Color.gray;
         } else {
             continueButton.interactable = true;
             continueText.color = Color.white;
         }
-
-        GameMaster.Instance.UpdateCurrentScene ();
     }
 
-    public void NewGame ()
+    public void NewGame()
     {
-        PlayerData playerData = new PlayerData (GameMaster.Instance.startingHearts * 4, GameMaster.Instance.startingStamina);
-        GameMaster.Instance.RequestSceneChange ("Forest_Cave", ref playerData);
+        Dictionary<string, SceneData> scenes = new Dictionary<string, SceneData>();
+        scenes.Add("Overall", new SceneData("Overall", new Dictionary<string, int>()));
+
+        PlayerData playerData = new PlayerData(
+            saveFileIndex: 1,
+            maxHealth: Constant.startingHearts * 4,
+            maxStamina: Constant.startingStamina,
+            coinsOnHand: 0,
+            lastSavePoint: 0,
+            playTime: 0f,
+            savedInks: new bool[Constant.numOfAreas],
+            savedOrbs: 0,
+            sceneData: scenes 
+        );
+
+        GameMaster.Instance.RequestSceneChange(Constant.SceneName.Forest_Cave.ToString(), ref playerData);
     }
 
-    public void LoadGameFile (int index)
+    public void LoadGameFile(int index)
     {
-        PlayerData playerData = SaveManager.Load (index);
-        if (playerData == null) return;
-        GameMaster.Instance.savedPlayerData = playerData;
+        PlayerData playerData = SaveManager.Load(index);
+        if (playerData == null) {
+            Debug.Log("Load Failed!");
+            return;
+        }
+        SaveManager.Instance.savedPlayerData = playerData;
+        SaveManager.Instance.savedSceneData = playerData.SceneData;
         string sceneName = System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(playerData.LastSavePoint));
-        GameMaster.Instance.RequestSceneChange (sceneName, ref playerData);
-
-        // Handle Pause Menu (when player pause to quit to main menu and load game)
-        PauseMenu.isPuased = false;
-        GameObject pauseMenu = GameObject.FindGameObjectWithTag ("PauseMenu");
-        if (pauseMenu != null) pauseMenu.SetActive (false);
+        GameMaster.Instance.RequestSceneChange(sceneName, ref playerData);
     }
 
-    public void QuitGame ()
+    public void QuitGame()
     {
-        Debug.Log ("Quit!");
-        Application.Quit ();
+        Debug.Log("Quit!");
+        Application.Quit();
     }
 }

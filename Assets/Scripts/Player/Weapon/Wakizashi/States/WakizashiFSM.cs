@@ -19,10 +19,11 @@ public class WakizashiFSM : WeaponFSM
         states.Add(StateType.ParryState, parryState);
         states.Add(StateType.BlockState, blockState);
 
-        idleState.Awake(this);
-        attackState.Awake(this);
-        parryState.Awake(this);
-        blockState.Awake(this);
+        foreach(var e in states)
+        {
+            if (e.Value != null)
+                e.Value.Awake(this);
+        }
     }
 
     protected override void Start()

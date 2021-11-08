@@ -11,7 +11,7 @@ public class Forest_Area4 : MonoBehaviour {
     [SerializeField] private PlayableDirector area3SpawnAnimation;
     [SerializeField] private Transform area7SpawnPoint;
     void Start () {
-        GameMaster.Instance.UpdateCurrentScene ();
+        
 
         if (GameMaster.Instance.prevScene == "Forest_Area2") {
             foreach (Transform child in playerGroup) {

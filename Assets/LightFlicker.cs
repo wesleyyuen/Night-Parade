@@ -11,7 +11,6 @@ public class LightFlicker : MonoBehaviour
     bool _stopFlickering;
     Light2D _lightSource;
     float _baseIntensity;
-    bool _flickering;
  
     void Awake()
     {
@@ -20,19 +19,11 @@ public class LightFlicker : MonoBehaviour
         StartCoroutine(DoFlicker());
     }
 
-    void Update()
-    {
-        if (!_stopFlickering && !_flickering)
-            StartCoroutine(DoFlicker());
-    }
-
     IEnumerator DoFlicker()
     {
-        _flickering = true;
         while (!_stopFlickering) {
-            _lightSource.intensity = Mathf.Lerp(_lightSource.intensity, Random.Range(_baseIntensity - _maxReduction, _baseIntensity + _maxIncrease), _strength * Time.deltaTime);
-            yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
+            _lightSource.intensity = Mathf.SmoothStep(_lightSource.intensity, Mathf.Max(0f, Random.Range(_baseIntensity - _maxReduction, _baseIntensity + _maxIncrease)), _strength * Time.deltaTime);
+            yield return null;
         }
-        _flickering = false;
     }
 }

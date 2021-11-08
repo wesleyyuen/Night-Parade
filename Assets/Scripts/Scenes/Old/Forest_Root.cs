@@ -6,7 +6,6 @@ public class Forest_Root : MonoBehaviour {
     [SerializeField] private Transform playerGroup;
     [SerializeField] private Transform treeAreaSpawnPoint;
     void Start () {
-        GameMaster.Instance.UpdateCurrentScene ();
 
         if (GameMaster.Instance.prevScene == "Forest_Tree") {
             foreach (Transform child in playerGroup) {

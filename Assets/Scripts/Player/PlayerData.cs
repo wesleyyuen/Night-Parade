@@ -9,12 +9,12 @@ public class PlayerData
     public int MaxHealth { get; private set; }
     public float CurrentStamina { get; private set; } // In Seconds
     public float MaxStamina { get; private set; } // In Seconds
-    public int SavedPlayerCoinsOnHand { get; private set; }
+    public int CoinsOnHand { get; private set; }
     public int LastSavePoint { get; private set; }
-    public float SavedPlayTime { get; private set; } // In Seconds
+    public float PlayTime { get; private set; } // In Seconds
     public bool[] SavedInks { get; private set; }
     public int SavedOrbs { get; private set; }
-    public Dictionary<string, int> SavedAreaPrgress { get; private set; }
+    public Dictionary<string, SceneData> SceneData { get; private set; }
 
     // Empty
     public PlayerData()
@@ -22,29 +22,54 @@ public class PlayerData
         SaveFileIndex = 0;
     }
 
-    // For Initializing
-    public PlayerData (int startingHearts, float startingStamina)
+    // For New Game
+    // public PlayerData (int startingHearts, float startingStamina)
+    // {
+    //     SaveFileIndex = 1; // New Game will override first save slot
+    //     CurrentHealth = startingHearts;
+    //     MaxHealth = startingHearts;
+    //     CurrentStamina = startingStamina;
+    //     MaxStamina = startingStamina;
+    //     CoinsOnHand = 0;
+    //     LastSavePoint = 0;
+    //     PlayTime = 0;
+    //     SavedInks = new bool[GameMaster.numOfAreas];
+    //     SavedOrbs = 0;
+    //     AreaPrgress = new Dictionary<string, int> ();
+    // }
+
+    // For Loading inbetween sessions (Continue Game)
+    public PlayerData(
+        int saveFileIndex,
+        int maxHealth,
+        float maxStamina,
+        int coinsOnHand,
+        int lastSavePoint,
+        float playTime,
+        bool[] savedInks,
+        int savedOrbs,
+        Dictionary<string, SceneData> sceneData
+    )
     {
-        SaveFileIndex = 1; // New Game will override first save slot
-        CurrentHealth = startingHearts;
-        MaxHealth = startingHearts;
-        CurrentStamina = startingStamina;
-        MaxStamina = startingStamina;
-        SavedPlayerCoinsOnHand = 0;
-        LastSavePoint = 0;
-        SavedPlayTime = 0;
-        SavedInks = new bool[GameMaster.numOfAreas];
-        SavedOrbs = 0;
-        SavedAreaPrgress = new Dictionary<string, int> ();
+        SaveFileIndex = saveFileIndex;
+        CurrentHealth = maxHealth;
+        MaxHealth = maxHealth;
+        CurrentStamina = maxStamina;
+        MaxStamina = maxStamina;
+        CoinsOnHand = coinsOnHand;
+        LastSavePoint = lastSavePoint;
+        PlayTime = playTime;
+        SavedInks = savedInks;
+        SavedOrbs = savedOrbs;
+        SceneData = sceneData;
     }
 
-    // For Saving and Loading (both inbetween and within session)
+    // For Saving (both inbetween and within session) and Loading within session
     public PlayerData(GameObject player, bool hardSave, int sceneIndex, int loadIndex)
     {
         SaveFileIndex = loadIndex;
         PlayerHealth health = player.GetComponent<PlayerHealth>();
         PlayerAbilityController ability = player.GetComponent<PlayerAbilityController>();
-        PlayerProgress progress = player.GetComponent<PlayerProgress>();
         PlayerInventory inventory = player.GetComponent<PlayerInventory>();
 
         if (health != null) {
@@ -57,13 +82,11 @@ public class PlayerData
             MaxStamina = ability.maxStamina;
         }
 
-        if (progress != null) {
-            SavedPlayTime = progress.GetPlayTimeInScene();
-            SavedAreaPrgress = progress.areaProgress;
-        }
+        PlayTime = SaveManager.Instance.GetPlayTimeInScene();
+        SceneData = SaveManager.Instance.savedSceneData;
 
         if (inventory != null) {
-            SavedPlayerCoinsOnHand = inventory.coinOnHand;
+            CoinsOnHand = inventory.coinOnHand;
             SavedInks = inventory.inks;
             SavedOrbs = inventory.orbs;
         }

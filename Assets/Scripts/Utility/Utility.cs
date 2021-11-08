@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 using UnityEngine.Experimental.Rendering.Universal;
 
 // Class that has commonly used methods
@@ -78,21 +79,6 @@ public class Utility : MonoBehaviour
         StaticCoroutine.Start(coroutine);
     }
 
-    public static void UnflipGameObjectRecursively(GameObject go, bool faceRight, bool abs)
-    {
-        Transform trans = go.transform;
-        if (go.CompareTag("Unflippable"))
-            trans.localScale = new Vector3((faceRight ? 1 : -1) * (abs ? Mathf.Abs(trans.localScale.x) : trans.localScale.x),
-                                            Mathf.Abs(trans.localScale.y),
-                                            1f);
-
-        if (trans.childCount > 0) {
-            foreach (Transform child in trans) {
-                UnflipGameObjectRecursively(child.gameObject, faceRight, abs);
-            }
-        }
-    }
-
     public static void SetAlphaRecursively(GameObject obj, float alpha, bool isRecursive = true)
     {
         SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
@@ -100,6 +86,7 @@ public class Utility : MonoBehaviour
         ParticleSystem particles = obj.GetComponent<ParticleSystem>();
         TMP_Text text = obj.GetComponent<TMP_Text>();
         Image image = obj.GetComponent<Image>();
+        Tilemap tilemap = obj.GetComponent<Tilemap>();
 
         // Sprite Renderer
         if (sr != null)
@@ -123,6 +110,10 @@ public class Utility : MonoBehaviour
         // Image
         if (image != null)
             image.color = new Color (image.color.r, image.color.g, image.color.b, alpha);
+
+        // Tilemap
+        if (tilemap != null)
+            tilemap.color = new Color (tilemap.color.r, tilemap.color.g, tilemap.color.b, alpha);
                 
         if (isRecursive && obj.transform.childCount > 0) {
             foreach (Transform child in obj.transform) {
@@ -159,6 +150,7 @@ public class Utility : MonoBehaviour
         ParticleSystem particles = obj.GetComponent<ParticleSystem>();
         TMP_Text text = obj.GetComponent<TMP_Text>();
         Image image = obj.GetComponent<Image>();
+        Tilemap tilemap = obj.GetComponent<Tilemap>();
 
         for (float t = 0f; t < 1f; t += Time.deltaTime / fadingTime) {
             // Sprite Renderer
@@ -183,6 +175,10 @@ public class Utility : MonoBehaviour
             // Image
             if (image != null)
                 image.color = new Color(image.color.r, image.color.g, image.color.b, Mathf.SmoothStep(from, to, t));
+
+            // Tilemap
+            if (tilemap != null)
+                tilemap.color = new Color (tilemap.color.r, tilemap.color.g, tilemap.color.b, Mathf.SmoothStep(from, to, t));
                 
             yield return null;
         }
@@ -219,6 +215,28 @@ public class Utility : MonoBehaviour
         }
     }
 
+    public static IEnumerator ScaleGameObject(GameObject obj, Vector3 from, Vector3 to, float scalingTime)
+    {
+        if (scalingTime == 0) {
+            obj.transform.localScale = to;
+            yield break;
+        }
+
+
+        obj.transform.localScale = from;
+        for (float t0 = 0f, t1 = 0f, t2 = 0f;
+            t0 < 1f;
+            t0 += Time.deltaTime / scalingTime, t1 += Time.deltaTime / scalingTime, t2 += Time.deltaTime / scalingTime) {
+            obj.transform.localScale = new Vector3(Mathf.SmoothStep(from.x, to.x, t0),
+                                                   Mathf.SmoothStep(from.y, to.y, t1),
+                                                   Mathf.SmoothStep(from.z, to.z, t2));
+
+            yield return null;
+        }
+
+        obj.transform.localScale = to;
+    }
+
     public static void EnablePlayerControl(bool enable, float time = 0)
     {
         GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
@@ -238,5 +256,11 @@ public class Utility : MonoBehaviour
         player.GetComponentInChildren<WeaponFSM>().EnablePlayerCombat(false, time);
         player.GetComponentInChildren<WeaponFSM>().EnablePlayerBlocking(false, time);
         player.GetComponent<PlayerAbilityController>().EnableAbility(PlayerAbilityController.Ability.Jump , false, time);
+    }
+
+    public static void DumpToConsole(object obj)
+    {
+        var output = JsonUtility.ToJson(obj, true);
+        Debug.Log(output);
     }
 }

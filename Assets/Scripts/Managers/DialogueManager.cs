@@ -19,7 +19,7 @@ public class DialogueManager : MonoBehaviour
     public bool isTalking { get; private set; }
     Dialogue.Sentence currentSentence;
 
-    void Awake ()
+    void Awake()
     {
         if (instance == null) {
             instance = this;
@@ -29,7 +29,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
     
-    void Start ()
+    void Start()
     {
         sentences = new Queue<Dialogue.Sentence> ();
         currentSentence = new Dialogue.Sentence("", null);
@@ -38,7 +38,7 @@ public class DialogueManager : MonoBehaviour
         isTalking = false;
     }
 
-    void Update ()
+    void Update()
     {
         if (isTalking) {
             if (Input.GetButtonDown ("Attack") || Input.GetButtonDown ("Jump")) {
@@ -65,7 +65,7 @@ public class DialogueManager : MonoBehaviour
         // Disable player control
         Utility.EnablePlayerControl(false);
 
-        sentences.Clear ();
+        sentences.Clear();
 
         Dialogue.SentenceSet chosenSet;
         // Choose set based on random or sequential
@@ -85,10 +85,10 @@ public class DialogueManager : MonoBehaviour
         characterNameText.text = dialogue.characterName;
 
         // Get First Sentence
-        NextSentence ();
+        NextSentence();
     }
 
-    public void NextSentence ()
+    public void NextSentence()
     {
         // Reset Dialogue UI textbox
         dialogueText.text = "";
@@ -111,7 +111,7 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine (TpyingEffect (currentSentence.sentence));
     }
 
-    void EndDialogue ()
+    void EndDialogue()
     {
         // Reset + reenable player controls
         typingSpeed = _originalTypingSpeed;
@@ -120,32 +120,31 @@ public class DialogueManager : MonoBehaviour
         Utility.EnablePlayerControl(true);
     }
 
-    IEnumerator TpyingEffect (string sentence)
-    {
-        // DOES NOT HAVE COLOR OPTIONS
-        foreach (char letter in sentence.ToCharArray ()) {
-            dialogueText.text += letter;
-            yield return new WaitForSeconds (1 / typingSpeed);
-        }
-    }
+    // IEnumerator TpyingEffect(string sentence)
+    // {
+    //     // DOES NOT HAVE COLOR OPTIONS
+    //     foreach (char letter in sentence.ToCharArray ()) {
+    //         dialogueText.text += letter;
+    //         yield return new WaitForSeconds (1 / typingSpeed);
+    //     }
+    // }
 
-    /*
     //TODO: fix typing effect with color, nondeterministic behaviors
     IEnumerator TpyingEffect (string currentSentence) {
-        //int totalVisibleCharacters = dialogueText.textInfo.characterCount;
+        int totalVisibleCharacters = dialogueText.textInfo.characterCount;
         dialogueText.text = currentSentence;
-        int totalVisibleCharacters = currentSentence.Length;
+        // int totalVisibleCharacters = currentSentence.Length;
         int counter = 0;
         while (true) {
             int visibleCount = counter % (totalVisibleCharacters + 1);
             dialogueText.maxVisibleCharacters = visibleCount;
             if (visibleCount >= totalVisibleCharacters) {
-                yield return null;
+                yield return new WaitForSeconds (1f);
+                // yield return null;
                 break;
             }
             counter++;
             yield return new WaitForSeconds (1 / typingSpeed);
         }
     }
-    */
 }

@@ -80,7 +80,7 @@ Material:
     m_Colors:
     - Color_8a8ab8c431ef49fe855be618d26f8e90: {r: 164.26059, g: 0, b: 1351.1758, a: 0}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 48.188236, g: 0, b: 3067.9844, a: 1}
+    - _Color: {r: 385.5059, g: 0, b: 24543.875, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

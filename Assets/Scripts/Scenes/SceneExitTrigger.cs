@@ -6,7 +6,7 @@ public class SceneExitTrigger : MonoBehaviour
     [SerializeField] string levelToLoad = "";
 
     // Load levelToLoad scene if triggered
-    void OnTriggerEnter2D (Collider2D collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag ("Player")) {
             GameObject player = collider.gameObject;
@@ -17,7 +17,7 @@ public class SceneExitTrigger : MonoBehaviour
             Utility.EnablePlayerControl(false, 0);
             if (player.GetComponent<PlayerPlatformCollision>().onGround) {
                 animations.SetRunAnimation(collider.gameObject.transform.localScale.x);
-                StartCoroutine(movement.MoveForwardForSeconds(2f));
+                movement.MoveForwardForSeconds(2f);
             } else {
                 animations.SetJumpFallAnimation();
             }
@@ -25,12 +25,12 @@ public class SceneExitTrigger : MonoBehaviour
             Scene currentScene = SceneManager.GetActiveScene();
 
             // Save player states and variables for next scene
-            PlayerData playerVariables = new PlayerData(collider.gameObject, false, currentScene.buildIndex, SaveManager.GetLoadIndex());
+            PlayerData data = new PlayerData(collider.gameObject, false, currentScene.buildIndex, SaveManager.Instance.GetLoadIndex());
             
             // Play Scene Transition
             SceneTransition transition = GetComponentInChildren<SceneTransition>();
             if (transition != null)
-                transition.StartSceneTransitionOut(levelToLoad, ref playerVariables);
+                transition.StartSceneTransitionOut(levelToLoad, ref data);
             else
                 Debug.LogError("Missing Scene Transition in " + currentScene.name + "!");
         }

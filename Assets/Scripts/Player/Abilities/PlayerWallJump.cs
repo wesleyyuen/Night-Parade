@@ -10,6 +10,7 @@ public class PlayerWallJump : MonoBehaviour
     PlayerPlatformCollision _collision;
     PlayerMovement _movement;
     PlayerAnimations _animations;
+    PlayerWallSlide _wallSlide;
     InputMaster _input;
     [SerializeField] Vector2 jumpDirection;
     [SerializeField] float movementDisableTime;
@@ -21,6 +22,7 @@ public class PlayerWallJump : MonoBehaviour
         _movement = GetComponentInParent<PlayerMovement>();
         _animations = GetComponentInParent<PlayerAnimations>();
         _collision = GetComponentInParent<PlayerPlatformCollision>();
+        _wallSlide = GetComponent<PlayerWallSlide>();
 
         // Handle Input
         _input = new InputMaster();
@@ -33,9 +35,9 @@ public class PlayerWallJump : MonoBehaviour
     {
         float xRaw = _input.Player.Movement.ReadValue<Vector2>().x;
         if (!_collision.onGround && (_collision.onLeftWall && (xRaw < 0) || (_collision.onRightWall && (xRaw > 0)))) {
-            StartCoroutine(_movement.HandicapMovement(movementDisableTime));
-            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _animations.canTurn = e, movementDisableTime, false, true));
-            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => GetComponent<PlayerWallSlide>().canSlide = e, movementDisableTime, false, true));
+            _movement.HandicapMovementForSeconds(movementDisableTime);
+            _animations.EnablePlayerTurning(false, movementDisableTime);
+            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _wallSlide.canSlide = e, movementDisableTime, false, true));
             WallJump(_collision.onLeftWall);
         }
     }

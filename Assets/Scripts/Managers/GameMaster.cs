@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour
@@ -8,17 +9,13 @@ public class GameMaster : MonoBehaviour
     public static GameMaster Instance {
         get  {return _instance; }
     }
-    public static Dictionary<string, int> areaNameToIndex = new Dictionary<string, int> ();
-    [SerializeField] string startingScene;
+    [SerializeField] public Constant.SceneName startingScene;
+    [SerializeField] bool _enabledTestChamber;
     public string prevScene {get; private set;}
     public string currentScene {get; private set;}
-    public int startingHearts = 3;
-    public float startingStamina = 3f;
-    public const int numOfAreas = 5;
-    [HideInInspector] public PlayerData savedPlayerData;
-    const int healthPerHeart = 4;
+    bool _isInTestingChamber;
 
-    void Awake ()
+    void Awake()
     {
         if (_instance == null) {
             _instance = this;
@@ -26,43 +23,59 @@ public class GameMaster : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
-        
-        // Initialize Dictionary
-        FillAreaNameToIndexDictionary();
-        UpdateCurrentScene();
-        savedPlayerData = new PlayerData (startingHearts * healthPerHeart, startingStamina);
 
-        // Load starting scene with saved player data
-        RequestSceneChange(startingScene, ref savedPlayerData);
-        SetUI(startingScene != "Main_Menu");
+        bool isTesting = startingScene != Constant.SceneName.Main_Menu;
+        SetUI(isTesting);
+
+        // Handle Input
+        if (_enabledTestChamber) {
+            InputMaster input = new InputMaster();
+            input.Testing.TestingChamber.Enable();
+            input.Testing.TestingChamber.started += OnTestingChamber;
+        }
     }
 
-    public void UpdateCurrentScene()
+    void OnTestingChamber(InputAction.CallbackContext context)
     {
-        currentScene = SceneManager.GetActiveScene().name;
+        if (!_isInTestingChamber)
+            RequestSceneChange("_TestingChamber", ref SaveManager.Instance.savedPlayerData);
+        else
+            RequestSceneChange(prevScene, ref SaveManager.Instance.savedPlayerData);
+
+        _isInTestingChamber = !_isInTestingChamber;
     }
-    
+
     public void RequestSceneChange(string sceneToLoad, ref PlayerData currPlayerData)
     {
-        if (sceneToLoad == "Main_Menu") {
+        string mainMenu = Constant.SceneName.Main_Menu.ToString();
+
+        if (currPlayerData.IsValid()) {
+            SaveManager.Instance.savedPlayerData = currPlayerData;
+            SaveManager.Instance.savedSceneData = currPlayerData.SceneData;
+        }
+
+        if (sceneToLoad == mainMenu) {
             SetUI(false);
-        } else if (currentScene == "Main_Menu" && sceneToLoad != "Main_Menu") {
+        } else if (currentScene == mainMenu && sceneToLoad != mainMenu) {
             SetUI(true);
         }
 
         prevScene = currentScene;
-        if (currPlayerData.IsValid())
-            savedPlayerData = currPlayerData;
+        currentScene = sceneToLoad;
+
         // SceneManager.LoadSceneAsync(sceneToLoad);
-        // TODO: For some reason LoadSceneAsync causes flickering again, still flicker now
+        // TODO: For some reason LoadSceneAsync causes flickering again
         SceneManager.LoadScene(sceneToLoad);
     }
 
     public void RequestSceneChangeToMainMenu()
     {
         SoundManager.Instance.PauseAll();
+        MonUI.Instance.Outro();
+        HealthUI.Instance.Outro();
+        
         PlayerData emptyData = new PlayerData();
-        RequestSceneChange("Main_Menu", ref emptyData);
+        RequestSceneChange(Constant.SceneName.Main_Menu.ToString(), ref emptyData);
     }
 
     // can remove if play mode from _preload
@@ -72,7 +85,7 @@ public class GameMaster : MonoBehaviour
 
         // Handle cursor
         Cursor.visible = !boolean;
-        Cursor.lockState = !boolean ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.lockState = boolean ? CursorLockMode.Locked : CursorLockMode.Confined;
 
         if (boolean) {
             HealthUI.Instance.Intro();
@@ -84,13 +97,8 @@ public class GameMaster : MonoBehaviour
             MonUI.Instance.Outro();
         }
 
-        GameObject dialogueUI = GameObject.FindGameObjectWithTag ("DialogueUI");
-        if (dialogueUI != null) dialogueUI.SetActive(boolean);
-    }
-
-    // Add when making a new area
-    void FillAreaNameToIndexDictionary ()
-    {
-        areaNameToIndex.Add("Forest", 0);
+        GameObject dialogueUI = GameObject.FindGameObjectWithTag("DialogueUI");
+        if (dialogueUI != null)
+            dialogueUI.SetActive(boolean);
     }
 }

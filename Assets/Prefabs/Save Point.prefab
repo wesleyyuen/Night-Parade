@@ -260,7 +260,7 @@ MonoBehaviour:
     setSelectionMode: 1
     currentSetIndex: 0
   triggerRange: 4
-  textPrompt: {fileID: 0}
+  textPrompt: {fileID: 1911968173773570712}
 --- !u!1001 &7374742684354826237
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -281,7 +281,7 @@ PrefabInstance:
     - target: {fileID: 562121744075355301, guid: cdfd7f9168029924687643a9775cf087,
         type: 3}
       propertyPath: m_SortingLayer
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 562121744075355303, guid: cdfd7f9168029924687643a9775cf087,
         type: 3}
@@ -291,7 +291,7 @@ PrefabInstance:
     - target: {fileID: 625397309525254960, guid: cdfd7f9168029924687643a9775cf087,
         type: 3}
       propertyPath: m_SortingLayer
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 819981679085427033, guid: cdfd7f9168029924687643a9775cf087,
         type: 3}
@@ -441,13 +441,19 @@ PrefabInstance:
     - target: {fileID: 8432739186578041084, guid: cdfd7f9168029924687643a9775cf087,
         type: 3}
       propertyPath: m_SortingLayer
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdfd7f9168029924687643a9775cf087, type: 3}
 --- !u!224 &2636106072998299286 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4813518850936080747, guid: cdfd7f9168029924687643a9775cf087,
+    type: 3}
+  m_PrefabInstance: {fileID: 7374742684354826237}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1911968173773570712 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8993958426518293861, guid: cdfd7f9168029924687643a9775cf087,
     type: 3}
   m_PrefabInstance: {fileID: 7374742684354826237}
   m_PrefabAsset: {fileID: 0}

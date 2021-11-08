@@ -8,12 +8,12 @@ public class PlayerInventory : MonoBehaviour
     public bool[] inks { get; private set; }
     public int orbs { get; private set; }
 
-    void Start ()
+    void Start()
     {
-        // Get saved data from Gamemaster
-        coinOnHand = GameMaster.Instance.savedPlayerData.SavedPlayerCoinsOnHand;
-        inks = GameMaster.Instance.savedPlayerData.SavedInks;
-        orbs = GameMaster.Instance.savedPlayerData.SavedOrbs;
+        // Get saved data from SaveManager
+        coinOnHand = SaveManager.Instance.savedPlayerData.CoinsOnHand;
+        inks = SaveManager.Instance.savedPlayerData.SavedInks;
+        orbs = SaveManager.Instance.savedPlayerData.SavedOrbs;
     }
 
     public void PickUpCoin (int amt)

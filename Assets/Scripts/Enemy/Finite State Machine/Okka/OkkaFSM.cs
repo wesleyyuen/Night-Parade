@@ -4,16 +4,9 @@ using UnityEngine;
 
 public class OkkaFSM : EnemyFSM
 {
-    enum OkkaVariant
-    {
-        Ignore,
-        Aggressive
-    }
-    [SerializeField] OkkaVariant _variant = OkkaVariant.Ignore;
-
     public readonly OkkaPatrolState patrolState = new OkkaPatrolState();
-    public readonly OkkaAgrroState aggroState = new OkkaAgrroState();
-    public readonly OkkaAttackState attackState = new OkkaAttackState();
+    public readonly OkkaAggroState aggroState = new OkkaAggroState();
+    // public readonly OkkaAttackState attackState = new OkkaAttackState();
     public readonly OkkaLostLOSState lostLOSState = new OkkaLostLOSState();
     public readonly OkkaStillState stillState = new OkkaStillState();
     public readonly OkkaStunnedState stunnedState = new OkkaStunnedState();
@@ -26,17 +19,19 @@ public class OkkaFSM : EnemyFSM
         enemyData = new OkkaData();
 
         states.Add(StateType.PatrolState, patrolState);
-        states.Add(StateType.AggroState, _variant == OkkaVariant.Ignore ? null : aggroState);
-        states.Add(StateType.AttackState, _variant == OkkaVariant.Ignore ? null : attackState);
+        states.Add(StateType.AggroState, aggroState);
+        // states.Add(StateType.AttackState, _variant == OkkaVariant.Ignore ? null : attackState);
         states.Add(StateType.LostLOSState, lostLOSState);
         states.Add(StateType.StillState, stillState);
         states.Add(StateType.StunnedState, stunnedState);
         states.Add(StateType.DamagedState, damagedState);
-        states.Add(StateType.DeathState, deathState);        
+        states.Add(StateType.DeathState, deathState);
     }
 
     protected override void Start()
     {
+        base.Start();
+
         SetState(patrolState);
     }
 }
