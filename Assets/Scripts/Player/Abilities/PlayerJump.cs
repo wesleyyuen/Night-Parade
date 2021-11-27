@@ -34,7 +34,7 @@ public class PlayerJump : MonoBehaviour
 
         // Handle Inputs
         _input = new InputMaster();
-        _input.Player.Jump.Enable();
+        _input.Player.Enable();
         _input.Player.Jump.started += OnJump;
         _input.Player.Jump.canceled += OnJump;
     }

@@ -146,7 +146,7 @@ public class PlayerPlatformCollision : MonoBehaviour
         _fallStartYPos = _rb.position.y;
     }
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
 

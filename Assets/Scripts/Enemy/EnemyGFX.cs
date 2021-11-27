@@ -79,7 +79,7 @@ public class EnemyGFX : MonoBehaviour
     IEnumerator TurnAroundCoroutine(bool isInstant)
     {
         _isTurning = true;
-        yield return new WaitForSeconds (isInstant ? 0.0f : turningTime);
+        yield return new WaitForSeconds(isInstant ? 0.0f : turningTime);
         _spriteRenderer.transform.localScale = new Vector3(-_spriteRenderer.transform.localScale.x, 1f, 1f);
         _questionMark.transform.localScale = new Vector3(_spriteRenderer.transform.localScale.x, 1f, 1f);
 

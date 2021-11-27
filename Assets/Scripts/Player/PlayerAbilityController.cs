@@ -38,7 +38,7 @@ public class PlayerAbilityController : MonoBehaviour
 
         // Enable Abilities
         EnableAbility(Ability.Jump, true);
-        EnableAbility(Ability.WallJump, false);
+        EnableAbility(Ability.WallJump, true);
         EnableAbility(Ability.WallSlide, false);
         EnableAbility(Ability.Dash, true);
     }

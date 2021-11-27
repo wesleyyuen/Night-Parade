@@ -11,11 +11,21 @@ public class PauseMenu : MonoBehaviour
     void Awake()
     {
         _input = new InputMaster();
-        _input.UI.Pause.Enable();
+
         _input.UI.Pause.performed += OnPauseOrResume;
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
+    }
+
+    void OnEnable()
+    {
+        _input.UI.Pause.Enable();
+    }
+
+    void OnDisable()
+    {
+        _input.UI.Pause.Disable();
     }
 
     void OnPauseOrResume(InputAction.CallbackContext context)

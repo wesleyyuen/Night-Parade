@@ -13,7 +13,6 @@ public class OkkaData : EnemyData
         patrolOriginOffset = 0.1f;
 
         // Aggression
-        damageAmount = 1;
         aggroDistance = 10f;
         aggroMovementSpeed = 4.75f;
         lineOfSightDistance = 15f;
@@ -23,6 +22,7 @@ public class OkkaData : EnemyData
         timeFrozenAfterLOSBreak = 0.5f;
 
         // Attack
+        damageAmount = 5;
         attackDistance = 3f;
         attackForce = 25f;
         attackChargeTime = 0.45f;

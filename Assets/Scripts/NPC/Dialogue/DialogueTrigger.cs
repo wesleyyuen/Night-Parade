@@ -18,7 +18,7 @@ public class DialogueTrigger : MonoBehaviour
 
         // Handle Input
         InputMaster input = new InputMaster();
-        input.Player.Interact.Enable();
+        input.Player.Enable();
         input.Player.Interact.started += OnTriggerDialogue;
     }
 

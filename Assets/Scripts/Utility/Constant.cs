@@ -11,9 +11,10 @@ public class Constant : MonoBehaviour
 
     public static int startingHearts = 3;
     public static float startingStamina = 3f;
-    
     public static int numOfAreas = 5;
     public static int ppu = 8;
+
+    // Game Feature Flags
     public static bool hasTimedCombo = false;
     public static bool hasStamina = false;
     public static bool stopWhenAttack = true;
