@@ -1,37 +1,38 @@
 using UnityEngine;
 using UnityEngine.UI;
+using MEC;
 
 public class StaminaUI : MonoBehaviour
 {
-    static StaminaUI _instance;
-    public static StaminaUI Instance {
-        get  {return _instance; }
-    }
     [SerializeField] GameObject UIObject;
     [SerializeField] Image barFill;
     const float kFadeDuration = 0.85f;
 
     void Awake()
     {
-        if (!Constant.hasStamina)
-            enabled = false;
-            
-        if (_instance == null) {
-            _instance = this;
-            // DontDestroyOnLoad(gameObject);
-        } else {
-            Destroy(gameObject);
-        }
-
         Utility.SetAlphaRecursively(UIObject, 0f);
     }
 
-    public void Intro()
+    void OnEnable()
+    {
+        GameMaster gm = FindObjectOfType<GameMaster>();
+        gm.Event_UIIntro += Intro;
+        gm.Event_UIOutro += Outro;
+    }
+
+    void OnDisable()
+    {
+        GameMaster gm = FindObjectOfType<GameMaster>();
+        gm.Event_UIIntro -= Intro;
+        gm.Event_UIOutro -= Outro;
+    }
+
+    void Intro()
     {
         FadeUI(true);
     }
 
-    public void Outro()
+    void Outro()
     {
         FadeUI(false, true);
     }

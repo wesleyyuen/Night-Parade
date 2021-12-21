@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class DistanceSensor : MonoBehaviour
 {
-    Camera _camera;
-    [SerializeField] float distanceThreshold = 70f;
+    Camera m_camera;
+    [SerializeField] float m_distanceThreshold = 70f;
 
     void Start()
     {
-        _camera = Camera.main;
+        m_camera = Camera.main;
     }
 
     void FixedUpdate()
@@ -15,7 +15,7 @@ public class DistanceSensor : MonoBehaviour
         // TODO: improve this
         foreach (Transform child in transform)
         {
-            child.gameObject.SetActive(Vector2.Distance(child.position, _camera.transform.position) <= distanceThreshold);
+            child.gameObject.SetActive(Vector2.Distance(child.position, m_camera.transform.position) <= m_distanceThreshold);
         }
     }
 }

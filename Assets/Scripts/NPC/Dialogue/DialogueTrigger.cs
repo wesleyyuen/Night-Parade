@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -12,14 +11,19 @@ public class DialogueTrigger : MonoBehaviour
     protected bool _isDialogueTriggered;
 
 
-    void Start()
+    void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
+    }
 
-        // Handle Input
-        InputMaster input = new InputMaster();
-        input.Player.Enable();
-        input.Player.Interact.started += OnTriggerDialogue;
+    void OnEnable()
+    {
+        InputManager.Event_Input_Interact += OnTriggerDialogue;
+    }
+
+    void OnDisable()
+    {
+        InputManager.Event_Input_Interact -= OnTriggerDialogue;
     }
 
     protected virtual void Update()
@@ -41,13 +45,13 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    protected virtual void OnTriggerDialogue(InputAction.CallbackContext context)
+    protected virtual void OnTriggerDialogue()
     {
         if (_isInRange && !DialogueManager.Instance.isTalking && !_isAutoTrigger)
            TriggerDialogue();
     }
 
-    public void TriggerDialogue()
+    void TriggerDialogue()
     { 
         // TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
         if (!PauseMenu.isPuased) {

@@ -1,6 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
+
+public interface IEnemyState : IState, IUpdateLoop, ICollision2D
+{
+
+}
 
 public class EnemyFSM : MonoBehaviour
 {
@@ -54,21 +60,21 @@ public class EnemyFSM : MonoBehaviour
     {
         if (_currentState == null || player == null || _isLetRBMove) return;
 
-        _currentState.Update(this);
+        _currentState.Update();
     }
 
     protected virtual void FixedUpdate()
     {
         if (_currentState == null || player == null || _isLetRBMove) return;
 
-        _currentState.FixedUpdate(this);
+        _currentState.FixedUpdate();
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (_currentState == null || player == null) return;
         
-        _currentState.OnCollisionEnter2D(this, collision);
+        _currentState.OnCollisionEnter2D(collision);
     }
 
     protected virtual void OnCollisionStay2D(Collision2D collision)
@@ -81,14 +87,14 @@ public class EnemyFSM : MonoBehaviour
             go.GetComponent<PlayerHealth>().HandleDamage(enemyData.damageAmount, rb.position);
         }
 
-        _currentState.OnCollisionStay2D(this, collision);
+        _currentState.OnCollisionStay2D(collision);
     }
 
     protected virtual void OnCollisionExit2D(Collision2D collision)
     {
         if (_currentState == null || player == null) return;
 
-        _currentState.OnCollisionExit2D(this, collision);
+        _currentState.OnCollisionExit2D(collision);
     }
 
     public void SetState(IEnemyState state)
@@ -96,12 +102,12 @@ public class EnemyFSM : MonoBehaviour
         if (state == null) return;
         
         if (_currentState != null) {
-            _currentState.ExitState(this);
+            _currentState.ExitState();
             previousState = _currentState;
         }
 
         _currentState = state;
-        _currentState.EnterState(this);
+        _currentState.EnterState();
     }
 
     public bool IsCurrentState(StateType state)
@@ -128,7 +134,7 @@ public class EnemyFSM : MonoBehaviour
         if (angle > enemyData.lineOfSightAngle) return false;
 
         // Check Line of sight with raycast2d
-        int layerMasks = (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Player"));
+        int layerMasks = 1 << LayerMask.NameToLayer("Player");
         RaycastHit2D los = Physics2D.Raycast(lineOfSightOrigin, enemyToPlayerVector, enemyData.lineOfSightDistance, layerMasks);
         if (los) return los.collider.CompareTag("Player");
 
@@ -143,7 +149,7 @@ public class EnemyFSM : MonoBehaviour
         if (enemyToPlayerVector.magnitude > enemyData.aggroDistance) return false;
 
         // Check Line of sight with raycast2d
-        int layerMasks = (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Player"));
+        int layerMasks = 1 << LayerMask.NameToLayer("Player");
         RaycastHit2D los = Physics2D.Raycast(lineOfSightOrigin, enemyToPlayerVector, enemyData.lineOfSightDistance, layerMasks);
         if (los) return los.collider.CompareTag("Player");
 
@@ -152,12 +158,12 @@ public class EnemyFSM : MonoBehaviour
 
     public void LetRigidbodyMoveForSeconds(float time)
     {
-        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _isLetRBMove = e, time, true, false));
+        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _isLetRBMove = e, time, true, false));
     }
 
     public void ApplyForce(Vector2 dir, float force, float time = 0)
     {
-        StartCoroutine(Utility.ChangeVariableAfterDelay<float>(e => rb.drag = e, time == 0 ? 0.1f : time, force * 0.1f, 1f));
+        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<float>(e => rb.drag = e, time == 0 ? 0.1f : time, force * 0.1f, 1f));
         LetRigidbodyMoveForSeconds(time == 0 ? 0.1f : time);
         
         rb.velocity = Vector2.zero;
@@ -176,7 +182,7 @@ public class EnemyFSM : MonoBehaviour
             _isDead = true;
             SetState(states[StateType.DeathState]);
         } else {
-            if (Constant.stunEnemyAfterAttack) {
+            if (Constant.ATTACK_STUNS_ENEMY) {
                 // Can use StunForSeconds
                 SetState(states[StateType.DamagedState]);
             } else {

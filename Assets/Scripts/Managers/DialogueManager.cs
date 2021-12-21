@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using TMPro;
+using MEC;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -108,7 +109,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         // Start typing coroutine
-        StartCoroutine (TpyingEffect (currentSentence.sentence));
+        Timing.RunCoroutine(_TpyingEffect(currentSentence.sentence));
     }
 
     void EndDialogue()
@@ -130,7 +131,7 @@ public class DialogueManager : MonoBehaviour
     // }
 
     //TODO: fix typing effect with color, nondeterministic behaviors
-    IEnumerator TpyingEffect (string currentSentence) {
+    IEnumerator<float> _TpyingEffect (string currentSentence) {
         int totalVisibleCharacters = dialogueText.textInfo.characterCount;
         dialogueText.text = currentSentence;
         // int totalVisibleCharacters = currentSentence.Length;
@@ -139,12 +140,12 @@ public class DialogueManager : MonoBehaviour
             int visibleCount = counter % (totalVisibleCharacters + 1);
             dialogueText.maxVisibleCharacters = visibleCount;
             if (visibleCount >= totalVisibleCharacters) {
-                yield return new WaitForSeconds (1f);
+                yield return Timing.WaitForSeconds(1f);
                 // yield return null;
                 break;
             }
             counter++;
-            yield return new WaitForSeconds (1 / typingSpeed);
+            yield return Timing.WaitForSeconds(1 / typingSpeed);
         }
     }
 }

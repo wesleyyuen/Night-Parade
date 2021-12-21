@@ -11,7 +11,7 @@ public class EnemyData
 
     // Patrol
     public float patrolSpeed;
-    public float patrolOriginOffset;
+    public float patrolDistance;
 
     // Aggression
     public int damageAmount;

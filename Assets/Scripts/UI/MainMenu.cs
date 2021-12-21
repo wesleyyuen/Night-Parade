@@ -27,12 +27,12 @@ public class MainMenu : MonoBehaviour
 
         PlayerData playerData = new PlayerData(
             saveFileIndex: 1,
-            maxHealth: Constant.startingHearts * 4,
-            maxStamina: Constant.startingStamina,
+            maxHealth: Constant.STARTING_HEARTS * 4,
+            maxStamina: Constant.STARTING_STAMINA,
             coinsOnHand: 0,
             lastSavePoint: 0,
             playTime: 0f,
-            savedInks: new bool[Constant.numOfAreas],
+            savedInks: new bool[Constant.NUMBER_OF_AREAS],
             savedOrbs: 0,
             sceneData: scenes 
         );

@@ -13,22 +13,22 @@ public class SceneTransition : MonoBehaviour
 
     public void StartSceneTransitionIn()
     {
-        StartCoroutine(SceneTransitionInCoroutine());
+        StartCoroutine(_SceneTransitionInCoroutine());
     }
 
     public void StartSceneTransitionOut(string levelToLoad, ref PlayerData playerVariables)
     {
-        StartCoroutine(SceneTransitionOutCoroutine(levelToLoad, playerVariables));
+        StartCoroutine(_SceneTransitionOutCoroutine(levelToLoad, playerVariables));
     }
 
-    protected virtual IEnumerator SceneTransitionInCoroutine()
+    protected virtual IEnumerator _SceneTransitionInCoroutine()
     {
         _animator.speed = 1f/_transitionTime;
         _animator.SetTrigger("Start");
         yield return new WaitForSecondsRealtime(_transitionTime);
     }
 
-    protected virtual IEnumerator SceneTransitionOutCoroutine(string levelToLoad, PlayerData playerVariables)
+    protected virtual IEnumerator _SceneTransitionOutCoroutine(string levelToLoad, PlayerData playerVariables)
     {
         _animator.speed = 1f/_transitionTime;
         _animator.SetTrigger("End");

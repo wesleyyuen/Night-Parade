@@ -9,14 +9,14 @@ public class Constant : MonoBehaviour
         Forest_1
     }
 
-    public static int startingHearts = 3;
-    public static float startingStamina = 3f;
-    public static int numOfAreas = 5;
-    public static int ppu = 8;
+    public static int STARTING_HEARTS = 3;
+    public static float STARTING_STAMINA = 3f;
+    public static int NUMBER_OF_AREAS = 5;
+    public static int PPU = 8;
 
     // Game Feature Flags
-    public static bool hasTimedCombo = false;
-    public static bool hasStamina = false;
-    public static bool stopWhenAttack = true;
-    public static bool stunEnemyAfterAttack = true;
+    public static bool HAS_TIMED_COMBO = false;
+    public static bool HAS_STAMINA = false;
+    public static bool STOP_WHEN_ATTACK = true;
+    public static bool ATTACK_STUNS_ENEMY = true;
 }

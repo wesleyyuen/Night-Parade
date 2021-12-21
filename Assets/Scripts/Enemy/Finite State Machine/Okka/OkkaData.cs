@@ -9,12 +9,12 @@ public class OkkaData : EnemyData
         currentHealth = maxHealth;
 
         // Patrol
-        patrolSpeed = 1.75f;
-        patrolOriginOffset = 0.1f;
+        patrolSpeed = 1.5f;
+        patrolDistance = 8f;
 
         // Aggression
         aggroDistance = 10f;
-        aggroMovementSpeed = 4.75f;
+        aggroMovementSpeed = 5f;
         lineOfSightDistance = 15f;
         lineOfSightAngle = 25f;
         lineOfSightOriginOffset = new Vector2(0f, 0.4f);
@@ -22,7 +22,7 @@ public class OkkaData : EnemyData
         timeFrozenAfterLOSBreak = 0.5f;
 
         // Attack
-        damageAmount = 5;
+        damageAmount = 1;
         attackDistance = 3f;
         attackForce = 25f;
         attackChargeTime = 0.45f;

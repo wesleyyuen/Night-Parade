@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using MEC;
 
 public class SoundManager : MonoBehaviour
 {
@@ -46,7 +48,34 @@ public class SoundManager : MonoBehaviour
         if (sound.clip.Length > 1) { // Randomly choose a clip to play
             sound.source.clip = sound.clip[UnityEngine.Random.Range(0, sound.clip.Length)];
         }
+
         sound.source.Play();
+    }
+
+    public void FadeIn(string name, float fadeDuration)
+    {
+        Sound sound = Array.Find(sounds, s => s.name == name);
+        if (sound == null) {
+            Debug.Log("Sound " + name + " Not found in SoundManager Array");
+            return;
+        }
+
+        if (sound.clip.Length > 1) { // Randomly choose a clip to play
+            sound.source.clip = sound.clip[UnityEngine.Random.Range(0, sound.clip.Length)];
+        }
+
+        Timing.RunCoroutine(_FadeVolume(sound, 0f, sound.source.volume, fadeDuration));
+        sound.source.Play();
+    }
+
+    IEnumerator<float> _FadeVolume(Sound sound, float from, float to, float duration)
+    {
+        sound.source.volume = from;
+        for (float t = 0f; t < 1f; t += Time.deltaTime / duration) {
+            sound.source.volume = Mathf.SmoothStep(from, to, t);
+            yield return Timing.WaitForOneFrame;
+        }
+        sound.source.volume = to;
     }
 
     public void PauseAll()

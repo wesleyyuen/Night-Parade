@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using MEC;
 
-public class WakizashiAttackState : IWeaponState
+public sealed class WakizashiAttackState : IWeaponState, IBindInput
 {
+    WakizashiFSM _fsm;
+    PlayerMovement _playerMovement;
+    PlayerAnimations _playerAnimation;
+    PlayerAbilityController _abilityController;
     const int _kMaxAirAttack = 2; // Light attack as 1; Heavy attack as 2
     const int _kMaxComboCount = 2;
     int _currentAttackCount;
@@ -13,21 +18,35 @@ public class WakizashiAttackState : IWeaponState
     bool _hasNextBlock;
     bool _playedMissSFX;
     HashSet<int> _enemiesAttackedIDs;
-    WakizashiFSM _fsm;
 
-    public void Awake(WeaponFSM fsm)
+    public WakizashiAttackState(WakizashiFSM fsm)
     {
-        _fsm = (WakizashiFSM) fsm;
-        fsm.inputActions.Player.Attack.started += OnNextAttack;
-        fsm.inputActions.Player.Attack.performed += OnNextAttack;
-        fsm.inputActions.Player.Block.started += OnNextBlock;
+        _fsm = fsm;
+        _playerMovement = fsm.GetComponentInParent<PlayerMovement>();
+        _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
     }
 
-    public void EnterState(WeaponFSM fsm)
+    public void BindInput()
     {
-        if (Constant.stopWhenAttack) fsm.movement.EnablePlayerMovement(false);
-        fsm.EnablePlayerBlocking(false);
-        fsm.attackCooldownTimer = fsm.weaponData.attackCooldown;
+        _fsm.InputActions.Player.Attack.started += OnNextAttack;
+        _fsm.InputActions.Player.Attack.performed += OnNextAttack;
+        _fsm.InputActions.Player.Block.started += OnNextBlock;
+    }
+
+    public void UnbindInput()
+    {
+        _fsm.InputActions.Player.Attack.started -= OnNextAttack;
+        _fsm.InputActions.Player.Attack.performed -= OnNextAttack;
+        _fsm.InputActions.Player.Block.started -= OnNextBlock;
+    }
+
+    public void EnterState()
+    {
+        if (Constant.STOP_WHEN_ATTACK)
+            _playerMovement.EnablePlayerMovement(false);
+
+        _fsm.EnablePlayerBlocking(false);
+        _fsm.attackCooldownTimer = _fsm.weaponData.attackCooldown;
         _enemiesAttackedIDs = new HashSet<int> ();
         _isListeningForNextAttack = false;
         _hasNextAttack = false;
@@ -36,8 +55,8 @@ public class WakizashiAttackState : IWeaponState
 
         // Begin First Attack
         _currentAttackCount = 1;
-        fsm.animations.SetAttackAnimation(_currentAttackCount);
-        fsm.movement.StepForward(2f);
+        _playerAnimation.SetAttackAnimation(_currentAttackCount);
+        _playerMovement.StepForward(2f);
     }
 
     void OnNextAttack(InputAction.CallbackContext context)
@@ -70,36 +89,35 @@ public class WakizashiAttackState : IWeaponState
 
     void OnChargeAttack()
     {
-        Utility.StaticCoroutine.Start(_fsm.MergeWithOnibi(1f));
+        Timing.RunCoroutine(_fsm._MergeWithOnibi(1f));
     }
 
-    public void Update(WeaponFSM fsm)
+    public void Update()
     {
         // Needed to constantly turn it off to avoid player moving after taking dmg
-        if (Constant.stopWhenAttack) fsm.movement.EnablePlayerMovement(false);
-        fsm.EnablePlayerBlocking(false);
+        if (Constant.STOP_WHEN_ATTACK) _playerMovement.EnablePlayerMovement(false);
+        _fsm.EnablePlayerBlocking(false);
     }
 
-    public void FixedUpdate(WeaponFSM fsm)
+    public void FixedUpdate()
     {
     }
 
-    public void ExitState(WeaponFSM fsm)
+    public void ExitState()
     {
-        fsm.animations.EnablePlayerTurning(true);
-        fsm.EnablePlayerBlocking(true);
-        fsm.animations.SetAttackAnimation(0);
-        fsm.movement.EnablePlayerMovement(true);
+        _playerAnimation.EnablePlayerTurning(true);
+        _fsm.EnablePlayerBlocking(true);
+        _playerAnimation.SetAttackAnimation(0);
+        _playerMovement.EnablePlayerMovement(true);
         _enemiesAttackedIDs.Clear();
     }
 
-    // Called from Animation frames
     public void Attack(bool isListeningForNextAttack)
     {
         _isListeningForNextAttack = isListeningForNextAttack;
 
         // Get Colliders of enemies hit
-        Vector2 attackPoint = new Vector2((_fsm.animations.GetPlayerScale().x > 0 ? 1f : -1f) * _fsm.weaponData.attackPoint.x, _fsm.weaponData.attackPoint.y);
+        Vector2 attackPoint = new Vector2((_playerAnimation.IsFacingRight() ? 1f : -1f) * _fsm.weaponData.attackPoint.x, _fsm.weaponData.attackPoint.y);
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll (_fsm.player.transform.TransformPoint(attackPoint), _fsm.weaponData.attackRange, 360, _fsm.weaponData.enemyLayers);
 
         // No Hits
@@ -111,14 +129,71 @@ public class WakizashiAttackState : IWeaponState
             return;
         }
 
-        // 1+ Hits
+        if (DealDamage(hitEnemies)) {           
+            // Utility.FreezePlayer(0.05f);
+            _playerMovement.ApplyKnockback(new Vector2(_playerAnimation.IsFacingRight() ? -1f : 1f, 0f), _fsm.weaponData.horizontalKnockBackForce, 0.05f);
+            CameraShake.Instance.ShakeCamera(1f, 0.1f);
+            _fsm.PlayWeaponHitSFX();
+        }
+    }
+
+    public void Upthrust(bool isListeningForNextAttack)
+    {
+        _isListeningForNextAttack = isListeningForNextAttack;
+
+        // Get Colliders of enemies hit
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(_fsm.player.transform.TransformPoint(_fsm.weaponData.upthrustPoint), _fsm.weaponData.upthrustRange, 360, _fsm.weaponData.enemyLayers);
+
+        // No Hits
+        if (hitEnemies.Length == 0) {
+            if (!_playedMissSFX && _enemiesAttackedIDs.Count == 0) {
+                _fsm.PlayWeaponMissSFX();
+                _playedMissSFX = true;
+            }
+            return;
+        }
+
+        if (DealDamage(hitEnemies)) {           
+            // Utility.FreezePlayer(0.05f);
+            _playerMovement.ApplyKnockback(Vector2.down, _fsm.weaponData.upthrustKnockBackForce, 0.05f);
+            CameraShake.Instance.ShakeCamera(1f, 0.1f);
+            _fsm.PlayWeaponHitSFX();
+        }
+    }
+
+    public void Downthrust(bool isListeningForNextAttack)
+    {
+        _isListeningForNextAttack = isListeningForNextAttack;
+
+        // Get Colliders of enemies hit
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll (_fsm.player.transform.TransformPoint(_fsm.weaponData.downthrustPoint), _fsm.weaponData.downthrustRange, 360, _fsm.weaponData.enemyLayers);
+
+        // No Hits
+        if (hitEnemies.Length == 0) {
+            if (!_playedMissSFX && _enemiesAttackedIDs.Count == 0) {
+                _fsm.PlayWeaponMissSFX();
+                _playedMissSFX = true;
+            }
+            return;
+        }
+
+        if (DealDamage(hitEnemies)) {           
+            // Utility.FreezePlayer(0.05f);
+            _playerMovement.ApplyKnockback(-Vector2.down, _fsm.weaponData.downthrustKnockBackForce, 0.05f);
+            CameraShake.Instance.ShakeCamera(1f, 0.1f);
+            _fsm.PlayWeaponHitSFX();
+        }
+    }
+
+    bool DealDamage(Collider2D[] hitEnemies)
+    {
         bool attacked = false;
         foreach (Collider2D hit in hitEnemies) {
             // Damage enemy/breakables only ONCE by adding them into list
             if (_enemiesAttackedIDs.Add (hit.gameObject.GetInstanceID ())) {
                 EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
                 if (enemy != null && !enemy.IsDead()) {
-                    enemy.TakeDamage(Constant.hasTimedCombo ? _fsm.weaponData.comboDamage[(_fsm.animations.GetCurrentAttackAnimation() % _kMaxComboCount) - 1] : _fsm.weaponData.comboDamage[0]);
+                    enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % _kMaxComboCount) - 1] : _fsm.weaponData.comboDamage[0]);
                     attacked = true;
                 }
 
@@ -130,21 +205,15 @@ public class WakizashiAttackState : IWeaponState
             }
         }
 
-        if (attacked) {           
-            // Utility.FreezePlayer(0.05f);
-            _fsm.movement.ApplyKnockback(new Vector2(-_fsm.animations.GetPlayerScale().x, 0f), 5f, 0.05f);
-            CameraShake.Instance.ShakeCamera(1f, 0.1f);
-            _fsm.PlayWeaponHitSFX();
-        }
+        return attacked;
     }
 
-    // Called from animation frame
     public void EndAttack()
     {
         if (_hasNextAttack) {
             _currentAttackCount = (_currentAttackCount % _kMaxComboCount) + 1;
-            _fsm.animations.SetAttackAnimation(_currentAttackCount);
-            _fsm.movement.StepForward(2f);
+            _playerAnimation.SetAttackAnimation(_currentAttackCount);
+            _playerMovement.StepForward(2f);
             _hasNextAttack = false;
             _playedMissSFX = false;
         }

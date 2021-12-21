@@ -9809,7 +9809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1667546716646033129}
   - component: {fileID: 3080609365071056236}
-  - component: {fileID: 2018405271310305726}
+  - component: {fileID: 3707804032834346666}
   - component: {fileID: 1123068385866560224}
   - component: {fileID: 7021459023621631144}
   - component: {fileID: 435887319452262854}
@@ -9865,8 +9865,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!70 &2018405271310305726
-CapsuleCollider2D:
+--- !u!61 &3707804032834346666
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9879,8 +9879,18 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.12, y: 1.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
   m_Size: {x: 0.75, y: 3}
-  m_Direction: 0
+  m_EdgeRadius: 0
 --- !u!114 &1123068385866560224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9894,6 +9904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderRadius: 0.1
+  _oneFriction: {fileID: 6200000, guid: b26e62300a67eb0409c0a54a07a367fb, type: 2}
 --- !u!114 &7021459023621631144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9906,8 +9917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3b4e6a7ff15f5d45a257882374bcd1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _oneFriction: {fileID: 6200000, guid: b26e62300a67eb0409c0a54a07a367fb, type: 2}
-  _movementSpeed: 11.5
+  _movementSpeed: 12
 --- !u!114 &435887319452262854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9934,9 +9944,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInvulnerable: 0
-  _damageKnockBackMultiplier: 25
-  _cameraShakeMultiplier: 2
-  _damageCameraShakeTimer: 0.15
+  _damagedKnockBackForce: 30
+  _cameraShakeMultiplier: 2.25
+  _damageCameraShakeTimer: 0.075
 --- !u!114 &7981419914986359139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10041,11 +10051,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _jumpVelocity: 45
-  _fallMultiplier: 0.65
+  _fallMultiplier: 0.6
   _lowJumpMultiplier: 4
-  _jumpBufferTime: 0.175
+  _jumpBufferTime: 0.15
   _coyoteTime: 0.125
-  _drag: 1
 --- !u!114 &4335142053317917803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10059,10 +10068,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDashing: 0
-  dashSpeed: 100
+  dashSpeed: 150
   dashTime: 0.1
-  cooldown: 0.5
-  freezeDuration: 0.075
+  cooldown: 0.6
+  freezeDuration: 0.085
   afterimage: {fileID: 2635836603961338682}
 --- !u!114 &2538564034545995052
 MonoBehaviour:
@@ -10090,8 +10099,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcafdf852bc352e43a3362e739969c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpDirection: {x: 15, y: 25}
-  movementDisableTime: 0.25
+  _jumpDirection: {x: 1, y: 1}
+  _jumpForce: 50
+  _movementDisableTime: 0.25
 --- !u!1 &8023338476404892031
 GameObject:
   m_ObjectHideFlags: 0
@@ -10375,9 +10385,9 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     startSize:
       serializedVersion: 2
-      minMaxState: 3
+      minMaxState: 0
       scalar: 0.125
-      minScalar: 0.0625
+      minScalar: 0.125
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -15031,7 +15041,7 @@ MonoBehaviour:
   mode: 2
   rb: {fileID: 0}
   rb2D: {fileID: 3080609365071056236}
-  maxSpeed: 13
+  maxSpeed: 200
   remapping:
     serializedVersion: 2
     m_Curve:
@@ -15072,7 +15082,7 @@ MonoBehaviour:
   _flashColors:
   - {r: 1, g: 1, b: 1, a: 0}
   _flashDuration: 0
-  _spriteRenderer: {fileID: 523948541131142908}
+  _spriteRenderer: {fileID: 4692354220161643880}
 --- !u!1 &8842165004552972492
 GameObject:
   m_ObjectHideFlags: 0
@@ -15369,6 +15379,21 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2821975483266701963, guid: 993dbb74f711601488c1cb985227859d,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821975483266701963, guid: 993dbb74f711601488c1cb985227859d,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2821975483266701963, guid: 993dbb74f711601488c1cb985227859d,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -437451589
+      objectReference: {fileID: 0}
     - target: {fileID: 4097896088330497264, guid: 993dbb74f711601488c1cb985227859d,
         type: 3}
       propertyPath: m_RootOrder
@@ -15437,9 +15462,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2336483839390362743}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &523948541131142908 stripped
+--- !u!212 &4692354220161643880 stripped
 SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 2821975483266701963, guid: 993dbb74f711601488c1cb985227859d,
+  m_CorrespondingSourceObject: {fileID: 7021759299941013791, guid: 993dbb74f711601488c1cb985227859d,
     type: 3}
   m_PrefabInstance: {fileID: 2336483839390362743}
   m_PrefabAsset: {fileID: 0}

@@ -12,11 +12,23 @@ public class WakizashiData : WeaponData
         comboDamage[0] = 5f;
         comboDamage[1] = 10f;
         comboDamage[2] = 15f;
-        attackPoint = new Vector2(2.25f, 1.45f);
-        attackRange = new Vector2(3f, 2.85f);
         attackCooldown = 0.2f;
         enemyLayers = LayerMask.GetMask("Enemies", "Breakables");
-        horizontalKnockBackForce = 3f;
+
+        // Hoirizontal
+        attackPoint = new Vector2(2.25f, 1.45f);
+        attackRange = new Vector2(3f, 2.85f);
+        horizontalKnockBackForce = 5f;
+
+        // Upthrust
+        upthrustPoint = new Vector2(0f, 4.25f);
+        upthrustRange = new Vector2(3f, 2.85f);
+        upthrustKnockBackForce = 5f;
+
+        // Downthrust
+        downthrustPoint = new Vector2(0f, -1.35f);
+        downthrustRange = new Vector2(3f, 3f);
+        downthrustKnockBackForce = 90f;
 
         // Parry
         parryWindow = 0.15f;
@@ -28,6 +40,10 @@ public class WakizashiData : WeaponData
         blockCooldown = 0.5f;
         blockMinDuration = 0.5f;  // parryWindow < blockMinDuration
         blockKnockback = 25f;
+
+        // Throw
+        throwForce = 60f;
+        throwDamage = 10f;
 
         // Audio
         missSFX = "Wakizashi_Miss";

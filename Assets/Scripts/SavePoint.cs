@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem;
-
-public class SavePoint : DialogueTrigger
+﻿public class SavePoint : DialogueTrigger
 {
-    protected override void OnTriggerDialogue(InputAction.CallbackContext context)
+    protected override void OnTriggerDialogue()
     {
         if (_isInRange && !DialogueManager.Instance.isTalking) {
             // Fully Heal player

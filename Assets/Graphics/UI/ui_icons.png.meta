@@ -20,6 +20,12 @@ TextureImporter:
   - first:
       213: -4380278413240271071
     second: mon
+  - first:
+      213: 3718472063753370142
+    second: ui_icons_6
+  - first:
+      213: 1544850953348435063
+    second: ui_icons_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -114,7 +120,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 26
-        width: 6
+        width: 8
         height: 6
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -133,9 +139,9 @@ TextureImporter:
       name: heart_three_quarters
       rect:
         serializedVersion: 2
-        x: 6
+        x: 8
         y: 26
-        width: 6
+        width: 8
         height: 6
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -154,9 +160,9 @@ TextureImporter:
       name: heart_half
       rect:
         serializedVersion: 2
-        x: 12
+        x: 16
         y: 26
-        width: 6
+        width: 8
         height: 6
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -175,9 +181,9 @@ TextureImporter:
       name: heart_quarter
       rect:
         serializedVersion: 2
-        x: 18
+        x: 24
         y: 26
-        width: 6
+        width: 8
         height: 6
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -196,9 +202,9 @@ TextureImporter:
       name: heart_empty
       rect:
         serializedVersion: 2
-        x: 24
-        y: 26
-        width: 6
+        x: 0
+        y: 20
+        width: 8
         height: 6
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -217,12 +223,12 @@ TextureImporter:
       name: mon
       rect:
         serializedVersion: 2
-        x: 0
+        x: 8
         y: 20
-        width: 6
+        width: 5
         height: 6
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

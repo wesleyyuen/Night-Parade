@@ -4,36 +4,43 @@ using UnityEngine;
 
 public class OkkaDamagedState : IEnemyState
 {
+    OkkaFSM _fsm;
     float _timer;
-    public void EnterState(EnemyFSM fsm)
+
+    public OkkaDamagedState(OkkaFSM fsm)
+    {
+        _fsm = fsm;
+    }
+    
+    public void EnterState()
     {
         _timer = 0;
 
-        fsm.GFX.SetAnimatorBoolean("IsPatrolling", false);
+        _fsm.GFX.SetAnimatorBoolean("IsPatrolling", false);
 
         // Play Damaged Effect
-        fsm.GFX.PlayDamagedEffect();
+        _fsm.GFX.PlayDamagedEffect();
 
         // Apply Knock back
-        bool playerOnLeft = fsm.rb.position.x > fsm.player.transform.position.x;
-        fsm.ApplyForce(playerOnLeft ? Vector2.right : Vector2.left, fsm.enemyData.knockBackOnTakingDamageForce, fsm.enemyData.timeFrozenAfterTakingDamage);
+        bool playerOnLeft = _fsm.rb.position.x > _fsm.player.transform.position.x;
+        _fsm.ApplyForce(playerOnLeft ? Vector2.right : Vector2.left, _fsm.enemyData.knockBackOnTakingDamageForce, _fsm.enemyData.timeFrozenAfterTakingDamage);
     }
 
-    public void Update(EnemyFSM fsm)
+    public void Update()
     {
         _timer += Time.deltaTime;
 
-        if (_timer >= fsm.enemyData.timeFrozenAfterTakingDamage) {
-            if (fsm.states[EnemyFSM.StateType.AggroState] != null)
-                fsm.SetState(fsm.states[EnemyFSM.StateType.AggroState]);
+        if (_timer >= _fsm.enemyData.timeFrozenAfterTakingDamage) {
+            if (_fsm.states[EnemyFSM.StateType.AggroState] != null)
+                _fsm.SetState(_fsm.states[EnemyFSM.StateType.AggroState]);
             else
-                fsm.SetState(fsm.states[EnemyFSM.StateType.PatrolState]);
+                _fsm.SetState(_fsm.states[EnemyFSM.StateType.PatrolState]);
         }
     }
 
-    public void FixedUpdate(EnemyFSM fsm) {}
-    public void OnCollisionEnter2D(EnemyFSM fsm, Collision2D collision) {}
-    public void OnCollisionStay2D(EnemyFSM fsm, Collision2D collision) {}
-    public void OnCollisionExit2D(EnemyFSM fsm, Collision2D collision) {}
-    public void ExitState(EnemyFSM fsm) {}
+    public void FixedUpdate() {}
+    public void OnCollisionEnter2D(Collision2D collision) {}
+    public void OnCollisionStay2D(Collision2D collision) {}
+    public void OnCollisionExit2D(Collision2D collision) {}
+    public void ExitState() {}
 }

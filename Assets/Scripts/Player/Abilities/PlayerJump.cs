@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using MEC;
 
 public class PlayerJump : MonoBehaviour
 {
@@ -10,7 +10,6 @@ public class PlayerJump : MonoBehaviour
     PlayerPlatformCollision _coll;
     PlayerAnimations _anim;
     PlayerMovement _movement;
-    InputMaster _input;
 
     [Header ("Jumping Settings")]
     [SerializeField] float _jumpVelocity;
@@ -18,27 +17,31 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] float _lowJumpMultiplier;
     [SerializeField] float _jumpBufferTime;
     [SerializeField] float _coyoteTime;
-    [SerializeField] float _drag;
     bool _canJump = true;
     float _jumpBuffer;
     float _coyoteTimer;
     bool _startsJumping;
 
-    void Start()
+    void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
         _coll = transform.parent.gameObject.GetComponent<PlayerPlatformCollision>();
         _anim = transform.parent.gameObject.GetComponent<PlayerAnimations>();
         _movement = transform.parent.gameObject.GetComponent<PlayerMovement>();
         _canJump = true;
-
-        // Handle Inputs
-        _input = new InputMaster();
-        _input.Player.Enable();
-        _input.Player.Jump.started += OnJump;
-        _input.Player.Jump.canceled += OnJump;
     }
 
+    void OnEnable()
+    {
+        InputManager.Event_Input_Jump += OnJump;
+        InputManager.Event_Input_JumpCanceled += OnJumpCanceled;
+    }
+
+    void OnDisable()
+    {
+        InputManager.Event_Input_Jump -= OnJump;
+        InputManager.Event_Input_JumpCanceled -= OnJumpCanceled;
+    }
 
     public void EnablePlayerJump(bool enable, float time = 0f)
     {
@@ -47,17 +50,18 @@ public class PlayerJump : MonoBehaviour
         if (time == 0f)
             _canJump = enable;
         else
-            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _canJump = e, time, enable, !enable));
+            Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _canJump = e, time, enable, !enable));
     }
 
-    void OnJump(InputAction.CallbackContext context)
+    void OnJump()
     {
-        if (context.started) {
-            _jumpBuffer = _jumpBufferTime;
-            _startsJumping = true;
-        } else if (context.canceled) {
-            _coyoteTimer = 0f;
-        }
+        _jumpBuffer = _jumpBufferTime;
+        _startsJumping = true;
+    }
+
+    void OnJumpCanceled()
+    {
+        _coyoteTimer = 0f;
     }
 
     void Update()
@@ -66,11 +70,10 @@ public class PlayerJump : MonoBehaviour
 
         // Coyote Time - allow late-input of jumps after touching the ground
         if (_coll.onGround) {
-            _rb.drag = 1f;
             _coyoteTimer = _coyoteTime;
-        }
-        else
+        } else {
             _coyoteTimer -= Time.deltaTime;
+        }
 
         // Jump Buffering - allow pre-input of jumps before touching the ground
         _jumpBuffer -= Time.deltaTime;
@@ -82,7 +85,6 @@ public class PlayerJump : MonoBehaviour
 
         if (_startsJumping && _jumpBuffer > 0f && _coyoteTimer > 0f) {
             _startsJumping = false;
-            _rb.drag = _drag;
             _jumpBuffer = 0f;
             
             _rb.velocity = new Vector2(_rb.velocity.x, 0);
@@ -95,9 +97,8 @@ public class PlayerJump : MonoBehaviour
         // Low Jump
         if (_rb.velocity.y < 0) {
             _rb.velocity += Vector2.up * Physics2D.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
-        } else if (_rb.velocity.y > 0 && _input.Player.Jump.ReadValue<float>() <= 0.5f) {
+        } else if (_rb.velocity.y > 0 && !InputManager.Instance.HasJumpInput()) {
             _rb.velocity += Vector2.up * Physics2D.gravity.y * (_lowJumpMultiplier - 1) * Time.deltaTime;
-            _coyoteTimer = 0f;
         }
     }
 }

@@ -3,29 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class WakizashiBlockState : IWeaponState
+public sealed class WakizashiBlockState : IWeaponState, IBindInput
 {
-    // LayerMask layers;
+    WakizashiFSM _fsm;
+    PlayerMovement _playerMovement;
+    PlayerAnimations _playerAnimation;
+    PlayerAbilityController _abilityController;
     bool _wasBlocking;
     bool _isBlockReleasedBeforeMinDuration;
-    WakizashiFSM _fsm;
-    PlayerAnimations _player;
 
-    public void Awake(WeaponFSM fsm)
+    public WakizashiBlockState(WakizashiFSM fsm)
     {
-        _fsm = (WakizashiFSM) fsm;
-        fsm.inputActions.Player.Block.canceled += OnReleaseBlock;
+        _fsm = fsm;
+        _abilityController = fsm.GetComponentInParent<PlayerAbilityController>();
+        _playerMovement = fsm.GetComponentInParent<PlayerMovement>();
+        _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
     }
 
-    public void EnterState(WeaponFSM fsm)
+    public void BindInput()
     {
-        _player = fsm.player.GetComponent<PlayerAnimations>();
+        _fsm.InputActions.Player.Block.canceled += OnReleaseBlock;
+    }
+
+    public void UnbindInput()
+    {
+        _fsm.InputActions.Player.Block.canceled -= OnReleaseBlock;
+    }
+
+    public void EnterState()
+    {
         _isBlockReleasedBeforeMinDuration = false;
         _wasBlocking = false;
         
-        fsm.animations.SetBlockAnimation(true);
-        fsm.animations.EnablePlayerTurning(false);
-        fsm.movement.EnablePlayerMovement(false);
+        _playerAnimation.SetBlockAnimation(true);
+        _playerAnimation.EnablePlayerTurning(false);
+        _playerMovement.EnablePlayerMovement(false);
     }
 
     void OnReleaseBlock(InputAction.CallbackContext context)
@@ -35,56 +47,58 @@ public class WakizashiBlockState : IWeaponState
             _fsm.SetState(_fsm.states[WeaponFSM.StateType.IdleState]);
     }
 
-    public void Update(WeaponFSM fsm)
+    public void Update()
     {
-        fsm.currentBlockTimer += Time.deltaTime;
-        fsm.abilityController.UseStamina();
+        _fsm.currentBlockTimer += Time.deltaTime;
+        _abilityController.UseStamina();
 
-        if (fsm.inputActions.Player.Block.ReadValue<float>() <= 0.5f && !_isBlockReleasedBeforeMinDuration && fsm.currentBlockTimer < fsm.weaponData.blockMinDuration) {
+        float xScale = _playerAnimation.IsFacingRight() ? 1f : -1f;
+
+        if (_fsm.InputActions.Player.Block.ReadValue<float>() <= 0.5f && !_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer < _fsm.weaponData.blockMinDuration) {
             _isBlockReleasedBeforeMinDuration = true;
         }
 
-        if (fsm.abilityController.currStamina <= 0
-            || (_isBlockReleasedBeforeMinDuration && fsm.currentBlockTimer >= fsm.weaponData.blockMinDuration)) {
-            fsm.SetState(fsm.states[WeaponFSM.StateType.IdleState]);
+        if (_abilityController.currStamina <= 0
+            || (_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)) {
+            _fsm.SetState(_fsm.states[WeaponFSM.StateType.IdleState]);
         }
 
-        Vector2 blockPoint = (Vector2)fsm.player.transform.TransformPoint(new Vector3(_player.GetPlayerScale().x * fsm.weaponData.blockPoint.x, fsm.weaponData.blockPoint.y));
-        Collider2D[] blocked = Physics2D.OverlapAreaAll(blockPoint + new Vector2(-fsm.weaponData.blockRange.x/2, fsm.weaponData.blockRange.y/2),
-                                                        blockPoint + new Vector2(fsm.weaponData.blockRange.x/2, -fsm.weaponData.blockRange.y/2),
+        Vector2 blockPoint = (Vector2)_fsm.player.transform.TransformPoint(new Vector3(xScale * _fsm.weaponData.blockPoint.x, _fsm.weaponData.blockPoint.y));
+        Collider2D[] blocked = Physics2D.OverlapAreaAll(blockPoint + new Vector2(-_fsm.weaponData.blockRange.x/2, _fsm.weaponData.blockRange.y/2),
+                                                        blockPoint + new Vector2(_fsm.weaponData.blockRange.x/2, -_fsm.weaponData.blockRange.y/2),
                                                         LayerMask.GetMask("Enemies"));
-        fsm.hasBlocked = false;
+        _fsm.hasBlocked = false;
         if (blocked.Length == 0) {
-            _wasBlocking = fsm.hasBlocked;
+            _wasBlocking = _fsm.hasBlocked;
             return;
         } else
-            fsm.hasBlocked = true;
+            _fsm.hasBlocked = true;
 
         foreach (Collider2D hit in blocked) {
             EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
             if (enemy != null && !enemy.IsDead()) {
-                Vector2 dir = new Vector2(_player.GetPlayerScale().x, 0f);
+                Vector2 dir = new Vector2(xScale, 0f);
                 enemy.ApplyForce(dir, enemy.enemyData.knockBackOnBlockedForce, enemy.enemyData.timeStunnedAfterBlocked);
                 enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterBlocked);
             }
         }
 
-        if (!_wasBlocking && fsm.hasBlocked) {
-            Vector2 dir = new Vector2(_player.GetPlayerScale().x, 0f);
-            fsm.movement.ApplyKnockback(-dir , fsm.weaponData.blockKnockback, 0.05f);
+        if (!_wasBlocking && _fsm.hasBlocked) {
+            Vector2 dir = new Vector2(xScale, 0f);
+            _playerMovement.ApplyKnockback(-dir , _fsm.weaponData.blockKnockback, 0.05f);
         }
 
-        _wasBlocking = fsm.hasBlocked;
+        _wasBlocking = _fsm.hasBlocked;
     }
 
-    public void FixedUpdate(WeaponFSM fsm)
+    public void FixedUpdate()
     {
     }
 
-    public void ExitState(WeaponFSM fsm)
+    public void ExitState()
     {
-        fsm.animations.SetBlockAnimation(false);
-        fsm.animations.EnablePlayerTurning(true);
-        fsm.movement.EnablePlayerMovement(true);
+        _playerAnimation.SetBlockAnimation(false);
+        _playerAnimation.EnablePlayerTurning(true);
+        _playerMovement.EnablePlayerMovement(true);
     }
 }

@@ -13,6 +13,9 @@ public class GameMaster : MonoBehaviour
     [SerializeField] bool _enabledTestChamber;
     public string prevScene {get; private set;}
     public string currentScene {get; private set;}
+    public event System.Action Event_GameMasterInitalized;
+    public event System.Action Event_UIIntro;
+    public event System.Action Event_UIOutro;
     bool _isInTestingChamber;
 
     void Awake()
@@ -20,6 +23,7 @@ public class GameMaster : MonoBehaviour
         if (_instance == null) {
             _instance = this;
             DontDestroyOnLoad(gameObject); // Contains all managers
+            DontDestroyOnLoad(GameObject.FindGameObjectWithTag("UICanvas"));
         } else {
             Destroy(gameObject);
         }
@@ -33,6 +37,11 @@ public class GameMaster : MonoBehaviour
             input.Testing.TestingChamber.Enable();
             input.Testing.TestingChamber.started += OnTestingChamber;
         }
+    }
+    
+    void Start()
+    {
+        Event_GameMasterInitalized?.Invoke();
     }
 
     void OnTestingChamber(InputAction.CallbackContext context)
@@ -71,8 +80,7 @@ public class GameMaster : MonoBehaviour
     public void RequestSceneChangeToMainMenu()
     {
         SoundManager.Instance.PauseAll();
-        MonUI.Instance.Outro();
-        HealthUI.Instance.Outro();
+        Event_UIOutro?.Invoke();
         
         PlayerData emptyData = new PlayerData();
         RequestSceneChange(Constant.SceneName.Main_Menu.ToString(), ref emptyData);
@@ -88,13 +96,9 @@ public class GameMaster : MonoBehaviour
         Cursor.lockState = boolean ? CursorLockMode.Locked : CursorLockMode.Confined;
 
         if (boolean) {
-            HealthUI.Instance.Intro();
-            StaminaUI.Instance.Intro();
-            MonUI.Instance.Intro();
+            Event_UIIntro?.Invoke();
         } else {
-            HealthUI.Instance.Outro();
-            StaminaUI.Instance.Outro();
-            MonUI.Instance.Outro();
+            Event_UIOutro?.Invoke();
         }
 
         GameObject dialogueUI = GameObject.FindGameObjectWithTag("DialogueUI");

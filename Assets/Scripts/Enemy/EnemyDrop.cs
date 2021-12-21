@@ -19,7 +19,7 @@ public class EnemyDrop : MonoBehaviour
         if (Random.value > 1 - coinsDropPercent) {
             for (int i = 0; i < numOfCoinsDrop; i++) {
                 GameObject coin = Instantiate(mon, gameObject.transform.position + (Vector3) spawnPositionOffset, Quaternion.identity);
-                coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x * Random.Range(-1, 1), force.y));
+                coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x * Random.Range(-1, 1), force.y * Random.Range(0.2f, 1)));
             }
         }
 
@@ -27,12 +27,11 @@ public class EnemyDrop : MonoBehaviour
         if (Random.value > 1 - heartDropPercent) {
             for (int i = 0; i < numOfHeartsDrop; i++) {
                 GameObject health = Instantiate(heart, gameObject.transform.position + (Vector3) spawnPositionOffset, Quaternion.identity);
-                health.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x * Random.Range(-1, 1), force.y));
+                health.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x * Random.Range(-1, 1), force.y * Random.Range(0.2f, 1)));
             }
         }
 
         // Special Drop for Bosses, null for normal enemies
-        // TODO: Add animation/late spawn via coroutine
         if (specialDrop != null) {
             Instantiate (specialDrop, specialDropSpawnPoint.transform.position + (Vector3) spawnPositionOffset, Quaternion.identity);
         }

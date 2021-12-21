@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using MEC;
 
 public class PlayerDash : MonoBehaviour
 {
@@ -10,7 +10,6 @@ public class PlayerDash : MonoBehaviour
     PlayerMovement _movement;
     PlayerAbilityController _abilities;
     PlayerPlatformCollision _collision;
-    InputMaster _input;
     [HideInInspector] public bool isDashing;
     [SerializeField] float dashSpeed;
     [SerializeField] float dashTime;
@@ -18,17 +17,11 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] float freezeDuration;
     [SerializeField] ParticleSystem afterimage;
     ParticleSystemRenderer _particleRenderer;
+    const int maxDash = 1;
+    int _dashLeft;
     float _nextDashTime;
-    bool _canDash = true;
 
     void Awake()
-    {
-        // Handle Input
-        _input = new InputMaster();
-        _input.Player.Dash.started += OnDash;
-    }
-
-    void Start()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
         _anim = GetComponentInParent<PlayerAnimations>();
@@ -36,53 +29,47 @@ public class PlayerDash : MonoBehaviour
         _abilities = GetComponentInParent<PlayerAbilityController>();
         _collision = GetComponentInParent<PlayerPlatformCollision>();
         _particleRenderer = afterimage.GetComponent<ParticleSystemRenderer>();
+
+        _dashLeft = maxDash;
     }
 
     void OnEnable()
     {
-        _input.Player.Movement.Enable();
-        _input.Player.Dash.Enable();
+        InputManager.Event_Input_Dash += OnDash;
+        _collision.Event_OnGroundEnter += ResetDash;
     }
 
     void OnDisable()
     {
-        _input.Player.Movement.Disable();
-        _input.Player.Dash.Disable();
+        InputManager.Event_Input_Dash -= OnDash;
+        _collision.Event_OnGroundEnter -= ResetDash;
     }
 
-    void OnDash(InputAction.CallbackContext context)
+    void ResetDash()
     {
-        if (enabled && _canDash && Time.time > _nextDashTime) {
-            _nextDashTime = Time.time + cooldown;
-            Vector2 dir = _input.Player.Movement.ReadValue<Vector2>();
-            if (dir == Vector2.zero)
-                dir = -_anim.GetPlayerScale().x * Vector2.left;
-            StartCoroutine(Dash(dir));
+        _dashLeft = maxDash;
+    }
+
+    void OnDash()
+    {
+        if (enabled && !PauseMenu.isPuased && Time.time > _nextDashTime) {
+            if (_dashLeft > 0) {
+                if (!_collision.onGround) _dashLeft--;
+                _nextDashTime = Time.time + cooldown;
+                Vector2 dir = _anim.IsFacingRight() ? -Vector2.left : Vector2.left;
+                StartCoroutine(_Dash(dir));
+            }
         }
     }
 
-    IEnumerator Dash(Vector2 dir)
+    IEnumerator _Dash(Vector2 dir)
     {
         // Pre-Dash Freeze Effect
         _anim.SetJumpFallAnimation();
         _movement.FreezePlayerPosition(freezeDuration);
         yield return new WaitForSeconds(freezeDuration);
 
-        // Actually Dash
-        isDashing = true;
-
-        // Effects
-        _particleRenderer.flip = new Vector3(dir.x > 0 ? 0f : 1f, 0f, 0f);
-        afterimage.Play();
-
-        _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, false);
-        _movement.LetRigidbodyMoveForSeconds(dashTime + freezeDuration);
-        _rb.drag = dashSpeed * 0.1f;
-        _rb.gravityScale = 0;
-        _rb.velocity = Vector2.zero;
-        _rb.angularVelocity = 0f;
-        _rb.velocity += dir.normalized * dashSpeed;
-        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemies"), true);
+        ActuallyDash(dir);
 
         yield return new WaitForSeconds(dashTime);
 
@@ -94,5 +81,24 @@ public class PlayerDash : MonoBehaviour
         _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, true);
         _rb.drag = 1f;
         _rb.gravityScale = 1;
+    }
+
+    void ActuallyDash(Vector2 dir)
+    {
+        isDashing = true;
+
+        // Effects
+        _particleRenderer.flip = new Vector3(dir.x > 0 ? 0f : 1f, 0f, 0f);
+        afterimage.Play();
+
+        // Movement
+        _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, false);
+        _movement.LetRigidbodyMoveForSeconds(dashTime + freezeDuration);
+        _rb.drag = dashSpeed * 0.1f;
+        _rb.gravityScale = 0;
+        _rb.velocity = Vector2.zero;
+        _rb.angularVelocity = 0f;
+        _rb.velocity += dir.normalized * dashSpeed;
+        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemies"), true);
     }
 }

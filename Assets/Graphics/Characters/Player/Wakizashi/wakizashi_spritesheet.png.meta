@@ -269,6 +269,39 @@ TextureImporter:
   - first:
       213: -1804011794912196696
     second: wakizashi_attack_8
+  - first:
+      213: -262113945469232703
+    second: wakizashi_downthrust_0
+  - first:
+      213: -7957608349330079110
+    second: wakizashi_downthrust_1
+  - first:
+      213: -8545314072725504776
+    second: wakizashi_downthrust_2
+  - first:
+      213: 6116966411346893633
+    second: wakizashi_downthrust_3
+  - first:
+      213: -665850589715031560
+    second: wakizashi_downthrust_4
+  - first:
+      213: -6676710624034080966
+    second: wakizashi_upthrust_0
+  - first:
+      213: 5510627537538255250
+    second: wakizashi_upthrust_1
+  - first:
+      213: -8321031587092376580
+    second: wakizashi_upthrust_2
+  - first:
+      213: 507011403230303599
+    second: wakizashi_upthrust_3
+  - first:
+      213: -1224577042617236010
+    second: wakizashi_upthrust_4
+  - first:
+      213: -346323406881120123
+    second: wakizashi_throw
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -362,11 +395,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 74
+        y: 20
         width: 51
         height: 6
       alignment: 9
-      pivot: {x: 0.37254903, y: -0.8333333}
+      pivot: {x: 0.37254903, y: -0.6666667}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -382,12 +415,12 @@ TextureImporter:
       name: wakizashi_attack_1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 82
+        x: 66
+        y: 103
         width: 55
         height: 24
       alignment: 9
-      pivot: {x: 0.4181818, y: -0.041666668}
+      pivot: {x: 0.4181818, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -404,11 +437,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 64
+        y: 10
         width: 45
         height: 8
       alignment: 9
-      pivot: {x: 0.4888889, y: -2.125}
+      pivot: {x: 0.4888889, y: -2}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -424,12 +457,12 @@ TextureImporter:
       name: wakizashi_attack_3
       rect:
         serializedVersion: 2
-        x: 21
-        y: 37
+        x: 104
+        y: 50
         width: 22
         height: 8
       alignment: 9
-      pivot: {x: 1.0454545, y: -2.125}
+      pivot: {x: 1.0454545, y: -2}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -446,11 +479,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 56
+        y: 28
         width: 35
         height: 6
       alignment: 9
-      pivot: {x: 0.6571429, y: -2.8333333}
+      pivot: {x: 0.6571429, y: -2.6666667}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -471,7 +504,7 @@ TextureImporter:
         width: 63
         height: 22
       alignment: 9
-      pivot: {x: 0.4920635, y: -0.09090909}
+      pivot: {x: 0.4920635, y: -0.045454547}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -487,12 +520,12 @@ TextureImporter:
       name: wakizashi_attack_6
       rect:
         serializedVersion: 2
-        x: 66
-        y: 113
-        width: 48
-        height: 14
-      alignment: 9
-      pivot: {x: 0.39583334, y: 0}
+        x: 1
+        y: 33
+        width: 58
+        height: 11
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -508,12 +541,12 @@ TextureImporter:
       name: wakizashi_attack_7
       rect:
         serializedVersion: 2
-        x: 1
-        y: 10
+        x: 84
+        y: 36
         width: 20
         height: 11
-      alignment: 9
-      pivot: {x: 1, y: -0.09090909}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -530,11 +563,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 74
+        y: 20
         width: 51
         height: 6
       alignment: 9
-      pivot: {x: 0.39215687, y: -1}
+      pivot: {x: 0.39215687, y: -0.8333333}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -550,12 +583,12 @@ TextureImporter:
       name: wakizashi_attack_end_0
       rect:
         serializedVersion: 2
-        x: 44
-        y: 57
+        x: 107
+        y: 20
         width: 10
         height: 5
       alignment: 9
-      pivot: {x: -0.5, y: -0.6}
+      pivot: {x: -0.5, y: -0.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -571,12 +604,12 @@ TextureImporter:
       name: wakizashi_block_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 34
+        x: 94
+        y: 81
         width: 20
         height: 20
       alignment: 9
-      pivot: {x: 0.2, y: -0.35}
+      pivot: {x: 0.2, y: -0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -592,12 +625,12 @@ TextureImporter:
       name: wakizashi_block_1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 34
+        x: 94
+        y: 81
         width: 20
         height: 20
       alignment: 9
-      pivot: {x: 0.2, y: -0.3}
+      pivot: {x: 0.2, y: -0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -610,15 +643,120 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: wakizashi_downthrust_0
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 71
+        width: 8
+        height: 30
+      alignment: 9
+      pivot: {x: -0.25, y: -0.7}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c951ad51c8cc5cf0800000000000000
+      internalID: -262113945469232703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_downthrust_1
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 47
+        width: 26
+        height: 58
+      alignment: 9
+      pivot: {x: 0.53846157, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a728f741e55e09190800000000000000
+      internalID: -7957608349330079110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_downthrust_2
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 56
+        width: 8
+        height: 45
+      alignment: 9
+      pivot: {x: 1.75, y: -0.17777778}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fcbc093022f86980800000000000000
+      internalID: -8545314072725504776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_downthrust_3
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 56
+        width: 20
+        height: 45
+      alignment: 9
+      pivot: {x: 1.25, y: -0.4}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14bd353ca84d3e450800000000000000
+      internalID: 6116966411346893633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_downthrust_4
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 70
+        width: 4
+        height: 17
+      alignment: 9
+      pivot: {x: 2.5, y: -2.1764705}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f91d8e9a6c62c6f0800000000000000
+      internalID: -665850589715031560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: wakizashi_falling_0
       rect:
         serializedVersion: 2
-        x: 45
-        y: 37
+        x: 116
+        y: 123
         width: 7
         height: 4
       alignment: 9
-      pivot: {x: 1.5714285, y: -1.75}
+      pivot: {x: 1.1428572, y: -1.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -634,12 +772,12 @@ TextureImporter:
       name: wakizashi_idle_l_00
       rect:
         serializedVersion: 2
-        x: 108
-        y: 110
+        x: 52
+        y: 28
         width: 7
         height: 7
       alignment: 9
-      pivot: {x: 0.14285715, y: -1.7142857}
+      pivot: {x: 0.14285715, y: -1.5714285}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -655,12 +793,12 @@ TextureImporter:
       name: wakizashi_idle_l_01
       rect:
         serializedVersion: 2
-        x: 108
-        y: 110
+        x: 52
+        y: 28
         width: 7
         height: 7
       alignment: 9
-      pivot: {x: 0.14285715, y: -1.5714285}
+      pivot: {x: 0.14285715, y: -1.4285715}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -677,11 +815,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 117
-        y: 112
+        y: 81
         width: 7
         height: 15
       alignment: 9
-      pivot: {x: 0.71428573, y: -0.13333334}
+      pivot: {x: 0.71428573, y: -0.06666667}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -698,11 +836,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 117
-        y: 112
+        y: 81
         width: 7
         height: 15
       alignment: 9
-      pivot: {x: 0.71428573, y: -0.06666667}
+      pivot: {x: 0.71428573, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -719,11 +857,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 117
-        y: 112
+        y: 81
         width: 7
         height: 15
       alignment: 9
-      pivot: {x: 0.71428573, y: -0.06666667}
+      pivot: {x: 0.71428573, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -739,12 +877,12 @@ TextureImporter:
       name: wakizashi_idle_r_03
       rect:
         serializedVersion: 2
-        x: 23
-        y: 4
+        x: 48
+        y: 11
         width: 12
         height: 12
       alignment: 9
-      pivot: {x: 0.33333334, y: -0.16666667}
+      pivot: {x: 0.33333334, y: -0.083333336}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -760,12 +898,12 @@ TextureImporter:
       name: wakizashi_idle_r_04
       rect:
         serializedVersion: 2
-        x: 23
-        y: 4
+        x: 48
+        y: 11
         width: 12
         height: 12
       alignment: 9
-      pivot: {x: 0.33333334, y: -0.25}
+      pivot: {x: 0.33333334, y: -0.16666667}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -782,11 +920,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 117
-        y: 112
+        y: 81
         width: 7
         height: 15
       alignment: 9
-      pivot: {x: 0.71428573, y: -0.06666667}
+      pivot: {x: 0.71428573, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -803,11 +941,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 117
-        y: 112
+        y: 81
         width: 7
         height: 15
       alignment: 9
-      pivot: {x: 0.71428573, y: -0.06666667}
+      pivot: {x: 0.71428573, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -823,12 +961,12 @@ TextureImporter:
       name: wakizashi_idle_r_07
       rect:
         serializedVersion: 2
-        x: 23
-        y: 4
+        x: 48
+        y: 11
         width: 12
         height: 12
       alignment: 9
-      pivot: {x: 0.33333334, y: -0.16666667}
+      pivot: {x: 0.33333334, y: -0.083333336}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -844,12 +982,12 @@ TextureImporter:
       name: wakizashi_idle_r_08
       rect:
         serializedVersion: 2
-        x: 23
-        y: 4
+        x: 48
+        y: 11
         width: 12
         height: 12
       alignment: 9
-      pivot: {x: 0.33333334, y: -0.25}
+      pivot: {x: 0.33333334, y: -0.16666667}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -866,11 +1004,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 117
-        y: 112
+        y: 81
         width: 7
         height: 15
       alignment: 9
-      pivot: {x: 0.71428573, y: -0.13333334}
+      pivot: {x: 0.71428573, y: -0.06666667}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -887,11 +1025,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 117
-        y: 112
+        y: 81
         width: 7
         height: 15
       alignment: 9
-      pivot: {x: 0.71428573, y: -0.06666667}
+      pivot: {x: 0.71428573, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -908,11 +1046,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 117
-        y: 112
+        y: 81
         width: 7
         height: 15
       alignment: 9
-      pivot: {x: 0.71428573, y: -0.06666667}
+      pivot: {x: 0.71428573, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -928,12 +1066,12 @@ TextureImporter:
       name: wakizashi_idle_r_12
       rect:
         serializedVersion: 2
-        x: 23
-        y: 4
+        x: 48
+        y: 11
         width: 12
         height: 12
       alignment: 9
-      pivot: {x: 0.33333334, y: -0.16666667}
+      pivot: {x: 0.33333334, y: -0.083333336}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -949,12 +1087,12 @@ TextureImporter:
       name: wakizashi_idle_r_13
       rect:
         serializedVersion: 2
-        x: 23
-        y: 4
+        x: 48
+        y: 11
         width: 12
         height: 12
       alignment: 9
-      pivot: {x: 0.33333334, y: -0.25}
+      pivot: {x: 0.33333334, y: -0.16666667}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -970,12 +1108,12 @@ TextureImporter:
       name: wakizashi_jumping_0
       rect:
         serializedVersion: 2
-        x: 66
-        y: 83
+        x: 68
+        y: 18
         width: 19
         height: 7
       alignment: 9
-      pivot: {x: 0.5263158, y: -0.2857143}
+      pivot: {x: 0.42105263, y: -0.5714286}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -991,12 +1129,12 @@ TextureImporter:
       name: wakizashi_run_l_0
       rect:
         serializedVersion: 2
-        x: 45
-        y: 43
+        x: 23
+        y: 102
         width: 8
         height: 4
       alignment: 9
-      pivot: {x: 1.125, y: -2}
+      pivot: {x: 1.125, y: -1.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1012,12 +1150,12 @@ TextureImporter:
       name: wakizashi_run_l_1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 2
+        x: 110
+        y: 70
         width: 12
         height: 6
       alignment: 9
-      pivot: {x: 1.1666666, y: -0.6666667}
+      pivot: {x: 1.1666666, y: -0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1033,12 +1171,12 @@ TextureImporter:
       name: wakizashi_run_l_2
       rect:
         serializedVersion: 2
-        x: 66
-        y: 83
+        x: 68
+        y: 18
         width: 19
         height: 7
       alignment: 9
-      pivot: {x: 0.47368422, y: -0.42857143}
+      pivot: {x: 0.47368422, y: -0.2857143}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1054,12 +1192,12 @@ TextureImporter:
       name: wakizashi_run_l_3
       rect:
         serializedVersion: 2
-        x: 70
-        y: 92
+        x: 99
+        y: 27
         width: 19
         height: 7
       alignment: 9
-      pivot: {x: 0.47368422, y: -0.85714287}
+      pivot: {x: 0.47368422, y: -0.71428573}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1075,12 +1213,12 @@ TextureImporter:
       name: wakizashi_run_l_4
       rect:
         serializedVersion: 2
-        x: 104
-        y: 123
+        x: 26
+        y: 85
         width: 8
         height: 4
       alignment: 9
-      pivot: {x: 1.125, y: -1.75}
+      pivot: {x: 1.125, y: -1.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1096,12 +1234,12 @@ TextureImporter:
       name: wakizashi_run_l_5
       rect:
         serializedVersion: 2
-        x: 48
-        y: 70
+        x: 78
+        y: 27
         width: 19
         height: 7
       alignment: 9
-      pivot: {x: 0.42105263, y: -0.2857143}
+      pivot: {x: 0.42105263, y: -0.14285715}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1117,12 +1255,12 @@ TextureImporter:
       name: wakizashi_run_l_6
       rect:
         serializedVersion: 2
-        x: 48
-        y: 70
+        x: 78
+        y: 27
         width: 19
         height: 7
       alignment: 9
-      pivot: {x: 0.47368422, y: -0.42857143}
+      pivot: {x: 0.47368422, y: -0.2857143}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1138,12 +1276,12 @@ TextureImporter:
       name: wakizashi_run_l_7
       rect:
         serializedVersion: 2
-        x: 28
-        y: 47
+        x: 108
+        y: 36
         width: 11
         height: 6
       alignment: 9
-      pivot: {x: 1.0909091, y: -1.3333334}
+      pivot: {x: 1.0909091, y: -1.1666666}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1160,11 +1298,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 41
-        y: 49
+        y: 3
         width: 10
         height: 5
       alignment: 9
-      pivot: {x: 0.9, y: -1.6}
+      pivot: {x: 0.9, y: -1.4}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1180,12 +1318,12 @@ TextureImporter:
       name: wakizashi_run_r_1
       rect:
         serializedVersion: 2
-        x: 93
-        y: 97
+        x: 89
+        y: 17
         width: 16
         height: 8
       alignment: 9
-      pivot: {x: 0.5, y: -0.25}
+      pivot: {x: 0.5, y: -0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1201,12 +1339,12 @@ TextureImporter:
       name: wakizashi_run_r_2
       rect:
         serializedVersion: 2
-        x: 66
-        y: 100
+        x: 107
+        y: 91
         width: 20
         height: 10
       alignment: 9
-      pivot: {x: 0.4, y: -0.3}
+      pivot: {x: 0.4, y: -0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1222,12 +1360,12 @@ TextureImporter:
       name: wakizashi_run_r_3
       rect:
         serializedVersion: 2
-        x: 73
-        y: 101
+        x: 25
+        y: 47
         width: 18
         height: 8
       alignment: 9
-      pivot: {x: 0.8888889, y: -1}
+      pivot: {x: 0.8888889, y: -0.875}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1243,12 +1381,12 @@ TextureImporter:
       name: wakizashi_run_r_4
       rect:
         serializedVersion: 2
-        x: 1
-        y: 24
+        x: 102
+        y: 60
         width: 23
         height: 8
       alignment: 9
-      pivot: {x: 0.39130434, y: -0.625}
+      pivot: {x: 0.39130434, y: -0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1264,12 +1402,12 @@ TextureImporter:
       name: wakizashi_run_r_5
       rect:
         serializedVersion: 2
-        x: 13
-        y: 45
+        x: 99
+        y: 70
         width: 23
         height: 9
       alignment: 9
-      pivot: {x: 0.3478261, y: -0.22222222}
+      pivot: {x: 0.3478261, y: -0.11111111}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1285,12 +1423,12 @@ TextureImporter:
       name: wakizashi_run_r_6
       rect:
         serializedVersion: 2
-        x: 26
-        y: 95
+        x: 90
+        y: 116
         width: 21
         height: 11
       alignment: 9
-      pivot: {x: 0.42857143, y: -0.18181819}
+      pivot: {x: 0.42857143, y: -0.09090909}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1306,12 +1444,12 @@ TextureImporter:
       name: wakizashi_run_r_7
       rect:
         serializedVersion: 2
-        x: 23
-        y: 19
+        x: 106
+        y: 38
         width: 19
         height: 10
       alignment: 9
-      pivot: {x: 0.47368422, y: -0.4}
+      pivot: {x: 0.47368422, y: -0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1319,6 +1457,132 @@ TextureImporter:
       bones: []
       spriteID: 7cd6d5b49e0b92eb0800000000000000
       internalID: -4744066216419824185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_throw
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 2
+        width: 31
+        height: 6
+      alignment: 9
+      pivot: {x: 0.29032257, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 580a27342bc913bf0800000000000000
+      internalID: -346323406881120123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_upthrust_0
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 49
+        width: 8
+        height: 30
+      alignment: 9
+      pivot: {x: -0.375, y: -0.06666667}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a373f5aef0f8753a0800000000000000
+      internalID: -6676710624034080966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_upthrust_1
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 54
+        width: 27
+        height: 55
+      alignment: 9
+      pivot: {x: 0.5185185, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29904708c8ea97c40800000000000000
+      internalID: 5510627537538255250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_upthrust_2
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 43
+        width: 15
+        height: 60
+      alignment: 9
+      pivot: {x: 1.3333334, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf3dd86bbd1c58c80800000000000000
+      internalID: -8321031587092376580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_upthrust_3
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 30
+        width: 8
+        height: 24
+      alignment: 9
+      pivot: {x: 1.625, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f655d9a5f24490700800000000000000
+      internalID: 507011403230303599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wakizashi_upthrust_4
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 40
+        width: 6
+        height: 32
+      alignment: 9
+      pivot: {x: 1.8333334, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d583b6faad610fe0800000000000000
+      internalID: -1224577042617236010
       vertices: []
       indices: 
       edges: []

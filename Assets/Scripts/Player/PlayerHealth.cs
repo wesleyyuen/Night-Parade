@@ -5,13 +5,15 @@ public class PlayerHealth : MonoBehaviour
 {
     public int currHealth { get; private set; }
     public int maxHealth { get; private set; }
+    public delegate void Delegate_PlayerHealthChange (int prevHealth, float duration = 0.75f);
+    public event Delegate_PlayerHealthChange Event_HealthChange;
     
     Rigidbody2D _rb;
     PlayerAnimations _anim;
     PlayerMovement _movement;
     WeaponFSM _weaponFSM;
     [HideInInspector] public bool isInvulnerable;
-    [SerializeField] float _damageKnockBackMultiplier;
+    [SerializeField] float _damagedKnockBackForce;
     [SerializeField] float _cameraShakeMultiplier;
     [SerializeField] float _damageCameraShakeTimer;
 
@@ -26,7 +28,7 @@ public class PlayerHealth : MonoBehaviour
         _weaponFSM = GetComponentInChildren<WeaponFSM>();
 
         // Change Health UI
-        HealthUI.Instance.UpdateHeartsUI(0f);
+        Event_HealthChange?.Invoke(currHealth, 0f);
     }
 
     public void HandleDamage(int damage, Vector2 enemyPos)
@@ -45,8 +47,13 @@ public class PlayerHealth : MonoBehaviour
         if (isInvulnerable) return;
 
         float frozenTime = 0.5f;
+        int prevHealth = currHealth;
 
         currHealth -= damage;
+
+        // Notify Observers
+        Event_HealthChange?.Invoke(prevHealth);
+
         if (currHealth <= 0) {
             Die();
             return;
@@ -59,38 +66,39 @@ public class PlayerHealth : MonoBehaviour
         _anim.SetRunAnimation(0f);
 
         // Slow Motion effect
-        StartCoroutine(Utility.SlowTimeForSeconds(0.1f, 0.5f));
+        StartCoroutine(Utility._SlowTimeForSeconds(0.02f, 0.35f));
 
         // Shake Camera
-        StartCoroutine(CameraShake.Instance.ShakeCameraAfterDelay(.02f, _cameraShakeMultiplier, _damageCameraShakeTimer));
-
-        // Change Health UI
-        HealthUI.Instance.UpdateHeartsUI();
+        CameraShake.Instance.ShakeCamera(_cameraShakeMultiplier, _damageCameraShakeTimer);
 
         // Apply knockback force to player in opposite direction
         Vector2 dir = new Vector2 (_rb.position.x > enemyPos.x ? 1f : -1f, 1f);
-        _movement.ApplyKnockback(dir, _damageKnockBackMultiplier, frozenTime);
+        _movement.ApplyKnockback(dir, _damagedKnockBackForce, frozenTime);
 
         // Invulnerability Frames
         FindObjectOfType<InvulnerabilityFrames>().Flash();
     }
 
     public void PickUpHealth() {
+        int prevHealth = currHealth;
+
         if (currHealth < maxHealth) {
             currHealth += 4;
             currHealth = Mathf.Min(currHealth, maxHealth);
 
             // Change Health UI
-            HealthUI.Instance.UpdateHeartsUI();
+            Event_HealthChange?.Invoke(prevHealth);
         }
     }
 
     public void FullHeal() {
+        int prevHealth = currHealth;
+
         if (currHealth < maxHealth) {
             currHealth = maxHealth;
 
             // Change Health UI
-            HealthUI.Instance.UpdateHeartsUI();
+            Event_HealthChange?.Invoke(prevHealth);
         }
     }
 

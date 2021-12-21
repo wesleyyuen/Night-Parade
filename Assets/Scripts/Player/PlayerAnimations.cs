@@ -1,17 +1,17 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class PlayerAnimations : MonoBehaviour
 {
     [SerializeField] ParticleSystem _dustTrail;
     PlayerPlatformCollision _grounded;
     Animator _playerAnimator;
+    WeaponFSM _weaponFSM;
     Animator _weaponAnimator;
     Rigidbody2D _rb;
     Collider2D _collider;
     PlayerMovement _movement;
-    InputMaster _input;
-    float _xRaw;
     bool _isSquishing;
     bool canTurn;
 
@@ -20,8 +20,10 @@ public class PlayerAnimations : MonoBehaviour
         _grounded = GetComponentInParent<PlayerPlatformCollision>();
 
         foreach (Transform obj in transform) {
-            if (obj.tag == "Weapon")
+            if (obj.tag == "Weapon") {
+                _weaponFSM = obj.GetComponent<WeaponFSM>();
                 _weaponAnimator = obj.GetComponent<Animator>();
+            }
             else if (obj.tag == "Sprite")
                 _playerAnimator = obj.GetComponent<Animator>();
         }
@@ -31,11 +33,11 @@ public class PlayerAnimations : MonoBehaviour
         _movement = GetComponentInParent<PlayerMovement>();
 
         canTurn = true;
-        FaceRight(_playerAnimator.transform.localScale.x == 1f);
+    }
 
-        // Handle Input
-        _input = new InputMaster();
-        _input.Player.Movement.Enable();
+    void Start()
+    {
+        FaceRight(_playerAnimator.transform.localScale.x == 1f);
     }
 
     public void EnablePlayerTurning(bool enable, float time = 0f)
@@ -43,24 +45,19 @@ public class PlayerAnimations : MonoBehaviour
         if (time == 0)
             canTurn = enable;
         else
-            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => canTurn = e, time, enable, !enable));
+            Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => canTurn = e, time, enable, !enable).CancelWith(gameObject));
     }
 
     public void FreezePlayerAnimation(float time)
     {
-        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _playerAnimator.enabled = e, time, false, true));
-        StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _weaponAnimator.enabled = e, time, false, true));
+        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _playerAnimator.enabled = e, time, false, true).CancelWith(gameObject));
+        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _weaponAnimator.enabled = e, time, false, true).CancelWith(gameObject));
     }
 
-    public void SetPlayerScale(Vector3 scale)
+    void SetPlayerScale(Vector3 scale)
     {
         _playerAnimator.transform.localScale = scale;
-        _weaponAnimator.transform.localScale = scale;
-    }
-
-    public Vector3 GetPlayerScale()
-    {
-        return _playerAnimator.transform.localScale;
+        if (_weaponFSM.IsOnPlayer()) _weaponAnimator.transform.localScale = scale;
     }
 
     void Update()
@@ -70,12 +67,11 @@ public class PlayerAnimations : MonoBehaviour
         if (!canTurn) return;
 
         Vector3 prevLocalScale = _playerAnimator.transform.localScale;
-        _xRaw = _input.Player.Movement.ReadValue<Vector2>().x;
 
         // Flip sprite
-        if (_xRaw > 0 && prevLocalScale.x != 1f) {
+        if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right) && prevLocalScale.x != 1f) {
             FaceRight(true); 
-        } else if (_xRaw < 0 && prevLocalScale.x != -1f) {
+        } else if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left) && prevLocalScale.x != -1f) {
             FaceRight(false);
         }
         if (!_isSquishing)
@@ -83,8 +79,17 @@ public class PlayerAnimations : MonoBehaviour
 
         // Set animations
         if (_movement.canWalk) {
-            SetRunAnimation(_xRaw);
+            float input = 0f;
+            if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right)) input = 1f;
+            else if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left)) input = -1f;
+            SetRunAnimation(input);
         }
+    }
+
+    void SetTrigger(string name)
+    {
+        _playerAnimator.SetTrigger(name);
+        _weaponAnimator.SetTrigger(name);
     }
 
     void SetBool(string name, bool val)
@@ -112,6 +117,11 @@ public class PlayerAnimations : MonoBehaviour
         _collider.offset = new Vector2(faceRight ? 0.12f : -0.12f, 1.5f);
     }
 
+    public bool IsFacingRight()
+    {
+        return _playerAnimator.transform.localScale.x > 0f;
+    }
+
     public void SetRunAnimation(float horizontalInput)
     {
         SetFloat("Horizontal", horizontalInput);
@@ -125,7 +135,11 @@ public class PlayerAnimations : MonoBehaviour
 
     public void SetAttackAnimation(int count)
     {
-        SetInteger("Attack", count);
+        SetInteger("DirectionalInput", (int) InputManager.Instance.GetDirectionalInput());
+        SetInteger("AttackCount", count);
+        if (count != 0) {
+            SetTrigger("Attack");
+        }
     }
 
     public void SetBlockAnimation(bool val)
@@ -135,7 +149,17 @@ public class PlayerAnimations : MonoBehaviour
 
     public int GetCurrentAttackAnimation()
     {
-        return _playerAnimator.GetInteger("Attack");
+        return _playerAnimator.GetInteger("AttackCount");
+    }
+
+    public void SetThrowAnimation()
+    {
+        _weaponAnimator.SetBool("IsThrown", true);
+    }
+
+    public void SetUnlodgedAnimation()
+    {
+        _weaponAnimator.SetBool("IsThrown", false);
     }
 
     public void CreateDustTrail()
@@ -145,26 +169,26 @@ public class PlayerAnimations : MonoBehaviour
 
     public void Squish(float duration, Vector2 to)
     {
-        StartCoroutine(SquishHelper(duration, to));
+        Timing.RunCoroutine(_SquishCoroutine(duration, to).CancelWith(gameObject));
     }
 
-    IEnumerator SquishHelper(float duration, Vector2 to)
+    IEnumerator<float> _SquishCoroutine(float duration, Vector2 to)
     {
         _isSquishing = true;
 
         // Always return to scale of (-1/1, 1)
         Vector2 from = new Vector2(_playerAnimator.transform.localScale.x > 0 ? 1f : -1f, 1f);
         SetPlayerScale(from);
-        for (float t = 0f, t2 = 0f; t < 1f; t += Time.deltaTime / (duration * 0.35f), t2 += Time.deltaTime / (duration * 0.35f)) {
+        for (float t = 0f, t2 = 0f; t < 1f; t += Timing.DeltaTime / (duration * 0.35f), t2 += Timing.DeltaTime / (duration * 0.35f)) {
             SetPlayerScale(new Vector3(Mathf.SmoothStep(from.x, to.x, t), Mathf.SmoothStep(from.y, to.y, t2), 1f));
-            yield return null;
+            yield return Timing.WaitForOneFrame;
         }
 
-        yield return new WaitForSeconds(duration * 0.45f);
+        yield return Timing.WaitForSeconds(duration * 0.45f);
 
-        for (float t = 0f, t2 = 0f; t < 1f; t += Time.deltaTime / (duration * 0.2f), t2 += Time.deltaTime / (duration * 0.2f)) {
+        for (float t = 0f, t2 = 0f; t < 1f; t += Timing.DeltaTime / (duration * 0.2f), t2 += Timing.DeltaTime / (duration * 0.2f)) {
             SetPlayerScale(new Vector3(Mathf.SmoothStep(to.x, from.x, t), Mathf.SmoothStep(to.y, from.y, t2), 1f));
-            yield return null;
+            yield return Timing.WaitForOneFrame;
         }
 
         SetPlayerScale(from);

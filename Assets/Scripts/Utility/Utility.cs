@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using MEC;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,59 +11,61 @@ using UnityEngine.Experimental.Rendering.Universal;
 // Class that has commonly used methods
 public class Utility : MonoBehaviour
 {
+    static Utility instance;
+    public static Utility Instance {
+        get  {return instance; }
+    }
     // By CykesDev
     // https://forum.unity.com/threads/c-coroutines-in-static-functions.134546/
     // Enable coroutines from non-MonoBehaviour scripts
-    public class StaticCoroutine : MonoBehaviour {
-        private static StaticCoroutine _instance;
+    // public class StaticCoroutine : MonoBehaviour {
+    //     private static StaticCoroutine m_instance;
     
-        private void OnDestroy()
-        { _instance.StopAllCoroutines(); }
+    //     private void OnDestroy()
+    //     { m_instance.StopAllCoroutines(); }
     
-        private void OnApplicationQuit()
-        { _instance.StopAllCoroutines(); }
+    //     private void OnApplicationQuit()
+    //     { m_instance.StopAllCoroutines(); }
     
-        private static StaticCoroutine Build() {
-            if (_instance != null) return _instance;
+    //     private static StaticCoroutine Build() {
+    //         if (m_instance != null) return m_instance;
     
-            _instance = (StaticCoroutine)FindObjectOfType(typeof(StaticCoroutine));
+    //         m_instance = (StaticCoroutine)FindObjectOfType(typeof(StaticCoroutine));
     
-            if (_instance != null) return _instance;
+    //         if (m_instance != null) return m_instance;
     
-            GameObject instanceObject = new GameObject("StaticCoroutine");
-            instanceObject.AddComponent<StaticCoroutine>();
-            _instance = instanceObject.GetComponent<StaticCoroutine>();
+    //         GameObject instanceObject = new GameObject("StaticCoroutine");
+    //         instanceObject.AddComponent<StaticCoroutine>();
+    //         m_instance = instanceObject.GetComponent<StaticCoroutine>();
     
-            if (_instance != null) return _instance;
+    //         if (m_instance != null) return m_instance;
     
-            Debug.LogError("Build did not generate a replacement instance. Method Failed!");
+    //         Debug.LogError("Build did not generate a replacement instance. Method Failed!");
     
-            return null;
-        }
+    //         return null;
+    //     }
     
-        public static void Start(string methodName)
-        { Build().StartCoroutine(methodName); }
-        public static void Start(string methodName, object value)
-        { Build().StartCoroutine(methodName, value); }
-        public static void Start(IEnumerator routine)
-        { Build().StartCoroutine(routine); }
-    }
+    //     public static void Start(string methodName)
+    //     { Build().StartCoroutine(methodName); }
+    //     public static void Start(string methodName, object value)
+    //     { Build().StartCoroutine(methodName, value); }
+    //     public static void Start(IEnumerator routine)
+    //     { Build().StartCoroutine(routine); }
+    // }
 
-    public static IEnumerator ChangeVariableAfterDelay<T>(Action<T> variable, float delay, T initialVal, T endVal)
+    public static IEnumerator<float> _ChangeVariableAfterDelay<T>(Action<T> variable, float delay, T initialVal, T endVal)
     {
         variable(initialVal);
-        yield return new WaitForSeconds(delay);
+        yield return Timing.WaitForSeconds(delay);
         variable(endVal);
     }
 
-    public static IEnumerator ChangeVariableAfterDelayInRealTime<T>(Action<T> variable, float delay, T initialVal, T endVal)
-    {
-        variable(initialVal);
-        yield return new WaitForSecondsRealtime(delay);
-        variable(endVal);
-    }
+    // public void SlowTimeForSeconds(float scale, float delay)
+    // {
+    //     StartCoroutine(_SlowTimeForSeconds(scale, delay));
+    // }
 
-    public static IEnumerator SlowTimeForSeconds(float scale, float delay)
+    public static IEnumerator _SlowTimeForSeconds(float scale, float delay)
     {
         Time.timeScale = scale;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
@@ -71,12 +74,6 @@ public class Utility : MonoBehaviour
 
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-    }
-
-    public static IEnumerator DoCoroutineAfterSeconds(float time, IEnumerator coroutine)
-    {
-        yield return new WaitForSecondsRealtime(time);
-        StaticCoroutine.Start(coroutine);
     }
 
     public static void SetAlphaRecursively(GameObject obj, float alpha, bool isRecursive = true)
@@ -129,7 +126,7 @@ public class Utility : MonoBehaviour
             return;
         }
 
-        StaticCoroutine.Start(Utility.FadeGameObject(obj, from, to, fadingTime));
+        Timing.RunCoroutine(Utility.FadeGameObject(obj, from, to, fadingTime));
 
         if (isRecursive && obj.transform.childCount > 0) {
             foreach (Transform child in obj.transform) {
@@ -138,7 +135,7 @@ public class Utility : MonoBehaviour
         }
     }
 
-    public static IEnumerator FadeGameObject(GameObject obj, float from, float to, float fadingTime)
+    public static IEnumerator<float> FadeGameObject(GameObject obj, float from, float to, float fadingTime)
     {
         if (fadingTime == 0) {
             SetAlphaRecursively(obj, to);
@@ -152,7 +149,7 @@ public class Utility : MonoBehaviour
         Image image = obj.GetComponent<Image>();
         Tilemap tilemap = obj.GetComponent<Tilemap>();
 
-        for (float t = 0f; t < 1f; t += Time.deltaTime / fadingTime) {
+        for (float t = 0f; t < 1f; t += Timing.DeltaTime / fadingTime) {
             // Sprite Renderer
             if (sr != null)
                 sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, Mathf.SmoothStep(from, to, t));
@@ -180,42 +177,44 @@ public class Utility : MonoBehaviour
             if (tilemap != null)
                 tilemap.color = new Color (tilemap.color.r, tilemap.color.g, tilemap.color.b, Mathf.SmoothStep(from, to, t));
                 
-            yield return null;
+            yield return Timing.WaitForOneFrame;
         }
     }
 
     public static void FadeAreaText(TextMeshProUGUI text)
     {
-        StaticCoroutine.Start(FadeTextInAndOut(text, 3f, 1f));
+        Timing.RunCoroutine(_FadeTextInAndOut(text, 3f, 1f).CancelWith(text.gameObject));
     }
 
-    public static IEnumerator FadeTextInAndOut(TextMeshProUGUI text, float showingTime, float fadingTime)
+    public static IEnumerator<float> _FadeTextInAndOut(TextMeshProUGUI text, float showingTime, float fadingTime)
     {
-        text.enabled = true;
-        for (float t = 0f; t < 1f; t += Time.deltaTime / fadingTime) {
+        text.gameObject.SetActive(true);
+
+        for (float t = 0f; t < 1f; t += Timing.DeltaTime / fadingTime) {
             text.color = new Color (text.color.r, text.color.g, text.color.b, Mathf.SmoothStep (0f, 1f, t));
-            yield return null;
+            yield return Timing.WaitForOneFrame;
         }
 
         // Display text
-        yield return new WaitForSeconds(showingTime);
+        yield return Timing.WaitForSeconds(showingTime);
 
-        for (float t = 0f; t < 1f; t += Time.deltaTime / fadingTime) {
+        for (float t = 0f; t < 1f; t += Timing.DeltaTime / fadingTime) {
             text.color = new Color (text.color.r, text.color.g, text.color.b, Mathf.SmoothStep (1f, 0f, t));
-            yield return null;
+            yield return Timing.WaitForOneFrame;
         }
-        text.enabled = false;
+
+        text.gameObject.SetActive(false);
     }
 
-    public static IEnumerator FadeImage(Image image, float from, float to, float fadingTime)
+    public static IEnumerator<float> FadeImage(Image image, float from, float to, float fadingTime)
     {
-        for (float t = 0f; t < 1f; t += Time.deltaTime / fadingTime) {
+        for (float t = 0f; t < 1f; t += Timing.DeltaTime / fadingTime) {
             image.color = new Color(image.color.r, image.color.g, image.color.b, Mathf.SmoothStep(from, to, t));
-            yield return null;
+            yield return Timing.WaitForOneFrame;
         }
     }
 
-    public static IEnumerator ScaleGameObject(GameObject obj, Vector3 from, Vector3 to, float scalingTime)
+    public static IEnumerator<float> ScaleGameObject(GameObject obj, Vector3 from, Vector3 to, float scalingTime)
     {
         if (scalingTime == 0) {
             obj.transform.localScale = to;
@@ -226,12 +225,12 @@ public class Utility : MonoBehaviour
         obj.transform.localScale = from;
         for (float t0 = 0f, t1 = 0f, t2 = 0f;
             t0 < 1f;
-            t0 += Time.deltaTime / scalingTime, t1 += Time.deltaTime / scalingTime, t2 += Time.deltaTime / scalingTime) {
+            t0 += Timing.DeltaTime / scalingTime, t1 += Timing.DeltaTime / scalingTime, t2 += Timing.DeltaTime / scalingTime) {
             obj.transform.localScale = new Vector3(Mathf.SmoothStep(from.x, to.x, t0),
                                                    Mathf.SmoothStep(from.y, to.y, t1),
                                                    Mathf.SmoothStep(from.z, to.z, t2));
 
-            yield return null;
+            yield return Timing.WaitForOneFrame;
         }
 
         obj.transform.localScale = to;
@@ -240,22 +239,24 @@ public class Utility : MonoBehaviour
     public static void EnablePlayerControl(bool enable, float time = 0)
     {
         GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
+        WeaponFSM weapon = FindObjectOfType<WeaponFSM>();
         player.GetComponent<PlayerAnimations>().EnablePlayerTurning(enable, time);
         player.GetComponent<PlayerMovement>().EnablePlayerMovement(enable, time);
-        player.GetComponentInChildren<WeaponFSM>().EnablePlayerCombat(enable, time);
-        player.GetComponentInChildren<WeaponFSM>().EnablePlayerBlocking(enable, time);
         player.GetComponent<PlayerAbilityController>().EnableAbility(PlayerAbilityController.Ability.Jump , enable, time);
+        weapon.EnablePlayerCombat(enable, time);
+        weapon.EnablePlayerBlocking(enable, time);
     }
 
     public static void FreezePlayer(float time)
     {
         GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
+                WeaponFSM weapon = FindObjectOfType<WeaponFSM>();
         player.GetComponent<PlayerAnimations>().EnablePlayerTurning(false, time);
         player.GetComponent<PlayerAnimations>().FreezePlayerAnimation(time);
         player.GetComponent<PlayerMovement>().FreezePlayerPosition(time);
-        player.GetComponentInChildren<WeaponFSM>().EnablePlayerCombat(false, time);
-        player.GetComponentInChildren<WeaponFSM>().EnablePlayerBlocking(false, time);
         player.GetComponent<PlayerAbilityController>().EnableAbility(PlayerAbilityController.Ability.Jump , false, time);
+        weapon.EnablePlayerCombat(false, time);
+        weapon.EnablePlayerBlocking(false, time);
     }
 
     public static void DumpToConsole(object obj)

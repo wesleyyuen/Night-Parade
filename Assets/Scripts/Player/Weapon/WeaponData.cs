@@ -5,10 +5,22 @@ public class WeaponData
     public int kMaxComboCount;
     public float[] comboDamage;
     public float attackCooldown;
+    public LayerMask enemyLayers;
+
+    // Hoirizontal
     public Vector2 attackPoint;
     public Vector2 attackRange;
-    public LayerMask enemyLayers;
     public float horizontalKnockBackForce;
+
+    // Upthrust
+    public Vector2 upthrustPoint;
+    public Vector2 upthrustRange;
+    public float upthrustKnockBackForce;
+
+    // Downthrust
+    public Vector2 downthrustPoint;
+    public Vector2 downthrustRange;
+    public float downthrustKnockBackForce;
 
     // Parry
     public float parryWindow;
@@ -20,6 +32,10 @@ public class WeaponData
     public float blockMinDuration; // parryWindow < blockMinDuration
     public float blockKnockback;
     public float blockCooldown;
+
+    // Throw
+    public float throwForce;
+    public float throwDamage;
 
     // Audio
     public string missSFX;

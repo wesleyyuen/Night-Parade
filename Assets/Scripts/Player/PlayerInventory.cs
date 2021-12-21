@@ -7,6 +7,7 @@ public class PlayerInventory : MonoBehaviour
     public int coinOnHand { get; private set; }
     public bool[] inks { get; private set; }
     public int orbs { get; private set; }
+    public event System.Action Event_MonChange;
 
     void Start()
     {
@@ -16,12 +17,12 @@ public class PlayerInventory : MonoBehaviour
         orbs = SaveManager.Instance.savedPlayerData.SavedOrbs;
     }
 
-    public void PickUpCoin (int amt)
+    public void PickUpCoin(int amt)
     {
         coinOnHand += amt;
 
-        // Change Mon UI
-        MonUI.Instance.ShowMonChange();
+        // Update Mon UI
+        Event_MonChange?.Invoke();
     }
 
     public void PickUpInk (int areaIndex)

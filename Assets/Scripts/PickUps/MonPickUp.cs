@@ -9,9 +9,6 @@ public class MonPickUp : PickUp
         if (other.gameObject.CompareTag ("Player")) {
             other.gameObject.GetComponent<PlayerInventory>().PickUpCoin (amount);
 
-            // Update Mon UI
-            MonUI.Instance.ShowMonChange();
-
             Destroy(gameObject);
         }
     }

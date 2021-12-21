@@ -17,7 +17,7 @@ public class Scene_Forest_Cave : SceneScript
 
         // Handle BGM
         if (GameMaster.Instance.prevScene != "Forest_1")
-            SoundManager.Instance.Play("Forest_Ambience");
+            SoundManager.Instance.FadeIn("Forest_Ambience", 1f);
 
         if (GameMaster.Instance.prevScene == "Main_Menu") {
             _spawnPoint = SpawnPoint.NotTesting;

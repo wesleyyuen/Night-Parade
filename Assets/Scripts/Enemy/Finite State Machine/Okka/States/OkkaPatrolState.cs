@@ -4,23 +4,30 @@ using UnityEngine;
 
 public class OkkaPatrolState : IEnemyState
 {
-    const float _ORIGIN_OFFSET = 0.1f;
+    OkkaFSM _fsm;
+    const float _DETECTION_OFFSET = 0.1f;
     // TODO: temp fix to repeatedly turning in BUILD ONLY
     const float _TURN_COOLDOWN = 1f;
+    Vector2 _origin;
     float _turnCooldownTimer;
-    int layerMasks;
 
-    public void EnterState(EnemyFSM fsm)
+    public OkkaPatrolState(OkkaFSM fsm)
     {
-        layerMasks = LayerMask.GetMask("Ground");
-        _turnCooldownTimer = 0f;
-        fsm.GFX.SetAnimatorBoolean("IsPatrolling", true);
+        _fsm = fsm;
     }
 
-    public void Update(EnemyFSM fsm)
+    public void EnterState()
     {
-        if (fsm.IsInAggroRange() || fsm.IsInLineOfSight())
-            fsm.SetState(fsm.states[EnemyFSM.StateType.AggroState]);
+        _origin = _fsm.rb.position;
+        _turnCooldownTimer = 0f;
+        _fsm.GFX.SetAnimatorBoolean("IsPatrolling", true);
+    }
+
+    public void Update()
+    {
+        if (_fsm.IsInAggroRange() || _fsm.IsInLineOfSight()) {
+            _fsm.SetState(_fsm.states[EnemyFSM.StateType.AggroState]);
+        }
 
         if (_turnCooldownTimer >= 0f) {
             _turnCooldownTimer -= Time.deltaTime;
@@ -28,25 +35,30 @@ public class OkkaPatrolState : IEnemyState
     }
 
     // TODO: Can this be optimized further?
-    public void FixedUpdate(EnemyFSM fsm)
+    public void FixedUpdate()
     {
-        Vector2 groundDetectionPoint = new Vector2 (fsm.GFX.GetEnemyScale().x == 1f ? fsm.col.bounds.max.x + _ORIGIN_OFFSET: fsm.col.bounds.min.x - _ORIGIN_OFFSET, fsm.col.bounds.center.y);
+        Vector2 groundDetectionPoint = new Vector2 (_fsm.GFX.GetEnemyScale().x == 1f ? _fsm.col.bounds.max.x + _DETECTION_OFFSET: _fsm.col.bounds.min.x - _DETECTION_OFFSET, _fsm.col.bounds.center.y);
 
-        RaycastHit2D groundHit = Physics2D.Raycast(groundDetectionPoint, -fsm.transform.up, fsm.col.bounds.size.y, LayerMask.GetMask("Ground"));
-        RaycastHit2D wallHit = Physics2D.Raycast(groundDetectionPoint, -fsm.transform.up, fsm.col.bounds.size.y, LayerMask.GetMask("Wall"));
-        // Debug.DrawRay(groundDetectionPoint, -fsm.transform.up * fsm.col.bounds.size.y, Color.green);
+        RaycastHit2D groundHit = Physics2D.Raycast(groundDetectionPoint, -_fsm.transform.up, _fsm.col.bounds.size.y, LayerMask.GetMask("Ground"));
+        RaycastHit2D wallHit = Physics2D.Raycast(groundDetectionPoint, -_fsm.transform.up, _fsm.col.bounds.size.y, LayerMask.GetMask("Wall"));
+        // Debug.DrawRay(groundDetectionPoint, -_fsm.transform.up * _fsm.col.bounds.size.y, Color.green);
 
-        if ((!groundHit || (wallHit && wallHit.collider.name == "Others")) && _turnCooldownTimer <= 0f) {
+        bool hasReachedPatrolMaxDist = _fsm.rb.position.x < (_origin.x - _fsm.enemyData.patrolDistance) || _fsm.rb.position.x > (_origin.x + _fsm.enemyData.patrolDistance);
+        bool hasNoGroundInFront = !groundHit;
+        bool hasWallInFront = wallHit && wallHit.collider.name == "Others";
+        bool shouldTurnAround = hasReachedPatrolMaxDist || hasNoGroundInFront || hasWallInFront;
+
+        if (shouldTurnAround && _turnCooldownTimer <= 0f) {
             _turnCooldownTimer = _TURN_COOLDOWN;
-            fsm.GFX.TurnAround(true);
+            _fsm.GFX.TurnAround(true);
         }
 
         // Move forward
-        fsm.rb.velocity = new Vector2(fsm.GFX.GetEnemyScale().x * fsm.enemyData.patrolSpeed , fsm.rb.velocity.y);
+        _fsm.rb.velocity = new Vector2(_fsm.GFX.GetEnemyScale().x * _fsm.enemyData.patrolSpeed , _fsm.rb.velocity.y);
     }
 
-    public void OnCollisionEnter2D(EnemyFSM fsm, Collision2D collision) {}
-    public void OnCollisionStay2D(EnemyFSM fsm, Collision2D collision) {}
-    public void OnCollisionExit2D(EnemyFSM fsm, Collision2D collision) {}
-    public void ExitState(EnemyFSM fsm) {}
+    public void OnCollisionEnter2D(Collision2D collision) {}
+    public void OnCollisionStay2D(Collision2D collision) {}
+    public void OnCollisionExit2D(Collision2D collision) {}
+    public void ExitState() {}
 }

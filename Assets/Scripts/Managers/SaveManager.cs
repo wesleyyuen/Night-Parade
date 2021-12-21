@@ -9,7 +9,6 @@ public class SaveManager : MonoBehaviour
     public static SaveManager Instance {
         get  {return _instance; }
     }
-    // int _loadIndex;
     [SerializeField] string fileName;
     [SerializeField] string fileExtension;
     [HideInInspector] public PlayerData savedPlayerData;
@@ -25,22 +24,36 @@ public class SaveManager : MonoBehaviour
         }
 
         InitializeEmptySaveData();
+    }
+
+    void OnEnable()
+    {
+        FindObjectOfType<GameMaster>().Event_GameMasterInitalized += LoadStartingScene;
+    }
+
+    void OnDisable()
+    {
+        FindObjectOfType<GameMaster>().Event_GameMasterInitalized -= LoadStartingScene;
+    }
+
+    void LoadStartingScene()
+    {
         GameMaster.Instance.RequestSceneChange(GameMaster.Instance.startingScene.ToString(), ref savedPlayerData);
     }
 
-    public void InitializeEmptySaveData()
+    void InitializeEmptySaveData()
     {
         Dictionary<string, SceneData> scenes = new Dictionary<string, SceneData>();
         scenes.Add("Overall", new SceneData("Overall", new Dictionary<string, int>()));
 
         savedPlayerData = new PlayerData(
             saveFileIndex: 1,
-            maxHealth: Constant.startingHearts * 4,
-            maxStamina: Constant.startingStamina,
+            maxHealth: Constant.STARTING_HEARTS * 4,
+            maxStamina: Constant.STARTING_STAMINA,
             coinsOnHand: 0,
             lastSavePoint: 0,
             playTime: 0f,
-            savedInks: new bool[Constant.numOfAreas],
+            savedInks: new bool[Constant.NUMBER_OF_AREAS],
             savedOrbs: 0,
             sceneData: scenes
         );

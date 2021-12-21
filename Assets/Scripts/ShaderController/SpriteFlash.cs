@@ -34,7 +34,7 @@ public class SpriteFlash : MonoBehaviour
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = ActuallyFlash(duration == 0 ? _flashDuration : duration);
+        _coroutine = _ActuallyFlash(duration == 0 ? _flashDuration : duration);
         StartCoroutine(_coroutine);
     }
 
@@ -48,11 +48,11 @@ public class SpriteFlash : MonoBehaviour
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = ActuallyFlash(duration);
+        _coroutine = _ActuallyFlash(duration);
         StartCoroutine(_coroutine);
     }
 
-    IEnumerator ActuallyFlash(float duration)
+    IEnumerator _ActuallyFlash(float duration)
     {
         float lerpTime = 0;
 
@@ -67,7 +67,7 @@ public class SpriteFlash : MonoBehaviour
         _material.SetFloat("_FlashAmount", 0);
     }
 
-    IEnumerator ActuallyFade(float duration)
+    IEnumerator _ActuallyFade(float duration)
     {
         float lerpTime = 0;
 

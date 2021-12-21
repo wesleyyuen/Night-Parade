@@ -4,35 +4,42 @@ using UnityEngine;
 
 public class OkkaDeathState : IEnemyState
 {
+    OkkaFSM _fsm;
     float _timer;
-    public void EnterState(EnemyFSM fsm)
+
+    public OkkaDeathState(OkkaFSM fsm)
+    {
+        _fsm = fsm;
+    }
+    
+    public void EnterState()
     {
         _timer = 0;
-        Physics2D.IgnoreCollision(fsm.player, fsm.col);
+        Physics2D.IgnoreCollision(_fsm.player, _fsm.col);
 
         // Stop all forces previously applied to it
-        fsm.rb.velocity = Vector2.zero;
-        fsm.rb.angularVelocity = 0f;
+        _fsm.rb.velocity = Vector2.zero;
+        _fsm.rb.angularVelocity = 0f;
 
         // Apply Knock back
-        float knockBackForce = fsm.enemyData.knockBackOnTakingDamageForce * 1.5f;
-        bool playerOnLeft = fsm.rb.position.x > fsm.player.transform.position.x;
-        fsm.ApplyForce(playerOnLeft ? Vector2.right : Vector2.left, fsm.enemyData.knockBackOnTakingDamageForce * 1.5f);
+        float knockBackForce = _fsm.enemyData.knockBackOnTakingDamageForce * 1.5f;
+        bool playerOnLeft = _fsm.rb.position.x > _fsm.player.transform.position.x;
+        _fsm.ApplyForce(playerOnLeft ? Vector2.right : Vector2.left, _fsm.enemyData.knockBackOnTakingDamageForce * 1.5f);
 
-        fsm.GFX.PlayDeathEffect(fsm.enemyData.dieTime);
+        _fsm.GFX.PlayDeathEffect(_fsm.enemyData.dieTime);
     }
 
-    public void Update(EnemyFSM fsm)
+    public void Update()
     {
         _timer += Time.deltaTime;
 
-        if (_timer >= fsm.enemyData.dieTime)
-            fsm.Die();
+        if (_timer >= _fsm.enemyData.dieTime)
+            _fsm.Die();
     }
 
-    public void FixedUpdate(EnemyFSM fsm) {}
-    public void OnCollisionEnter2D(EnemyFSM fsm, Collision2D collision) {}
-    public void OnCollisionStay2D(EnemyFSM fsm, Collision2D collision) {}
-    public void OnCollisionExit2D(EnemyFSM fsm, Collision2D collision) {}
-    public void ExitState(EnemyFSM fsm) {}
+    public void FixedUpdate() {}
+    public void OnCollisionEnter2D(Collision2D collision) {}
+    public void OnCollisionStay2D(Collision2D collision) {}
+    public void OnCollisionExit2D(Collision2D collision) {}
+    public void ExitState() {}
 }

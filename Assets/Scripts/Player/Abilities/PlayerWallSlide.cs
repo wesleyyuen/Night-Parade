@@ -8,7 +8,6 @@ public class PlayerWallSlide : MonoBehaviour
     PlayerAnimations _anim;
     PlayerPlatformCollision _collision;
     WeaponFSM _weaponFSM;
-    InputMaster _input;
     [SerializeField] float slideSpeed;
     [HideInInspector] public bool canSlide;
 
@@ -19,10 +18,6 @@ public class PlayerWallSlide : MonoBehaviour
         _weaponFSM = transform.parent.GetComponentInChildren<WeaponFSM>();
         _collision = GetComponentInParent<PlayerPlatformCollision>();
         canSlide = true;
-
-        // Handle Input
-        _input = new InputMaster();
-        _input.Player.Movement.Enable();
     }
 
     void Update()
@@ -34,9 +29,9 @@ public class PlayerWallSlide : MonoBehaviour
 
         // Must be falling
         if (!_collision.onGround && _collision.onWall && _rb.velocity.y < 0) {
-            float xRaw = _input.Player.Movement.ReadValue<Vector2>().x;
             // Must be pressing against wall
-            if ((_collision.onLeftWall && (xRaw < 0)) || (_collision.onRightWall && (xRaw > 0)) ) {
+            if ((_collision.onLeftWall && InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left))
+             || (_collision.onRightWall && InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right)) ) {
                 WallSlide(slideSpeed);
             }
         }

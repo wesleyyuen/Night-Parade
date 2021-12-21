@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
+
+public interface IWeaponState : IState, IUpdateLoop
+{
+}
 
 public class WeaponFSM : MonoBehaviour
 {
@@ -9,16 +14,14 @@ public class WeaponFSM : MonoBehaviour
         IdleState,
         AttackState,
         BlockState,
-        ParryState
+        ParryState,
+        ThrownState,
+        LodgedState
     }
     public WeaponData weaponData;
     public Rigidbody2D player {get; private set;}
-    public PlayerMovement movement {get; private set;}
-    public PlayerPlatformCollision collision {get; private set;}
-    public PlayerAbilityController abilityController {get; private set;}
-    public PlayerAnimations animations {get; private set;}
     public Dictionary<StateType, IWeaponState> states;
-    public InputMaster inputActions;
+    public InputMaster InputActions;
     IWeaponState _currentState;
     [HideInInspector] public GameObject onibi;
     [HideInInspector] public bool canAttack;
@@ -36,10 +39,6 @@ public class WeaponFSM : MonoBehaviour
     {
         Transform playerGameObject = transform.parent;
         player = playerGameObject.GetComponent<Rigidbody2D>();
-        movement = playerGameObject.GetComponent<PlayerMovement>();
-        collision = playerGameObject.GetComponent<PlayerPlatformCollision>();
-        abilityController = playerGameObject.GetComponent<PlayerAbilityController>();
-        animations = playerGameObject.GetComponent<PlayerAnimations>();
         foreach (Transform obj in playerGameObject.parent.transform) {
             if (obj.tag == "Onibi") onibi = obj.gameObject;
         }
@@ -54,9 +53,10 @@ public class WeaponFSM : MonoBehaviour
         currentBlockTimer = 0f;
 
         // Handle Actions
-        inputActions = new InputMaster();
-        inputActions.Player.Attack.Enable();
-        inputActions.Player.Block.Enable();
+        InputActions = new InputMaster();
+        InputActions.Player.Attack.Enable();
+        InputActions.Player.Block.Enable();
+        InputActions.Player.Throw.Enable();
     }
 
     protected virtual void Start()
@@ -74,21 +74,21 @@ public class WeaponFSM : MonoBehaviour
 
         // Handle Blocking Duration and Cooldown
         if (_currentState != states[StateType.ParryState] && _currentState != states[StateType.BlockState]) {
-            abilityController.RegenerateStamina();
+            // abilityController.RegenerateStamina();
 
             if (blockCooldownTimer > 0) {
                 blockCooldownTimer -= Time.deltaTime;
             }
         }
 
-        _currentState.Update(this);
+        _currentState.Update();
     }
 
     protected virtual void FixedUpdate()
     {
         if (_currentState == null) return;
 
-        _currentState.FixedUpdate(this);
+        _currentState.FixedUpdate();
     }
 
     public bool IsCurrentState(StateType type)
@@ -104,24 +104,24 @@ public class WeaponFSM : MonoBehaviour
     public void SetState(IWeaponState state)
     {
         if (_currentState != null) {
-            _currentState.ExitState(this);
+            _currentState.ExitState();
             previousState = _currentState;
         }
 
         _currentState = state;
-        _currentState.EnterState(this);
+        _currentState.EnterState();
     }
 
     public void SetStateAfterDelay(StateType state, float delay)
     {
-        StartCoroutine(SetStateAfterDelayCoroutine(state, delay));
+        Timing.RunCoroutine(_SetStateAfterDelayCoroutine(state, delay));
     }
 
-    IEnumerator SetStateAfterDelayCoroutine(StateType state, float delay)
+    IEnumerator<float> _SetStateAfterDelayCoroutine(StateType state, float delay)
     {
         // Only Set State if no one set another state before the delay ends
-        IWeaponState curr = _currentState;
-        yield return new WaitForSeconds(delay);
+        IState curr = _currentState;
+        yield return Timing.WaitForSeconds(delay);
         if (_currentState == curr)
             SetState(states[state]);
     }
@@ -133,7 +133,7 @@ public class WeaponFSM : MonoBehaviour
         if (time == 0)
             canAttack = enable;
         else
-            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => canAttack = e, time, enable, !enable));
+            Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => canAttack = e, time, enable, !enable));
     }
 
     public void EnablePlayerBlocking(bool enable, float time = 0)
@@ -143,7 +143,7 @@ public class WeaponFSM : MonoBehaviour
         if (time == 0)
             canBlock = enable;
         else
-            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => canBlock = e, time, enable, !enable));
+            Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => canBlock = e, time, enable, !enable));
     }
 
     // Called from Animation frames
@@ -151,7 +151,25 @@ public class WeaponFSM : MonoBehaviour
     {
         if (_currentState == states[StateType.AttackState]) {
             WakizashiAttackState state = (WakizashiAttackState) _currentState;
-            state.Attack(Constant.hasTimedCombo ? isListeningForNextAttack != 0 : true);
+            state.Attack(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
+        }
+    }
+
+    // Called from Animation frames
+    void Upthrust(int isListeningForNextAttack)
+    {
+        if (_currentState == states[StateType.AttackState]) {
+            WakizashiAttackState state = (WakizashiAttackState) _currentState;
+            state.Upthrust(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
+        }
+    }
+
+    // Called from Animation frames
+    void Downthrust(int isListeningForNextAttack)
+    {
+        if (_currentState == states[StateType.AttackState]) {
+            WakizashiAttackState state = (WakizashiAttackState) _currentState;
+            state.Downthrust(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
         }
     }
 
@@ -164,12 +182,17 @@ public class WeaponFSM : MonoBehaviour
         }
     }
 
+    public bool IsOnPlayer()
+    {
+        return !(IsCurrentState(StateType.ThrownState) || IsCurrentState(StateType.LodgedState));
+    }
+
     // Onibi Interactions
-    public virtual IEnumerator MergeWithOnibi(float waitDuration)
+    public virtual IEnumerator<float> _MergeWithOnibi(float waitDuration)
     {
         onibi.GetComponent<OnibiMovement>().StartMerging(GetComponent<SpriteRenderer>().bounds.center);
         Utility.FadeGameObjectRecursively(onibi, 1f, 0f, waitDuration);
-        yield return new WaitForSeconds(waitDuration);
+        yield return Timing.WaitForSeconds(waitDuration);
         GetComponent<SpriteRenderer>().material = _glowMaterial;
     }
 
@@ -189,11 +212,20 @@ public class WeaponFSM : MonoBehaviour
         if (weaponData != null) {
             // Show Attack Range
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(transform.TransformPoint(weaponData.attackPoint), weaponData.attackRange);
+            // Gizmos.DrawWireCube(transform.TransformPoint(weaponData.attackPoint), weaponData.attackRange);
 
-            // Show Block Range
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireCube(transform.TransformPoint(weaponData.blockPoint), weaponData.blockRange);
+            // Show Upthrust Range
+            // Gizmos.DrawWireCube(transform.TransformPoint(weaponData.upthrustPoint), weaponData.upthrustRange);
+
+            // // Show Downthrust Range
+            // Gizmos.DrawWireCube(transform.TransformPoint(weaponData.downthrustPoint), weaponData.downthrustRange);
+
+            // // Show Block Range
+            // Gizmos.color = Color.blue;
+            // Gizmos.DrawWireCube(transform.TransformPoint(weaponData.blockPoint), weaponData.blockRange);
+
+            // Show Collider
+            Gizmos.DrawWireCube(transform.position, new Vector2(1f, 1f));
     
             Gizmos.color = Color.white;
         }

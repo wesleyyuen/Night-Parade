@@ -1,5 +1,6 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
+using TMPro;
+using MEC;
 
 public class Forest_Tutorial : MonoBehaviour {
     [SerializeField] private Transform playerGroup;
@@ -8,7 +9,7 @@ public class Forest_Tutorial : MonoBehaviour {
     [SerializeField] private float textShowingTime;
     [SerializeField] private float textFadingTime;
 
-    void Start () {
+    void Start() {
         if (GameMaster.Instance.prevScene == "Forest_Area1") {
             foreach (Transform child in playerGroup) {
                 child.position = area1SpawnPoint.position;
@@ -16,7 +17,7 @@ public class Forest_Tutorial : MonoBehaviour {
                     child.localScale = new Vector3 (-1f, 1f, 1f);
             }
         } else {
-            StartCoroutine (Utility.FadeTextInAndOut (forestText, textShowingTime, textFadingTime));
+            Timing.RunCoroutine(Utility._FadeTextInAndOut (forestText, textShowingTime, textFadingTime));
         }
     }
 }

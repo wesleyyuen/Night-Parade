@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using MEC;
 
 public class PlayerWallJump : MonoBehaviour
 {
@@ -11,11 +11,11 @@ public class PlayerWallJump : MonoBehaviour
     PlayerMovement _movement;
     PlayerAnimations _animations;
     PlayerWallSlide _wallSlide;
-    InputMaster _input;
-    [SerializeField] Vector2 jumpDirection;
-    [SerializeField] float movementDisableTime;
+    [SerializeField] Vector2 _jumpDirection;
+    [SerializeField] float _jumpForce;
+    [SerializeField] float _movementDisableTime;
 
-    void Start()
+    void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
         _anim = GetComponentInParent<PlayerAnimations>();
@@ -24,28 +24,37 @@ public class PlayerWallJump : MonoBehaviour
         _collision = GetComponentInParent<PlayerPlatformCollision>();
         _wallSlide = GetComponent<PlayerWallSlide>();
 
-        // Handle Input
-        _input = new InputMaster();
-        _input.Player.Movement.Enable();
-        _input.Player.Jump.Enable();
-        _input.Player.Jump.started += OnWallJump;
+        _jumpDirection = _jumpDirection.normalized;
     }
 
-    void OnWallJump(InputAction.CallbackContext context)
+    void OnEnable()
     {
-        float xRaw = _input.Player.Movement.ReadValue<Vector2>().x;
-        if (!_collision.onGround && (_collision.onLeftWall && (xRaw < 0) || (_collision.onRightWall && (xRaw > 0)))) {
-            _movement.HandicapMovementForSeconds(movementDisableTime);
-            _animations.EnablePlayerTurning(false, movementDisableTime);
-            StartCoroutine(Utility.ChangeVariableAfterDelay<bool>(e => _wallSlide.canSlide = e, movementDisableTime, false, true));
-            WallJump(_collision.onLeftWall);
+        InputManager.Event_Input_Jump += OnWallJump;
+    }
+
+    void OnDisable()
+    {
+        InputManager.Event_Input_Jump -= OnWallJump;
+    }
+
+    void OnWallJump()
+    {
+        if (!_collision.onGround) {
+            if ((_collision.onLeftWall && InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left))
+             || (_collision.onRightWall && InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right))) {
+                 // TODO: add clinging for better control
+                _movement.HandicapMovementForSeconds(_movementDisableTime);
+                _animations.EnablePlayerTurning(false, _movementDisableTime);
+                Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _wallSlide.canSlide = e, _movementDisableTime, false, true));
+                WallJump(_collision.onLeftWall);
+            }
         }
     }
 
     void WallJump(bool isLeftWall)
     {
         _rb.velocity = new Vector2(_rb.velocity.x, 0);
-        _rb.velocity += new Vector2((isLeftWall ? 1 : -1) * jumpDirection.x, jumpDirection.y);
+        _rb.velocity += new Vector2((isLeftWall ? 1 : -1) * _jumpDirection.x * _jumpForce, _jumpDirection.y * _jumpForce);
         
         // Turn away from the wall
         _animations.FaceRight(isLeftWall);

@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using MEC;
 
 public class Forest_Area3 : MonoBehaviour
 {
@@ -10,10 +11,9 @@ public class Forest_Area3 : MonoBehaviour
     [SerializeField] private TextMeshProUGUI forestText;
     [SerializeField] private float textShowingTime;
     [SerializeField] private float textFadingTime;
-    void Start ()
-    {
-        
 
+    void Start()
+    {
         if (GameMaster.Instance.prevScene == "Forest_Area2") {
             foreach (Transform child in playerGroup) {
                 child.position = area2SpawnPoint.position;
@@ -27,7 +27,7 @@ public class Forest_Area3 : MonoBehaviour
                     child.localScale = new Vector3 (-1f, 1f, 1f);
             }            
         } else if (GameMaster.Instance.prevScene == "Hatsumura") {
-            StartCoroutine (Utility.FadeTextInAndOut (forestText, textShowingTime, textFadingTime));
+            Timing.RunCoroutine(Utility._FadeTextInAndOut (forestText, textShowingTime, textFadingTime));
             foreach (Transform child in playerGroup) {
                 child.position = hatsumuraSpawnPoint.position;
                 if (child.name == "Player")

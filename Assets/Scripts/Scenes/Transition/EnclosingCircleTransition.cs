@@ -30,7 +30,7 @@ public class EnclosingCircleTransition : SceneTransition
         _rect.anchoredPosition = _maskPosition;
     }
 
-    protected override IEnumerator SceneTransitionInCoroutine()
+    protected override IEnumerator _SceneTransitionInCoroutine()
     {        
         // Animator auto plays animation
         for (float t = 0f; t < 1f; t += Time.deltaTime / _transitionTime) {
@@ -39,7 +39,7 @@ public class EnclosingCircleTransition : SceneTransition
         }
     }
 
-    protected override IEnumerator SceneTransitionOutCoroutine(string levelToLoad, PlayerData playerVariables)
+    protected override IEnumerator _SceneTransitionOutCoroutine(string levelToLoad, PlayerData playerVariables)
     {
         _animator.SetTrigger("Start");
 

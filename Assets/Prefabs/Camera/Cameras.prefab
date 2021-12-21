@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5056272628278154228}
   - component: {fileID: 5056272628278154219}
-  - component: {fileID: 5056272628278154230}
   - component: {fileID: 5056272628278154231}
   - component: {fileID: 5056272628278154229}
   m_Layer: 0
@@ -73,18 +72,6 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 5056272629952657477}
---- !u!114 &5056272628278154230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5056272628278154218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7609ae95cbdb6e348b16953c64da2246, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5056272628278154231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,7 +192,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 21
+  field of view: 19
   orthographic: 0
   orthographic size: 13
   m_Depth: 0
@@ -245,13 +232,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShowDebugText: 0
   m_ShowCameraFrustum: 1
-  m_IgnoreTimeScale: 0
+  m_IgnoreTimeScale: 1
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 1
+  m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 0.7
+    m_Time: 1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -410,14 +397,14 @@ MonoBehaviour:
   m_ZDamping: 0
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
-  m_ScreenY: 0.65
+  m_ScreenY: 0.6
   m_CameraDistance: 75
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
   m_SoftZoneWidth: 0.1
-  m_SoftZoneHeight: 0.15
+  m_SoftZoneHeight: 0.4
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1

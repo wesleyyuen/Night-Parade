@@ -5,35 +5,43 @@ using UnityEngine;
 public class OkkaStunnedState : IEnemyState
 {
     public float stunnedDuration;
+    OkkaFSM _fsm;
     float _timer;
-    public void EnterState(EnemyFSM fsm)
+    
+    public OkkaStunnedState(OkkaFSM fsm)
     {
-        _timer = 0;
-        fsm.GFX.SetAnimatorBoolean("IsPatrolling", false);
-        fsm.LetRigidbodyMoveForSeconds(stunnedDuration);
+        _fsm = fsm;
     }
 
-    public void Update(EnemyFSM fsm)
+    public void EnterState()
+    {
+        _timer = 0;
+        _fsm.GFX.SetAnimatorBoolean("IsPatrolling", false);
+        _fsm.LetRigidbodyMoveForSeconds(stunnedDuration);
+    }
+
+    public void Update()
     {
         _timer += Time.deltaTime;
 
         if (_timer >= stunnedDuration) {
-            bool isInLOS = fsm.IsInLineOfSight();
+            bool isInLOS = _fsm.IsInLineOfSight();
 
-            /*if (Vector2.Distance(fsm.player.attachedRigidbody.position, fsm.rb.position) <= fsm.enemyData.attackDistance
+            /*if (Vector2.Distance(_fsm.player.attachedRigidbody.position, _fsm.rb.position) <= _fsm.enemyData.attackDistance
                 && isInLOS
-                && fsm.states[EnemyFSM.StateType.AttackState] != null)
-                fsm.SetState(fsm.states[EnemyFSM.StateType.AttackState]);
-            else */if ((isInLOS || fsm.IsInAggroRange()) && fsm.states[EnemyFSM.StateType.AggroState] != null)
-                fsm.SetState(fsm.states[EnemyFSM.StateType.AggroState]);
+                && _fsm.states[EnemyFSM.StateType.AttackState] != null)
+                _fsm.SetState(_fsm.states[EnemyFSM.StateType.AttackState]);
+            else */
+            if ((isInLOS || _fsm.IsInAggroRange()) && _fsm.states[EnemyFSM.StateType.AggroState] != null)
+                _fsm.SetState(_fsm.states[EnemyFSM.StateType.AggroState]);
             else
-                fsm.SetState(fsm.states[EnemyFSM.StateType.PatrolState]);
+                _fsm.SetState(_fsm.states[EnemyFSM.StateType.PatrolState]);
         }
     }
 
-    public void FixedUpdate(EnemyFSM fsm) {}
-    public void OnCollisionEnter2D(EnemyFSM fsm, Collision2D collision) {}
-    public void OnCollisionStay2D(EnemyFSM fsm, Collision2D collision) {}
-    public void OnCollisionExit2D(EnemyFSM fsm, Collision2D collision) {}
-    public void ExitState(EnemyFSM fsm) {}
+    public void FixedUpdate() {}
+    public void OnCollisionEnter2D(Collision2D collision) {}
+    public void OnCollisionStay2D(Collision2D collision) {}
+    public void OnCollisionExit2D(Collision2D collision) {}
+    public void ExitState() {}
 }

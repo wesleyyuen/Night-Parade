@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class EnemyGFX : MonoBehaviour
 {
@@ -52,20 +54,20 @@ public class EnemyGFX : MonoBehaviour
 
     public void FaceTowardsPlayer(float delay)
     {
-        StartCoroutine(FaceTowardsPlayerCoroutine(delay));
+        Timing.RunCoroutine(_FaceTowardsPlayerCoroutine(delay));
     }
 
-    IEnumerator FaceTowardsPlayerCoroutine(float delay)
+    IEnumerator<float> _FaceTowardsPlayerCoroutine(float delay)
     {
         // Face Right
         if (_player.position.x >= _spriteRenderer.transform.position.x && _spriteRenderer.transform.localScale.x != 1.0f) {
-            yield return new WaitForSeconds (delay);
+            yield return Timing.WaitForSeconds (delay);
             _spriteRenderer.transform.localScale = new Vector3(1f, 1f, 1f);
             _questionMark.transform.localScale = new Vector3(1f, 1f, 1f);
         }
         // Face Left
         else if (_player.position.x < _spriteRenderer.transform.position.x && _spriteRenderer.transform.localScale.x != -1.0f) {
-            yield return new WaitForSeconds (delay);
+            yield return Timing.WaitForSeconds (delay);
             _spriteRenderer.transform.localScale = new Vector3(-1f, 1f, 1f);
             _questionMark.transform.localScale = new Vector3(-1f, 1f, 1f);
         }
@@ -73,13 +75,13 @@ public class EnemyGFX : MonoBehaviour
 
     public void TurnAround(bool isInstant)
     {
-        StartCoroutine(TurnAroundCoroutine(isInstant));
+        Timing.RunCoroutine(_TurnAroundCoroutine(isInstant));
     }
 
-    IEnumerator TurnAroundCoroutine(bool isInstant)
+    IEnumerator<float> _TurnAroundCoroutine(bool isInstant)
     {
         _isTurning = true;
-        yield return new WaitForSeconds(isInstant ? 0.0f : turningTime);
+        yield return Timing.WaitForSeconds(isInstant ? 0.0f : turningTime);
         _spriteRenderer.transform.localScale = new Vector3(-_spriteRenderer.transform.localScale.x, 1f, 1f);
         _questionMark.transform.localScale = new Vector3(_spriteRenderer.transform.localScale.x, 1f, 1f);
 
@@ -88,9 +90,9 @@ public class EnemyGFX : MonoBehaviour
 
     public void FlashExclaimationMark()
     {
-        StartCoroutine(FlashExclaimationMarkCoroutine());
+        Timing.RunCoroutine(_FlashExclaimationMarkCoroutine());
     }
-    IEnumerator FlashExclaimationMarkCoroutine()
+    IEnumerator<float> _FlashExclaimationMarkCoroutine()
     {
         _questionMark.enabled = false;
         _exclaimationMark.enabled = true;
@@ -98,15 +100,15 @@ public class EnemyGFX : MonoBehaviour
 
         // Flash at least 0.5 seconds
         if (flashTime < 0.5f) flashTime = 0.5f;
-        yield return new WaitForSeconds (flashTime);
+        yield return Timing.WaitForSeconds(flashTime);
         _exclaimationMark.enabled = false;
     }
 
     public void FlashQuestionMark()
     {
-        StartCoroutine(FlashQuestionMarkCoroutine());
+        Timing.RunCoroutine(FlashQuestionMarkCoroutine());
     }
-    public IEnumerator FlashQuestionMarkCoroutine ()
+    IEnumerator<float> FlashQuestionMarkCoroutine ()
     {
         _exclaimationMark.GetComponent<SpriteRenderer>().enabled = false;
         _questionMark.enabled = true;
@@ -114,7 +116,7 @@ public class EnemyGFX : MonoBehaviour
 
         // Flash at least 0.5 seconds
         if (flashTime < 0.5f) flashTime = 0.5f;
-        yield return new WaitForSeconds(flashTime);
+        yield return Timing.WaitForSeconds(flashTime);
         _questionMark.enabled = false;
     }
 
@@ -128,17 +130,17 @@ public class EnemyGFX : MonoBehaviour
     public void PlayDeathEffect(float dieTime)
     {
         _animator.enabled = false;
-        StartCoroutine(DeathEffectCoroutine(dieTime));
+        Timing.RunCoroutine(_DeathEffectCoroutine(dieTime));
         _deathParticleEffect.Play();
     }
 
-    IEnumerator DeathEffectCoroutine(float dieTime)
+    IEnumerator<float> _DeathEffectCoroutine(float dieTime)
     {
         float flashDuration = 0.25f;
         SpriteFlash spriteFlash = GetComponent<SpriteFlash>();
 
         while (dieTime >= flashDuration) {
-            yield return new WaitForSeconds (flashDuration);
+            yield return Timing.WaitForSeconds(flashDuration);
             spriteFlash.PlayDeathFlashEffect(flashDuration);
             dieTime -= flashDuration;
         }
