@@ -2,15 +2,16 @@
 
 public class ButtonTutorial : MonoBehaviour
 {
-    [SerializeField] string _progressKey;
-    [SerializeField] Animator _prompt;
-    bool _hasShown;
-    void Awake()
+    [SerializeField] private string _progressKey;
+    [SerializeField] private Animator _prompt;
+    private bool _hasShown;
+    
+    private void Awake()
     {
         _prompt.gameObject.SetActive(true);
     }
 
-    void Start()
+    private void Start()
     {
         _hasShown = SaveManager.Instance.HasOverallProgress(_progressKey);
         if (_hasShown) {
@@ -19,7 +20,7 @@ public class ButtonTutorial : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !_hasShown) {
             _prompt.SetTrigger("Open");
@@ -27,7 +28,7 @@ public class ButtonTutorial : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag ("Player") && !_hasShown)
             _prompt.SetTrigger("Close");

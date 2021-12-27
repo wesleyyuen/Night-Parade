@@ -3,7 +3,9 @@ guid: 41516678c5ae6d549bf10481b3f1674a
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - onibi: {instanceID: 0}
+  - _glowMaterial: {fileID: 2100000, guid: 4407f333de7de2e47ab8e703a931ed78, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

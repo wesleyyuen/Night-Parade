@@ -7,7 +7,7 @@ public class NozuchiLunge : MonoBehaviour
     [SerializeField] float lungingForce;
     Rigidbody2D rb;
 
-    void Start ()
+    private void Start ()
     {
         rb = GetComponent<Rigidbody2D> ();
     }

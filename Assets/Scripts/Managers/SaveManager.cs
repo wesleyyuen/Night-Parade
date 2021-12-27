@@ -14,7 +14,7 @@ public class SaveManager : MonoBehaviour
     [HideInInspector] public PlayerData savedPlayerData;
     [HideInInspector] public Dictionary<string, SceneData> savedSceneData;
 
-    void Awake()
+    private void Awake()
     {
         if (_instance == null) {
             _instance = this;
@@ -26,22 +26,22 @@ public class SaveManager : MonoBehaviour
         InitializeEmptySaveData();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        FindObjectOfType<GameMaster>().Event_GameMasterInitalized += LoadStartingScene;
+        GameMaster.Instance.Event_GameMasterInitalized += LoadStartingScene;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        FindObjectOfType<GameMaster>().Event_GameMasterInitalized -= LoadStartingScene;
+        GameMaster.Instance.Event_GameMasterInitalized -= LoadStartingScene;
     }
 
-    void LoadStartingScene()
+    private void LoadStartingScene()
     {
         GameMaster.Instance.RequestSceneChange(GameMaster.Instance.startingScene.ToString(), ref savedPlayerData);
     }
 
-    void InitializeEmptySaveData()
+    private void InitializeEmptySaveData()
     {
         Dictionary<string, SceneData> scenes = new Dictionary<string, SceneData>();
         scenes.Add("Overall", new SceneData("Overall", new Dictionary<string, int>()));

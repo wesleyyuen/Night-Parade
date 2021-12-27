@@ -5,12 +5,12 @@ public class DistanceSensor : MonoBehaviour
     Camera m_camera;
     [SerializeField] float m_distanceThreshold = 70f;
 
-    void Start()
+    private void Start()
     {
         m_camera = Camera.main;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         // TODO: improve this
         foreach (Transform child in transform)

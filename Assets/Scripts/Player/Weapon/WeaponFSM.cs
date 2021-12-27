@@ -16,13 +16,15 @@ public class WeaponFSM : MonoBehaviour
         BlockState,
         ParryState,
         ThrownState,
-        LodgedState
+        ReturnState,
+        LodgedState,
+        FallState
     }
     public WeaponData weaponData;
     public Rigidbody2D player {get; private set;}
     public Dictionary<StateType, IWeaponState> states;
     public InputMaster InputActions;
-    IWeaponState _currentState;
+    private IWeaponState _currentState;
     [HideInInspector] public GameObject onibi;
     [HideInInspector] public bool canAttack;
     [HideInInspector] public float attackCooldownTimer;
@@ -32,8 +34,6 @@ public class WeaponFSM : MonoBehaviour
     [HideInInspector] public float blockCooldownTimer;
     [HideInInspector] public float currentBlockTimer; // Duration of the current block action
     public IWeaponState previousState {get; private set;}
-    Material _originalMaterial;
-    [SerializeField] Material _glowMaterial;
 
     protected virtual void Awake()
     {
@@ -42,7 +42,6 @@ public class WeaponFSM : MonoBehaviour
         foreach (Transform obj in playerGameObject.parent.transform) {
             if (obj.tag == "Onibi") onibi = obj.gameObject;
         }
-        _originalMaterial = GetComponent<SpriteRenderer>().material;
 
         states = new Dictionary<StateType, IWeaponState>();
         canAttack = true;
@@ -147,7 +146,7 @@ public class WeaponFSM : MonoBehaviour
     }
 
     // Called from Animation frames
-    void Attack(int isListeningForNextAttack)
+    private void Attack(int isListeningForNextAttack)
     {
         if (_currentState == states[StateType.AttackState]) {
             WakizashiAttackState state = (WakizashiAttackState) _currentState;
@@ -156,7 +155,7 @@ public class WeaponFSM : MonoBehaviour
     }
 
     // Called from Animation frames
-    void Upthrust(int isListeningForNextAttack)
+    private void Upthrust(int isListeningForNextAttack)
     {
         if (_currentState == states[StateType.AttackState]) {
             WakizashiAttackState state = (WakizashiAttackState) _currentState;
@@ -165,7 +164,7 @@ public class WeaponFSM : MonoBehaviour
     }
 
     // Called from Animation frames
-    void Downthrust(int isListeningForNextAttack)
+    private void Downthrust(int isListeningForNextAttack)
     {
         if (_currentState == states[StateType.AttackState]) {
             WakizashiAttackState state = (WakizashiAttackState) _currentState;
@@ -174,7 +173,7 @@ public class WeaponFSM : MonoBehaviour
     }
 
     // Called from animation frame
-    void EndAttack()
+    private void EndAttack()
     {
         if (_currentState == states[StateType.AttackState]) {
             WakizashiAttackState state = (WakizashiAttackState) _currentState;
@@ -187,14 +186,21 @@ public class WeaponFSM : MonoBehaviour
         return !(IsCurrentState(StateType.ThrownState) || IsCurrentState(StateType.LodgedState));
     }
 
-    // Onibi Interactions
-    public virtual IEnumerator<float> _MergeWithOnibi(float waitDuration)
+    public void UnlodgedFromEnemy()
     {
-        onibi.GetComponent<OnibiMovement>().StartMerging(GetComponent<SpriteRenderer>().bounds.center);
-        Utility.FadeGameObjectRecursively(onibi, 1f, 0f, waitDuration);
-        yield return Timing.WaitForSeconds(waitDuration);
-        GetComponent<SpriteRenderer>().material = _glowMaterial;
+        if (IsCurrentState(StateType.LodgedState)) {
+            SetState(states[StateType.FallState]);
+        }
     }
+
+    // Onibi Interactions
+    // public virtual IEnumerator<float> _MergeWithOnibi(float waitDuration)
+    // {
+    //     onibi.GetComponent<OnibiMovement>().StartMerging(GetComponent<SpriteRenderer>().bounds.center);
+    //     Utility.FadeGameObjectRecursively(onibi, 1f, 0f, waitDuration);
+    //     yield return Timing.WaitForSeconds(waitDuration);
+    //     GetComponent<SpriteRenderer>().material = _glowMaterial;
+    // }
 
     // Audio
     public virtual void PlayWeaponMissSFX()
@@ -207,7 +213,7 @@ public class WeaponFSM : MonoBehaviour
         SoundManager.Instance.Play(weaponData.hitSFX);
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         if (weaponData != null) {
             // Show Attack Range

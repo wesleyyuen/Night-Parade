@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OkkaLostLOSState : IEnemyState
+public sealed class OkkaLostLOSState : IEnemyState
 {
     OkkaFSM _fsm;
     float _timer;

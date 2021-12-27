@@ -21,7 +21,7 @@ public class PlayerDash : MonoBehaviour
     int _dashLeft;
     float _nextDashTime;
 
-    void Awake()
+    private void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
         _anim = GetComponentInParent<PlayerAnimations>();
@@ -33,24 +33,24 @@ public class PlayerDash : MonoBehaviour
         _dashLeft = maxDash;
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         InputManager.Event_Input_Dash += OnDash;
         _collision.Event_OnGroundEnter += ResetDash;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         InputManager.Event_Input_Dash -= OnDash;
         _collision.Event_OnGroundEnter -= ResetDash;
     }
 
-    void ResetDash()
+    private void ResetDash()
     {
         _dashLeft = maxDash;
     }
 
-    void OnDash()
+    private void OnDash()
     {
         if (enabled && !PauseMenu.isPuased && Time.time > _nextDashTime) {
             if (_dashLeft > 0) {
@@ -83,7 +83,7 @@ public class PlayerDash : MonoBehaviour
         _rb.gravityScale = 1;
     }
 
-    void ActuallyDash(Vector2 dir)
+    private void ActuallyDash(Vector2 dir)
     {
         isDashing = true;
 

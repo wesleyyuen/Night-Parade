@@ -15,7 +15,7 @@ public class PlayerAnimations : MonoBehaviour
     bool _isSquishing;
     bool canTurn;
 
-    void Awake()
+    private void Awake()
     {
         _grounded = GetComponentInParent<PlayerPlatformCollision>();
 
@@ -35,7 +35,7 @@ public class PlayerAnimations : MonoBehaviour
         canTurn = true;
     }
 
-    void Start()
+    private void Start()
     {
         FaceRight(_playerAnimator.transform.localScale.x == 1f);
     }
@@ -54,13 +54,13 @@ public class PlayerAnimations : MonoBehaviour
         Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _weaponAnimator.enabled = e, time, false, true).CancelWith(gameObject));
     }
 
-    void SetPlayerScale(Vector3 scale)
+    private void SetPlayerScale(Vector3 scale)
     {
         _playerAnimator.transform.localScale = scale;
         if (_weaponFSM.IsOnPlayer()) _weaponAnimator.transform.localScale = scale;
     }
 
-    void Update()
+    private void Update()
     {
         SetJumpFallAnimation();
 
@@ -86,25 +86,25 @@ public class PlayerAnimations : MonoBehaviour
         }
     }
 
-    void SetTrigger(string name)
+    private void SetTrigger(string name)
     {
         _playerAnimator.SetTrigger(name);
         _weaponAnimator.SetTrigger(name);
     }
 
-    void SetBool(string name, bool val)
+    private void SetBool(string name, bool val)
     {
         _playerAnimator.SetBool(name, val);
         _weaponAnimator.SetBool(name, val);
     }
 
-    void SetFloat(string name, float val)
+    private void SetFloat(string name, float val)
     {
         _playerAnimator.SetFloat(name, val);
         _weaponAnimator.SetFloat(name, val);
     }
 
-    void SetInteger(string name, int val)
+    private void SetInteger(string name, int val)
     {
         _playerAnimator.SetInteger(name, val);
         _weaponAnimator.SetInteger(name, val);

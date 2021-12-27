@@ -11,17 +11,17 @@ public class DialogueTrigger : MonoBehaviour
     protected bool _isDialogueTriggered;
 
 
-    void Awake()
+    private void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         InputManager.Event_Input_Interact += OnTriggerDialogue;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         InputManager.Event_Input_Interact -= OnTriggerDialogue;
     }
@@ -51,7 +51,7 @@ public class DialogueTrigger : MonoBehaviour
            TriggerDialogue();
     }
 
-    void TriggerDialogue()
+    private void TriggerDialogue()
     { 
         // TODO: later maybe generalize and make it possible to pick a bool flag in inspector to choose dailogue
         if (!PauseMenu.isPuased) {

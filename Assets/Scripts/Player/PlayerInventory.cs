@@ -4,33 +4,39 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public int coinOnHand { get; private set; }
+    private int monOnHand;
+    public int MonOnHand { get { return monOnHand; } }
+    private int recentMonDelta;
+    public int RecentMonDelta { get { return recentMonDelta; } }
     public bool[] inks { get; private set; }
     public int orbs { get; private set; }
     public event System.Action Event_MonChange;
 
-    void Start()
+    private void Start()
     {
         // Get saved data from SaveManager
-        coinOnHand = SaveManager.Instance.savedPlayerData.CoinsOnHand;
+        monOnHand = SaveManager.Instance.savedPlayerData.CoinsOnHand;
+        recentMonDelta = 0;
         inks = SaveManager.Instance.savedPlayerData.SavedInks;
         orbs = SaveManager.Instance.savedPlayerData.SavedOrbs;
     }
 
     public void PickUpCoin(int amt)
     {
-        coinOnHand += amt;
+        // TODO: mon deltas listen for 3 seconds before adding to monOnHand  
+        recentMonDelta = amt;
+        monOnHand += amt;
 
         // Update Mon UI
         Event_MonChange?.Invoke();
     }
 
-    public void PickUpInk (int areaIndex)
+    public void PickUpInk(int areaIndex)
     {
         inks[areaIndex] = true;
     }
 
-    public void PickUpOrb ()
+    public void PickUpOrb()
     {
         orbs++;
     }

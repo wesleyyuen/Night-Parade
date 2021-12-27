@@ -20,7 +20,7 @@ public class DialogueManager : MonoBehaviour
     public bool isTalking { get; private set; }
     Dialogue.Sentence currentSentence;
 
-    void Awake()
+    private void Awake()
     {
         if (instance == null) {
             instance = this;
@@ -30,7 +30,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
     
-    void Start()
+    private void Start()
     {
         sentences = new Queue<Dialogue.Sentence> ();
         currentSentence = new Dialogue.Sentence("", null);
@@ -39,7 +39,7 @@ public class DialogueManager : MonoBehaviour
         isTalking = false;
     }
 
-    void Update()
+    private void Update()
     {
         if (isTalking) {
             if (Input.GetButtonDown ("Attack") || Input.GetButtonDown ("Jump")) {
@@ -112,7 +112,7 @@ public class DialogueManager : MonoBehaviour
         Timing.RunCoroutine(_TpyingEffect(currentSentence.sentence));
     }
 
-    void EndDialogue()
+    private void EndDialogue()
     {
         // Reset + reenable player controls
         typingSpeed = _originalTypingSpeed;

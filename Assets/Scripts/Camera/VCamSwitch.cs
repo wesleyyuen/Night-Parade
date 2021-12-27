@@ -9,13 +9,13 @@ public class VCamSwitch : MonoBehaviour
 
     [SerializeField] CinemachineVirtualCamera vcam;
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !other.isTrigger)
             vcam.enabled = true;
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !other.isTrigger)
             vcam.enabled = false;

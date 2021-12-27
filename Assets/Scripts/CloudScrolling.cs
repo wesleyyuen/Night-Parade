@@ -10,7 +10,7 @@ public class CloudScrolling : MonoBehaviour
 
     // TODO: would use Mathf.Repeat but can't figure out when does a group of cloud start/end/length
     // just pingpong the cloud for now instead
-    void Update ()
+    private void Update ()
     {
         var dif = wrappingPosition - originalPosition;
         var t = Mathf.PingPong (Time.time * speed / dif.magnitude, 1f);

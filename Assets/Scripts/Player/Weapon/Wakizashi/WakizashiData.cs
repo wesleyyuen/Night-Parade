@@ -42,7 +42,7 @@ public class WakizashiData : WeaponData
         blockKnockback = 25f;
 
         // Throw
-        throwForce = 60f;
+        throwForce = 40f;
         throwDamage = 10f;
 
         // Audio

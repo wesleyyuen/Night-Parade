@@ -13,7 +13,7 @@ public class CameraPeeking : MonoBehaviour
     float timer = 0f;
     [SerializeField] float holdTime = 1.0f; // how long you need to hold to trigger the effect
 
-    void Start ()
+    private void Start ()
     {
         this.enabled = false;
 
@@ -23,7 +23,7 @@ public class CameraPeeking : MonoBehaviour
         if (grounded != null) isGrounded = grounded.onGround;
     }
 
-    void ReInitializeVariables ()
+    private void ReInitializeVariables ()
     {
         if (transposer == null) {
             GameObject vcam = GameObject.FindGameObjectWithTag ("MainVCam");
@@ -33,7 +33,7 @@ public class CameraPeeking : MonoBehaviour
         if (grounded != null) isGrounded = grounded.onGround;
     }
 
-    void Update ()
+    private void Update ()
     {
         ReInitializeVariables ();
         if (transposer == null || !isGrounded) return;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PerspectiveScaling : MonoBehaviour
 {  
-    void Awake()
+    private void Awake()
     {
         if (transform.childCount == 0) {
             float scale = (transform.position.z - Camera.main.transform.position.z) / Camera.main.transform.position.z;

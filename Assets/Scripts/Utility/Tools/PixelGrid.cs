@@ -81,13 +81,13 @@ public class PixelGrid : EditorWindow
         SnapAllToGrid();
     }
 
-    void SnapAllToGrid()
+    private void SnapAllToGrid()
     {
         SnapXToGrid();
         SnapYToGrid();
     }
 
-    void SnapXToGrid()
+    private void SnapXToGrid()
     {
         if (trans == null || trans.Length == 0)
         {
@@ -106,7 +106,7 @@ public class PixelGrid : EditorWindow
         }        
     }
 
-    void SnapYToGrid()
+    private void SnapYToGrid()
     {
         if (trans == null || trans.Length == 0)
         {

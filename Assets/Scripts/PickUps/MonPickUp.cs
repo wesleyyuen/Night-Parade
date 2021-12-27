@@ -2,12 +2,12 @@
 
 public class MonPickUp : PickUp
 {
-    [SerializeField] int amount;
+    [SerializeField] private int amount;
 
-    void OnCollisionEnter2D (Collision2D other)
+    private void OnCollisionEnter2D (Collision2D other)
     {
         if (other.gameObject.CompareTag ("Player")) {
-            other.gameObject.GetComponent<PlayerInventory>().PickUpCoin (amount);
+            other.gameObject.GetComponent<PlayerInventory>().PickUpCoin(amount);
 
             Destroy(gameObject);
         }

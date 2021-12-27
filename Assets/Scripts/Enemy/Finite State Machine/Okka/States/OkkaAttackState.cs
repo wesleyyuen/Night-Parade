@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MEC;
 
-public class OkkaAttackState : IEnemyState
+public sealed class OkkaAttackState : IEnemyState
 {
     OkkaFSM _fsm;
     float _timer;

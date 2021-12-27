@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour
 {
-    static GameMaster _instance;
+    private static GameMaster _instance;
     public static GameMaster Instance {
         get  {return _instance; }
     }
@@ -14,11 +14,13 @@ public class GameMaster : MonoBehaviour
     public string prevScene {get; private set;}
     public string currentScene {get; private set;}
     public event System.Action Event_GameMasterInitalized;
-    public event System.Action Event_UIIntro;
-    public event System.Action Event_UIOutro;
-    bool _isInTestingChamber;
+    
+    // Static UI Events to avoid OnEnable/OnDisable Null References
+    public static event System.Action Event_UIIntro;
+    public static event System.Action Event_UIOutro;
+    private bool _isInTestingChamber;
 
-    void Awake()
+    private void Awake()
     {
         if (_instance == null) {
             _instance = this;
@@ -39,12 +41,12 @@ public class GameMaster : MonoBehaviour
         }
     }
     
-    void Start()
+    private void Start()
     {
         Event_GameMasterInitalized?.Invoke();
     }
 
-    void OnTestingChamber(InputAction.CallbackContext context)
+    private void OnTestingChamber(InputAction.CallbackContext context)
     {
         if (!_isInTestingChamber)
             RequestSceneChange("_TestingChamber", ref SaveManager.Instance.savedPlayerData);
@@ -87,7 +89,7 @@ public class GameMaster : MonoBehaviour
     }
 
     // can remove if play mode from _preload
-    void SetUI(bool boolean)
+    private void SetUI(bool boolean)
     {
         DialogueManager.Instance.enabled = boolean;
 

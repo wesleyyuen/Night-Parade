@@ -24,7 +24,7 @@ public class LoadMenu : MonoBehaviour
     PlayerData data2;
     PlayerData data3;
 
-    void Awake()
+    private void Awake()
     {
         // TODO if File exists
         data1 = SaveManager.Load(1);
@@ -39,7 +39,7 @@ public class LoadMenu : MonoBehaviour
         DisplayPlayTime();
     }
 
-    void DisplayHearts()
+    private void DisplayHearts()
     {
         // Save Slot 1
         if (data1 != null) DisplayHeartsHelper(data1.CurrentHealth, data1.MaxHealth, saveSlot1Hearts);
@@ -49,7 +49,7 @@ public class LoadMenu : MonoBehaviour
         if (data3 != null) DisplayHeartsHelper(data3.CurrentHealth, data3.MaxHealth, saveSlot3Hearts);
     }
 
-    void DisplayHeartsHelper(int currHealth, int maxHealth, Image[] hearts)
+    private void DisplayHeartsHelper(int currHealth, int maxHealth, Image[] hearts)
     {
         int numOfFullHearts = currHealth / 4;
         int maxHearts = maxHealth / 4;
@@ -61,14 +61,14 @@ public class LoadMenu : MonoBehaviour
         }
     }
 
-    void DisplayMons()
+    private void DisplayMons()
     {
         if (data1 != null) saveSlot1Mon.text = data1.CoinsOnHand.ToString ();
         if (data2 != null) saveSlot2Mon.text = data2.CoinsOnHand.ToString ();
         if (data3 != null) saveSlot3Mon.text = data3.CoinsOnHand.ToString ();
     }
 
-    void DisplayPlayTime()
+    private void DisplayPlayTime()
     {
         if (data1 != null) saveSlot1Time.text = SecondsToStringHelper (data1.PlayTime);
         if (data2 != null) saveSlot2Time.text = SecondsToStringHelper (data2.PlayTime);

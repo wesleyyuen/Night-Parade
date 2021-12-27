@@ -9,14 +9,14 @@ public class PickUp : MonoBehaviour
     Color _startingColor, _endColor;
     float _timer = 0f;
 
-    void Awake()
+    private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
         _startingColor = _renderer.color;
         _endColor = new Color(_renderer.color.r, _renderer.color.g, _renderer.color.b, 0f);
     }
 
-    void Update()
+    private void Update()
     {
         _timer += Time.deltaTime;
 

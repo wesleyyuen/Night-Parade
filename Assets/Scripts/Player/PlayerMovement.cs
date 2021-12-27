@@ -7,21 +7,20 @@ using MEC;
 public class PlayerMovement : MonoBehaviour
 {
     [Header ("References")]
-    PlayerPlatformCollision _coll;
-    Rigidbody2D _rb;
-    PlayerAnimations _animations;
-    PlayerAudio _audio;
-    PixelPerfectCamera _ppc;
+    private PlayerPlatformCollision _coll;
+    private Rigidbody2D _rb;
+    private PlayerAnimations _animations;
+    private PlayerAudio _audio;
+    private PixelPerfectCamera _ppc;
 
     [Header ("Movement Settings")]
-    [SerializeField] float _movementSpeed = 14f;
+    [SerializeField] private float _movementSpeed = 14f;
     public bool canWalk {get; private set;}
     public bool isHandicapped {get; set;}
-    // float _xRaw, _yRaw;
-    bool _isLetRBMove;
-    float _originalMovementSpeed;
+    private bool _isLetRBMove;
+    private float _originalMovementSpeed;
 
-    void Awake()
+    private void Awake()
     {
         _coll = GetComponent<PlayerPlatformCollision>();
         _rb = GetComponent<Rigidbody2D>();
@@ -66,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
         Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _isLetRBMove = e, time, true, false).CancelWith(gameObject));
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (!_isLetRBMove && !canWalk && _coll.onGround) {
             _rb.velocity = new Vector2 (0f, _rb.velocity.y);
@@ -80,11 +79,10 @@ public class PlayerMovement : MonoBehaviour
         
         // Move player
         // TODO: up slope still seems a bit slower then normal movement/upslope
-        // bool isUpSlope = _coll.slopeVector.y > 0f;
-        // float hypotenuse = Mathf.Sqrt(Mathf.Pow(_coll.slopeVector.x, 2) + Mathf.Pow(_coll.slopeVector.y, 2));
-        // float slopeMultiplier = isUpSlope ? hypotenuse : (1 / hypotenuse);
-        // if (_coll.onGround && _coll.onSlope && !InputManager.Instance.HasJumpInput())
-        //     newVelocity = new Vector2(horizotalInput * _movementSpeed * slopeMultiplier, _rb.velocity.y);
+        // if (_coll.onGround && _coll.onSlope && !InputManager.Instance.HasJumpInput()) {
+        //     newVelocity = new Vector2(horizotalInput * _movementSpeed, _rb.velocity.y);
+        //     newVelocity = Vector3.ProjectOnPlane(newVelocity, _coll.slopeNormal);
+        // }
         // else
             newVelocity = new Vector2(horizotalInput * _movementSpeed, _rb.velocity.y);
 
@@ -92,6 +90,8 @@ public class PlayerMovement : MonoBehaviour
             _rb.velocity = Vector2.Lerp(_rb.velocity, newVelocity, Time.deltaTime * 0.1f);
         else 
             _rb.velocity = newVelocity;
+
+                    // Debug.Log(_rb.velocity);
     }
 
     public void HandicapMovementForSeconds(float time)
@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
         while (timer < time) {
             timer += Time.deltaTime;
             _animations.SetRunAnimation(toRight ? 1f : -1f);
-            _rb.velocity = _coll.slopeVector * _movementSpeed;
+            _rb.velocity = (_animations.IsFacingRight() ? Vector2.right : Vector2.left) * _movementSpeed;
             yield return Timing.WaitForOneFrame;
         }
         
@@ -149,7 +149,7 @@ public class PlayerMovement : MonoBehaviour
 
         while (timer < time) {
             timer += Timing.DeltaTime;
-            _rb.velocity = _coll.slopeVector * speed;
+            _rb.velocity = (_animations.IsFacingRight() ? Vector2.right : Vector2.left) * speed;
             yield return Timing.WaitForOneFrame;
         }
 

@@ -2,14 +2,14 @@
 
 public class Scene_Forest_1 : SceneScript
 {
-    enum SpawnPoint {
+    private enum SpawnPoint {
         NotTesting,
         Cave,
         Save
     }
-    [SerializeField] SpawnPoint spawnPoint;
-    [SerializeField] Transform caveSpawnPoint;
-    [SerializeField] Transform saveSpawnPoint;
+    [SerializeField] private SpawnPoint spawnPoint;
+    [SerializeField] private Transform caveSpawnPoint;
+    [SerializeField] private Transform saveSpawnPoint;
     protected override void Start()
     {
         base.Start();

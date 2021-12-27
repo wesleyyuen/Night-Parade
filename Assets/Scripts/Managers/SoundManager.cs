@@ -16,7 +16,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] Sound[] sounds;
     
 
-    void Awake()
+    private void Awake()
     {
         if (instance == null) {
             instance = this;
@@ -63,6 +63,9 @@ public class SoundManager : MonoBehaviour
         if (sound.clip.Length > 1) { // Randomly choose a clip to play
             sound.source.clip = sound.clip[UnityEngine.Random.Range(0, sound.clip.Length)];
         }
+
+        // sound.source.volume = 0f;
+        // sound.source.DOFade(sound.source.volume, fadeDuration);
 
         Timing.RunCoroutine(_FadeVolume(sound, 0f, sound.source.volume, fadeDuration));
         sound.source.Play();

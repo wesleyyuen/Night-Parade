@@ -15,7 +15,7 @@ public class EnemyGFX : MonoBehaviour
     [SerializeField] protected ParticleSystem _deathParticleEffect;
     [SerializeField] protected ParticleSystem _damagedParticleEffect;
 
-    void Start()
+    private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
 

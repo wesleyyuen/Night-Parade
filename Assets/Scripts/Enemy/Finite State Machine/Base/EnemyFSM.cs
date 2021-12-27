@@ -198,15 +198,6 @@ public class EnemyFSM : MonoBehaviour
         }
     }
 
-    public void Die()
-    {
-        GetComponent<EnemyDrop>().SpawnDrops();
-
-        SaveManager.Instance.UpdateSpawnTimestamp(gameObject.name, Time.time + enemyData.spawnCooldown);
-
-        Destroy(gameObject);
-    }
-
     public bool IsDead()
     {
         return _isDead;

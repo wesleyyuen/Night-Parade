@@ -3,36 +3,36 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using MEC;
+using DG.Tweening;
 
 public class MonUI : MonoBehaviour
 {
     PlayerInventory _playerInventory;
     [SerializeField] TextMeshProUGUI monText;
-    [SerializeField] GameObject canvas;
-
+    [SerializeField] CanvasGroup canvas;
     [SerializeField] float showingDuration;
     [SerializeField] float fadingDuration;
 
-    void OnEnable()
+    private void OnEnable()
     {
         GameMaster gm = FindObjectOfType<GameMaster>();
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
-        gm.Event_UIIntro += Intro;
-        gm.Event_UIOutro += Outro;
+        GameMaster.Event_UIIntro += Intro;
+        GameMaster.Event_UIOutro += Outro;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         GameMaster gm = FindObjectOfType<GameMaster>();
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
-        gm.Event_UIIntro -= Intro;
-        gm.Event_UIOutro -= Outro;
+        GameMaster.Event_UIIntro -= Intro;
+        GameMaster.Event_UIOutro -= Outro;
     }
 
     // Update Player References and add Observers
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _playerInventory = FindObjectOfType<PlayerInventory>();
         if (_playerInventory)
@@ -40,21 +40,21 @@ public class MonUI : MonoBehaviour
     }
 
     // Remove Observers
-    void OnSceneUnloaded(Scene scene)
+    private void OnSceneUnloaded(Scene scene)
     {
         if (_playerInventory)
             _playerInventory.Event_MonChange -= UpdateMonUI;
     }
 
-    void Intro()
+    private void Intro()
     {
-        Utility.SetAlphaRecursively(canvas, 0f);
+        canvas.alpha = 0f;
     }
 
-    void Outro()
+    private void Outro()
     {
         Timing.PauseCoroutines();
-        Utility.SetAlphaRecursively(canvas, 0f);
+        canvas.alpha = 0f;
     }
 
     public void UpdateMonUI()
@@ -64,24 +64,32 @@ public class MonUI : MonoBehaviour
         StartCoroutine(_ShowMonChangeCoroutine());
     }
 
-    IEnumerator _ShowMonChangeCoroutine()
+    private IEnumerator _ShowMonChangeCoroutine()
     {
-        Utility.FadeGameObjectRecursively(canvas, 0f, 1f, fadingDuration);
+        canvas.DOFade(1f, fadingDuration);
 
         // Display text
         yield return new WaitForSeconds (showingDuration * 0.2f);
         UpdateMonText();
         yield return new WaitForSeconds (showingDuration * 0.8f);
 
-        Utility.FadeGameObjectRecursively(canvas, 1f, 0f, fadingDuration);
+        canvas.DOFade(0f, fadingDuration);
     }
 
-    void UpdateMonText()
+    private void UpdateMonText()
     {
         _playerInventory = FindObjectOfType<PlayerInventory>();
         if (_playerInventory == null) return;
 
         // Display current coins on hand as text, space at the end to force spacing
-        monText.text = _playerInventory.coinOnHand.ToString() + " ";
+        // monText.text = _playerInventory.coinOnHand.ToString() + " ";
+        LeanTween.cancel(monText.gameObject);
+        LeanTween.value(float.Parse(monText.text), _playerInventory.MonOnHand, 0.5f)
+            .setOnUpdate((float val) => {
+                monText.text = ((int)val).ToString();
+            })
+            .setOnComplete(() => {
+            monText.text = _playerInventory.MonOnHand.ToString();
+            });
     }
 }

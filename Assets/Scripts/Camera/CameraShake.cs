@@ -6,7 +6,7 @@ public class CameraShake : MonoBehaviour
 {
     public static CameraShake Instance {get; private set;}
 
-    void Awake()
+    private void Awake()
     {
         Instance = this;
     }

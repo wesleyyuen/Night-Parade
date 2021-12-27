@@ -14,7 +14,7 @@ public class RevealHiddenArea : MonoBehaviour
     [SerializeField] bool hideFromLeft;
     bool _hasVisited;
 
-    void Start()
+    private void Start()
     {
         // Make hidden area semi-transparant when discovered before
         _hasVisited = SaveManager.Instance.HasScenePermaProgress(GameMaster.Instance.currentScene, keyString);
@@ -24,7 +24,7 @@ public class RevealHiddenArea : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player")) {
             // Find direction player enter the trigger from
@@ -44,7 +44,7 @@ public class RevealHiddenArea : MonoBehaviour
         }
     }
 
-    void FoundSecretSFX()
+    private void FoundSecretSFX()
     {
         // SoundManager.Instance.Play ("Found_SecretArea");
     }

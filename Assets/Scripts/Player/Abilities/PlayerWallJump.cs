@@ -15,7 +15,7 @@ public class PlayerWallJump : MonoBehaviour
     [SerializeField] float _jumpForce;
     [SerializeField] float _movementDisableTime;
 
-    void Awake()
+    private void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
         _anim = GetComponentInParent<PlayerAnimations>();
@@ -27,22 +27,22 @@ public class PlayerWallJump : MonoBehaviour
         _jumpDirection = _jumpDirection.normalized;
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         InputManager.Event_Input_Jump += OnWallJump;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         InputManager.Event_Input_Jump -= OnWallJump;
     }
 
-    void OnWallJump()
+    private void OnWallJump()
     {
         if (!_collision.onGround) {
             if ((_collision.onLeftWall && InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left))
              || (_collision.onRightWall && InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right))) {
-                 // TODO: add clinging for better control
+                _rb.isKinematic = false;
                 _movement.HandicapMovementForSeconds(_movementDisableTime);
                 _animations.EnablePlayerTurning(false, _movementDisableTime);
                 Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _wallSlide.canSlide = e, _movementDisableTime, false, true));
@@ -51,7 +51,7 @@ public class PlayerWallJump : MonoBehaviour
         }
     }
 
-    void WallJump(bool isLeftWall)
+    private void WallJump(bool isLeftWall)
     {
         _rb.velocity = new Vector2(_rb.velocity.x, 0);
         _rb.velocity += new Vector2((isLeftWall ? 1 : -1) * _jumpDirection.x * _jumpForce, _jumpDirection.y * _jumpForce);

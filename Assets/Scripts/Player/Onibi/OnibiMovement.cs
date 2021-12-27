@@ -13,7 +13,7 @@ public class OnibiMovement : MonoBehaviour
     Vector2 _desiredPoint;
     bool _isMerging;
 
-    void Start()
+    private void Start()
     {
         _player = transform.parent.Find("Player").Find("Sprite");
         _rb = GetComponent<Rigidbody2D>();
@@ -29,7 +29,7 @@ public class OnibiMovement : MonoBehaviour
         _isMerging = false;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         _desiredPoint = _isMerging ? _desiredPoint : new Vector2(_player.position.x + (_player.localScale.x == 1 ? offsetFromPlayer.x : -offsetFromPlayer.x),
                                    _player.position.y + offsetFromPlayer.y + Mathf.Sin(Time.time * Random.value) * 0.5f);

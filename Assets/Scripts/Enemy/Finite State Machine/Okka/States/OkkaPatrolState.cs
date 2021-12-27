@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OkkaPatrolState : IEnemyState
+public sealed class OkkaPatrolState : IEnemyState
 {
     OkkaFSM _fsm;
     const float _DETECTION_OFFSET = 0.1f;

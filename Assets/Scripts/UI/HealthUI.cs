@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using MEC;
+using DG.Tweening;
 
 public class HealthUI : MonoBehaviour
 {
@@ -15,9 +15,8 @@ public class HealthUI : MonoBehaviour
     [SerializeField] Sprite halfHeart;
     [SerializeField] Sprite quarterHeart;
     [SerializeField] Sprite emptyHeart;
-    const float kFadeInDuration = 0.3f;
     
-    void Awake()
+    private void Awake()
     {
         // Set Material
         for (int i = 0; i < hearts.Length; i++) {
@@ -29,26 +28,26 @@ public class HealthUI : MonoBehaviour
         }
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        GameMaster gm = FindObjectOfType<GameMaster>();
+        // GameMaster gm = FindObjectOfType<GameMaster>();
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
-        gm.Event_UIIntro += Intro;
-        gm.Event_UIOutro += Outro;
+        GameMaster.Event_UIIntro += Intro;
+        GameMaster.Event_UIOutro += Outro;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        GameMaster gm = FindObjectOfType<GameMaster>();
+        // GameMaster gm = FindObjectOfType<GameMaster>();
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
-        gm.Event_UIIntro -= Intro;
-        gm.Event_UIOutro -= Outro;
+        GameMaster.Event_UIIntro -= Intro;
+        GameMaster.Event_UIOutro -= Outro;
     }
 
     // Update Player References and add Observers
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _playerHealth = FindObjectOfType<PlayerHealth>();
         if (_playerHealth)
@@ -56,24 +55,25 @@ public class HealthUI : MonoBehaviour
     }
 
     // Remove Observers
-    void OnSceneUnloaded(Scene scene)
+    private void OnSceneUnloaded(Scene scene)
     {
         if (_playerHealth)
             _playerHealth.Event_HealthChange -= UpdateHeartsUI;
     }
 
-    void Intro()
+    private void Intro()
     {
         FadeUI(true);
     }
 
-    void Outro()
+    private void Outro()
     {
-        StopAllCoroutines();
+        // StopAllCoroutines();
+        DOTween.PauseAll();
         FadeUI(false, true);
     }
 
-    void FadeUI(bool fadeIn, bool isInstant = false)
+    private void FadeUI(bool fadeIn, bool isInstant = false)
     {
         Vector3 from = new Vector3(fadeIn ? 0f : 1f, fadeIn ? 0f : 1f, 1f);
         Vector3 to = new Vector3(fadeIn ? 1f : 0f, fadeIn ? 1f : 0f, 1f);
@@ -81,15 +81,11 @@ public class HealthUI : MonoBehaviour
         for (int i = 0; i < hearts.Length; i++) {
             if (isInstant)
                 hearts[i].gameObject.transform.localScale = to;
-            else
-                StartCoroutine(_FadeUIHelper(hearts[i].gameObject, from, to, kFadeInDuration, kFadeInDuration * i));
+            else {
+                hearts[i].gameObject.transform.localScale = from;
+                hearts[i].rectTransform.DOScale(to, 0.3f).SetDelay(0.25f * i);
+            }
         }
-    }
-
-    IEnumerator _FadeUIHelper(GameObject obj, Vector3 from, Vector3 to, float duration, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        StartCoroutine(Utility.ScaleGameObject(obj, from, to, duration));
     }
 
     public void UpdateHeartsUI(int prevHealth, float duration = 0.75f)

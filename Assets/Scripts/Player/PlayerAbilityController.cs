@@ -23,7 +23,7 @@ public class PlayerAbilityController : MonoBehaviour
     float _deltaTime;
     bool _isStopUpdatingStamina;
 
-    void Start()
+    private void Start()
     {
         currStamina = SaveManager.Instance.savedPlayerData.CurrentStamina;
         maxStamina = SaveManager.Instance.savedPlayerData.MaxStamina;
@@ -43,7 +43,7 @@ public class PlayerAbilityController : MonoBehaviour
         EnableAbility(Ability.Dash, true);
     }
 
-    void Update()
+    private void Update()
     {
         _deltaTime = Time.deltaTime;
 

@@ -40,7 +40,7 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
         _playerMovement.EnablePlayerMovement(false);
     }
 
-    void OnReleaseBlock(InputAction.CallbackContext context)
+    private void OnReleaseBlock(InputAction.CallbackContext context)
     {
         if (_fsm == null) return;
         if (!_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)

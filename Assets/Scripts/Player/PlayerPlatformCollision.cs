@@ -2,37 +2,38 @@
 
 public class PlayerPlatformCollision : MonoBehaviour
 {  
-    [SerializeField] float colliderRadius;
     public bool onGround { get; private set; }
     public event System.Action Event_OnGroundEnter;
-    public bool onSlope { get; private set; }
-    public Vector2 slopeVector { get; private set; }
+    // public bool onSlope { get; private set; }
+    // public Vector2 slopeVector { get; private set; }
+    // public Vector2 slopeNormal { get; private set; }
     public bool onWall { get; private set; }
     public bool onLeftWall { get; private set; }
     public bool onRightWall { get; private set; }
-    PlayerMovement _movement;
-    PlayerAnimations _animations;
-    PlayerAudio _playerAudio;
-    Collider2D _coll;
-    Rigidbody2D _rb;
-    PlayerJump _jump;
-    [SerializeField] PhysicsMaterial2D _oneFriction;
-    PhysicsMaterial2D _originalMaterial;
-    Vector2 _groundDetectionPoint,
+    [SerializeField] private float colliderRadius;
+    [SerializeField] private PhysicsMaterial2D _oneFriction;
+    private PhysicsMaterial2D _originalMaterial;
+    private PlayerMovement _movement;
+    private PlayerAnimations _animations;
+    private PlayerAudio _playerAudio;
+    private Collider2D _coll;
+    private Rigidbody2D _rb;
+    private PlayerJump _jump;
+    private Vector2 _groundDetectionPoint,
             _leftWallUpperDetectionPoint, _leftWallMidDetectionPoint,_leftWallLowerDetectionPoint,
             _rightWallUpperDetectionPoint, _rightWallMidDetectionPoint, _rightWallLowerDetectionPoint;
 
-    int _groundLayerMask, _wallLayerMask;
-    float _lastYVelocity, _fallStartYPos;
-    bool _startedFalling;
+    private int _groundLayerMask, _wallLayerMask;
+    private float _lastYVelocity, _fallStartYPos;
+    private bool _startedFalling;
 
-    void Start()
+    private void Awake()
     {
         _playerAudio = FindObjectOfType<PlayerAudio> ();
-        _coll = GetComponentInParent<Collider2D>();
-        _rb = GetComponentInParent<Rigidbody2D>();
-        _movement = GetComponentInParent<PlayerMovement>();
-        _animations = GetComponentInParent<PlayerAnimations>();
+        _coll = GetComponent<Collider2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        _movement = GetComponent<PlayerMovement>();
+        _animations = GetComponent<PlayerAnimations>();
         _jump = transform.parent.GetComponentInChildren<PlayerJump>();
         _originalMaterial = _rb.sharedMaterial;
         _groundLayerMask = LayerMask.GetMask("Ground");
@@ -41,10 +42,10 @@ public class PlayerPlatformCollision : MonoBehaviour
         onGround = true;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         bool prevOnGround = onGround;
-        bool prevOnSlope = onSlope;
+        // bool prevOnSlope = onSlope;
         bool prevOnLeftWall = onLeftWall;
         bool prevOnRightWall = onRightWall;
         bool prevOnWall = onWall;
@@ -61,15 +62,21 @@ public class PlayerPlatformCollision : MonoBehaviour
         Collider2D groundHit = Physics2D.OverlapArea(_groundDetectionPoint - new Vector2(_coll.bounds.size.x * 0.95f /2f, colliderRadius),
                               _groundDetectionPoint + new Vector2(_coll.bounds.size.x * 0.95f /2f, colliderRadius),
                               _groundLayerMask);
-        onGround = onSlope = groundHit;
-        slopeVector = _animations.IsFacingRight() ? -Vector2.left : Vector2.left;
-        if (onGround) {
-            RaycastHit2D raycast = Physics2D.Raycast(_groundDetectionPoint, Vector2.down, 0.5f, _groundLayerMask);
-            slopeVector = _animations.IsFacingRight() ? -Vector2.Perpendicular(raycast.normal) : Vector2.Perpendicular(raycast.normal);
-            onSlope = Vector2.Angle(raycast.normal, Vector2.up) > 0f;
-        }
+        onGround = groundHit;
+
+        // Handle Slope
+        // onSlope = groundHit;
+        // slopeVector = _animations.IsFacingRight() ? -Vector2.left : Vector2.left;
+        // slopeNormal = Vector2.up;
+        // if (onGround) {
+        //     RaycastHit2D raycast = Physics2D.Raycast(_groundDetectionPoint, Vector2.down, 0.5f, _groundLayerMask);
+        //     slopeNormal = raycast.normal;
+        //     slopeVector = _animations.IsFacingRight() ? -Vector2.Perpendicular(raycast.normal) : Vector2.Perpendicular(raycast.normal);
+        //     onSlope = Vector2.Angle(raycast.normal, Vector2.up) > 0f;
+        // }
+        // slopeVector.Normalize();
+        // slopeNormal.Normalize();
         
-        slopeVector = slopeVector.normalized;
 
         onLeftWall = Physics2D.Raycast(_leftWallUpperDetectionPoint, Vector2.left, colliderRadius, _wallLayerMask) ||
                      Physics2D.Raycast(_leftWallMidDetectionPoint, Vector2.left, colliderRadius, _wallLayerMask) ||
@@ -103,18 +110,9 @@ public class PlayerPlatformCollision : MonoBehaviour
             _startedFalling = true;
         }
         _lastYVelocity = _rb.velocity.y;
-
-        float horizotalInput = InputManager.Instance.GetDirectionalInputVector().x;
-        _rb.sharedMaterial = onSlope && Mathf.Approximately(horizotalInput, 0f) ? _oneFriction : _originalMaterial;
     }
-
-    // void FixedUpdate()
-    // {
-    //     float horizotalInput = InputManager.Instance.GetDirectionalInputVector().x;
-    //     _rb.sharedMaterial = onSlope && Mathf.Approximately(horizotalInput, 0f) ? _oneFriction : _originalMaterial;
-    // }
     
-    void OnGroundEnter()
+    private void OnGroundEnter()
     {
         Event_OnGroundEnter?.Invoke();
         
@@ -138,7 +136,7 @@ public class PlayerPlatformCollision : MonoBehaviour
         _playerAudio.PlayFootstepSFX();
     }
 
-    void OnGroundExit()
+    private void OnGroundExit()
     {
         // _animations.CreateDustTrail();
         _startedFalling = false;
@@ -155,7 +153,7 @@ public class PlayerPlatformCollision : MonoBehaviour
     //     _rb.sharedMaterial = _originalMaterial;
     // }
 
-    void OnBigFall()
+    private void OnBigFall()
     {
         const float bigFallHandicapDuration = 1f;
         _movement.EnablePlayerMovement(false, bigFallHandicapDuration);
@@ -178,11 +176,11 @@ public class PlayerPlatformCollision : MonoBehaviour
         _fallStartYPos = _rb.position.y;
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
 
-        Gizmos.DrawCube(_groundDetectionPoint, new Vector3(_coll.bounds.size.x * 0.95f, colliderRadius, 0f));
+        // Gizmos.DrawCube(_groundDetectionPoint, new Vector3(_coll.bounds.size.x * 0.95f, colliderRadius, 0f));
         Gizmos.DrawRay(_leftWallUpperDetectionPoint,  Vector2.left * colliderRadius);
         Gizmos.DrawRay(_leftWallLowerDetectionPoint,  -Vector2.left * colliderRadius);
         Gizmos.DrawRay(_rightWallUpperDetectionPoint,  Vector2.left * colliderRadius);

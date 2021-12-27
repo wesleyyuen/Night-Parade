@@ -1,57 +1,27 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using MEC;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using UnityEngine.Experimental.Rendering.Universal;
+using MEC;
+using TMPro;
+using DG.Tweening;
 
 // Class that has commonly used methods
 public class Utility : MonoBehaviour
 {
-    static Utility instance;
+    private static Utility instance;
     public static Utility Instance {
         get  {return instance; }
     }
-    // By CykesDev
-    // https://forum.unity.com/threads/c-coroutines-in-static-functions.134546/
-    // Enable coroutines from non-MonoBehaviour scripts
-    // public class StaticCoroutine : MonoBehaviour {
-    //     private static StaticCoroutine m_instance;
-    
-    //     private void OnDestroy()
-    //     { m_instance.StopAllCoroutines(); }
-    
-    //     private void OnApplicationQuit()
-    //     { m_instance.StopAllCoroutines(); }
-    
-    //     private static StaticCoroutine Build() {
-    //         if (m_instance != null) return m_instance;
-    
-    //         m_instance = (StaticCoroutine)FindObjectOfType(typeof(StaticCoroutine));
-    
-    //         if (m_instance != null) return m_instance;
-    
-    //         GameObject instanceObject = new GameObject("StaticCoroutine");
-    //         instanceObject.AddComponent<StaticCoroutine>();
-    //         m_instance = instanceObject.GetComponent<StaticCoroutine>();
-    
-    //         if (m_instance != null) return m_instance;
-    
-    //         Debug.LogError("Build did not generate a replacement instance. Method Failed!");
-    
-    //         return null;
-    //     }
-    
-    //     public static void Start(string methodName)
-    //     { Build().StartCoroutine(methodName); }
-    //     public static void Start(string methodName, object value)
-    //     { Build().StartCoroutine(methodName, value); }
-    //     public static void Start(IEnumerator routine)
-    //     { Build().StartCoroutine(routine); }
-    // }
+
+    private void Awake()
+    {
+        // Init DOTween
+        DOTween.Init();
+    }
 
     public static IEnumerator<float> _ChangeVariableAfterDelay<T>(Action<T> variable, float delay, T initialVal, T endVal)
     {
@@ -119,6 +89,7 @@ public class Utility : MonoBehaviour
         }
     }
 
+    // Used by Tilemap
     public static void FadeGameObjectRecursively(GameObject obj, float from, float to, float fadingTime, bool isRecursive = true)
     {
         if (fadingTime == 0) {

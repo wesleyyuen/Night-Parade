@@ -9,7 +9,7 @@ public class MainMenu : MonoBehaviour
     public Button continueButton;
     public TextMeshProUGUI continueText;
 
-    void Start()
+    private void Start()
     {
         if (!SaveManager.Instance.HaveSaveData()) { // TODO if File exists
             continueButton.interactable = false;

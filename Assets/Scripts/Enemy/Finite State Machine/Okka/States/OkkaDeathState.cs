@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OkkaDeathState : IEnemyState
+public sealed class OkkaDeathState : IEnemyState
 {
-    OkkaFSM _fsm;
-    float _timer;
+    private OkkaFSM _fsm;
+    private bool _isDead;
+    private float _timer;
 
     public OkkaDeathState(OkkaFSM fsm)
     {
@@ -14,17 +15,19 @@ public class OkkaDeathState : IEnemyState
     
     public void EnterState()
     {
+        _isDead = false;
         _timer = 0;
         Physics2D.IgnoreCollision(_fsm.player, _fsm.col);
+        
 
         // Stop all forces previously applied to it
         _fsm.rb.velocity = Vector2.zero;
         _fsm.rb.angularVelocity = 0f;
 
         // Apply Knock back
-        float knockBackForce = _fsm.enemyData.knockBackOnTakingDamageForce * 1.5f;
-        bool playerOnLeft = _fsm.rb.position.x > _fsm.player.transform.position.x;
-        _fsm.ApplyForce(playerOnLeft ? Vector2.right : Vector2.left, _fsm.enemyData.knockBackOnTakingDamageForce * 1.5f);
+        float knockBackForce = _fsm.enemyData.knockBackOnTakingDamageForce * 2f;
+        Vector2 knockBackDir = new Vector2((_fsm.rb.position.x > _fsm.player.transform.position.x) ? 1f : -1f, 0.75f);
+        _fsm.ApplyForce(knockBackDir, knockBackForce);
 
         _fsm.GFX.PlayDeathEffect(_fsm.enemyData.dieTime);
     }
@@ -33,8 +36,31 @@ public class OkkaDeathState : IEnemyState
     {
         _timer += Time.deltaTime;
 
-        if (_timer >= _fsm.enemyData.dieTime)
-            _fsm.Die();
+        if (_timer >= _fsm.enemyData.dieTime && !_isDead)
+            Die();
+    }
+
+    private void Die()
+    {
+        _isDead = true;
+        
+        // Check if Player's Weapon is lodged in this enemy
+        foreach (Transform child in _fsm.transform)
+        {
+            if (child.TryGetComponent<WeaponFSM>(out WeaponFSM weapon)) {
+                weapon.UnlodgedFromEnemy();
+                break;
+            }
+        }
+
+        // Drop loots
+        if (_fsm.TryGetComponent<EnemyDrop>(out EnemyDrop drop)) {
+            drop.SpawnDrops();
+        }
+
+        SaveManager.Instance.UpdateSpawnTimestamp(_fsm.gameObject.name, Time.time + _fsm.enemyData.spawnCooldown);
+
+        GameObject.Destroy(_fsm.gameObject);
     }
 
     public void FixedUpdate() {}

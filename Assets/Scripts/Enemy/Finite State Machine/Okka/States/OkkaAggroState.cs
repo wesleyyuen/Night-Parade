@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MEC;
 
-public class OkkaAggroState : IEnemyState
+public sealed class OkkaAggroState : IEnemyState
 {
     OkkaFSM _fsm;
     float _delayTimer;
@@ -55,7 +55,7 @@ public class OkkaAggroState : IEnemyState
             MoveTowardsPlayer();
     }
 
-    void MoveTowardsPlayer()
+    private void MoveTowardsPlayer()
     {
         Vector2 target = new Vector2 (_fsm.player.bounds.center.x, _fsm.rb.position.y);
         

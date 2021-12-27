@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] GameObject optionsMenuUI;
     InputMaster _input;
 
-    void Awake()
+    private void Awake()
     {
         _input = new InputMaster();
 
@@ -18,17 +18,17 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = false;
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         _input.UI.Pause.Enable();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         _input.UI.Pause.Disable();
     }
 
-    void OnPauseOrResume(InputAction.CallbackContext context)
+    private void OnPauseOrResume(InputAction.CallbackContext context)
     {
         if (GameMaster.Instance.currentScene != "Main_Menu") {
             if (isPuased)
@@ -38,7 +38,7 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    void Resume()
+    private void Resume()
     {
         isPuased = false;
 
@@ -56,7 +56,7 @@ public class PauseMenu : MonoBehaviour
         optionsMenuUI.SetActive(false);
     }
 
-    void Pause()
+    private void Pause()
     {
         isPuased = true;
 
@@ -73,7 +73,7 @@ public class PauseMenu : MonoBehaviour
         optionsMenuUI.SetActive(false);
     }
 
-    void QuitToMainMenu()
+    private void QuitToMainMenu()
     {
         Time.timeScale = 1f;
         isPuased = false;

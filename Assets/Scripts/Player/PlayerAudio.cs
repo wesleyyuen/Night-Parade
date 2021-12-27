@@ -6,7 +6,7 @@ public class PlayerAudio : MonoBehaviour
 {
     PlayerAnimations _anim;
 
-    void Awake()
+    private void Awake()
     {
         _anim = GetComponentInParent<PlayerAnimations>();
     }

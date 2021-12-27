@@ -1,18 +1,21 @@
 version: 2
 importPivots: 1
 tpsheetFileNames:
+- Assets/Characters/Enemy/Okka/Sprites/okka_spritesheet.tpsheet
+- Assets/Characters/Player/Sprites/player_spritesheet.tpsheet
+- Assets/Characters/Player/Wakizashi/Sprites/wakizashi_emission_map.tpsheet
+- Assets/Characters/Player/Wakizashi/Sprites/wakizashi_spritesheet.tpsheet
 - Assets/Graphics/Characters/Enemy/Okka/okka_spritesheet.tpsheet
-- Assets/Graphics/Characters/Player/player_spritesheet.tpsheet
-- Assets/Graphics/Characters/Player/Wakizashi/wakizashi_emission_map.tpsheet
-- Assets/Graphics/Characters/Player/Wakizashi/wakizashi_spritesheet.tpsheet
 - Assets/Tilemap/Forest/Sprites/Grass Shades/forest_grass_shades_atlas.tpsheet
 textureFileNames:
+- Assets/Characters/Enemy/Okka/Sprites/okka_spritesheet.png
+- Assets/Characters/Player/Sprites/player_spritesheet.png
+- Assets/Characters/Player/Wakizashi/Sprites/wakizashi_emission_map.png
+- Assets/Characters/Player/Wakizashi/Sprites/wakizashi_spritesheet.png
 - Assets/Graphics/Characters/Enemy/Okka/okka_spritesheet.png
-- Assets/Graphics/Characters/Player/player_spritesheet.png
-- Assets/Graphics/Characters/Player/Wakizashi/wakizashi_emission_map.png
-- Assets/Graphics/Characters/Player/Wakizashi/wakizashi_spritesheet.png
 - Assets/Tilemap/Forest/Sprites/Grass Shades/forest_grass_shades_atlas.png
 normalmapFileNames:
+- 
 - 
 - 
 - 

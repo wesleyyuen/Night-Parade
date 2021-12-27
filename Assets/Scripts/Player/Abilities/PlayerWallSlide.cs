@@ -11,7 +11,7 @@ public class PlayerWallSlide : MonoBehaviour
     [SerializeField] float slideSpeed;
     [HideInInspector] public bool canSlide;
 
-    void Awake()
+    private void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
         _anim = GetComponentInParent<PlayerAnimations>();
@@ -20,7 +20,7 @@ public class PlayerWallSlide : MonoBehaviour
         canSlide = true;
     }
 
-    void Update()
+    private void Update()
     {
         if (!canSlide) return;
 
@@ -37,7 +37,7 @@ public class PlayerWallSlide : MonoBehaviour
         }
     }
 
-    void WallSlide(float speed)
+    private void WallSlide(float speed)
     {
         _weaponFSM.canAttack = false;
         _rb.velocity = new Vector2(_rb.velocity.x, -speed);

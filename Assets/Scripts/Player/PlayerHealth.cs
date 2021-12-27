@@ -8,16 +8,16 @@ public class PlayerHealth : MonoBehaviour
     public delegate void Delegate_PlayerHealthChange (int prevHealth, float duration = 0.75f);
     public event Delegate_PlayerHealthChange Event_HealthChange;
     
-    Rigidbody2D _rb;
-    PlayerAnimations _anim;
-    PlayerMovement _movement;
-    WeaponFSM _weaponFSM;
+    private Rigidbody2D _rb;
+    private PlayerAnimations _anim;
+    private PlayerMovement _movement;
+    private WeaponFSM _weaponFSM;
     [HideInInspector] public bool isInvulnerable;
-    [SerializeField] float _damagedKnockBackForce;
-    [SerializeField] float _cameraShakeMultiplier;
-    [SerializeField] float _damageCameraShakeTimer;
+    [SerializeField] private float _damagedKnockBackForce;
+    [SerializeField] private float _cameraShakeMultiplier;
+    [SerializeField] private float _damageCameraShakeTimer;
 
-    void Start()
+    private void Start()
     {
         currHealth = SaveManager.Instance.savedPlayerData.CurrentHealth;
         maxHealth = SaveManager.Instance.savedPlayerData.MaxHealth;
@@ -102,7 +102,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void Die() {
+    private void Die() {
         Destroy(gameObject);
         Debug.Log ("You died");
 

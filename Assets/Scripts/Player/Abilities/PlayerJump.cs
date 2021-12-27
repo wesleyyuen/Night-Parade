@@ -22,7 +22,7 @@ public class PlayerJump : MonoBehaviour
     float _coyoteTimer;
     bool _startsJumping;
 
-    void Awake()
+    private void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
         _coll = transform.parent.gameObject.GetComponent<PlayerPlatformCollision>();
@@ -31,13 +31,13 @@ public class PlayerJump : MonoBehaviour
         _canJump = true;
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         InputManager.Event_Input_Jump += OnJump;
         InputManager.Event_Input_JumpCanceled += OnJumpCanceled;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         InputManager.Event_Input_Jump -= OnJump;
         InputManager.Event_Input_JumpCanceled -= OnJumpCanceled;
@@ -53,18 +53,18 @@ public class PlayerJump : MonoBehaviour
             Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _canJump = e, time, enable, !enable));
     }
 
-    void OnJump()
+    private void OnJump()
     {
         _jumpBuffer = _jumpBufferTime;
         _startsJumping = true;
     }
 
-    void OnJumpCanceled()
+    private void OnJumpCanceled()
     {
         _coyoteTimer = 0f;
     }
 
-    void Update()
+    private void Update()
     {
         if (!_canJump) return;
 
@@ -79,7 +79,7 @@ public class PlayerJump : MonoBehaviour
         _jumpBuffer -= Time.deltaTime;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (!_canJump) return;
 

@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 // Include both idle + moving states
@@ -12,6 +13,7 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
     }
     TargetState _targetState;
     WakizashiFSM _fsm;
+    Rigidbody2D _rb;
     PlayerAbilityController _abilityController;
 
     public WakizashiIdleState(WakizashiFSM fsm)
@@ -19,6 +21,7 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
         _fsm = fsm;
 
         _abilityController = fsm.GetComponentInParent<PlayerAbilityController>();
+        _rb = fsm.GetComponent<Rigidbody2D>();
     }
 
     public void BindInput()
@@ -38,21 +41,26 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
     public void EnterState()
     {
         _targetState = TargetState.None;
+
+        // Reset forces and transform
+        _rb.velocity = Vector2.zero;
+        _fsm.transform.localPosition = Vector3.zero;
+        _fsm.transform.localEulerAngles = Vector3.zero;
     }
 
-    void OnStartAttack(InputAction.CallbackContext context)
+    private void OnStartAttack(InputAction.CallbackContext context)
     {
         if (_fsm != null && _fsm.canAttack && _fsm.attackCooldownTimer <= 0)
             _targetState = TargetState.Attack;
     }
 
-    void OnStartBlock(InputAction.CallbackContext context)
+    private void OnStartBlock(InputAction.CallbackContext context)
     {
         if (_fsm != null && _fsm.canBlock && _fsm.blockCooldownTimer <= 0 && _abilityController.currStamina > 0)
             _targetState = TargetState.Parry;
     }
 
-    void OnStartThrow(InputAction.CallbackContext context)
+    private void OnStartThrow(InputAction.CallbackContext context)
     {
         if (_fsm != null && !_fsm.IsCurrentState(WeaponFSM.StateType.ThrownState))
             _targetState = TargetState.Throw;

@@ -8,7 +8,7 @@ public class KeyIcon : MonoBehaviour
     [SerializeField] TextMeshPro key;
     [SerializeField] string keyString;
 
-    void Awake()
+    private void Awake()
     {
         key.text = keyString.ToUpper();
     }

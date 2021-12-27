@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using MEC;
 
 public sealed class WakizashiAttackState : IWeaponState, IBindInput
 {
@@ -59,7 +58,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         _playerMovement.StepForward(2f);
     }
 
-    void OnNextAttack(InputAction.CallbackContext context)
+    private void OnNextAttack(InputAction.CallbackContext context)
     {
         // Only fire on consecutive attacks
         if (context.started && _currentAttackCount > 0) {
@@ -73,7 +72,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // }
     }
 
-    void OnNextBlock(InputAction.CallbackContext context)
+    private void OnNextBlock(InputAction.CallbackContext context)
     {
         // Listen for block and queue as next action
         if (context.started && _currentAttackCount > 0) {
@@ -87,10 +86,10 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // }
     }
 
-    void OnChargeAttack()
-    {
-        Timing.RunCoroutine(_fsm._MergeWithOnibi(1f));
-    }
+    // void OnChargeAttack()
+    // {
+    //     Timing.RunCoroutine(_fsm._MergeWithOnibi(1f));
+    // }
 
     public void Update()
     {

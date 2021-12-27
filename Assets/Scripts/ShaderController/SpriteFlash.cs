@@ -5,16 +5,16 @@ using UnityEngine;
 // https://github.com/ilhamhe/UnitySpriteFlash
 public class SpriteFlash : MonoBehaviour
 {
-    [SerializeField] Material _flashMaterial;
-    [SerializeField] Color[] _flashColors;
-	[SerializeField] float _flashDuration;
-    int _flashColorIndex;
-	Material _material;
-    [SerializeField] SpriteRenderer _spriteRenderer;
-    Material _originalMaterial;
-    IEnumerator _coroutine;
+    [SerializeField] private Material _flashMaterial;
+    [SerializeField] private Color[] _flashColors;
+	[SerializeField] private float _flashDuration;
+    private int _flashColorIndex;
+	private Material _material;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    private Material _originalMaterial;
+    private IEnumerator _coroutine;
 
-    void Awake()
+    private void Awake()
     {
         _flashColorIndex = 0;
         _originalMaterial = _spriteRenderer.material;

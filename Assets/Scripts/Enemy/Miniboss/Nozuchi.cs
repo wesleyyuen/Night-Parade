@@ -13,7 +13,7 @@ public class Nozuchi : MonoBehaviour
     [HideInInspector] public bool collisionOnCooldown;
     public bool isDead { private set; get; }
 
-    void Start()
+    private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         rb = GetComponent<Rigidbody2D>();
@@ -32,7 +32,7 @@ public class Nozuchi : MonoBehaviour
         enemyGFX = GetComponent<EnemyGFX>();
     }
 
-    void Update()
+    private void Update()
     {
         // Only face player if it is not attacking
         if (animator.GetBool("FightStarted"))

@@ -192,13 +192,13 @@ namespace MEC
             set { _instance = value; }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (_instance == this)
                 _instance = null;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (MainThread == null)
                 MainThread = System.Threading.Thread.CurrentThread;
@@ -206,7 +206,7 @@ namespace MEC
             InitializeInstanceID();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (_instanceID < ActiveInstances.Length)
                 ActiveInstances[_instanceID] = null;
@@ -236,7 +236,7 @@ namespace MEC
             }
         }
 
-        void Update()
+        private void Update()
         {
             if (OnPreExecute != null)
                 OnPreExecute();
@@ -359,7 +359,7 @@ namespace MEC
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (OnPreExecute != null)
                 OnPreExecute();
@@ -419,7 +419,7 @@ namespace MEC
             }
         }
 
-        void LateUpdate()
+        private void LateUpdate()
         {
             if (OnPreExecute != null)
                 OnPreExecute();

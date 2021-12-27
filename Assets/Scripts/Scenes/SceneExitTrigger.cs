@@ -3,10 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class SceneExitTrigger : MonoBehaviour
 {
-    [SerializeField] string levelToLoad = "";
+    [SerializeField] private string levelToLoad = "";
 
     // Load levelToLoad scene if triggered
-    void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag ("Player")) {
             GameObject player = collider.gameObject;
@@ -52,7 +52,7 @@ public class SceneExitTrigger : MonoBehaviour
     [SerializeField] string levelToLoad = "";
 
     // Load levelToLoad scene if triggered
-    void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.CompareTag("Player")) {
             GameObject player = collider.gameObject;

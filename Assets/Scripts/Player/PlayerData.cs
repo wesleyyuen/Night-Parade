@@ -86,7 +86,7 @@ public class PlayerData
         SceneData = SaveManager.Instance.savedSceneData;
 
         if (inventory != null) {
-            CoinsOnHand = inventory.coinOnHand;
+            CoinsOnHand = inventory.MonOnHand;
             SavedInks = inventory.inks;
             SavedOrbs = inventory.orbs;
         }

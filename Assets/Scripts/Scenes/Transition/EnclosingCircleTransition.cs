@@ -4,14 +4,14 @@ using UnityEngine.UI;
 
 public class EnclosingCircleTransition : SceneTransition
 {
-    [SerializeField] GameObject _mask;
-    [SerializeField] RectTransform _backer;
-    [SerializeField] Vector2 _maskPosition;
-    Transform _player;
-    Image _maskImage;
-    RectTransform _rect;
-    int _width = 1600;
-    int _height = 900;
+    [SerializeField] private GameObject _mask;
+    [SerializeField] private RectTransform _backer;
+    [SerializeField] private Vector2 _maskPosition;
+    private Transform _player;
+    private Image _maskImage;
+    private RectTransform _rect;
+    private int _width = 1600;
+    private int _height = 900;
 
     protected override void Awake()
     {

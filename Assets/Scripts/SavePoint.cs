@@ -14,12 +14,12 @@
             }
         }
     }
-    void OnSaveComplete()
+    private void OnSaveComplete()
     {
         
     }
 
-    void OnSaveFailed()
+    private void OnSaveFailed()
     {
 
     }

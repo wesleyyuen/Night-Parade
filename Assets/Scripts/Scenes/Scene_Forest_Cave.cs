@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class Scene_Forest_Cave : SceneScript
 {
-    enum SpawnPoint {
+    private enum SpawnPoint {
         NotTesting,
         Forest_1
     }
-    [SerializeField] SpawnPoint _spawnPoint;
-    [SerializeField] Transform _forest1SpawnPoint;
-    [SerializeField] TextMeshProUGUI forestText;
+    [SerializeField] private SpawnPoint _spawnPoint;
+    [SerializeField] private Transform _forest1SpawnPoint;
+    [SerializeField] private TextMeshProUGUI forestText;
     
     protected override void Start()
     {
