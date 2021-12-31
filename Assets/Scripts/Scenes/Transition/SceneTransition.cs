@@ -1,38 +1,10 @@
-﻿using System.Collections;
-using UnityEngine;
-
-public class SceneTransition : MonoBehaviour
+﻿public interface ISceneTransition
 {
-    [SerializeField] protected float _transitionTime = 0.2f;
-    protected Animator _animator;
-
-    protected virtual void Awake()
+    float TransitionDuration
     {
-        _animator = GetComponentInChildren<Animator>();
+        get;
     }
-
-    public void StartSceneTransitionIn()
-    {
-        StartCoroutine(_SceneTransitionInCoroutine());
-    }
-
-    public void StartSceneTransitionOut(string levelToLoad, ref PlayerData playerVariables)
-    {
-        StartCoroutine(_SceneTransitionOutCoroutine(levelToLoad, playerVariables));
-    }
-
-    protected virtual IEnumerator _SceneTransitionInCoroutine()
-    {
-        _animator.speed = 1f/_transitionTime;
-        _animator.SetTrigger("Start");
-        yield return new WaitForSecondsRealtime(_transitionTime);
-    }
-
-    protected virtual IEnumerator _SceneTransitionOutCoroutine(string levelToLoad, PlayerData playerVariables)
-    {
-        _animator.speed = 1f/_transitionTime;
-        _animator.SetTrigger("End");
-        yield return new WaitForSecondsRealtime(_transitionTime);
-        GameMaster.Instance.RequestSceneChange(levelToLoad, ref playerVariables);
-    }
+    
+    void StartSceneTransitionIn();
+    void StartSceneTransitionOut(string levelToLoad, ref PlayerData playerVariables);
 }

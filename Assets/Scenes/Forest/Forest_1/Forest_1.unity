@@ -36553,7 +36553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerGroup: {fileID: 56412914}
-  _transition: {fileID: 1525732705}
+  _transitionGO: {fileID: 1525732705}
   spawnPoint: 0
   caveSpawnPoint: {fileID: 1560349204}
   saveSpawnPoint: {fileID: 385931528}
@@ -48434,18 +48434,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fbcdf8a1144a0541a5cc8901d952c7f, type: 3}
---- !u!114 &1525732705 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6202472442543640660, guid: 5fbcdf8a1144a0541a5cc8901d952c7f,
+--- !u!1 &1525732705 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7253223143112989648, guid: 5fbcdf8a1144a0541a5cc8901d952c7f,
     type: 3}
   m_PrefabInstance: {fileID: 1525732704}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcf538ad38ed34e4baf11d225a5599a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1560349203
 PrefabInstance:
   m_ObjectHideFlags: 0

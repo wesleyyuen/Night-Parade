@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcf538ad38ed34e4baf11d225a5599a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transitionTime: 0.2
+  _transitionDuration: 0.25
   _canvasGroup: {fileID: 4370561122562795059}
 --- !u!1 &7359754778593206904
 GameObject:
@@ -146,7 +146,6 @@ GameObject:
   - component: {fileID: 7359754779132655189}
   - component: {fileID: 7359754779132655194}
   - component: {fileID: 7359754779132655195}
-  - component: {fileID: 7359754779132655188}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: SceneTransition
@@ -235,22 +234,3 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!95 &7359754779132655188
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7359754779132655193}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ee207b50270d8a04383d40c1e8d55af5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

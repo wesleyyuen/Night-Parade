@@ -28,7 +28,7 @@ public class SceneExitTrigger : MonoBehaviour
             PlayerData data = new PlayerData(collider.gameObject, false, currentScene.buildIndex, SaveManager.Instance.GetLoadIndex());
             
             // Play Scene Transition
-            SceneTransition transition = GetComponentInChildren<SceneTransition>();
+            ISceneTransition transition = GetComponentInChildren<ISceneTransition>();
             if (transition != null)
                 transition.StartSceneTransitionOut(levelToLoad, ref data);
             else
