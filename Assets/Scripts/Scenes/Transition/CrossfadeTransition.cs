@@ -24,7 +24,7 @@ public class CrossfadeTransition : MonoBehaviour, ISceneTransition
 
         _canvasGroup.alpha = 1f;
         _tween = _canvasGroup.DOFade(0f, _transitionDuration)
-                        .SetEase(Ease.InOutExpo)
+                        .SetEase(Ease.InCubic)
                         .OnComplete(() => {
                             _canvasGroup.blocksRaycasts = false;
                             _canvasGroup.interactable = false;
@@ -38,7 +38,7 @@ public class CrossfadeTransition : MonoBehaviour, ISceneTransition
         PlayerData local = playerVariables;
         _canvasGroup.alpha = 0f;
         _tween = _canvasGroup.DOFade(1f, _transitionDuration)
-                             .SetEase(Ease.InOutExpo)
+                             .SetEase(Ease.InCubic)
                              .OnComplete(() => {
                                 _canvasGroup.blocksRaycasts = false;
                                 _canvasGroup.interactable = false;

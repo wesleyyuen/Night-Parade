@@ -12,7 +12,7 @@ public sealed class WakizashiFSM : WeaponFSM
     private WakizashiReturnState _returnState;
     private WakizashiLodgedState _lodgedState;
     private WakizashiFallState _fallState;
-    public bool isThrownRight;
+    [HideInInspector] public bool isThrownRight;
 
     protected override void Awake()
     {
