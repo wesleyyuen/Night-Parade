@@ -89,7 +89,7 @@ public class GameMaster : MonoBehaviour
     }
 
     // can remove if play mode from _preload
-    private void SetUI(bool boolean)
+    public void SetUI(bool boolean)
     {
         DialogueManager.Instance.enabled = boolean;
 
@@ -103,8 +103,8 @@ public class GameMaster : MonoBehaviour
             Event_UIOutro?.Invoke();
         }
 
-        GameObject dialogueUI = GameObject.FindGameObjectWithTag("DialogueUI");
-        if (dialogueUI != null)
-            dialogueUI.SetActive(boolean);
+        // GameObject dialogueUI = GameObject.FindGameObjectWithTag("DialogueUI");
+        // if (dialogueUI != null)
+        //     dialogueUI.SetActive(boolean);
     }
 }

@@ -172,7 +172,7 @@ public class PlayerAnimations : MonoBehaviour
         Timing.RunCoroutine(_SquishCoroutine(duration, to).CancelWith(gameObject));
     }
 
-    IEnumerator<float> _SquishCoroutine(float duration, Vector2 to)
+    private IEnumerator<float> _SquishCoroutine(float duration, Vector2 to)
     {
         _isSquishing = true;
 

@@ -7,26 +7,19 @@ TagManager:
   - Ground
   - BreakableObstacle
   - DialogueUI
-  - MonUI
-  - HealthUI
-  - Parallax
   - GameManager
-  - PauseMenuOptions
-  - PauseMenu
   - MainVCam
   - SceneTransition
   - Unflippable
   - Wall
-  - Slope
   - Onibi
   - GroundEdges
-  - StaminaUI
   - UICanvas
   - Weapon
   - Enemies
-  - Slime
   - Sprite
   - SceneScript
+  - GameOver_BG
   layers:
   - Default
   - TransparentFX
@@ -44,7 +37,7 @@ TagManager:
   - Enemies
   - Collectables
   - Wall
-  - VFX
+  - 
   - 
   - 
   - 

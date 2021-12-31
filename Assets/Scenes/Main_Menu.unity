@@ -1614,7 +1614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
+  m_ReferencePixelsPerUnit: 8
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1600, y: 900}
   m_ScreenMatchMode: 0
@@ -4895,6 +4895,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
@@ -6033,14 +6034,6 @@ MonoBehaviour:
   - {fileID: 1585703690}
   saveSlot3Time: {fileID: 1472022192}
   fullHeart: {fileID: 5938912915919555698, guid: 8ffb12488225eaf4d94449de9c57f958,
-    type: 3}
-  threeQuartersHeart: {fileID: 6660749177482423811, guid: 8ffb12488225eaf4d94449de9c57f958,
-    type: 3}
-  halfHeart: {fileID: -7807852705376614619, guid: 8ffb12488225eaf4d94449de9c57f958,
-    type: 3}
-  quarterHeart: {fileID: -5707460079008079287, guid: 8ffb12488225eaf4d94449de9c57f958,
-    type: 3}
-  emptyHeart: {fileID: -4380278413240271071, guid: 8ffb12488225eaf4d94449de9c57f958,
     type: 3}
 --- !u!1 &1572124616
 GameObject:

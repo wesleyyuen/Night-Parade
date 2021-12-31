@@ -57,10 +57,10 @@ public sealed class WakizashiThrownState : IWeaponState, IBindInput
     {
         // Rotate Wakizashi
         // TODO: replace by animation (rotate in x/y axis mostly)
-        Vector2 dir = _rb.velocity.normalized;
-        float angle = Vector2.SignedAngle(_isThrowingRight ? Vector2.right : Vector2.left, dir);
-        _fsm.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
-        // _rb.transform.localEulerAngles += (_isThrowingRight ? Vector3.back : Vector3.forward) * 2700f * Time.deltaTime; 
+        // Vector2 dir = _rb.velocity.normalized;
+        // float angle = Vector2.SignedAngle(_isThrowingRight ? Vector2.right : Vector2.left, dir);
+        // _fsm.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+        _rb.transform.localEulerAngles += (_isThrowingRight ? Vector3.back : Vector3.forward) * 2700f * Time.deltaTime; 
 
         if (_isReturning && !_stopUpdating) {
             _stopUpdating = true;
@@ -84,6 +84,7 @@ public sealed class WakizashiThrownState : IWeaponState, IBindInput
     {
         _rb.isKinematic = false;
         _collider.enabled = true;
+        _fsm.isThrownRight = _isThrowingRight;
 
         // Detach from player
         _fsm.transform.parent = null;

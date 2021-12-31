@@ -12,9 +12,10 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     const int _kMaxAirAttack = 2; // Light attack as 1; Heavy attack as 2
     const int _kMaxComboCount = 2;
     int _currentAttackCount;
-    bool _isListeningForNextAttack;
+    bool _isListeningForNextAction;
     bool _hasNextAttack;
     bool _hasNextBlock;
+    bool _hasNextThrow;
     bool _playedMissSFX;
     HashSet<int> _enemiesAttackedIDs;
 
@@ -30,6 +31,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         _fsm.InputActions.Player.Attack.started += OnNextAttack;
         _fsm.InputActions.Player.Attack.performed += OnNextAttack;
         _fsm.InputActions.Player.Block.started += OnNextBlock;
+        _fsm.InputActions.Player.Throw.canceled += OnNextThrow;
     }
 
     public void UnbindInput()
@@ -37,6 +39,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         _fsm.InputActions.Player.Attack.started -= OnNextAttack;
         _fsm.InputActions.Player.Attack.performed -= OnNextAttack;
         _fsm.InputActions.Player.Block.started -= OnNextBlock;
+        _fsm.InputActions.Player.Throw.canceled -= OnNextThrow;
     }
 
     public void EnterState()
@@ -47,7 +50,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         _fsm.EnablePlayerBlocking(false);
         _fsm.attackCooldownTimer = _fsm.weaponData.attackCooldown;
         _enemiesAttackedIDs = new HashSet<int> ();
-        _isListeningForNextAttack = false;
+        _isListeningForNextAction = false;
         _hasNextAttack = false;
         _hasNextBlock = false;
         _playedMissSFX = false;
@@ -60,11 +63,13 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     private void OnNextAttack(InputAction.CallbackContext context)
     {
-        // Only fire on consecutive attacks
+        // Listen for attack and queue as next action
         if (context.started && _currentAttackCount > 0) {
-            if (_isListeningForNextAttack) {
+            if (_isListeningForNextAction) {
                 _hasNextAttack = true;
-                _isListeningForNextAttack = false;
+                _hasNextBlock = false;
+
+                _isListeningForNextAction = false;
             }
         }
         // else if (context.performed) {
@@ -76,9 +81,9 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     {
         // Listen for block and queue as next action
         if (context.started && _currentAttackCount > 0) {
-            if (_isListeningForNextAttack) {
+            if (_isListeningForNextAction) {
                 _hasNextBlock = true;
-                _isListeningForNextAttack = false;
+                _isListeningForNextAction = false;
             }
         }
         // else if (context.performed) {
@@ -86,10 +91,20 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // }
     }
 
-    // void OnChargeAttack()
+    // private void OnChargeAttack()
     // {
-    //     Timing.RunCoroutine(_fsm._MergeWithOnibi(1f));
     // }
+
+    private void OnNextThrow(InputAction.CallbackContext context)
+    {
+        // Listen for throw and queue as next action
+        if (context.started && _currentAttackCount > 0) {
+            if (_isListeningForNextAction) {
+                _hasNextThrow = true;
+                _isListeningForNextAction = false;
+            }
+        }
+    }
 
     public void Update()
     {
@@ -113,7 +128,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     public void Attack(bool isListeningForNextAttack)
     {
-        _isListeningForNextAttack = isListeningForNextAttack;
+        _isListeningForNextAction = isListeningForNextAttack;
 
         // Get Colliders of enemies hit
         Vector2 attackPoint = new Vector2((_playerAnimation.IsFacingRight() ? 1f : -1f) * _fsm.weaponData.attackPoint.x, _fsm.weaponData.attackPoint.y);
@@ -138,7 +153,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     public void Upthrust(bool isListeningForNextAttack)
     {
-        _isListeningForNextAttack = isListeningForNextAttack;
+        _isListeningForNextAction = isListeningForNextAttack;
 
         // Get Colliders of enemies hit
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(_fsm.player.transform.TransformPoint(_fsm.weaponData.upthrustPoint), _fsm.weaponData.upthrustRange, 360, _fsm.weaponData.enemyLayers);
@@ -162,7 +177,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     public void Downthrust(bool isListeningForNextAttack)
     {
-        _isListeningForNextAttack = isListeningForNextAttack;
+        _isListeningForNextAction = isListeningForNextAttack;
 
         // Get Colliders of enemies hit
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll (_fsm.player.transform.TransformPoint(_fsm.weaponData.downthrustPoint), _fsm.weaponData.downthrustRange, 360, _fsm.weaponData.enemyLayers);
@@ -219,11 +234,14 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         else if (_hasNextBlock) {
             _fsm.SetState(_fsm.states[WeaponFSM.StateType.ParryState]);
         }
+        else if (_hasNextThrow) {
+            _fsm.SetState(_fsm.states[WeaponFSM.StateType.ThrownState]);
+        }
         else {
             _fsm.SetState(_fsm.states[WeaponFSM.StateType.IdleState]);
         }
 
-        _isListeningForNextAttack = false;
+        _isListeningForNextAction = false;
         _enemiesAttackedIDs.Clear();
     }
 }

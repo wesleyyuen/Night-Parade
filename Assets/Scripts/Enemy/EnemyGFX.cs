@@ -57,7 +57,7 @@ public class EnemyGFX : MonoBehaviour
         Timing.RunCoroutine(_FaceTowardsPlayerCoroutine(delay));
     }
 
-    IEnumerator<float> _FaceTowardsPlayerCoroutine(float delay)
+    private IEnumerator<float> _FaceTowardsPlayerCoroutine(float delay)
     {
         // Face Right
         if (_player.position.x >= _spriteRenderer.transform.position.x && _spriteRenderer.transform.localScale.x != 1.0f) {

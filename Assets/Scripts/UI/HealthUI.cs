@@ -91,6 +91,9 @@ public class HealthUI : MonoBehaviour
     public void UpdateHeartsUI(int prevHealth, float duration = 0.75f)
     {
         int health = _playerHealth.currHealth;
+
+        if (health <= 0) return;
+
         int numOfFullHearts = health / 4;
         int maxHearts = _playerHealth.maxHealth / 4;
 

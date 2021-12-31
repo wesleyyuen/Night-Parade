@@ -11,6 +11,7 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
     PlayerAbilityController _abilityController;
     bool _wasBlocking;
     bool _isBlockReleasedBeforeMinDuration;
+    bool _hasNextAttack;
 
     public WakizashiBlockState(WakizashiFSM fsm)
     {
@@ -23,16 +24,19 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
     public void BindInput()
     {
         _fsm.InputActions.Player.Block.canceled += OnReleaseBlock;
+        _fsm.InputActions.Player.Attack.started += OnNextAttack;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Block.canceled -= OnReleaseBlock;
+        _fsm.InputActions.Player.Attack.started -= OnNextAttack;
     }
 
     public void EnterState()
     {
         _isBlockReleasedBeforeMinDuration = false;
+        _hasNextAttack = false;
         _wasBlocking = false;
         
         _playerAnimation.SetBlockAnimation(true);
@@ -42,9 +46,15 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
 
     private void OnReleaseBlock(InputAction.CallbackContext context)
     {
-        if (_fsm == null) return;
         if (!_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)
             _fsm.SetState(_fsm.states[WeaponFSM.StateType.IdleState]);
+    }
+
+    private void OnNextAttack(InputAction.CallbackContext context)
+    {
+        _hasNextAttack = true;
+        if (!_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)
+            _fsm.SetState(_fsm.states[WeaponFSM.StateType.AttackState]);
     }
 
     public void Update()
@@ -58,7 +68,10 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
             _isBlockReleasedBeforeMinDuration = true;
         }
 
-        if (_abilityController.currStamina <= 0
+        if (_hasNextAttack && _isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration) {
+            _fsm.SetState(_fsm.states[WeaponFSM.StateType.AttackState]);
+        }
+        else if (_abilityController.currStamina <= 0
             || (_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)) {
             _fsm.SetState(_fsm.states[WeaponFSM.StateType.IdleState]);
         }

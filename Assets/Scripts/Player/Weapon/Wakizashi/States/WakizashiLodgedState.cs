@@ -35,6 +35,15 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
     {
         _isReturning = false;
         _stopUpdating = false;
+
+        // Lodged In Ground
+        if (_fsm.transform.parent.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+            _fsm.transform.localRotation = Quaternion.Euler(0f, 0f, _fsm.isThrownRight ? -90f : 90f);
+        }
+        // Lodged In Wall
+        else if (_fsm.transform.parent.gameObject.layer == LayerMask.NameToLayer("Wall")) {
+            _fsm.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        }
     }
 
     private void OnStartReturn(InputAction.CallbackContext context)

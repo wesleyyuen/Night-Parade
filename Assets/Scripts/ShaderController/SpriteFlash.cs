@@ -27,9 +27,8 @@ public class SpriteFlash : MonoBehaviour
         // Set Next Color
         _flashColorIndex++;
         _flashColorIndex = _flashColorIndex % _flashColors.Length;
-        _material.SetColor("_FlashColor", _flashColors[_flashColorIndex]);
 
-        _spriteRenderer.material = _material;
+        SetSpriteColor(_flashColors[_flashColorIndex]);
 
         if (_coroutine != null)
             StopCoroutine(_coroutine);
@@ -41,8 +40,7 @@ public class SpriteFlash : MonoBehaviour
     // For Enemy
     public void PlayDeathFlashEffect(float duration)
     {
-        _material.SetColor("_FlashColor", new Color(1f, 1f, 1f, 0f));
-        _spriteRenderer.material = _material;
+        SetSpriteColor(new Color(1f, 1f, 1f, 0f));
         _spriteRenderer.color = Color.black;
         
         if (_coroutine != null)
@@ -52,7 +50,15 @@ public class SpriteFlash : MonoBehaviour
         StartCoroutine(_coroutine);
     }
 
-    IEnumerator _ActuallyFlash(float duration)
+    public void SetSpriteColor(Color color)
+    {
+        StopAllCoroutines();
+        _spriteRenderer.material = _material;
+        _material.SetColor("_FlashColor", color);
+        _material.SetFloat("_FlashAmount", 1f);
+    }
+
+    private IEnumerator _ActuallyFlash(float duration)
     {
         float lerpTime = 0;
 
@@ -67,7 +73,7 @@ public class SpriteFlash : MonoBehaviour
         _material.SetFloat("_FlashAmount", 0);
     }
 
-    IEnumerator _ActuallyFade(float duration)
+    private IEnumerator _ActuallyFade(float duration)
     {
         float lerpTime = 0;
 

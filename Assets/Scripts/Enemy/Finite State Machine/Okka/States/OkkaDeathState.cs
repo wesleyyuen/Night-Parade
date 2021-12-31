@@ -25,7 +25,7 @@ public sealed class OkkaDeathState : IEnemyState
         _fsm.rb.angularVelocity = 0f;
 
         // Apply Knock back
-        float knockBackForce = _fsm.enemyData.knockBackOnTakingDamageForce * 2f;
+        float knockBackForce = _fsm.enemyData.knockBackOnTakingDamageForce * 3f;
         Vector2 knockBackDir = new Vector2((_fsm.rb.position.x > _fsm.player.transform.position.x) ? 1f : -1f, 0.75f);
         _fsm.ApplyForce(knockBackDir, knockBackForce);
 

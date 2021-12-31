@@ -12,6 +12,7 @@ public sealed class WakizashiFSM : WeaponFSM
     private WakizashiReturnState _returnState;
     private WakizashiLodgedState _lodgedState;
     private WakizashiFallState _fallState;
+    public bool isThrownRight;
 
     protected override void Awake()
     {
@@ -25,6 +26,8 @@ public sealed class WakizashiFSM : WeaponFSM
         _fallState = new WakizashiFallState(this);
 
         weaponData = new WakizashiData();
+
+        isThrownRight = true;
 
         base.Awake();
 

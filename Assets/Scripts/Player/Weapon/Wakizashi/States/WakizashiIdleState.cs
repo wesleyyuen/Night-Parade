@@ -28,14 +28,14 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
     {
         _fsm.InputActions.Player.Attack.started += OnStartAttack;
         _fsm.InputActions.Player.Block.started += OnStartBlock;
-        _fsm.InputActions.Player.Throw.started += OnStartThrow;
+        _fsm.InputActions.Player.Throw.canceled += OnStartThrow;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Attack.started -= OnStartAttack;
         _fsm.InputActions.Player.Block.started -= OnStartBlock;
-        _fsm.InputActions.Player.Throw.started -= OnStartThrow;
+        _fsm.InputActions.Player.Throw.canceled -= OnStartThrow;
     }
 
     public void EnterState()
