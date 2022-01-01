@@ -54,7 +54,7 @@ public sealed class WakizashiFallState : IWeaponState, IBindInput
     {
         if (_isReturning && !_stopUpdating) {
             _stopUpdating = true;
-            _fsm.SetState(_fsm.states[WeaponFSM.StateType.ReturnState]);
+            _fsm.SetState(_fsm.states[WakizashiStateType.Return]);
         }
     }
 
@@ -83,7 +83,7 @@ public sealed class WakizashiFallState : IWeaponState, IBindInput
             _rb.velocity = Vector2.zero;
             _rb.isKinematic = true;
 
-            _fsm.SetState(_fsm.states[WeaponFSM.StateType.LodgedState]);
+            _fsm.SetState(_fsm.states[WakizashiStateType.Lodged]);
         }
     }
 

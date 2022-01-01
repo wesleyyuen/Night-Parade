@@ -47,7 +47,7 @@ public sealed class OkkaDeathState : IEnemyState
         // Check if Player's Weapon is lodged in this enemy
         foreach (Transform child in _fsm.transform)
         {
-            if (child.TryGetComponent<WeaponFSM>(out WeaponFSM weapon)) {
+            if (child.TryGetComponent<WakizashiFSM>(out WakizashiFSM weapon)) {
                 weapon.UnlodgedFromEnemy();
                 break;
             }

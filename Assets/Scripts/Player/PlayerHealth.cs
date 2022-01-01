@@ -38,8 +38,8 @@ public class PlayerHealth : MonoBehaviour
     {
         if (!isInvulnerable && !_isDead && !_weaponFSM.hasBlocked) {
             // Stop attack
-            if (_weaponFSM.IsCurrentState(WeaponFSM.StateType.AttackState))
-                _weaponFSM.SetState(_weaponFSM.GetStateByType(WeaponFSM.StateType.IdleState));
+            if (_weaponFSM.IsCurrentState(WeaponStateType.Attack))
+                _weaponFSM.SetState(_weaponFSM.GetStateByType(WeaponStateType.Idle));
 
             TakeDamage(damage, enemyPos);
         }

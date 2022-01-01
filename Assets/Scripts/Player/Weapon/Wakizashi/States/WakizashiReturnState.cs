@@ -41,7 +41,7 @@ public sealed class WakizashiReturnState : IWeaponState
             _timer += Time.deltaTime / _returnTime;
         } else {
             _playerAnimation.SetUnlodgedAnimation();
-            _fsm.SetState(_fsm.states[WeaponFSM.StateType.IdleState]);
+            _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
         }
     }
 
@@ -64,14 +64,6 @@ public sealed class WakizashiReturnState : IWeaponState
 
         // Reattach to player
         _fsm.transform.parent = _fsm.player.transform;
-
-        // _fsm.transformDONT USE TWEEN
-        //     .DOLocalMove(Vector3.zero, 0.75f)
-        //     .SetEase(Ease.OutElastic)
-        //     .OnComplete(()=> {
-        //         _playerAnimation.SetUnlodgedAnimation();
-        //         _fsm.SetState(_fsm.states[WeaponFSM.StateType.IdleState]);
-        //     });
     }
 
     public void ExitState()

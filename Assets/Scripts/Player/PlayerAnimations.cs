@@ -57,7 +57,13 @@ public class PlayerAnimations : MonoBehaviour
     private void SetPlayerScale(Vector3 scale)
     {
         _playerAnimator.transform.localScale = scale;
-        if (_weaponFSM.IsOnPlayer()) _weaponAnimator.transform.localScale = scale;
+        if (_weaponFSM.gameObject.TryGetComponent<WakizashiFSM>(out WakizashiFSM wakizashi)) {
+            if (wakizashi.IsOnPlayer()) {
+                _weaponAnimator.transform.localScale = scale;
+            }
+        } else {
+            _weaponAnimator.transform.localScale = scale;
+        }
     }
 
     private void Update()

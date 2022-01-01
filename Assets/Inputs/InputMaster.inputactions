@@ -11,7 +11,8 @@
                     "id": "bc1090f0-fa8d-4f72-b455-a78cf72c54b0",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": "Hold,Press"
+                    "interactions": "Hold,Press",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Jump",
@@ -19,7 +20,8 @@
                     "id": "25911cb8-0856-42f4-a7cc-25c0c84aab4b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Attack",
@@ -27,7 +29,8 @@
                     "id": "4f8f6764-cd39-4e20-8dcb-c7069eeae600",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Block",
@@ -35,7 +38,8 @@
                     "id": "24d0ebb0-30c7-4c71-9daf-ff39b5129742",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press,Hold"
+                    "interactions": "Press,Hold",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Dash",
@@ -43,7 +47,8 @@
                     "id": "6463bf79-c7a6-43d2-b3c3-db367da3c3a9",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Interact",
@@ -51,7 +56,8 @@
                     "id": "1594e551-1a5e-4ae0-98e6-43eb5dc670ac",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Throw",
@@ -59,7 +65,17 @@
                     "id": "e3004a99-da93-4463-a188-83a04dad4ee5",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "8f0ae826-91ab-4131-ac23-daceaeb5b9f8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "SlowTap",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -176,11 +192,22 @@
                 {
                     "name": "",
                     "id": "7e7f41f8-1599-4179-87a6-8745cf6b0cd2",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Throw",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fe119695-c078-474c-aa0c-9b86a3649b40",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -196,7 +223,8 @@
                     "id": "d74d3423-6bbe-4a3d-8d5a-f98fc5fc9adb",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -223,7 +251,8 @@
                     "id": "14dd728e-93e8-48ff-865c-c5914eb72645",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [

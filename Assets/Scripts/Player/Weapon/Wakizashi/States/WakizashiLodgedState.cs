@@ -56,7 +56,7 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
     {
         if (_isReturning && !_stopUpdating) {
             _stopUpdating = true;
-            _fsm.SetState(_fsm.states[WeaponFSM.StateType.ReturnState]);
+            _fsm.SetState(_fsm.states[WakizashiStateType.Return]);
         }
     }
 
@@ -76,7 +76,7 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
             _fsm.transform.localRotation = Quaternion.identity;
             _collider.enabled = false;
 
-            _fsm.SetState(_fsm.states[WeaponFSM.StateType.IdleState]);
+            _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
         }
     }
 

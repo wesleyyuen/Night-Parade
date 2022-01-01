@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WakizashiData : WeaponData
+public class BowData : WeaponData
 {
-    public WakizashiData()
+    public BowData()
     {
         // Attack
         kMaxComboCount = 3;
         comboDamage = new float[kMaxComboCount];
         comboDamage[0] = 5f;
-        comboDamage[1] = 5f;
-        comboDamage[2] = 5f;
+        comboDamage[1] = 10f;
+        comboDamage[2] = 15f;
         attackCooldown = 0.2f;
         enemyLayers = LayerMask.GetMask("Enemies", "Breakables");
 

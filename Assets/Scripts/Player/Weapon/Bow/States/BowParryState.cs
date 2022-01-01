@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class WakizashiParryState : IWeaponState
+public sealed class BowParryState : IWeaponState
 {
-    WakizashiFSM _fsm;
+    BowFSM _fsm;
     HashSet<int> _enemiesParriedIDs = new HashSet<int>();
     PlayerMovement _playerMovement;
     PlayerAnimations _playerAnimation;
@@ -12,7 +12,7 @@ public sealed class WakizashiParryState : IWeaponState
     SpriteFlash _flash;
     bool _toIdle;
 
-    public WakizashiParryState(WakizashiFSM fsm)
+    public BowParryState(BowFSM fsm)
     {
         _fsm = fsm;
 
@@ -43,9 +43,9 @@ public sealed class WakizashiParryState : IWeaponState
     
         if (_abilityController.currStamina <= 0) {
             _toIdle = true;
-            _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
+            _fsm.SetState(_fsm.states[BowStateType.Idle]);
         } else if (_fsm.currentBlockTimer >= _fsm.weaponData.parryWindow) {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Block]);
+            _fsm.SetState(_fsm.states[BowStateType.Block]);
         }
 
         Vector2 parryPoint = (Vector2) _fsm.player.transform.TransformPoint(new Vector3((_playerAnimation.IsFacingRight() ? 1f : -1f) * _fsm.weaponData.blockPoint.x, _fsm.weaponData.blockPoint.y));
@@ -67,7 +67,7 @@ public sealed class WakizashiParryState : IWeaponState
                     enemy.ApplyForce(-dir, enemy.enemyData.knockBackOnParriedForce, enemy.enemyData.timeStunnedAfterParried);
                     enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterParried);
 
-                    _fsm.SetStateAfterDelay(WakizashiStateType.Idle, 1f);
+                    _fsm.SetStateAfterDelay(BowStateType.Idle, 1f);
                 }
             }
         }

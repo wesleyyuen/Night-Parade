@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public sealed class WakizashiBlockState : IWeaponState, IBindInput
+public sealed class BowBlockState : IWeaponState, IBindInput
 {
-    WakizashiFSM _fsm;
+    BowFSM _fsm;
     PlayerMovement _playerMovement;
     PlayerAnimations _playerAnimation;
     PlayerAbilityController _abilityController;
@@ -13,7 +13,7 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
     bool _isBlockReleasedBeforeMinDuration;
     bool _hasNextAttack;
 
-    public WakizashiBlockState(WakizashiFSM fsm)
+    public BowBlockState(BowFSM fsm)
     {
         _fsm = fsm;
         _abilityController = fsm.GetComponentInParent<PlayerAbilityController>();
@@ -47,14 +47,14 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
     private void OnReleaseBlock(InputAction.CallbackContext context)
     {
         if (!_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)
-            _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
+            _fsm.SetState(_fsm.states[BowStateType.Idle]);
     }
 
     private void OnNextAttack(InputAction.CallbackContext context)
     {
         _hasNextAttack = true;
         if (!_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)
-            _fsm.SetState(_fsm.states[WakizashiStateType.Attack]);
+            _fsm.SetState(_fsm.states[BowStateType.Attack]);
     }
 
     public void Update()
@@ -69,11 +69,11 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
         }
 
         if (_hasNextAttack && _isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration) {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Attack]);
+            _fsm.SetState(_fsm.states[BowStateType.Attack]);
         }
         else if (_abilityController.currStamina <= 0
             || (_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)) {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
+            _fsm.SetState(_fsm.states[BowStateType.Idle]);
         }
 
         Vector2 blockPoint = (Vector2)_fsm.player.transform.TransformPoint(new Vector3(xScale * _fsm.weaponData.blockPoint.x, _fsm.weaponData.blockPoint.y));

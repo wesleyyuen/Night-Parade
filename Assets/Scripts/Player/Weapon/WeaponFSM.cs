@@ -7,24 +7,33 @@ public interface IWeaponState : IState, IUpdateLoop
 {
 }
 
+public class WeaponStateType
+{
+    public static readonly WeaponStateType Idle = new WeaponStateType("Idle");
+    public static readonly WeaponStateType Attack = new WeaponStateType("Attack");
+    public static readonly WeaponStateType Block = new WeaponStateType("Block");
+    public static readonly WeaponStateType Parry = new WeaponStateType("Parry");
+
+    public override string ToString()
+    {
+        return Value;
+    }
+
+    protected WeaponStateType(string value)
+    {
+        this.Value = value;
+    }
+
+    public string Value { get; private set; }
+}
+
 public class WeaponFSM : MonoBehaviour
 {
-    public enum StateType
-    {
-        IdleState,
-        AttackState,
-        BlockState,
-        ParryState,
-        ThrownState,
-        ReturnState,
-        LodgedState,
-        FallState
-    }
     public WeaponData weaponData;
     public Rigidbody2D player {get; private set;}
-    public Dictionary<StateType, IWeaponState> states;
+    public Dictionary<WeaponStateType, IWeaponState> states;
     public InputMaster InputActions;
-    private IWeaponState _currentState;
+    protected IWeaponState _currentState;
     [HideInInspector] public GameObject onibi;
     [HideInInspector] public bool canAttack;
     [HideInInspector] public float attackCooldownTimer;
@@ -43,7 +52,7 @@ public class WeaponFSM : MonoBehaviour
             if (obj.tag == "Onibi") onibi = obj.gameObject;
         }
 
-        states = new Dictionary<StateType, IWeaponState>();
+        states = new Dictionary<WeaponStateType, IWeaponState>();
         canAttack = true;
         attackCooldownTimer = weaponData.attackCooldown;
         canBlock = true;
@@ -55,7 +64,6 @@ public class WeaponFSM : MonoBehaviour
         InputActions = new InputMaster();
         InputActions.Player.Attack.Enable();
         InputActions.Player.Block.Enable();
-        InputActions.Player.Throw.Enable();
     }
 
     protected virtual void Start()
@@ -67,12 +75,12 @@ public class WeaponFSM : MonoBehaviour
         if (_currentState == null) return;
 
         // Handle Attacking Cooldown
-        if (_currentState != states[StateType.AttackState] && attackCooldownTimer > 0) {
+        if (_currentState != states[WeaponStateType.Attack] && attackCooldownTimer > 0) {
             attackCooldownTimer -= Time.deltaTime;
         }
 
         // Handle Blocking Duration and Cooldown
-        if (_currentState != states[StateType.ParryState] && _currentState != states[StateType.BlockState]) {
+        if (_currentState != states[WeaponStateType.Parry] && _currentState != states[WeaponStateType.Block]) {
             // abilityController.RegenerateStamina();
 
             if (blockCooldownTimer > 0) {
@@ -90,12 +98,12 @@ public class WeaponFSM : MonoBehaviour
         _currentState.FixedUpdate();
     }
 
-    public bool IsCurrentState(StateType type)
+    public bool IsCurrentState(WeaponStateType type)
     {
         return _currentState == states[type];
     }
 
-    public IWeaponState GetStateByType(StateType type)
+    public IWeaponState GetStateByType(WeaponStateType type)
     {
         return states[type];
     }
@@ -111,12 +119,12 @@ public class WeaponFSM : MonoBehaviour
         _currentState.EnterState();
     }
 
-    public void SetStateAfterDelay(StateType state, float delay)
+    public void SetStateAfterDelay(WeaponStateType state, float delay)
     {
         Timing.RunCoroutine(_SetStateAfterDelayCoroutine(state, delay));
     }
 
-    IEnumerator<float> _SetStateAfterDelayCoroutine(StateType state, float delay)
+    IEnumerator<float> _SetStateAfterDelayCoroutine(WeaponStateType state, float delay)
     {
         // Only Set State if no one set another state before the delay ends
         IState curr = _currentState;
@@ -146,51 +154,23 @@ public class WeaponFSM : MonoBehaviour
     }
 
     // Called from Animation frames
-    private void Attack(int isListeningForNextAttack)
+    protected virtual void Attack(int isListeningForNextAttack)
     {
-        if (_currentState == states[StateType.AttackState]) {
-            WakizashiAttackState state = (WakizashiAttackState) _currentState;
-            state.Attack(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
-        }
     }
 
     // Called from Animation frames
-    private void Upthrust(int isListeningForNextAttack)
+    protected virtual void Upthrust(int isListeningForNextAttack)
     {
-        if (_currentState == states[StateType.AttackState]) {
-            WakizashiAttackState state = (WakizashiAttackState) _currentState;
-            state.Upthrust(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
-        }
     }
 
     // Called from Animation frames
-    private void Downthrust(int isListeningForNextAttack)
+    protected virtual void Downthrust(int isListeningForNextAttack)
     {
-        if (_currentState == states[StateType.AttackState]) {
-            WakizashiAttackState state = (WakizashiAttackState) _currentState;
-            state.Downthrust(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
-        }
     }
 
     // Called from animation frame
-    private void EndAttack()
+    protected virtual void EndAttack()
     {
-        if (_currentState == states[StateType.AttackState]) {
-            WakizashiAttackState state = (WakizashiAttackState) _currentState;
-            state.EndAttack();
-        }
-    }
-
-    public bool IsOnPlayer()
-    {
-        return !(IsCurrentState(StateType.ThrownState) || IsCurrentState(StateType.LodgedState));
-    }
-
-    public void UnlodgedFromEnemy()
-    {
-        if (IsCurrentState(StateType.LodgedState)) {
-            SetState(states[StateType.FallState]);
-        }
     }
 
     // Onibi Interactions
@@ -203,12 +183,12 @@ public class WeaponFSM : MonoBehaviour
     // }
 
     // Audio
-    public virtual void PlayWeaponMissSFX()
+    public void PlayWeaponMissSFX()
     {
         SoundManager.Instance.Play(weaponData.missSFX);
     } 
 
-    public virtual void PlayWeaponHitSFX()
+    public void PlayWeaponHitSFX()
     {
         SoundManager.Instance.Play(weaponData.hitSFX);
     }

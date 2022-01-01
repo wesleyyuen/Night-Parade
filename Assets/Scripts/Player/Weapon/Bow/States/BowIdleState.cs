@@ -2,21 +2,21 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // Include both idle + moving states
-public sealed class WakizashiIdleState : IWeaponState, IBindInput
+public sealed class BowIdleState : IWeaponState, IBindInput
 {
     enum TargetState
     {
         None,
         Attack,
         Parry,
-        Throw
+        Draw
     }
     TargetState _targetState;
-    WakizashiFSM _fsm;
+    BowFSM _fsm;
     Rigidbody2D _rb;
     PlayerAbilityController _abilityController;
 
-    public WakizashiIdleState(WakizashiFSM fsm)
+    public BowIdleState(BowFSM fsm)
     {
         _fsm = fsm;
 
@@ -28,24 +28,19 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
     {
         _fsm.InputActions.Player.Attack.started += OnStartAttack;
         _fsm.InputActions.Player.Block.started += OnStartBlock;
-        _fsm.InputActions.Player.Throw.canceled += OnStartThrow;
+        _fsm.InputActions.Player.Shoot.started += OnStartDraw;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Attack.started -= OnStartAttack;
         _fsm.InputActions.Player.Block.started -= OnStartBlock;
-        _fsm.InputActions.Player.Throw.canceled -= OnStartThrow;
+        _fsm.InputActions.Player.Shoot.started -= OnStartDraw;
     }
 
     public void EnterState()
     {
         _targetState = TargetState.None;
-
-        // Reset forces and transform
-        _rb.velocity = Vector2.zero;
-        _fsm.transform.localPosition = Vector3.zero;
-        _fsm.transform.localEulerAngles = Vector3.zero;
     }
 
     private void OnStartAttack(InputAction.CallbackContext context)
@@ -60,10 +55,11 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
             _targetState = TargetState.Parry;
     }
 
-    private void OnStartThrow(InputAction.CallbackContext context)
+    private void OnStartDraw(InputAction.CallbackContext context)
     {
-        if (_fsm != null && !_fsm.IsCurrentState(WakizashiStateType.Thrown))
-            _targetState = TargetState.Throw;
+        Debug.Log("BowIdleState.OnStartDraw");
+        if (_fsm != null && !_fsm.IsCurrentState(BowStateType.Draw))
+            _targetState = TargetState.Draw;
     }
 
     public void Update()
@@ -71,15 +67,15 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
         switch (_targetState)
         {
             case TargetState.Attack:
-                _fsm.SetState(_fsm.states[WakizashiStateType.Attack]);
+                _fsm.SetState(_fsm.states[BowStateType.Attack]);
                 return;
 
             case TargetState.Parry:
-                _fsm.SetState(_fsm.states[WakizashiStateType.Parry]);
+                _fsm.SetState(_fsm.states[BowStateType.Parry]);
                 return;
 
-            case TargetState.Throw:
-                _fsm.SetState(_fsm.states[WakizashiStateType.Thrown]);
+            case TargetState.Draw:
+                _fsm.SetState(_fsm.states[BowStateType.Draw]);
                 return;
             
             case TargetState.None:

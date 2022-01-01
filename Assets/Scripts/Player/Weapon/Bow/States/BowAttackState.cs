@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public sealed class WakizashiAttackState : IWeaponState, IBindInput
+public sealed class BowAttackState : IWeaponState, IBindInput
 {
-    WakizashiFSM _fsm;
+    BowFSM _fsm;
     PlayerMovement _playerMovement;
     PlayerAnimations _playerAnimation;
     PlayerAbilityController _abilityController;
@@ -15,11 +15,11 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     bool _isListeningForNextAction;
     bool _hasNextAttack;
     bool _hasNextBlock;
-    bool _hasNextThrow;
+    bool _hasNextShoot;
     bool _playedMissSFX;
     HashSet<int> _enemiesAttackedIDs;
 
-    public WakizashiAttackState(WakizashiFSM fsm)
+    public BowAttackState(BowFSM fsm)
     {
         _fsm = fsm;
         _playerMovement = fsm.GetComponentInParent<PlayerMovement>();
@@ -31,7 +31,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         _fsm.InputActions.Player.Attack.started += OnNextAttack;
         _fsm.InputActions.Player.Attack.performed += OnNextAttack;
         _fsm.InputActions.Player.Block.started += OnNextBlock;
-        _fsm.InputActions.Player.Throw.canceled += OnNextThrow;
+        _fsm.InputActions.Player.Shoot.started += OnNextShot;
     }
 
     public void UnbindInput()
@@ -39,7 +39,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         _fsm.InputActions.Player.Attack.started -= OnNextAttack;
         _fsm.InputActions.Player.Attack.performed -= OnNextAttack;
         _fsm.InputActions.Player.Block.started -= OnNextBlock;
-        _fsm.InputActions.Player.Throw.canceled -= OnNextThrow;
+        _fsm.InputActions.Player.Shoot.started -= OnNextShot;
     }
 
     public void EnterState()
@@ -95,12 +95,12 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     // {
     // }
 
-    private void OnNextThrow(InputAction.CallbackContext context)
+    private void OnNextShot(InputAction.CallbackContext context)
     {
         // Listen for throw and queue as next action
         if (context.started && _currentAttackCount > 0) {
             if (_isListeningForNextAction) {
-                _hasNextThrow = true;
+                _hasNextShoot = true;
                 _isListeningForNextAction = false;
             }
         }
@@ -232,13 +232,13 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
             _playedMissSFX = false;
         }
         else if (_hasNextBlock) {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Parry]);
+            _fsm.SetState(_fsm.states[BowStateType.Parry]);
         }
-        else if (_hasNextThrow) {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Thrown]);
+        else if (_hasNextShoot) {
+            _fsm.SetState(_fsm.states[BowStateType.Draw]);
         }
         else {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
+            _fsm.SetState(_fsm.states[BowStateType.Idle]);
         }
 
         _isListeningForNextAction = false;

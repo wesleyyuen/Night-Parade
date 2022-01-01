@@ -2,6 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public sealed class WakizashiStateType : WeaponStateType
+{
+  public static readonly WakizashiStateType Thrown = new WakizashiStateType("Thrown");
+  public static readonly WakizashiStateType Return = new WakizashiStateType("Return");
+  public static readonly WakizashiStateType Lodged = new WakizashiStateType("Lodged");
+  public static readonly WakizashiStateType Fall = new WakizashiStateType("Fall");
+
+  private WakizashiStateType(string value) : base(value)
+  {
+  }
+}
+
 public sealed class WakizashiFSM : WeaponFSM
 {
     private WakizashiIdleState _idleState;
@@ -31,14 +43,18 @@ public sealed class WakizashiFSM : WeaponFSM
 
         base.Awake();
 
-        states.Add(StateType.IdleState, _idleState);
-        states.Add(StateType.AttackState, _attackState);
-        states.Add(StateType.ParryState, _parryState);
-        states.Add(StateType.BlockState, _blockState);
-        states.Add(StateType.ThrownState, _thrownState);
-        states.Add(StateType.ReturnState, _returnState);
-        states.Add(StateType.LodgedState, _lodgedState);
-        states.Add(StateType.FallState, _fallState);
+        InputActions.Player.Throw.Enable();
+
+        states.Add(WakizashiStateType.Idle, _idleState);
+        states.Add(WakizashiStateType.Attack, _attackState);
+        states.Add(WakizashiStateType.Parry, _parryState);
+        states.Add(WakizashiStateType.Block, _blockState);
+        states.Add(WakizashiStateType.Thrown, _thrownState);
+        states.Add(WakizashiStateType.Return, _returnState);
+        states.Add(WakizashiStateType.Lodged, _lodgedState);
+        states.Add(WakizashiStateType.Fall, _fallState);
+
+        SetState(_idleState);
     }
     
     // TODO: shouldn't bind inputs like this, should be states' responsibility
@@ -64,13 +80,64 @@ public sealed class WakizashiFSM : WeaponFSM
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (IsCurrentState(StateType.ThrownState)) _thrownState.OnTriggerEnter2D(collider);
-        else if (IsCurrentState(StateType.LodgedState)) _lodgedState.OnTriggerEnter2D(collider);
-        else if (IsCurrentState(StateType.FallState)) _fallState.OnTriggerEnter2D(collider);
+        if (IsCurrentState(WakizashiStateType.Thrown))
+            _thrownState.OnTriggerEnter2D(collider);
+        else if (IsCurrentState(WakizashiStateType.Lodged))
+            _lodgedState.OnTriggerEnter2D(collider);
+        else if (IsCurrentState(WakizashiStateType.Fall))
+            _fallState.OnTriggerEnter2D(collider);
     }
 
-    protected override void Start()
+
+    // Called from Animation frames
+    protected override void Attack(int isListeningForNextAttack)
     {
-        SetState(_idleState);
+        if (_currentState == states[WeaponStateType.Attack]) {
+            if (_currentState is WakizashiAttackState state) {
+                state.Attack(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
+            }
+        }
+    }
+
+    // Called from Animation frames
+    protected override void Upthrust(int isListeningForNextAttack)
+    {
+        if (_currentState == states[WeaponStateType.Attack]) {
+            if (_currentState is WakizashiAttackState state) {
+                state.Upthrust(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
+            }
+        }
+    }
+
+    // Called from Animation frames
+    protected override void Downthrust(int isListeningForNextAttack)
+    {
+        if (_currentState == states[WeaponStateType.Attack]) {
+            if (_currentState is WakizashiAttackState state) {
+                state.Downthrust(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
+            }
+        }
+    }
+
+    // Called from animation frame
+    protected override void EndAttack()
+    {
+        if (_currentState == states[WeaponStateType.Attack]) {
+            if (_currentState is WakizashiAttackState state) {
+                state.EndAttack();
+            }
+        }
+    }
+
+    public bool IsOnPlayer()
+    {
+        return !(IsCurrentState(WakizashiStateType.Thrown) || IsCurrentState(WakizashiStateType.Lodged));
+    }
+
+    public void UnlodgedFromEnemy()
+    {
+        if (IsCurrentState(WakizashiStateType.Lodged)) {
+            SetState(states[WakizashiStateType.Fall]);
+        }
     }
 }
