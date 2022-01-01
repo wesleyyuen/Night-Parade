@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 3602274575992751910}
   - component: {fileID: 3188623451866107138}
   - component: {fileID: 1094937932890292140}
+  - component: {fileID: 2651769599943922101}
   - component: {fileID: 4312821698197198308}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Arrow
   m_TagString: Weapon
   m_Icon: {fileID: 0}
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -437451589
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: 3821746489759318809, guid: cfe46ac0444d92f4f91607c8c153a8ff,
+  m_Sprite: {fileID: -2043017983467968750, guid: bc0395c53982f7e4a940ff2a74885a6a,
     type: 3}
   m_Color: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
   m_FlipX: 0
@@ -95,7 +96,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6556754575499637158}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 55d52a6d59544744497c88da319e1c93, type: 2}
   m_CullingMode: 0
@@ -140,19 +141,33 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.19, y: 0.19}
+  m_Offset: {x: 0, y: 0.1875}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.71428573, y: -0.06666667}
-    oldSize: {x: 0.875, y: 1.875}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 2.25, y: 0.5}
     newSize: {x: 0.875, y: 1.875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.125, y: 0.375}
+  m_Size: {x: 1.5, y: 0.375}
   m_EdgeRadius: 0
+--- !u!114 &2651769599943922101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6556754575499637158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df332e46277f4284c8ffc4f2607de1e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 75
+  _damage: 5
 --- !u!114 &4312821698197198308
 MonoBehaviour:
   m_ObjectHideFlags: 0

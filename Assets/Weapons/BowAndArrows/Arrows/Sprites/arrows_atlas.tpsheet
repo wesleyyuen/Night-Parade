@@ -1,0 +1,16 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:8a69ba71620c2e81f2cf66a1e32ccbda:7be119f09115973ade2943469a7fc913:fb3b1fbd4e7c04b6c076903996db3fef$
+#
+:format=40300
+:texture=arrows_atlas.png
+:size=32x32
+:pivotpoints=enabled
+:borders=disabled
+:alphahandling=ClearTransparentPixels
+
+arrow;1;27;18;4; 0.5;0; 0;0;0;0; 4;18;0;0;0;0;4;18;4; 2;1;2;3;0;1;3

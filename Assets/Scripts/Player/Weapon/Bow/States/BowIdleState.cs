@@ -11,7 +11,7 @@ public sealed class BowIdleState : IWeaponState, IBindInput
         Parry,
         Draw
     }
-    TargetState _targetState;
+    TargetState _targetState = TargetState.None;
     BowFSM _fsm;
     Rigidbody2D _rb;
     PlayerAbilityController _abilityController;
@@ -40,26 +40,24 @@ public sealed class BowIdleState : IWeaponState, IBindInput
 
     public void EnterState()
     {
-        _targetState = TargetState.None;
     }
 
     private void OnStartAttack(InputAction.CallbackContext context)
     {
-        if (_fsm != null && _fsm.canAttack && _fsm.attackCooldownTimer <= 0)
+        if (_fsm.IsCurrentState(BowStateType.Idle) && _fsm.canAttack && _fsm.attackCooldownTimer <= 0)
             _targetState = TargetState.Attack;
     }
 
     private void OnStartBlock(InputAction.CallbackContext context)
     {
-        if (_fsm != null && _fsm.canBlock && _fsm.blockCooldownTimer <= 0 && _abilityController.currStamina > 0)
+        if (_fsm.IsCurrentState(BowStateType.Idle) && _fsm.canBlock && _fsm.blockCooldownTimer <= 0 && _abilityController.currStamina > 0)
             _targetState = TargetState.Parry;
     }
 
     private void OnStartDraw(InputAction.CallbackContext context)
     {
-        Debug.Log("BowIdleState.OnStartDraw");
-        if (_fsm != null && !_fsm.IsCurrentState(BowStateType.Draw))
-            _targetState = TargetState.Draw;
+        // Allow pre-inputs in other states
+        _targetState = TargetState.Draw;
     }
 
     public void Update()
@@ -90,5 +88,7 @@ public sealed class BowIdleState : IWeaponState, IBindInput
 
     public void ExitState()
     {
+        // Reset here to avoid clearing pre-inputs upon EnterState()
+        _targetState = TargetState.None;
     }
 }

@@ -20,6 +20,7 @@ TagManager:
   - Sprite
   - SceneScript
   - GameOver_BG
+  - StaminaUI
   layers:
   - Default
   - TransparentFX
@@ -37,7 +38,7 @@ TagManager:
   - Enemies
   - Collectables
   - Wall
-  - 
+  - Projectiles
   - 
   - 
   - 
