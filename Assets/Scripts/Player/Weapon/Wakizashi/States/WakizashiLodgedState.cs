@@ -23,12 +23,14 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        _fsm.InputActions.Player.Throw.started += OnStartReturn;
+        _fsm.InputActions.Player.Throw.performed += OnStartReturn;
+        _fsm.InputActions.Player.Throw.canceled += OnStartReturn;
     }
 
     public void UnbindInput()
     {
-        _fsm.InputActions.Player.Throw.started -= OnStartReturn;
+        _fsm.InputActions.Player.Throw.performed -= OnStartReturn;
+        _fsm.InputActions.Player.Throw.canceled -= OnStartReturn;
     }
 
     public void EnterState()

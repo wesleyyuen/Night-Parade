@@ -4,7 +4,7 @@ using UnityEngine;
 
 public sealed class WakizashiStateType : WeaponStateType
 {
-  public static readonly WakizashiStateType Thrown = new WakizashiStateType("Thrown");
+  public static readonly WakizashiStateType Throw = new WakizashiStateType("Thrown");
   public static readonly WakizashiStateType Return = new WakizashiStateType("Return");
   public static readonly WakizashiStateType Lodged = new WakizashiStateType("Lodged");
   public static readonly WakizashiStateType Fall = new WakizashiStateType("Fall");
@@ -20,26 +20,29 @@ public sealed class WakizashiFSM : WeaponFSM
     private WakizashiAttackState _attackState;
     private WakizashiParryState _parryState;
     private WakizashiBlockState _blockState;
-    private WakizashiThrownState _thrownState;
+    private WakizashiThrowState _throwState;
     private WakizashiReturnState _returnState;
     private WakizashiLodgedState _lodgedState;
     private WakizashiFallState _fallState;
     [HideInInspector] public bool isThrownRight;
+    public float throwCooldownTimer;
 
     protected override void Awake()
     {
+        weaponData = new WakizashiData();
+
         _idleState = new WakizashiIdleState(this);
         _attackState = new WakizashiAttackState(this);
         _parryState = new WakizashiParryState(this);
         _blockState = new WakizashiBlockState(this);
-        _thrownState = new WakizashiThrownState(this);
+        _throwState = new WakizashiThrowState(this);
         _returnState = new WakizashiReturnState(this);
         _lodgedState = new WakizashiLodgedState(this);
         _fallState = new WakizashiFallState(this);
 
-        weaponData = new WakizashiData();
-
         isThrownRight = true;
+        WakizashiData data = (WakizashiData)weaponData;
+        throwCooldownTimer = data.throwCooldown;
 
         base.Awake();
 
@@ -49,7 +52,7 @@ public sealed class WakizashiFSM : WeaponFSM
         states.Add(WakizashiStateType.Attack, _attackState);
         states.Add(WakizashiStateType.Parry, _parryState);
         states.Add(WakizashiStateType.Block, _blockState);
-        states.Add(WakizashiStateType.Thrown, _thrownState);
+        states.Add(WakizashiStateType.Throw, _throwState);
         states.Add(WakizashiStateType.Return, _returnState);
         states.Add(WakizashiStateType.Lodged, _lodgedState);
         states.Add(WakizashiStateType.Fall, _fallState);
@@ -63,7 +66,7 @@ public sealed class WakizashiFSM : WeaponFSM
         _idleState.BindInput();
         _attackState.BindInput();
         _blockState.BindInput();
-        _thrownState.BindInput();
+        _throwState.BindInput();
         _lodgedState.BindInput();
         _fallState.BindInput();
     }
@@ -73,15 +76,25 @@ public sealed class WakizashiFSM : WeaponFSM
         _idleState.UnbindInput();
         _attackState.UnbindInput();
         _blockState.UnbindInput();
-        _thrownState.UnbindInput();
+        _throwState.UnbindInput();
         _lodgedState.UnbindInput();
         _fallState.UnbindInput();
     }
 
+    protected override void Update()
+    {
+        base.Update();
+
+        // Handle Throw Cooldown
+        if (_currentState != states[WakizashiStateType.Throw] && _currentState != states[WakizashiStateType.Return] && throwCooldownTimer > 0f) {
+            throwCooldownTimer -= Time.deltaTime;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (IsCurrentState(WakizashiStateType.Thrown))
-            _thrownState.OnTriggerEnter2D(collider);
+        if (IsCurrentState(WakizashiStateType.Throw))
+            _throwState.OnTriggerEnter2D(collider);
         else if (IsCurrentState(WakizashiStateType.Lodged))
             _lodgedState.OnTriggerEnter2D(collider);
         else if (IsCurrentState(WakizashiStateType.Fall))
@@ -131,7 +144,7 @@ public sealed class WakizashiFSM : WeaponFSM
 
     public bool IsOnPlayer()
     {
-        return !(IsCurrentState(WakizashiStateType.Thrown) || IsCurrentState(WakizashiStateType.Lodged));
+        return !(IsCurrentState(WakizashiStateType.Throw) || IsCurrentState(WakizashiStateType.Lodged));
     }
 
     public void UnlodgedFromEnemy()

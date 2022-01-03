@@ -27,9 +27,8 @@ public sealed class WakizashiReturnState : IWeaponState
         _isReturningRight = _fsm.transform.position.x >= _fsm.player.position.x;
         _weaponStartPosition = _fsm.transform.position;
         _curvePoint = _fsm.player.position + new Vector2(_playerAnimation.IsFacingRight() ? 2f : -2f, 3f);
-        ReturnToPlayer();
 
-        // play animation
+        ReturnToPlayer();
     }
 
     public void Update()
@@ -40,6 +39,7 @@ public sealed class WakizashiReturnState : IWeaponState
             _fsm.transform.position = GetQuadraticCurvePoint(_timer, _weaponStartPosition, _curvePoint, _fsm.player.position + new Vector2(0f, 1f));
             _timer += Time.deltaTime / _returnTime;
         } else {
+            Utility.FreezePlayer(false);
             _playerAnimation.SetUnlodgedAnimation();
             _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
         }

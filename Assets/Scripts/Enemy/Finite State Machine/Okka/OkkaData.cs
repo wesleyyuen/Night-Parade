@@ -5,7 +5,7 @@ public class OkkaData : EnemyData
     public OkkaData()
     {
         // Health
-        maxHealth = 10;
+        maxHealth = 14;
         currentHealth = maxHealth;
 
         // Patrol

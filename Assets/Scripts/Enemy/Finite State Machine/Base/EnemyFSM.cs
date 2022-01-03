@@ -122,7 +122,7 @@ public class EnemyFSM : MonoBehaviour
         SetState(states[StateType.StunnedState]);
     }   
 
-    public bool IsInLineOfSight()
+    public virtual bool IsInLineOfSight()
     {
         // Check Distance to player
         Vector3 lineOfSightOrigin = transform.position + (Vector3) enemyData.lineOfSightOriginOffset;
@@ -141,7 +141,7 @@ public class EnemyFSM : MonoBehaviour
         return false;
     }
 
-    public bool IsInAggroRange()
+    public virtual bool IsInAggroRange()
     {
         // Check Distance to player
         Vector3 lineOfSightOrigin = transform.position + (Vector3) enemyData.lineOfSightOriginOffset;

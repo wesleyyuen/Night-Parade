@@ -66,7 +66,7 @@ public class PlayerDash : MonoBehaviour
     {
         // Pre-Dash Freeze Effect
         _anim.SetJumpFallAnimation();
-        _movement.FreezePlayerPosition(freezeDuration);
+        _movement.FreezePlayerPositionForSeconds(freezeDuration);
         yield return new WaitForSeconds(freezeDuration);
 
         ActuallyDash(dir);
@@ -74,7 +74,7 @@ public class PlayerDash : MonoBehaviour
         yield return new WaitForSeconds(dashTime);
 
         // Post-Dash Freeze Effect
-        _movement.FreezePlayerPosition(freezeDuration);
+        _movement.FreezePlayerPositionForSeconds(freezeDuration);
         Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemies"), false);
         yield return new WaitForSeconds(freezeDuration);
         _collision.UpdateFallPosition();

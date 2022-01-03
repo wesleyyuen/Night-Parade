@@ -65,16 +65,25 @@
                     "id": "e3004a99-da93-4463-a188-83a04dad4ee5",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press",
+                    "interactions": "SlowTap",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shoot",
+                    "name": "Shoot_SlowTap",
                     "type": "Button",
                     "id": "8f0ae826-91ab-4131-ac23-daceaeb5b9f8",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "SlowTap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot_Hold",
+                    "type": "Button",
+                    "id": "45d37f24-6619-47fd-a376-6d5c667f7b36",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 }
             ],
@@ -192,7 +201,7 @@
                 {
                     "name": "",
                     "id": "7e7f41f8-1599-4179-87a6-8745cf6b0cd2",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -206,8 +215,19 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Shoot",
+                    "groups": "Keyboard",
+                    "action": "Shoot_SlowTap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1cccdbb7-80b9-4f6a-888f-40c3508f7646",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Shoot_Hold",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

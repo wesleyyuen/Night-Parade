@@ -33,10 +33,6 @@ public class WeaponData
     public float blockKnockback;
     public float blockCooldown;
 
-    // Throw
-    public float throwForce;
-    public float throwDamage;
-
     // Audio
     public string missSFX;
     public string hitSFX;

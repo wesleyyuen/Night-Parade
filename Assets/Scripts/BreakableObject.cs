@@ -33,16 +33,16 @@ public class BreakableObject : MonoBehaviour
             (!fromLeft && side == BreakableSide.right)) { // attack from right
             currentHealth--;
             if (currentHealth <= 0) {
-                Break ();
+                Break();
             }
         } else {
-            // Play blade clink sword effect
+            // TODO: Play weapon clink effect
         }
     }
 
     protected void Break()
     {
-        SaveManager.Instance.AddOverallProgress(keyString, 1);
+        SaveManager.Instance.AddScenePermaProgress(GameMaster.Instance.currentScene, keyString, 1);
         Destroy(gameObject);
     }
 }

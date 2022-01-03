@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using MEC;
+using DG.Tweening;
 
 public class PlayerAnimations : MonoBehaviour
 {
@@ -48,21 +49,30 @@ public class PlayerAnimations : MonoBehaviour
             Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => canTurn = e, time, enable, !enable).CancelWith(gameObject));
     }
 
-    public void FreezePlayerAnimation(float time)
+    public void FreezePlayerAnimation(bool enable, float time)
     {
-        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _playerAnimator.enabled = e, time, false, true).CancelWith(gameObject));
-        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _weaponAnimator.enabled = e, time, false, true).CancelWith(gameObject));
+        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _playerAnimator.enabled = e, time, enable, !enable).CancelWith(gameObject));
+        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _weaponAnimator.enabled = e, time, enable, !enable).CancelWith(gameObject));
     }
 
-    private void SetPlayerScale(Vector3 scale)
+    private void SetPlayerScale(Vector3 scale, float duration = 0f)
     {
-        _playerAnimator.transform.localScale = scale;
+        if (duration == 0f)
+            _playerAnimator.transform.localScale = scale;
+        else
+            _playerAnimator.transform.DOScale(scale, duration);
         if (_weaponFSM.gameObject.TryGetComponent<WakizashiFSM>(out WakizashiFSM wakizashi)) {
             if (wakizashi.IsOnPlayer()) {
-                _weaponAnimator.transform.localScale = scale;
+                if (duration == 0f)
+                    _weaponAnimator.transform.localScale = scale;
+                else
+                    _weaponAnimator.transform.DOScale(scale, duration);
             }
         } else {
-            _weaponAnimator.transform.localScale = scale;
+            if (duration == 0f)
+                _weaponAnimator.transform.localScale = scale;
+            else
+                _weaponAnimator.transform.DOScale(scale, duration);
         }
     }
 
@@ -170,34 +180,37 @@ public class PlayerAnimations : MonoBehaviour
 
     public void CreateDustTrail()
     {
-        _dustTrail.Play ();
+        _dustTrail.Play();
     }
 
     public void Squish(float duration, Vector2 to)
     {
-        Timing.RunCoroutine(_SquishCoroutine(duration, to).CancelWith(gameObject));
-    }
-
-    private IEnumerator<float> _SquishCoroutine(float duration, Vector2 to)
-    {
         _isSquishing = true;
-
-        // Always return to scale of (-1/1, 1)
         Vector2 from = new Vector2(_playerAnimator.transform.localScale.x > 0 ? 1f : -1f, 1f);
+        float holdDuration = duration * 0.45f;
         SetPlayerScale(from);
-        for (float t = 0f, t2 = 0f; t < 1f; t += Timing.DeltaTime / (duration * 0.35f), t2 += Timing.DeltaTime / (duration * 0.35f)) {
-            SetPlayerScale(new Vector3(Mathf.SmoothStep(from.x, to.x, t), Mathf.SmoothStep(from.y, to.y, t2), 1f));
-            yield return Timing.WaitForOneFrame;
+
+        Sequence playerSequence = DOTween.Sequence();
+        playerSequence.Append(_playerAnimator.transform.DOScale(to, duration * 0.35f).SetEase(Ease.OutElastic))
+                      .Append(_playerAnimator.transform.DOScale(from, duration * 0.2f).SetEase(Ease.OutElastic)
+                                                       .SetDelay(holdDuration)
+                                                       .OnComplete(() => {
+                                                            SetPlayerScale(from);
+                                                            _isSquishing = false;
+                                                       }));
+
+        
+        Sequence weaponSequence = DOTween.Sequence();
+        if (_weaponFSM.gameObject.TryGetComponent<WakizashiFSM>(out WakizashiFSM wakizashi)) {
+            if (wakizashi.IsOnPlayer()) {
+                weaponSequence.Append(_weaponAnimator.transform.DOScale(to, duration * 0.35f).SetEase(Ease.OutElastic))
+                              .Append(_weaponAnimator.transform.DOScale(from, duration * 0.2f).SetEase(Ease.OutElastic)
+                                                               .SetDelay(holdDuration));
+            }
+        } else {
+                weaponSequence.Append(_weaponAnimator.transform.DOScale(to, duration * 0.35f).SetEase(Ease.OutElastic))
+                              .Append(_weaponAnimator.transform.DOScale(from, duration * 0.2f).SetEase(Ease.OutElastic)
+                                                               .SetDelay(holdDuration));
         }
-
-        yield return Timing.WaitForSeconds(duration * 0.45f);
-
-        for (float t = 0f, t2 = 0f; t < 1f; t += Timing.DeltaTime / (duration * 0.2f), t2 += Timing.DeltaTime / (duration * 0.2f)) {
-            SetPlayerScale(new Vector3(Mathf.SmoothStep(to.x, from.x, t), Mathf.SmoothStep(to.y, from.y, t2), 1f));
-            yield return Timing.WaitForOneFrame;
-        }
-
-        SetPlayerScale(from);
-        _isSquishing = false;
     }
 }

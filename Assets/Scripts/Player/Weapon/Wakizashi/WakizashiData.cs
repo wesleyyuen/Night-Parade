@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class WakizashiData : WeaponData
 {
+    public readonly float throwForce;
+    public readonly float throwMinDuration;
+    public readonly float throwMaxDuration;
+    public readonly float throwDamage;
+    public readonly float throwCooldown;
+    
     public WakizashiData()
     {
         // Attack
@@ -12,7 +18,7 @@ public class WakizashiData : WeaponData
         comboDamage[0] = 5f;
         comboDamage[1] = 5f;
         comboDamage[2] = 5f;
-        attackCooldown = 0.2f;
+        attackCooldown = 0.4f;
         enemyLayers = LayerMask.GetMask("Enemies", "Breakables");
 
         // Hoirizontal
@@ -42,8 +48,11 @@ public class WakizashiData : WeaponData
         blockKnockback = 25f;
 
         // Throw
-        throwForce = 50f;
-        throwDamage = 10f;
+        throwForce = 65f;
+        throwMinDuration = 0.15f;
+        throwMaxDuration = 0.65f;
+        throwDamage = 7f;
+        throwCooldown = 0.7f;
 
         // Audio
         missSFX = "Wakizashi_Miss";

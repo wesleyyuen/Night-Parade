@@ -177,36 +177,6 @@ public class Utility : MonoBehaviour
         text.gameObject.SetActive(false);
     }
 
-    public static IEnumerator<float> FadeImage(Image image, float from, float to, float fadingTime)
-    {
-        for (float t = 0f; t < 1f; t += Timing.DeltaTime / fadingTime) {
-            image.color = new Color(image.color.r, image.color.g, image.color.b, Mathf.SmoothStep(from, to, t));
-            yield return Timing.WaitForOneFrame;
-        }
-    }
-
-    public static IEnumerator<float> ScaleGameObject(GameObject obj, Vector3 from, Vector3 to, float scalingTime)
-    {
-        if (scalingTime == 0) {
-            obj.transform.localScale = to;
-            yield break;
-        }
-
-
-        obj.transform.localScale = from;
-        for (float t0 = 0f, t1 = 0f, t2 = 0f;
-            t0 < 1f;
-            t0 += Timing.DeltaTime / scalingTime, t1 += Timing.DeltaTime / scalingTime, t2 += Timing.DeltaTime / scalingTime) {
-            obj.transform.localScale = new Vector3(Mathf.SmoothStep(from.x, to.x, t0),
-                                                   Mathf.SmoothStep(from.y, to.y, t1),
-                                                   Mathf.SmoothStep(from.z, to.z, t2));
-
-            yield return Timing.WaitForOneFrame;
-        }
-
-        obj.transform.localScale = to;
-    }
-
     public static void EnablePlayerControl(bool enable, float time = 0)
     {
         GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
@@ -218,16 +188,24 @@ public class Utility : MonoBehaviour
         weapon.EnablePlayerBlocking(enable, time);
     }
 
-    public static void FreezePlayer(float time)
+    public static void FreezePlayer(bool shouldFreeze, float time = 0)
     {
         GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
-                WeaponFSM weapon = FindObjectOfType<WeaponFSM>();
-        player.GetComponent<PlayerAnimations>().EnablePlayerTurning(false, time);
-        player.GetComponent<PlayerAnimations>().FreezePlayerAnimation(time);
-        player.GetComponent<PlayerMovement>().FreezePlayerPosition(time);
-        player.GetComponent<PlayerAbilityController>().EnableAbility(PlayerAbilityController.Ability.Jump , false, time);
-        weapon.EnablePlayerCombat(false, time);
-        weapon.EnablePlayerBlocking(false, time);
+        if (player.TryGetComponent<PlayerAnimations>(out PlayerAnimations animations)) {
+            animations.EnablePlayerTurning(!shouldFreeze, time);
+            // animations.FreezePlayerAnimation(shouldFreeze, time);
+        }
+        if (player.TryGetComponent<PlayerMovement>(out PlayerMovement movement)) {
+            movement.EnablePlayerMovement(!shouldFreeze, time);
+            movement.FreezePlayerPosition(shouldFreeze);
+        }
+        if (player.TryGetComponent<PlayerAbilityController>(out PlayerAbilityController abilities)) {
+            abilities.EnableAbility(PlayerAbilityController.Ability.Jump , !shouldFreeze, time);
+            abilities.EnableAbility(PlayerAbilityController.Ability.Dash , !shouldFreeze, time);
+        }
+        // WeaponFSM weapon = FindObjectOfType<WeaponFSM>();
+        // weapon.EnablePlayerCombat(false, time);
+        // weapon.EnablePlayerBlocking(false, time);
     }
 
     public static void DumpToConsole(object obj)

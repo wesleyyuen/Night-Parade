@@ -53,7 +53,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void FreezePlayerPosition(float time)
+    public void FreezePlayerPosition(bool shouldFreeze)
+    {
+        _isLetRBMove = shouldFreeze;
+        _rb.isKinematic = shouldFreeze;
+        _rb.velocity = shouldFreeze ? Vector2.zero : _rb.velocity;
+    }
+
+    public void FreezePlayerPositionForSeconds(float time)
     {
         LetRigidbodyMoveForSeconds(time);
         Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _rb.isKinematic = e, time, true, false).CancelWith(gameObject));
@@ -68,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if (!_isLetRBMove && !canWalk && _coll.onGround) {
+            _animations.SetRunAnimation(0f);
             _rb.velocity = new Vector2 (0f, _rb.velocity.y);
             return;
         } else if (_isLetRBMove) {

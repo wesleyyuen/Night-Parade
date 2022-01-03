@@ -20,6 +20,7 @@ public class Arrow : MonoBehaviour
     public virtual void Shoot(Vector2 dir)
     {
         _rb.velocity = dir.normalized * _speed;
+        Destroy(gameObject, 5f);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

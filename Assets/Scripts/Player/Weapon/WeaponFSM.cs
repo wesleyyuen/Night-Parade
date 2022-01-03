@@ -74,8 +74,10 @@ public class WeaponFSM : MonoBehaviour
     {
         if (_currentState == null) return;
 
+        _currentState.Update();
+
         // Handle Attacking Cooldown
-        if (_currentState != states[WeaponStateType.Attack] && attackCooldownTimer > 0) {
+        if (attackCooldownTimer > 0) {
             attackCooldownTimer -= Time.deltaTime;
         }
 
@@ -87,8 +89,6 @@ public class WeaponFSM : MonoBehaviour
                 blockCooldownTimer -= Time.deltaTime;
             }
         }
-
-        _currentState.Update();
     }
 
     protected virtual void FixedUpdate()

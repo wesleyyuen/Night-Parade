@@ -87,16 +87,25 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""id"": ""e3004a99-da93-4463-a188-83a04dad4ee5"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press"",
+                    ""interactions"": ""SlowTap"",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Shoot"",
+                    ""name"": ""Shoot_SlowTap"",
                     ""type"": ""Button"",
                     ""id"": ""8f0ae826-91ab-4131-ac23-daceaeb5b9f8"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""SlowTap"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot_Hold"",
+                    ""type"": ""Button"",
+                    ""id"": ""45d37f24-6619-47fd-a376-6d5c667f7b36"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -214,7 +223,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7e7f41f8-1599-4179-87a6-8745cf6b0cd2"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -228,8 +237,19 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Shoot"",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Shoot_SlowTap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1cccdbb7-80b9-4f6a-888f-40c3508f7646"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Shoot_Hold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -315,7 +335,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Throw = m_Player.FindAction("Throw", throwIfNotFound: true);
-        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+        m_Player_Shoot_SlowTap = m_Player.FindAction("Shoot_SlowTap", throwIfNotFound: true);
+        m_Player_Shoot_Hold = m_Player.FindAction("Shoot_Hold", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -388,7 +409,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Throw;
-    private readonly InputAction m_Player_Shoot;
+    private readonly InputAction m_Player_Shoot_SlowTap;
+    private readonly InputAction m_Player_Shoot_Hold;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -400,7 +422,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Throw => m_Wrapper.m_Player_Throw;
-        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+        public InputAction @Shoot_SlowTap => m_Wrapper.m_Player_Shoot_SlowTap;
+        public InputAction @Shoot_Hold => m_Wrapper.m_Player_Shoot_Hold;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -431,9 +454,12 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Throw.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
                 @Throw.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
                 @Throw.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow;
-                @Shoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
-                @Shoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
-                @Shoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                @Shoot_SlowTap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot_SlowTap;
+                @Shoot_SlowTap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot_SlowTap;
+                @Shoot_SlowTap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot_SlowTap;
+                @Shoot_Hold.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot_Hold;
+                @Shoot_Hold.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot_Hold;
+                @Shoot_Hold.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot_Hold;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -459,9 +485,12 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Throw.started += instance.OnThrow;
                 @Throw.performed += instance.OnThrow;
                 @Throw.canceled += instance.OnThrow;
-                @Shoot.started += instance.OnShoot;
-                @Shoot.performed += instance.OnShoot;
-                @Shoot.canceled += instance.OnShoot;
+                @Shoot_SlowTap.started += instance.OnShoot_SlowTap;
+                @Shoot_SlowTap.performed += instance.OnShoot_SlowTap;
+                @Shoot_SlowTap.canceled += instance.OnShoot_SlowTap;
+                @Shoot_Hold.started += instance.OnShoot_Hold;
+                @Shoot_Hold.performed += instance.OnShoot_Hold;
+                @Shoot_Hold.canceled += instance.OnShoot_Hold;
             }
         }
     }
@@ -550,7 +579,8 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnThrow(InputAction.CallbackContext context);
-        void OnShoot(InputAction.CallbackContext context);
+        void OnShoot_SlowTap(InputAction.CallbackContext context);
+        void OnShoot_Hold(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BowData : WeaponData
 {
+    public readonly float drawArrowCooldown;
+    public readonly float drawArrowSlowMultiplier;
+    public readonly float drawArrowSlowMaxDuration;
     public BowData()
     {
         // Attack
@@ -12,7 +15,7 @@ public class BowData : WeaponData
         comboDamage[0] = 5f;
         comboDamage[1] = 10f;
         comboDamage[2] = 15f;
-        attackCooldown = 0.2f;
+        attackCooldown = 0.4f;
         enemyLayers = LayerMask.GetMask("Enemies", "Breakables");
 
         // Hoirizontal
@@ -41,12 +44,12 @@ public class BowData : WeaponData
         blockMinDuration = 0.5f;  // parryWindow < blockMinDuration
         blockKnockback = 25f;
 
-        // Throw
-        throwForce = 50f;
-        throwDamage = 10f;
-
         // Audio
         missSFX = "Wakizashi_Miss";
         hitSFX = "Wakizashi_Hit";
+
+        drawArrowCooldown = 0.5f;
+        drawArrowSlowMultiplier = 0.1f;
+        drawArrowSlowMaxDuration = 2f;
     }
 }

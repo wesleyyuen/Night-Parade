@@ -123,7 +123,7 @@ public class PlayerHealth : MonoBehaviour
         GameMaster.Instance.SetUI(false);
 
         // TODO: player death animation instead of freezing
-        _anim.FreezePlayerAnimation(DURATION);
+        _anim.FreezePlayerAnimation(true, DURATION);
 
         // Change Player Color
         GetComponent<SpriteFlash>().SetSpriteColor(Color.white);

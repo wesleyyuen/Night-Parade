@@ -28,14 +28,16 @@ public sealed class BowIdleState : IWeaponState, IBindInput
     {
         _fsm.InputActions.Player.Attack.started += OnStartAttack;
         _fsm.InputActions.Player.Block.started += OnStartBlock;
-        _fsm.InputActions.Player.Shoot.started += OnStartDraw;
+        _fsm.InputActions.Player.Shoot_SlowTap.started += OnStartDraw;
+        _fsm.InputActions.Player.Shoot_Hold.performed += OnStartDraw;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Attack.started -= OnStartAttack;
         _fsm.InputActions.Player.Block.started -= OnStartBlock;
-        _fsm.InputActions.Player.Shoot.started -= OnStartDraw;
+        _fsm.InputActions.Player.Shoot_SlowTap.started -= OnStartDraw;
+        _fsm.InputActions.Player.Shoot_Hold.performed -= OnStartDraw;
     }
 
     public void EnterState()
@@ -57,7 +59,8 @@ public sealed class BowIdleState : IWeaponState, IBindInput
     private void OnStartDraw(InputAction.CallbackContext context)
     {
         // Allow pre-inputs in other states
-        _targetState = TargetState.Draw;
+        if (!_fsm.IsCurrentState(BowStateType.Draw) && _fsm.drawArrowCooldownTimer <= 0)
+            _targetState = TargetState.Draw;
     }
 
     public void Update()

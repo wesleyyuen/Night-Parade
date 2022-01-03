@@ -5,19 +5,19 @@ using UnityEngine.InputSystem;
 
 public sealed class BowAttackState : IWeaponState, IBindInput
 {
-    BowFSM _fsm;
-    PlayerMovement _playerMovement;
-    PlayerAnimations _playerAnimation;
-    PlayerAbilityController _abilityController;
-    const int _kMaxAirAttack = 2; // Light attack as 1; Heavy attack as 2
-    const int _kMaxComboCount = 2;
-    int _currentAttackCount;
-    bool _isListeningForNextAction;
-    bool _hasNextAttack;
-    bool _hasNextBlock;
-    bool _hasNextShoot;
-    bool _playedMissSFX;
-    HashSet<int> _enemiesAttackedIDs;
+    private BowFSM _fsm;
+    private PlayerMovement _playerMovement;
+    private PlayerAnimations _playerAnimation;
+    private PlayerAbilityController _abilityController;
+    private const int _kMaxAirAttack = 2; // Light attack as 1; Heavy attack as 2
+    private const int _kMaxComboCount = 2;
+    private int _currentAttackCount;
+    private bool _isListeningForNextAction;
+    private bool _hasNextAttack;
+    private bool _hasNextBlock;
+    private bool _hasNextShoot;
+    private bool _playedMissSFX;
+    private HashSet<int> _enemiesAttackedIDs;
 
     public BowAttackState(BowFSM fsm)
     {
@@ -29,17 +29,17 @@ public sealed class BowAttackState : IWeaponState, IBindInput
     public void BindInput()
     {
         _fsm.InputActions.Player.Attack.started += OnNextAttack;
-        _fsm.InputActions.Player.Attack.performed += OnNextAttack;
+        // _fsm.InputActions.Player.Attack.performed += OnNextAttack;
         _fsm.InputActions.Player.Block.started += OnNextBlock;
-        _fsm.InputActions.Player.Shoot.started += OnNextShot;
+        _fsm.InputActions.Player.Shoot_Hold.performed += OnNextShot;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Attack.started -= OnNextAttack;
-        _fsm.InputActions.Player.Attack.performed -= OnNextAttack;
+        // _fsm.InputActions.Player.Attack.performed -= OnNextAttack;
         _fsm.InputActions.Player.Block.started -= OnNextBlock;
-        _fsm.InputActions.Player.Shoot.started -= OnNextShot;
+        _fsm.InputActions.Player.Shoot_Hold.performed -= OnNextShot;
     }
 
     public void EnterState()
@@ -47,7 +47,6 @@ public sealed class BowAttackState : IWeaponState, IBindInput
         if (Constant.STOP_WHEN_ATTACK)
             _playerMovement.EnablePlayerMovement(false);
 
-        _fsm.EnablePlayerBlocking(false);
         _fsm.attackCooldownTimer = _fsm.weaponData.attackCooldown;
         _enemiesAttackedIDs = new HashSet<int> ();
         _isListeningForNextAction = false;
@@ -110,7 +109,15 @@ public sealed class BowAttackState : IWeaponState, IBindInput
     {
         // Needed to constantly turn it off to avoid player moving after taking dmg
         if (Constant.STOP_WHEN_ATTACK) _playerMovement.EnablePlayerMovement(false);
-        _fsm.EnablePlayerBlocking(false);
+
+        if (_hasNextAttack && _fsm.attackCooldownTimer <= 0) {
+            _fsm.attackCooldownTimer = _fsm.weaponData.attackCooldown;
+            _currentAttackCount = (_currentAttackCount % _kMaxComboCount) + 1;
+            _playerAnimation.SetAttackAnimation(_currentAttackCount);
+            _playerMovement.StepForward(2f);
+            _hasNextAttack = false;
+            _playedMissSFX = false;
+        }
     }
 
     public void FixedUpdate()
@@ -120,7 +127,6 @@ public sealed class BowAttackState : IWeaponState, IBindInput
     public void ExitState()
     {
         _playerAnimation.EnablePlayerTurning(true);
-        _fsm.EnablePlayerBlocking(true);
         _playerAnimation.SetAttackAnimation(0);
         _playerMovement.EnablePlayerMovement(true);
         _enemiesAttackedIDs.Clear();
@@ -224,20 +230,14 @@ public sealed class BowAttackState : IWeaponState, IBindInput
 
     public void EndAttack()
     {
-        if (_hasNextAttack) {
-            _currentAttackCount = (_currentAttackCount % _kMaxComboCount) + 1;
-            _playerAnimation.SetAttackAnimation(_currentAttackCount);
-            _playerMovement.StepForward(2f);
-            _hasNextAttack = false;
-            _playedMissSFX = false;
-        }
-        else if (_hasNextBlock) {
+        // Next Attack handled in Update (cooldown)
+        if (_hasNextBlock) {
             _fsm.SetState(_fsm.states[BowStateType.Parry]);
         }
         else if (_hasNextShoot) {
             _fsm.SetState(_fsm.states[BowStateType.Draw]);
         }
-        else {
+        else if (!_hasNextAttack) {
             _fsm.SetState(_fsm.states[BowStateType.Idle]);
         }
 
