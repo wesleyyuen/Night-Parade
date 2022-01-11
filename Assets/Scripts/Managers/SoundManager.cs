@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using MEC;
 
 public class SoundManager : MonoBehaviour
 {
-    static SoundManager instance;
+    private static SoundManager instance;
     public static SoundManager Instance {
         get  {return instance; }
     }
 
-    // AudioSource player;  // TODO maybe find the player's audio source and use it
-    [SerializeField] AudioMixer mixer;
-    [SerializeField] Sound[] sounds;
+    // private AudioSource _playerSource;
+    [SerializeField] private AudioMixer _mixer;
+    [SerializeField] private Sound[] sounds;
     
 
     private void Awake()
@@ -29,13 +30,31 @@ public class SoundManager : MonoBehaviour
             // Add a source for each sound
             s.source = gameObject.AddComponent<AudioSource> ();
             // TODO: Add a type field to Sound and add them to different group (music, SFX)
-            s.source.outputAudioMixerGroup = mixer.FindMatchingGroups("Master")[0];
+            s.source.outputAudioMixerGroup = _mixer.FindMatchingGroups("Master")[0];
             s.source.clip = s.clip[0];
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
         }
     }
+
+    // private void OnEnable()
+    // {
+    //     SceneManager.sceneLoaded += OnSceneLoaded;
+    // }
+
+    // private void OnDisable()
+    // {
+    //     SceneManager.sceneLoaded -= OnSceneLoaded;
+    // }
+
+    // // Update Player References
+    // private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    // {
+    //     PlayerAudio player = FindObjectOfType<PlayerAudio>();
+    //     if (player != null && player.TryGetComponent<AudioSource>(out AudioSource source))
+    //         _playerSource = source;
+    // }
 
     public void Play(string name)
     {
@@ -50,6 +69,21 @@ public class SoundManager : MonoBehaviour
         }
 
         sound.source.Play();
+    }
+
+    public void PlayOnce(string name, float volumeScale = 1f)
+    {
+        Sound sound = Array.Find(sounds, s => s.name == name);
+        if (sound == null) {
+            Debug.Log("Sound " + name + " Not found in SoundManager Array");
+            return;
+        }
+
+        if (sound.clip.Length > 1) { // Randomly choose a clip to play
+            sound.source.clip = sound.clip[UnityEngine.Random.Range(0, sound.clip.Length)];
+        }
+
+        sound.source.PlayOneShot(sound.source.clip, sound.source.volume * volumeScale);
     }
 
     public void FadeIn(string name, float fadeDuration)
@@ -71,7 +105,7 @@ public class SoundManager : MonoBehaviour
         sound.source.Play();
     }
 
-    IEnumerator<float> _FadeVolume(Sound sound, float from, float to, float duration)
+    private IEnumerator<float> _FadeVolume(Sound sound, float from, float to, float duration)
     {
         sound.source.volume = from;
         for (float t = 0f; t < 1f; t += Time.deltaTime / duration) {

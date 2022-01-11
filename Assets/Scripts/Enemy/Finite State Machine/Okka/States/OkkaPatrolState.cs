@@ -4,12 +4,12 @@ using UnityEngine;
 
 public sealed class OkkaPatrolState : IEnemyState
 {
-    OkkaFSM _fsm;
-    const float _DETECTION_OFFSET = 0.1f;
+    private OkkaFSM _fsm;
+    private const float _DETECTION_OFFSET = 0.1f;
     // TODO: temp fix to repeatedly turning in BUILD ONLY
-    const float _TURN_COOLDOWN = 1f;
-    Vector2 _origin;
-    float _turnCooldownTimer;
+    private const float _TURN_COOLDOWN = 1f;
+    private Vector2 _origin;
+    private float _turnCooldownTimer;
 
     public OkkaPatrolState(OkkaFSM fsm)
     {

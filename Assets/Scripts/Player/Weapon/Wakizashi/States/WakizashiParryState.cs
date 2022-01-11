@@ -56,16 +56,17 @@ public sealed class WakizashiParryState : IWeaponState
         if (parried.Length == 0) return;
         _fsm.hasBlocked = true;
 
+        TimeManager.Instance.SlowTimeForSeconds(0.3f, 0.5f);
+
         foreach (Collider2D hit in parried) {
             // Parry enemy only ONCE by adding them into list
             if (_enemiesParriedIDs.Add (hit.gameObject.GetInstanceID ())) {
-                EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
-                if (enemy != null && !enemy.IsDead()) {
-                    // Utility.StaticCoroutine.Start(Utility.ChangeVariableAfterDelayInRealTime<float>(e => Time.timeScale = e, 0.6f, 0.15f, 1f));
+                if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()) {
+                    Vector2 hitDir = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
+                    enemy.TakeDamage(_fsm.weaponData.parryDamage, hitDir);
 
-                    Vector2 dir = new Vector2 (enemy.transform.position.x < _fsm.player.position.x ? 1f : -1f, 0f);
-                    enemy.ApplyForce(-dir, enemy.enemyData.knockBackOnParriedForce, enemy.enemyData.timeStunnedAfterParried);
-                    enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterParried);
+                    // enemy.ApplyForce(-hitDir, enemy.enemyData.knockBackOnParriedForce, enemy.enemyData.timeStunnedAfterParried);
+                    // enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterParried);
 
                     _fsm.SetStateAfterDelay(WakizashiStateType.Idle, 1f);
                 }

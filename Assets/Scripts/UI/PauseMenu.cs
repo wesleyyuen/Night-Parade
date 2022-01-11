@@ -51,7 +51,7 @@ public class PauseMenu : MonoBehaviour
             Utility.EnablePlayerControl(true);
         SoundManager.Instance.UnpauseAll();
 
-        Time.timeScale = 1f;
+        TimeManager.Instance.SetTimeScale(1f);
         pauseMenuUI.SetActive(false);
         optionsMenuUI.SetActive(false);
     }
@@ -68,14 +68,14 @@ public class PauseMenu : MonoBehaviour
         Utility.EnablePlayerControl(false);
         SoundManager.Instance.PauseAll();
 
-        Time.timeScale = 0f;
+        TimeManager.Instance.SetTimeScale(0f);
         pauseMenuUI.SetActive(true);
         optionsMenuUI.SetActive(false);
     }
 
     private void QuitToMainMenu()
     {
-        Time.timeScale = 1f;
+        TimeManager.Instance.SetTimeScale(1f);
         isPuased = false;
         pauseMenuUI.SetActive(false);
         GameMaster.Instance.RequestSceneChangeToMainMenu();

@@ -78,7 +78,7 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         _rb.transform.localEulerAngles += (_isThrowingRight ? Vector3.back : Vector3.forward) * 2700f * Time.deltaTime; 
 
         if (_timer < _data.throwMinDuration) {
-            _rb.velocity = (_isThrowingRight ? Vector2.right : Vector2.left) * _data.throwForce;
+            _rb.velocity = (_isThrowingRight ? Vector2.right : Vector2.left) * _data.throwVelocity;
         } else {
             _rb.velocity = Vector2.zero;
             // Return if thrown more than throwMaxDuration
@@ -105,7 +105,7 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
     {
         // Damage Enemy
         if (hit.gameObject.TryGetComponent<EnemyFSM>(out EnemyFSM enemy)) {
-            enemy.TakeDamage(_data.throwDamage);
+            enemy.TakeDamage(_data.throwDamage, _rb.velocity);
         }
 
         // Lodge it in
@@ -120,5 +120,6 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
 
     public void ExitState()
     {
+        Utility.FreezePlayer(false);
     }
 }

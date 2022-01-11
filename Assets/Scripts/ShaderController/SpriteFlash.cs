@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpriteFlash : MonoBehaviour
 {
     [SerializeField] private Material _flashMaterial;
+    [ColorUsage(true, true)]    // Enable HDR
     [SerializeField] private Color[] _flashColors;
 	[SerializeField] private float _flashDuration;
     private int _flashColorIndex;
@@ -33,7 +34,7 @@ public class SpriteFlash : MonoBehaviour
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = _ActuallyFlash(duration == 0 ? _flashDuration : duration);
+        _coroutine = _ActuallyFlash(duration == 0f ? _flashDuration : duration);
         StartCoroutine(_coroutine);
     }
 
@@ -65,12 +66,12 @@ public class SpriteFlash : MonoBehaviour
         while (lerpTime < duration) {
             lerpTime += Time.deltaTime;
             float percent = lerpTime / duration;
-            _material.SetFloat("_FlashAmount", 1f - percent);
+            SetFlashAmount(1f - percent);
             yield return null;
         }
 
+        SetFlashAmount(0);
         _spriteRenderer.material = _originalMaterial;
-        _material.SetFloat("_FlashAmount", 0);
     }
 
     private IEnumerator _ActuallyFade(float duration)
@@ -80,11 +81,16 @@ public class SpriteFlash : MonoBehaviour
         while (lerpTime < duration) {
             lerpTime += Time.deltaTime;
             float percent = lerpTime / duration;
-            _material.SetFloat("_FlashAmount", percent);
+            SetFlashAmount(percent);
             yield return null;
         }
 
         _spriteRenderer.material = _originalMaterial;
-        _material.SetFloat("_FlashAmount", 0);
+        SetFlashAmount(0f);
+    }
+
+    private void SetFlashAmount(float amt)
+    {
+        _material.SetFloat("_FlashAmount", amt);
     }
 }

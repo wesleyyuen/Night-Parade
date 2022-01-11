@@ -12,11 +12,6 @@ using DG.Tweening;
 // Class that has commonly used methods
 public class Utility : MonoBehaviour
 {
-    private static Utility instance;
-    public static Utility Instance {
-        get  {return instance; }
-    }
-
     private void Awake()
     {
         // Init DOTween
@@ -28,22 +23,6 @@ public class Utility : MonoBehaviour
         variable(initialVal);
         yield return Timing.WaitForSeconds(delay);
         variable(endVal);
-    }
-
-    // public void SlowTimeForSeconds(float scale, float delay)
-    // {
-    //     StartCoroutine(_SlowTimeForSeconds(scale, delay));
-    // }
-
-    public static IEnumerator _SlowTimeForSeconds(float scale, float delay)
-    {
-        Time.timeScale = scale;
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
-
-        yield return new WaitForSecondsRealtime(delay);
-
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = 0.02f * Time.timeScale;
     }
 
     public static void SetAlphaRecursively(GameObject obj, float alpha, bool isRecursive = true)

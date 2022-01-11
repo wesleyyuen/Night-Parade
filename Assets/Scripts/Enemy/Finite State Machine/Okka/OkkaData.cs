@@ -14,7 +14,7 @@ public class OkkaData : EnemyData
 
         // Aggression
         aggroDistance = 10f;
-        aggroMovementSpeed = 5f;
+        aggroMovementSpeed = 7f;
         lineOfSightDistance = 15f;
         lineOfSightAngle = 25f;
         lineOfSightOriginOffset = new Vector2(0f, 0.4f);
@@ -25,7 +25,7 @@ public class OkkaData : EnemyData
         damageAmount = 1;
         attackDistance = 3f;
         attackForce = 25f;
-        attackChargeTime = 0.45f;
+        attackChargeTime = 0.4f;
         attackTime = 1.25f;
         timeFrozenAfterDamagingPlayer = 1.25f;
 
@@ -36,7 +36,7 @@ public class OkkaData : EnemyData
         timeStunnedAfterBlocked = 0.6f;
 
         // Damaged
-        knockBackOnTakingDamageForce = 10f;
+        knockBackOnTakingDamageForce = 14f;
         timeFrozenAfterTakingDamage = 0.15f;
         dieTime = 0.75f;
 

@@ -61,15 +61,19 @@ public class EnemyGFX : MonoBehaviour
     {
         // Face Right
         if (_player.position.x >= _spriteRenderer.transform.position.x && _spriteRenderer.transform.localScale.x != 1.0f) {
-            yield return Timing.WaitForSeconds (delay);
+            _isTurning = true;
+            yield return Timing.WaitForSeconds(delay);
             _spriteRenderer.transform.localScale = new Vector3(1f, 1f, 1f);
             _questionMark.transform.localScale = new Vector3(1f, 1f, 1f);
+            _isTurning = false;
         }
         // Face Left
         else if (_player.position.x < _spriteRenderer.transform.position.x && _spriteRenderer.transform.localScale.x != -1.0f) {
-            yield return Timing.WaitForSeconds (delay);
+            _isTurning = true;
+            yield return Timing.WaitForSeconds(delay);
             _spriteRenderer.transform.localScale = new Vector3(-1f, 1f, 1f);
             _questionMark.transform.localScale = new Vector3(-1f, 1f, 1f);
+            _isTurning = false;
         }
     }
 
@@ -78,7 +82,7 @@ public class EnemyGFX : MonoBehaviour
         Timing.RunCoroutine(_TurnAroundCoroutine(isInstant));
     }
 
-    IEnumerator<float> _TurnAroundCoroutine(bool isInstant)
+    private IEnumerator<float> _TurnAroundCoroutine(bool isInstant)
     {
         _isTurning = true;
         yield return Timing.WaitForSeconds(isInstant ? 0.0f : turningTime);
@@ -92,7 +96,8 @@ public class EnemyGFX : MonoBehaviour
     {
         Timing.RunCoroutine(_FlashExclaimationMarkCoroutine());
     }
-    IEnumerator<float> _FlashExclaimationMarkCoroutine()
+
+    private IEnumerator<float> _FlashExclaimationMarkCoroutine()
     {
         _questionMark.enabled = false;
         _exclaimationMark.enabled = true;
@@ -108,7 +113,8 @@ public class EnemyGFX : MonoBehaviour
     {
         Timing.RunCoroutine(FlashQuestionMarkCoroutine());
     }
-    IEnumerator<float> FlashQuestionMarkCoroutine ()
+
+    private IEnumerator<float> FlashQuestionMarkCoroutine ()
     {
         _exclaimationMark.GetComponent<SpriteRenderer>().enabled = false;
         _questionMark.enabled = true;
@@ -134,7 +140,7 @@ public class EnemyGFX : MonoBehaviour
         _deathParticleEffect.Play();
     }
 
-    IEnumerator<float> _DeathEffectCoroutine(float dieTime)
+    private IEnumerator<float> _DeathEffectCoroutine(float dieTime)
     {
         float flashDuration = 0.25f;
         SpriteFlash spriteFlash = GetComponent<SpriteFlash>();

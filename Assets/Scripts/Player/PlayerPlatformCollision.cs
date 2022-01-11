@@ -133,7 +133,7 @@ public class PlayerPlatformCollision : MonoBehaviour
         _animations.Squish(squishDuration, new Vector2((_animations.IsFacingRight() ? 1f : -1f) * squishXScale, squishYScale));
 
         // Landing Sound
-        _playerAudio.PlayFootstepSFX();
+        _playerAudio.PlayLandingSFX();
     }
 
     private void OnGroundExit()

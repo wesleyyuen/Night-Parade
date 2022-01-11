@@ -142,6 +142,16 @@ public sealed class WakizashiFSM : WeaponFSM
         }
     }
 
+    // Called from animation frame
+    protected override void OnNoNextAction()
+    {
+        if (_currentState == states[WeaponStateType.Attack]) {
+            if (_currentState is WakizashiAttackState state) {
+                state.OnNoNextAction();
+            }
+        }
+    }
+
     public bool IsOnPlayer()
     {
         return !(IsCurrentState(WakizashiStateType.Throw) || IsCurrentState(WakizashiStateType.Lodged));

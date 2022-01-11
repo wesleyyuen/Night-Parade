@@ -74,8 +74,8 @@ public class GameMaster : MonoBehaviour
         prevScene = currentScene;
         currentScene = sceneToLoad;
 
+        // TODO: For some reason BOTH causes flickering
         // SceneManager.LoadSceneAsync(sceneToLoad);
-        // TODO: For some reason LoadSceneAsync causes flickering again
         SceneManager.LoadScene(sceneToLoad);
     }
 

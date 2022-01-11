@@ -173,6 +173,11 @@ public class WeaponFSM : MonoBehaviour
     {
     }
 
+    // Called from animation frame
+    protected virtual void OnNoNextAction()
+    {
+    }
+
     // Onibi Interactions
     // public virtual IEnumerator<float> _MergeWithOnibi(float waitDuration)
     // {
@@ -185,12 +190,12 @@ public class WeaponFSM : MonoBehaviour
     // Audio
     public void PlayWeaponMissSFX()
     {
-        SoundManager.Instance.Play(weaponData.missSFX);
+        SoundManager.Instance.PlayOnce(weaponData.missSFX);
     } 
 
     public void PlayWeaponHitSFX()
     {
-        SoundManager.Instance.Play(weaponData.hitSFX);
+        SoundManager.Instance.PlayOnce(weaponData.hitSFX);
     }
 
     private void OnDrawGizmosSelected()

@@ -5,8 +5,10 @@ using MEC;
 
 public sealed class OkkaAggroState : IEnemyState
 {
-    OkkaFSM _fsm;
-    float _delayTimer;
+    private OkkaFSM _fsm;
+    private float _delayTimer;
+    private bool _isRightOfPlayer;
+    private bool _stopUpdating;
 
     public OkkaAggroState(OkkaFSM fsm)
     {
@@ -16,6 +18,8 @@ public sealed class OkkaAggroState : IEnemyState
     public void EnterState()
     {
         _delayTimer = 0;
+        _stopUpdating = false;
+        _isRightOfPlayer = _fsm.transform.position.x > _fsm.player.transform.position.x;
 
         _fsm.GFX.SetAnimatorBoolean("IsPatrolling", true);
         _fsm.GFX.SetAnimatorSpeed(_fsm.enemyData.aggroMovementSpeed / _fsm.enemyData.patrolSpeed * 0.75f);
@@ -29,29 +33,37 @@ public sealed class OkkaAggroState : IEnemyState
     {
         // check Line of Sight
         bool inLineOfSight = _fsm.IsInLineOfSight();
-        // Always face player when aggro
-        _fsm.GFX.FaceTowardsPlayer(0f);
+
+        // Face Player
+        // bool prevIsRightOfPlayer = _isRightOfPlayer;
+        // _isRightOfPlayer = _fsm.transform.position.x > _fsm.player.transform.position.x;
+        // if (prevIsRightOfPlayer != _isRightOfPlayer) {
+        //     _fsm.GFX.FaceTowardsPlayer(1f);
+        // }
 
         // Drop aggro after a certain delay period without LOS
         if (!inLineOfSight) {
             _delayTimer += Time.deltaTime;
 
-            if (_delayTimer >= _fsm.enemyData.lineOfSightBreakDelay)
+            if (!_stopUpdating && _delayTimer >= _fsm.enemyData.lineOfSightBreakDelay) {
+                _stopUpdating = true;
                 _fsm.SetState(_fsm.states[EnemyFSM.StateType.LostLOSState]);
-
+            }
         } else {
             _delayTimer = 0;
         }
 
-        // if (!fsm.GFX.IsTurning()) {
-        //     if (Vector2.Distance(fsm.player.attachedRigidbody.position, fsm.rb.position) <= fsm.enemyData.attackDistance && fsm.IsInLineOfSight())
-        //         fsm.SetState(fsm.states[EnemyFSM.StateType.AttackState]);
+        // if (!_stopUpdating && !_fsm.GFX.IsTurning()) {
+        //     if (Vector2.Distance(_fsm.player.attachedRigidbody.position, _fsm.rb.position) <= _fsm.enemyData.attackDistance && inLineOfSight) {
+        //         _stopUpdating = true;
+        //         _fsm.SetState(_fsm.states[EnemyFSM.StateType.AttackState]);
+        //     }
         // }
     }
 
     public void FixedUpdate()
     {
-        if (!_fsm.GFX.IsTurning())
+        if (!_stopUpdating && !_fsm.GFX.IsTurning())
             MoveTowardsPlayer();
     }
 
@@ -63,17 +75,19 @@ public sealed class OkkaAggroState : IEnemyState
         _fsm.rb.velocity = new Vector2(direction.x * _fsm.enemyData.aggroMovementSpeed , _fsm.rb.velocity.y);
     }
 
-    IEnumerator<float> _NoticePlayer()
+    private IEnumerator<float> _NoticePlayer()
     {
+        _stopUpdating = true;
         _fsm.GFX.FaceTowardsPlayer(0f);
 
-        _fsm.StunForSeconds(0.4f);
-        yield return Timing.WaitForSeconds(0.2f);
+        _fsm.StunForSeconds(0.3f);
+        yield return Timing.WaitForSeconds(0.3f);
         _fsm.GFX.FlashExclaimationMark();
 
         // jump slightly
-        _fsm.rb.velocity = Vector2.zero;
-        _fsm.rb.velocity += Vector2.up * 10f;
+        _fsm.rb.velocity = Vector2.up * 10f;
+        yield return Timing.WaitForSeconds(0.3f);
+        _stopUpdating = false;
     }
 
     public void OnCollisionEnter2D(Collision2D collision) {}

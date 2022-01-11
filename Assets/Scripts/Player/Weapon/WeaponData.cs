@@ -24,6 +24,7 @@ public class WeaponData
 
     // Parry
     public float parryWindow;
+    public float parryDamage;
     public float parryKnockback;
 
     // Block

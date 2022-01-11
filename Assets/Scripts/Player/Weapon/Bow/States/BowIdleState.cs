@@ -28,7 +28,7 @@ public sealed class BowIdleState : IWeaponState, IBindInput
     {
         _fsm.InputActions.Player.Attack.started += OnStartAttack;
         _fsm.InputActions.Player.Block.started += OnStartBlock;
-        _fsm.InputActions.Player.Shoot_SlowTap.started += OnStartDraw;
+        // Hold to enter Draw state
         _fsm.InputActions.Player.Shoot_Hold.performed += OnStartDraw;
     }
 
@@ -36,7 +36,6 @@ public sealed class BowIdleState : IWeaponState, IBindInput
     {
         _fsm.InputActions.Player.Attack.started -= OnStartAttack;
         _fsm.InputActions.Player.Block.started -= OnStartBlock;
-        _fsm.InputActions.Player.Shoot_SlowTap.started -= OnStartDraw;
         _fsm.InputActions.Player.Shoot_Hold.performed -= OnStartDraw;
     }
 

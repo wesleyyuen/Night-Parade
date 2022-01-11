@@ -4,7 +4,7 @@
 # To import these sprites into your Unity project, download "TexturePackerImporter":
 # https://www.codeandweb.com/texturepacker/unity
 #
-# $TexturePacker:SmartUpdate:76d79786e12c68e10acfff370f072b91:e5483a5684a9ffe5807606d20fd6aba2:b9ae40249909c31931c9fb6274ad6364$
+# $TexturePacker:SmartUpdate:fde03788ad7190760af897457d07e818:18527e76978345e04370042db442a76b:b9ae40249909c31931c9fb6274ad6364$
 #
 :format=40300
 :texture=player_spritesheet.png

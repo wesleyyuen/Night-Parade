@@ -35,6 +35,7 @@ public class MonUI : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _playerInventory = FindObjectOfType<PlayerInventory>();
+        monText.text = SaveManager.Instance.savedPlayerData.CoinsOnHand.ToString() + " ";
         if (_playerInventory)
             _playerInventory.Event_MonChange += UpdateMonUI;
     }
@@ -59,8 +60,6 @@ public class MonUI : MonoBehaviour
 
     public void UpdateMonUI()
     {
-        // Set Text Once from save data
-        monText.text = SaveManager.Instance.savedPlayerData.CoinsOnHand.ToString() + " ";
         StartCoroutine(_ShowMonChangeCoroutine());
     }
 
@@ -84,12 +83,15 @@ public class MonUI : MonoBehaviour
         // Display current coins on hand as text, space at the end to force spacing
         // monText.text = _playerInventory.coinOnHand.ToString() + " ";
         LeanTween.cancel(monText.gameObject);
-        LeanTween.value(float.Parse(monText.text), _playerInventory.MonOnHand, 0.5f)
-            .setOnUpdate((float val) => {
-                monText.text = ((int)val).ToString();
-            })
+        LeanTween.value(float.Parse(monText.text), (float)_playerInventory.MonOnHand, 0.5f)
+            .setOnUpdate(SetText)
             .setOnComplete(() => {
-            monText.text = _playerInventory.MonOnHand.ToString();
+                monText.text = ((int)_playerInventory.MonOnHand).ToString();
             });
+    }
+
+    private void SetText(float value)
+    {
+        monText.text = ((int) value).ToString();
     }
 }

@@ -30,7 +30,7 @@ public class OkkaFSM : EnemyFSM
 
         states.Add(StateType.PatrolState, _patrolState);
         states.Add(StateType.AggroState, _aggroState);
-        // states.Add(StateType.AttackState, _variant == OkkaVariant.Ignore ? null : attackState);
+        // states.Add(StateType.AttackState, _attackState);
         states.Add(StateType.LostLOSState, _lostLOSState);
         states.Add(StateType.StillState, _stillState);
         states.Add(StateType.StunnedState, _stunnedState);

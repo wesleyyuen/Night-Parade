@@ -993,7 +993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bd7de399339f6f48a4af96deaf106e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 24100000, guid: cfab3f3dc8beeff4f8067dd09ba7052c, type: 2}
+  _mixer: {fileID: 24100000, guid: cfab3f3dc8beeff4f8067dd09ba7052c, type: 2}
   sounds:
   - name: Forest_Ambience
     clip:
@@ -1020,7 +1020,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 692dad7526ddbf7428625887835a57a9, type: 3}
     - {fileID: 8300000, guid: 848c86e0eca114642961a5fe028db648, type: 3}
     source: {fileID: 0}
-    volume: 0.45
+    volume: 0.7
     pitch: 1
     loop: 0
   - name: Forest_Hard_Footsteps
@@ -1041,14 +1041,14 @@ MonoBehaviour:
     - {fileID: 8300000, guid: ff1b0c9b66b13cc4ca34577a1ef2ad0b, type: 3}
     - {fileID: 8300000, guid: ba3970fcd7829e24ebb3568fb7b8d398, type: 3}
     source: {fileID: 0}
-    volume: 0.45
+    volume: 0.7
     pitch: 1
     loop: 0
   - name: Forest_Landing
     clip:
     - {fileID: 8300000, guid: d6faa682c302a9342a1ec2937d8fc2d8, type: 3}
     source: {fileID: 0}
-    volume: 0.35
+    volume: 0.55
     pitch: 1
     loop: 0
   - name: Found_SecretArea
@@ -1064,7 +1064,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: b99ef377d7a487a429a913747d029a43, type: 3}
     - {fileID: 8300000, guid: e6a61fc64eb98954cb0d68ec850d8f87, type: 3}
     source: {fileID: 0}
-    volume: 0.25
+    volume: 0.5
     pitch: 1
     loop: 0
   - name: Wakizashi_Hit
@@ -1073,7 +1073,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 6c6d9507e633d3b42aaa1345ae2e0a29, type: 3}
     - {fileID: 8300000, guid: 2a6e99e5f6b29754e98533ce1e93820f, type: 3}
     source: {fileID: 0}
-    volume: 0.35
+    volume: 0.7
     pitch: 1
     loop: 0
 --- !u!1 &250347966
@@ -1285,7 +1285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 8
+  m_ReferencePixelsPerUnit: 16
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
@@ -1486,6 +1486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 334950409}
   - component: {fileID: 334950410}
+  - component: {fileID: 334950412}
   - component: {fileID: 334950411}
   m_Layer: 0
   m_Name: Utility
@@ -1530,6 +1531,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7609ae95cbdb6e348b16953c64da2246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &334950412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334950408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18427ed84732d5e4d8a13f6b917af960, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &345429738

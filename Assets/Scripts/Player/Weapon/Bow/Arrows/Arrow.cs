@@ -38,7 +38,7 @@ public class Arrow : MonoBehaviour
         
         // Damage Enemy
         if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy)) {
-            enemy.TakeDamage(_damage);
+            enemy.TakeDamage(_damage, _rb.velocity);
         }
 
         transform.parent = hit.gameObject.transform;

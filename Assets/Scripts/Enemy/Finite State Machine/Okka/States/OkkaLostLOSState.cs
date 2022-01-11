@@ -4,8 +4,8 @@ using UnityEngine;
 
 public sealed class OkkaLostLOSState : IEnemyState
 {
-    OkkaFSM _fsm;
-    float _timer;
+    private OkkaFSM _fsm;
+    private float _timer;
 
     public OkkaLostLOSState(OkkaFSM fsm)
     {

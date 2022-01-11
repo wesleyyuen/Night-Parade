@@ -149,9 +149,10 @@ public sealed class BowAttackState : IWeaponState, IBindInput
             return;
         }
 
-        if (DealDamage(hitEnemies)) {           
+        Vector2 hitDir = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
+        if (DealDamage(hitEnemies, hitDir)) {
             // Utility.FreezePlayer(0.05f);
-            _playerMovement.ApplyKnockback(new Vector2(_playerAnimation.IsFacingRight() ? -1f : 1f, 0f), _fsm.weaponData.horizontalKnockBackForce, 0.05f);
+            _playerMovement.ApplyKnockback(-hitDir, _fsm.weaponData.horizontalKnockBackForce, 0.05f);
             CameraShake.Instance.ShakeCamera(1f, 0.1f);
             _fsm.PlayWeaponHitSFX();
         }
@@ -173,7 +174,7 @@ public sealed class BowAttackState : IWeaponState, IBindInput
             return;
         }
 
-        if (DealDamage(hitEnemies)) {           
+        if (DealDamage(hitEnemies, Vector2.up)) {
             // Utility.FreezePlayer(0.05f);
             _playerMovement.ApplyKnockback(Vector2.down, _fsm.weaponData.upthrustKnockBackForce, 0.05f);
             CameraShake.Instance.ShakeCamera(1f, 0.1f);
@@ -186,7 +187,7 @@ public sealed class BowAttackState : IWeaponState, IBindInput
         _isListeningForNextAction = isListeningForNextAttack;
 
         // Get Colliders of enemies hit
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll (_fsm.player.transform.TransformPoint(_fsm.weaponData.downthrustPoint), _fsm.weaponData.downthrustRange, 360, _fsm.weaponData.enemyLayers);
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(_fsm.player.transform.TransformPoint(_fsm.weaponData.downthrustPoint), _fsm.weaponData.downthrustRange, 360, _fsm.weaponData.enemyLayers);
 
         // No Hits
         if (hitEnemies.Length == 0) {
@@ -197,15 +198,15 @@ public sealed class BowAttackState : IWeaponState, IBindInput
             return;
         }
 
-        if (DealDamage(hitEnemies)) {           
+        if (DealDamage(hitEnemies, Vector2.down)) {
             // Utility.FreezePlayer(0.05f);
-            _playerMovement.ApplyKnockback(-Vector2.down, _fsm.weaponData.downthrustKnockBackForce, 0.05f);
+            _playerMovement.ApplyKnockback(Vector2.up, _fsm.weaponData.downthrustKnockBackForce, 0.05f);
             CameraShake.Instance.ShakeCamera(1f, 0.1f);
             _fsm.PlayWeaponHitSFX();
         }
     }
 
-    bool DealDamage(Collider2D[] hitEnemies)
+    bool DealDamage(Collider2D[] hitEnemies, Vector2 damageDir)
     {
         bool attacked = false;
         foreach (Collider2D hit in hitEnemies) {
@@ -213,13 +214,14 @@ public sealed class BowAttackState : IWeaponState, IBindInput
             if (_enemiesAttackedIDs.Add (hit.gameObject.GetInstanceID ())) {
                 EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
                 if (enemy != null && !enemy.IsDead()) {
-                    enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % _kMaxComboCount) - 1] : _fsm.weaponData.comboDamage[0]);
+                    enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % _kMaxComboCount) - 1] : _fsm.weaponData.comboDamage[0],
+                                     damageDir);
                     attacked = true;
                 }
 
                 BreakableObject breakable = hit.GetComponent<BreakableObject> ();
                 if (breakable != null) {
-                    breakable.TakeDamage (breakable.transform.position.x > _fsm.player.position.x);
+                    breakable.TakeDamage(breakable.transform.position.x > _fsm.player.position.x);
                     attacked = true;
                 }
             }

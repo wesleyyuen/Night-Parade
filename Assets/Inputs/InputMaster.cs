@@ -33,7 +33,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""id"": ""bc1090f0-fa8d-4f72-b455-a78cf72c54b0"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
-                    ""interactions"": ""Hold,Press"",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -96,7 +96,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""id"": ""8f0ae826-91ab-4131-ac23-daceaeb5b9f8"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""SlowTap"",
+                    ""interactions"": ""SlowTap(duration=0.2,pressPoint=0.2)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -105,7 +105,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""id"": ""45d37f24-6619-47fd-a376-6d5c667f7b36"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": ""Hold(duration=0.2,pressPoint=0.2)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -122,7 +122,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""2D Vector"",
+                    ""name"": ""Arrow Keys"",
                     ""id"": ""636821c0-9f1e-48ae-bb00-824a653e5fb7"",
                     ""path"": ""2DVector(mode=1)"",
                     ""interactions"": """",

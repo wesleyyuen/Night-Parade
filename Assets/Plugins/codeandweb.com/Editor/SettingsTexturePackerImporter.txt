@@ -6,7 +6,6 @@ tpsheetFileNames:
 - Assets/Graphics/Characters/Enemy/Okka/okka_spritesheet.tpsheet
 - Assets/Tilemap/Forest/Sprites/Grass Shades/forest_grass_shades_atlas.tpsheet
 - Assets/Weapons/BowAndArrows/Arrows/Sprites/arrows_atlas.tpsheet
-- Assets/Weapons/Wakizashi/Sprites/wakizashi_emission_map.tpsheet
 - Assets/Weapons/Wakizashi/Sprites/wakizashi_spritesheet.tpsheet
 textureFileNames:
 - Assets/Characters/Enemy/Okka/Sprites/okka_spritesheet.png
@@ -14,10 +13,8 @@ textureFileNames:
 - Assets/Graphics/Characters/Enemy/Okka/okka_spritesheet.png
 - Assets/Tilemap/Forest/Sprites/Grass Shades/forest_grass_shades_atlas.png
 - Assets/Weapons/BowAndArrows/Arrows/Sprites/arrows_atlas.png
-- Assets/Weapons/Wakizashi/Sprites/wakizashi_emission_map.png
 - Assets/Weapons/Wakizashi/Sprites/wakizashi_spritesheet.png
 normalmapFileNames:
-- 
 - 
 - 
 - 

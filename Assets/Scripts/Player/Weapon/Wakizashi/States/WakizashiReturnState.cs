@@ -7,10 +7,10 @@ public sealed class WakizashiReturnState : IWeaponState
     private Rigidbody2D _rb;
     private Collider2D _collider;
     private PlayerAnimations _playerAnimation;
-    private Vector2 _weaponStartPosition;
-    private Vector2 _curvePoint;
+    private Vector2 _weaponStartPosition, _weaponEndPosition, _curvePoint;
     private float _timer;
     private bool _isReturningRight;
+    private bool _isOnEnemy;
 
     public WakizashiReturnState(WakizashiFSM fsm)
     {
@@ -24,21 +24,33 @@ public sealed class WakizashiReturnState : IWeaponState
     public void EnterState()
     {
         _timer = 0;
+        _isOnEnemy = _fsm.transform.parent?.gameObject.layer ==  LayerMask.NameToLayer("Enemies");
         _isReturningRight = _fsm.transform.position.x >= _fsm.player.position.x;
         _weaponStartPosition = _fsm.transform.position;
-        _curvePoint = _fsm.player.position + new Vector2(_playerAnimation.IsFacingRight() ? 2f : -2f, 3f);
 
-        ReturnToPlayer();
+        _rb.isKinematic = true;
+        _collider.enabled = true;
     }
-
-    public void Update()
+      public void Update()
     {
-        _rb.transform.localEulerAngles += (_isReturningRight ? Vector3.forward : Vector3.back) * 2700f * Time.deltaTime; 
+        _weaponEndPosition = _isOnEnemy ? (_fsm.player.position + new Vector2(_playerAnimation.IsFacingRight() ? 4f : -4f, 0f)) : (_fsm.player.position + new Vector2(0f, 1f));
+        _curvePoint = _weaponEndPosition + new Vector2(_playerAnimation.IsFacingRight() ? 3f : -3f, _isOnEnemy ? 0f : 2f);
 
+        if (!_isOnEnemy)
+            _rb.transform.localEulerAngles += (_isReturningRight ? Vector3.forward : Vector3.back) * 2700f * Time.deltaTime; 
+
+        // Moving towards desired point
         if (_timer < 1f) {
-            _fsm.transform.position = GetQuadraticCurvePoint(_timer, _weaponStartPosition, _curvePoint, _fsm.player.position + new Vector2(0f, 1f));
+            if (_isOnEnemy) {
+                _fsm.transform.parent.position = GetQuadraticCurvePoint(_timer, _weaponStartPosition, _curvePoint, _weaponEndPosition);
+            } else {
+                _fsm.transform.position = GetQuadraticCurvePoint(_timer, _weaponStartPosition, _curvePoint, _weaponEndPosition);
+            }
             _timer += Time.deltaTime / _returnTime;
-        } else {
+        }
+        // Reaches the player
+        else {
+            _fsm.transform.parent = _fsm.player.transform;
             Utility.FreezePlayer(false);
             _playerAnimation.SetUnlodgedAnimation();
             _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
@@ -55,15 +67,6 @@ public sealed class WakizashiReturnState : IWeaponState
 
     public void FixedUpdate()
     {
-    }
-
-    private void ReturnToPlayer()
-    {
-        _rb.isKinematic = true;
-        _collider.enabled = true;
-
-        // Reattach to player
-        _fsm.transform.parent = _fsm.player.transform;
     }
 
     public void ExitState()

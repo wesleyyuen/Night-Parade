@@ -75,7 +75,7 @@ public sealed class WakizashiFallState : IWeaponState, IBindInput
         // Damage Enemy
         if (hit.gameObject.TryGetComponent<EnemyFSM>(out EnemyFSM enemy)) {
             WakizashiData data = (WakizashiData)_fsm.weaponData;
-            enemy.TakeDamage(data.throwDamage);
+            enemy.TakeDamage(data.throwDamage, _rb.velocity);
         }
 
         // Lodge it

@@ -5,10 +5,10 @@ using MEC;
 
 public sealed class OkkaAttackState : IEnemyState
 {
-    OkkaFSM _fsm;
-    float _timer;
-    bool _hasAttacked;
-    Vector2 _attackAngle;
+    private OkkaFSM _fsm;
+    private float _timer;
+    private bool _hasAttacked;
+    private Vector2 _attackAngle;
 
     public OkkaAttackState(OkkaFSM fsm)
     {
@@ -35,7 +35,7 @@ public sealed class OkkaAttackState : IEnemyState
         }
     }
 
-    IEnumerator<float> _Attack()
+    private IEnumerator<float> _Attack()
     {
         float time = _fsm.enemyData.attackChargeTime * 0.4f,
               timer = 0f,
@@ -48,7 +48,7 @@ public sealed class OkkaAttackState : IEnemyState
         // Wind up
         while (timer < time) {
             timer += Timing.DeltaTime;
-            _fsm.rb.velocity = new Vector2((facingRight ? -1f : 1f) * speed, 0f);
+            _fsm.rb.velocity = new Vector2((facingRight ? -0.5f : 0.5f) * speed, 0f);
             yield return Timing.WaitForOneFrame;
         }
 

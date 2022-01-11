@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WakizashiData : WeaponData
 {
-    public readonly float throwForce;
+    public readonly float throwVelocity;
     public readonly float throwMinDuration;
     public readonly float throwMaxDuration;
     public readonly float throwDamage;
@@ -38,7 +38,8 @@ public class WakizashiData : WeaponData
 
         // Parry
         parryWindow = 0.15f;
-        parryKnockback = 7f;
+        parryDamage = 10f;
+        parryKnockback = 10f;
 
         // Block
         blockPoint = new Vector2(0.95f, 1.45f);
@@ -48,7 +49,7 @@ public class WakizashiData : WeaponData
         blockKnockback = 25f;
 
         // Throw
-        throwForce = 65f;
+        throwVelocity = 65f;
         throwMinDuration = 0.15f;
         throwMaxDuration = 0.65f;
         throwDamage = 7f;

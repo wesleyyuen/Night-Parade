@@ -5,17 +5,22 @@ using UnityEngine.InputSystem;
 
 public sealed class WakizashiAttackState : IWeaponState, IBindInput
 {
+    private enum NextActionType
+    {
+        None,
+        Attack,
+        Block,
+        Throw
+    }
     private WakizashiFSM _fsm;
     private PlayerMovement _playerMovement;
     private PlayerAnimations _playerAnimation;
     private PlayerAbilityController _abilityController;
+    private NextActionType _nextAction;
     private const int _kMaxAirAttack = 2; // Light attack as 1; Heavy attack as 2
     private const int _kMaxComboCount = 2;
     private int _currentAttackCount;
     private bool _isListeningForNextAction;
-    private bool _hasNextAttack;
-    private bool _hasNextBlock;
-    private bool _hasNextThrow;
     private bool _playedMissSFX;
     private HashSet<int> _enemiesAttackedIDs;
 
@@ -48,15 +53,13 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
             _playerMovement.EnablePlayerMovement(false);
 
         _fsm.attackCooldownTimer = _fsm.weaponData.attackCooldown;
+        _nextAction = NextActionType.None;
         _enemiesAttackedIDs = new HashSet<int> ();
         _isListeningForNextAction = false;
-        _hasNextAttack = false;
-        _hasNextBlock = false;
         _playedMissSFX = false;
 
         // Begin First Attack
-        _currentAttackCount = 1;
-        _playerAnimation.SetAttackAnimation(_currentAttackCount);
+        SetAttackAnimation(1);
         _playerMovement.StepForward(2f);
     }
 
@@ -65,9 +68,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // Listen for attack and queue as next action
         if (context.started && _currentAttackCount > 0) {
             if (_isListeningForNextAction) {
-                _hasNextAttack = true;
-                _hasNextBlock = false;
-
+                _nextAction = NextActionType.Attack;
                 _isListeningForNextAction = false;
             }
         }
@@ -81,7 +82,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // Listen for block and queue as next action
         if (context.started && _currentAttackCount > 0) {
             if (_isListeningForNextAction) {
-                _hasNextBlock = true;
+                _nextAction = NextActionType.Block;
                 _isListeningForNextAction = false;
             }
         }
@@ -99,7 +100,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // Listen for throw and queue as next action
         if (context.started && _currentAttackCount > 0) {
             if (_isListeningForNextAction) {
-                _hasNextThrow = true;
+                _nextAction = NextActionType.Throw;
                 _isListeningForNextAction = false;
             }
         }
@@ -110,12 +111,13 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // Needed to constantly turn it off to avoid player moving after taking dmg
         if (Constant.STOP_WHEN_ATTACK) _playerMovement.EnablePlayerMovement(false);
 
-        if (_hasNextAttack && _fsm.attackCooldownTimer <= 0) {
+
+        // TODO: player animator updated, wakizashi animation must be calling something to prevent update
+        if (_nextAction == NextActionType.Attack && _fsm.attackCooldownTimer <= 0) {
             _fsm.attackCooldownTimer = _fsm.weaponData.attackCooldown;
-            _currentAttackCount = (_currentAttackCount % _kMaxComboCount) + 1;
-            _playerAnimation.SetAttackAnimation(_currentAttackCount);
+            _nextAction = NextActionType.None;
+            SetAttackAnimation((_currentAttackCount % _kMaxComboCount) + 1);
             _playerMovement.StepForward(2f);
-            _hasNextAttack = false;
             _playedMissSFX = false;
         }
     }
@@ -127,7 +129,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     public void ExitState()
     {
         _playerAnimation.EnablePlayerTurning(true);
-        _playerAnimation.SetAttackAnimation(0);
+        SetAttackAnimation(0);
         _playerMovement.EnablePlayerMovement(true);
         _enemiesAttackedIDs.Clear();
     }
@@ -149,9 +151,10 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
             return;
         }
 
-        if (DealDamage(hitEnemies)) {           
+        Vector2 hitDir = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
+        if (DealDamage(hitEnemies, hitDir)) {
             // Utility.FreezePlayer(0.05f);
-            _playerMovement.ApplyKnockback(new Vector2(_playerAnimation.IsFacingRight() ? -1f : 1f, 0f), _fsm.weaponData.horizontalKnockBackForce, 0.05f);
+            _playerMovement.ApplyKnockback(-hitDir, _fsm.weaponData.horizontalKnockBackForce, 0.05f);
             CameraShake.Instance.ShakeCamera(1f, 0.1f);
             _fsm.PlayWeaponHitSFX();
         }
@@ -173,7 +176,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
             return;
         }
 
-        if (DealDamage(hitEnemies)) {           
+        if (DealDamage(hitEnemies, Vector2.up)) {
             // Utility.FreezePlayer(0.05f);
             _playerMovement.ApplyKnockback(Vector2.down, _fsm.weaponData.upthrustKnockBackForce, 0.05f);
             CameraShake.Instance.ShakeCamera(1f, 0.1f);
@@ -197,15 +200,15 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
             return;
         }
 
-        if (DealDamage(hitEnemies)) {           
+        if (DealDamage(hitEnemies, Vector2.down)) {
             // Utility.FreezePlayer(0.05f);
-            _playerMovement.ApplyKnockback(-Vector2.down, _fsm.weaponData.downthrustKnockBackForce, 0.05f);
+            _playerMovement.ApplyKnockback(Vector2.up, _fsm.weaponData.downthrustKnockBackForce, 0.05f);
             CameraShake.Instance.ShakeCamera(1f, 0.1f);
             _fsm.PlayWeaponHitSFX();
         }
     }
 
-    bool DealDamage(Collider2D[] hitEnemies)
+    bool DealDamage(Collider2D[] hitEnemies, Vector2 damageDir)
     {
         bool attacked = false;
         foreach (Collider2D hit in hitEnemies) {
@@ -213,13 +216,14 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
             if (_enemiesAttackedIDs.Add (hit.gameObject.GetInstanceID ())) {
                 EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
                 if (enemy != null && !enemy.IsDead()) {
-                    enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % _kMaxComboCount) - 1] : _fsm.weaponData.comboDamage[0]);
+                    enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % _kMaxComboCount) - 1] : _fsm.weaponData.comboDamage[0],
+                                     damageDir);
                     attacked = true;
                 }
 
                 BreakableObject breakable = hit.GetComponent<BreakableObject> ();
                 if (breakable != null) {
-                    breakable.TakeDamage (breakable.transform.position.x > _fsm.player.position.x);
+                    breakable.TakeDamage(breakable.transform.position.x > _fsm.player.position.x);
                     attacked = true;
                 }
             }
@@ -230,18 +234,37 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     public void EndAttack()
     {
-        // Next Attack handled in Update (cooldown)
-        if (_hasNextBlock) {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Parry]);
-        }
-        else if (_hasNextThrow) {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);
-        }
-        else if (!_hasNextAttack) {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
-        }
-
-        _isListeningForNextAction = false;
         _enemiesAttackedIDs.Clear();
+
+        switch (_nextAction)
+        {
+            case NextActionType.Block:
+                _isListeningForNextAction = false;
+                _fsm.SetState(_fsm.states[WakizashiStateType.Parry]);
+                break;
+            case NextActionType.Throw:
+                _isListeningForNextAction = false;
+                _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);
+                break;
+            case NextActionType.Attack:
+                _isListeningForNextAction = false;
+                // Next Attack handled in Update (due to cooldown)
+                break;
+            case NextActionType.None:
+                _isListeningForNextAction = true;
+                break;
+        }
+    }
+
+    public void OnNoNextAction()
+    {
+        if (_isListeningForNextAction)
+            _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
+    }
+
+    private void SetAttackAnimation(int count)
+    {
+        _currentAttackCount = count;
+        _playerAnimation.SetAttackAnimation(_currentAttackCount);
     }
 }

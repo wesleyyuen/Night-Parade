@@ -146,7 +146,7 @@ public class PlayerAnimations : MonoBehaviour
     public void SetJumpFallAnimation()
     {
         SetBool("IsGrounded", _grounded.onGround);
-        SetFloat("Vertical", _rb.velocity.y);
+        SetFloat("Vertical", Mathf.Approximately(_rb.velocity.y, 0) ? 0 : _rb.velocity.y);
     }
 
     public void SetAttackAnimation(int count)

@@ -171,7 +171,7 @@ public class EnemyFSM : MonoBehaviour
         rb.AddForce(dir.normalized * force, ForceMode2D.Impulse);
     }
 
-    public virtual void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage, Vector2 dir)
     {
         if (_isDead || player == null || _currentState == null) return;
 
@@ -191,8 +191,7 @@ public class EnemyFSM : MonoBehaviour
 
                 // Apply Knock back
                 if (!IsCurrentState(StateType.AttackState)) {
-                    bool playerOnLeft = rb.position.x > player.transform.position.x;
-                    ApplyForce(playerOnLeft ? Vector2.right : Vector2.left, enemyData.knockBackOnTakingDamageForce, enemyData.timeFrozenAfterTakingDamage);
+                    ApplyForce(-dir, enemyData.knockBackOnTakingDamageForce, enemyData.timeFrozenAfterTakingDamage);
                 }
             }
         }

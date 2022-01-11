@@ -107,22 +107,6 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    /*
-         public static void SaveOnDeath (GameObject player, float percentOfCoinsLostAfterDeath) {
-             BinaryFormatter formatter = new BinaryFormatter ();
-
-            string path = Application.dataPath + Instance.fileName + Instance.loadIndex + Instance.fileExtension;
-            if (File.Exists (path)) File.Delete (path); // TODO maybe overwrite instead of delete and create
-            FileStream fileStream = new FileStream (path, FileMode.Create);
-
-            PlayerData playerData = new PlayerData (player, percentOfCoinsLostAfterDeath, Instance.loadIndex);
-            Debug.Log("Now Saving...");
-            formatter.Serialize (fileStream, playerData);
-            fileStream.Close ();
-            Debug.Log("Saved!");
-        }
-        */
-
     public bool HaveSaveData()
     {
         string path1 = Application.dataPath + Instance.fileName + "1" + Instance.fileExtension;
@@ -179,11 +163,11 @@ public class SaveManager : MonoBehaviour
                     sceneData: _sceneData
                 );
 
-                Debug.Log ("Save Loaded!");
+                Debug.Log("Save File Found and Successfully Loaded!");
                 return data;
             }
         } else {
-            Debug.Log ("Save File Not Found in " + path);
+            Debug.Log("Save File Not Found in " + path);
             return null;
         }
     }

@@ -69,7 +69,7 @@ public class PlayerHealth : MonoBehaviour
         _anim.SetRunAnimation(0f);
 
         // Slow Motion effect
-        StartCoroutine(Utility._SlowTimeForSeconds(0.02f, 0.35f));
+        TimeManager.Instance.SlowTimeForSeconds(0.02f, 0.35f);
 
         // Shake Camera
         CameraShake.Instance.ShakeCamera(_cameraShakeMultiplier, _damageCameraShakeTimer);

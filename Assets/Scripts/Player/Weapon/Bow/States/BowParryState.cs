@@ -61,11 +61,11 @@ public sealed class BowParryState : IWeaponState
             if (_enemiesParriedIDs.Add (hit.gameObject.GetInstanceID ())) {
                 EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
                 if (enemy != null && !enemy.IsDead()) {
-                    // Utility.StaticCoroutine.Start(Utility.ChangeVariableAfterDelayInRealTime<float>(e => Time.timeScale = e, 0.6f, 0.15f, 1f));
+                    Vector2 hitDir = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
+                    enemy.TakeDamage(_fsm.weaponData.parryDamage, hitDir);
 
-                    Vector2 dir = new Vector2 (enemy.transform.position.x < _fsm.player.position.x ? 1f : -1f, 0f);
-                    enemy.ApplyForce(-dir, enemy.enemyData.knockBackOnParriedForce, enemy.enemyData.timeStunnedAfterParried);
-                    enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterParried);
+                    // enemy.ApplyForce(-hitDir, enemy.enemyData.knockBackOnParriedForce, enemy.enemyData.timeStunnedAfterParried);
+                    // enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterParried);
 
                     _fsm.SetStateAfterDelay(BowStateType.Idle, 1f);
                 }
