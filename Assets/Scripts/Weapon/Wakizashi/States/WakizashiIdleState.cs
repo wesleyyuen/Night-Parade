@@ -8,18 +8,20 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
     {
         None,
         Attack,
-        Parry,
+        Aim,
         Throw
     }
     private TargetState _targetState;
     private WakizashiFSM _fsm;
     private Rigidbody2D _rb;
+    private PlayerAnimations _playerAnimation;
     private PlayerAbilityController _abilityController;
 
     public WakizashiIdleState(WakizashiFSM fsm)
     {
         _fsm = fsm;
 
+        _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
         _abilityController = fsm.GetComponentInParent<PlayerAbilityController>();
         _rb = fsm.GetComponent<Rigidbody2D>();
     }
@@ -27,15 +29,15 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
     public void BindInput()
     {
         _fsm.InputActions.Player.Attack.started += OnStartAttack;
-        _fsm.InputActions.Player.Block.started += OnStartBlock;
-        _fsm.InputActions.Player.Throw.started += OnStartThrow;
+        _fsm.InputActions.Player.Throw_SlowTap.started += OnStartThrow;
+        // _fsm.InputActions.Player.Throw_Hold.performed += OnStartAim;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Attack.started -= OnStartAttack;
-        _fsm.InputActions.Player.Block.started -= OnStartBlock;
-        _fsm.InputActions.Player.Throw.started -= OnStartThrow;
+        _fsm.InputActions.Player.Throw_SlowTap.started += OnStartThrow;
+        // _fsm.InputActions.Player.Throw_Hold.performed -= OnStartAim;
     }
 
     public void EnterState()
@@ -54,17 +56,17 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
             _targetState = TargetState.Attack;
     }
 
-    private void OnStartBlock(InputAction.CallbackContext context)
-    {
-        if (_fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.canBlock && _fsm.blockCooldownTimer <= 0 && _abilityController.currStamina > 0)
-            _targetState = TargetState.Parry;
-    }
-
     private void OnStartThrow(InputAction.CallbackContext context)
     {
-        if (!_fsm.IsCurrentState(WakizashiStateType.Throw) && _fsm.throwCooldownTimer <= 0)
+        if (_fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0)
             _targetState = TargetState.Throw;
     }
+
+    // private void OnStartAim(InputAction.CallbackContext context)
+    // {
+    //     if (_fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0)
+    //         _targetState = TargetState.Aim;
+    // }
 
     public void Update()
     {
@@ -74,9 +76,9 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
                 _fsm.SetState(_fsm.states[WakizashiStateType.Attack]);
                 return;
 
-            case TargetState.Parry:
-                _fsm.SetState(_fsm.states[WakizashiStateType.Parry]);
-                return;
+            // case TargetState.Aim:
+            //     _fsm.SetState(_fsm.states[WakizashiStateType.Aim]);
+            //     return;
 
             case TargetState.Throw:
                 _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);

@@ -64,7 +64,7 @@ public sealed class WakizashiParryState : IWeaponState
             if (_enemiesParriedIDs.Add (hit.gameObject.GetInstanceID ())) {
                 if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()) {
                     Vector2 hitDir = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
-                    enemy.TakeDamage(_fsm.weaponData.parryDamage, hitDir);
+                    // enemy.TakeDamage(_fsm.weaponData.parryDamage, hitDir);
 
                     enemy.ApplyForce(-hitDir, enemy.enemyData.knockBackOnParriedForce, enemy.enemyData.timeStunnedAfterParried);
                     enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterParried);

@@ -21,12 +21,12 @@ public sealed class WakizashiFallState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        _fsm.InputActions.Player.Throw.started += OnStartReturn;
+        _fsm.InputActions.Player.Throw_SlowTap.started += OnStartReturn;
     }
 
     public void UnbindInput()
     {
-        _fsm.InputActions.Player.Throw.started -= OnStartReturn;
+        _fsm.InputActions.Player.Throw_SlowTap.started -= OnStartReturn;
     }
 
     public void EnterState()
@@ -46,13 +46,13 @@ public sealed class WakizashiFallState : IWeaponState, IBindInput
 
     private void OnStartReturn(InputAction.CallbackContext context)
     {
-        if (!_isReturning)
+        if (_fsm.IsCurrentState(WakizashiStateType.Fall) && !_isReturning)
             _isReturning = true;
     }
 
     public void Update()
     {
-        if (_isReturning && !_stopUpdating) {
+        if (_fsm.IsCurrentState(WakizashiStateType.Fall) && _isReturning && !_stopUpdating) {
             _stopUpdating = true;
             _fsm.SetState(_fsm.states[WakizashiStateType.Return]);
         }

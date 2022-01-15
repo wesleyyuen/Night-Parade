@@ -79,6 +79,12 @@ public class InputManager : MonoBehaviour
         return _input.Player.Movement.ReadValue<Vector2>();
     }
 
+    public bool HasDirectionalInput()
+    {
+        DirectionInput inputEnum = (DirectionInput) GetDirectionalInput();
+        return inputEnum != DirectionInput.None;
+    }
+
     public bool HasDirectionalInput(DirectionInput dir)
     {
         DirectionInput inputEnum = (DirectionInput) GetDirectionalInput();

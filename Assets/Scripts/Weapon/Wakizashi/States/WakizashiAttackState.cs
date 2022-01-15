@@ -9,7 +9,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     {
         None,
         Attack,
-        Block,
+        // Block,
         Throw
     }
     private WakizashiFSM _fsm;
@@ -36,16 +36,14 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     {
         _fsm.InputActions.Player.Attack.started += OnNextAttack;
         // _fsm.InputActions.Player.Attack.performed += OnNextAttack;
-        _fsm.InputActions.Player.Block.started += OnNextBlock;
-        _fsm.InputActions.Player.Throw.started += OnNextThrow;
+        _fsm.InputActions.Player.Throw_SlowTap.started += OnNextThrow;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Attack.started -= OnNextAttack;
         // _fsm.InputActions.Player.Attack.performed -= OnNextAttack;
-        _fsm.InputActions.Player.Block.started -= OnNextBlock;
-        _fsm.InputActions.Player.Throw.started -= OnNextThrow;
+        _fsm.InputActions.Player.Throw_SlowTap.started -= OnNextThrow;
     }
 
     public void EnterState()
@@ -67,16 +65,10 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     private void OnNextAttack(InputAction.CallbackContext context)
     {
         // Listen for attack and queue as next action
-        if (context.started && _currentAttackCount > 0) {
+        if (_fsm.IsCurrentState(WakizashiStateType.Attack) && context.started && _currentAttackCount > 0) {
             if (_isListeningForNextAction) {
                 _nextAction = NextActionType.Attack;
                 _isListeningForNextAction = false;
-
-            //                 _fsm.attackCooldownTimer = _fsm.weaponData.attackCooldown;
-            // // _nextAction = NextActionType.None;
-            // SetAttackAnimation((_currentAttackCount % _kMaxComboCount) + 1);
-            // _playerMovement.StepForward(2f);
-            // _playedMissSFX = false;
             }
         }
         // else if (context.performed) {
@@ -88,21 +80,10 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     // {
     // }
 
-    private void OnNextBlock(InputAction.CallbackContext context)
-    {
-        // Listen for block and queue as next action
-        if (context.started && _currentAttackCount > 0) {
-            if (_isListeningForNextAction) {
-                _nextAction = NextActionType.Block;
-                _isListeningForNextAction = false;
-            }
-        }
-    }
-
     private void OnNextThrow(InputAction.CallbackContext context)
     {
         // Listen for throw and queue as next action
-        if (context.started && _currentAttackCount > 0) {
+        if (_fsm.IsCurrentState(WakizashiStateType.Attack) && context.started && _currentAttackCount > 0) {
             if (_isListeningForNextAction) {
                 _nextAction = NextActionType.Throw;
                 _isListeningForNextAction = false;
@@ -242,10 +223,6 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
         switch (_nextAction)
         {
-            case NextActionType.Block:
-                _isListeningForNextAction = false;
-                _fsm.SetState(_fsm.states[WakizashiStateType.Parry]);
-                break;
             case NextActionType.Throw:
                 _isListeningForNextAction = false;
                 _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);
@@ -264,9 +241,6 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     {
         if (_isListeningForNextAction) {
             _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
-        }
-        else if (_nextAction == NextActionType.Block) {
-            _fsm.SetState(_fsm.states[WakizashiStateType.Parry]);
         }
         else if (_nextAction == NextActionType.Throw) {
             _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);

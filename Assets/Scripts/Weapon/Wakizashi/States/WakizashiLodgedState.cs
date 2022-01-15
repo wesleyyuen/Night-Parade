@@ -24,12 +24,12 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        _fsm.InputActions.Player.Throw.started += OnStartReturn;
+        _fsm.InputActions.Player.Throw_SlowTap.started += OnStartReturn;
     }
 
     public void UnbindInput()
     {
-        _fsm.InputActions.Player.Throw.started -= OnStartReturn;
+        _fsm.InputActions.Player.Throw_SlowTap.started -= OnStartReturn;
     }
 
     public void EnterState()
@@ -40,7 +40,7 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
         // Align Wakizashi perpendicular to lodged surface
         // Lodged In Ground
         if (_fsm.transform.parent.gameObject.layer == LayerMask.NameToLayer("Ground")) {
-            _fsm.transform.localRotation = Quaternion.Euler(0f, 0f, _fsm.isThrownRight ? -90f : 90f);
+            _fsm.transform.localRotation = Quaternion.Euler(0f, 0f, _fsm.throwDirection.x > 0f ? -90f : 90f);
         }
         // Lodged In Wall
         else if (_fsm.transform.parent.gameObject.layer == LayerMask.NameToLayer("Wall")) {
@@ -54,7 +54,7 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
 
     private void OnStartReturn(InputAction.CallbackContext context)
     {
-        if (!_isReturning)
+        if (_fsm.IsCurrentState(WakizashiStateType.Lodged) && !_isReturning)
             _isReturning = true;
     }
 

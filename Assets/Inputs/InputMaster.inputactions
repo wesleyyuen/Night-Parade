@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Throw",
+                    "name": "Throw_SlowTap",
                     "type": "Button",
                     "id": "e3004a99-da93-4463-a188-83a04dad4ee5",
                     "expectedControlType": "Button",
@@ -69,21 +69,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shoot_SlowTap",
+                    "name": "Throw_Hold",
                     "type": "Button",
-                    "id": "8f0ae826-91ab-4131-ac23-daceaeb5b9f8",
+                    "id": "a2bd55ba-294f-49f0-9f64-d7afcbf76482",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "SlowTap(duration=0.2,pressPoint=0.2)",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Shoot_Hold",
-                    "type": "Button",
-                    "id": "45d37f24-6619-47fd-a376-6d5c667f7b36",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Hold(duration=0.2,pressPoint=0.2)",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 }
             ],
@@ -205,29 +196,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Throw",
+                    "action": "Throw_SlowTap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "fe119695-c078-474c-aa0c-9b86a3649b40",
+                    "id": "e8893865-5af5-4476-9101-d0ae16861069",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Shoot_SlowTap",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1cccdbb7-80b9-4f6a-888f-40c3508f7646",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Shoot_Hold",
+                    "action": "Throw_Hold",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

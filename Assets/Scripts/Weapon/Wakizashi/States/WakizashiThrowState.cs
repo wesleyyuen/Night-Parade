@@ -8,11 +8,8 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
     private WakizashiData _data;
     private Rigidbody2D _rb;
     private Collider2D _collider;
-    private PlayerMovement _playerMovement;
     private PlayerAnimations _playerAnimation;
-    private Vector2 _throwDirection = new Vector2(1.0f, 0.1f);
     private float _timer;
-    private bool _isThrowingRight = true;
     private bool _isReturning, _stopUpdating;
 
     public WakizashiThrowState(WakizashiFSM fsm)
@@ -20,25 +17,23 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         _fsm = fsm;
         _data = (WakizashiData)fsm.weaponData;
 
-        _throwDirection.Normalize();
         _rb = fsm.GetComponent<Rigidbody2D>();
         _collider = fsm.GetComponent<Collider2D>();
-        _playerMovement = fsm.GetComponentInParent<PlayerMovement>();
         _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
     }
 
     public void BindInput()
     {
         // _fsm.InputActions.Player.Attack.started += OnStartTeleport;
-        _fsm.InputActions.Player.Throw.performed += OnStartReturn;
-        _fsm.InputActions.Player.Throw.canceled += OnStartReturn;
+        _fsm.InputActions.Player.Throw_SlowTap.performed += OnStartReturn;
+        _fsm.InputActions.Player.Throw_SlowTap.canceled += OnStartReturn;
     }
 
     public void UnbindInput()
     {
         // _fsm.InputActions.Player.Attack.started -= OnStartTeleport;
-        _fsm.InputActions.Player.Throw.performed -= OnStartReturn;
-        _fsm.InputActions.Player.Throw.canceled -= OnStartReturn;
+        _fsm.InputActions.Player.Throw_SlowTap.performed -= OnStartReturn;
+        _fsm.InputActions.Player.Throw_SlowTap.canceled -= OnStartReturn;
     }
  
     public void EnterState()
@@ -47,11 +42,14 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         _stopUpdating = false;
         _timer = 0f;
 
-        _fsm.isThrownRight = _isThrowingRight = _playerAnimation.IsFacingRight();
+        if (_fsm.throwDirection == Vector2.zero) {
+            _fsm.throwDirection = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
+        }
+        
         _fsm.throwCooldownTimer = _data.throwCooldown;
 
         // play animation
-        Utility.FreezePlayer(true);
+        Utility.FreezePlayer(true, _data.throwMinDuration);
         _playerAnimation.SetThrowAnimation();
 
         // TODO: should be called from player animation
@@ -66,7 +64,7 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
 
     private void OnStartReturn(InputAction.CallbackContext context)
     {
-        if (!_isReturning)
+        if (_fsm.IsCurrentState(WakizashiStateType.Throw) && !_isReturning)
             _isReturning = true;
     }
 
@@ -75,10 +73,10 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         _timer += Time.deltaTime;
 
         // TODO: replace by animation (rotate in x/y axis mostly)
-        _rb.transform.localEulerAngles += (_isThrowingRight ? Vector3.back : Vector3.forward) * 2700f * Time.deltaTime; 
+        _rb.transform.localEulerAngles += (_fsm.throwDirection.x > 0f ? Vector3.back : Vector3.forward) * 2700f * Time.deltaTime; 
 
         if (_timer < _data.throwMinDuration) {
-            _rb.velocity = (_isThrowingRight ? Vector2.right : Vector2.left) * _data.throwVelocity;
+            _rb.velocity = _fsm.throwDirection * _data.throwVelocity;
         } else {
             _rb.velocity = Vector2.zero;
             // Return if thrown more than throwMaxDuration
@@ -120,6 +118,6 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
 
     public void ExitState()
     {
-        Utility.FreezePlayer(false);
+        _fsm.throwDirection = Vector2.zero;
     }
 }

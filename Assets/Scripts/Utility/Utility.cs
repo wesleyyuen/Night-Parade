@@ -176,7 +176,7 @@ public class Utility : MonoBehaviour
         }
         if (player.TryGetComponent<PlayerMovement>(out PlayerMovement movement)) {
             movement.EnablePlayerMovement(!shouldFreeze, time);
-            movement.FreezePlayerPosition(shouldFreeze);
+            movement.FreezePlayerPosition(shouldFreeze, time);
         }
         if (player.TryGetComponent<PlayerAbilityController>(out PlayerAbilityController abilities)) {
             abilities.EnableAbility(PlayerAbilityController.Ability.Jump , !shouldFreeze, time);

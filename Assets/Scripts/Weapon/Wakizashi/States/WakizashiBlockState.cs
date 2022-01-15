@@ -26,14 +26,14 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
     {
         _fsm.InputActions.Player.Block.canceled += OnReleaseBlock;
         _fsm.InputActions.Player.Attack.started += OnNextAttack;
-        _fsm.InputActions.Player.Throw.started += OnNextThrow;
+        _fsm.InputActions.Player.Throw_SlowTap.started += OnNextThrow;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Block.canceled -= OnReleaseBlock;
         _fsm.InputActions.Player.Attack.started -= OnNextAttack;
-        _fsm.InputActions.Player.Throw.started -= OnNextThrow;
+        _fsm.InputActions.Player.Throw_SlowTap.started -= OnNextThrow;
     }
 
     public void EnterState()

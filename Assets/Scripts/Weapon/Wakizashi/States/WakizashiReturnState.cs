@@ -31,10 +31,12 @@ public sealed class WakizashiReturnState : IWeaponState
         _rb.isKinematic = true;
         _collider.enabled = true;
     }
+
       public void Update()
     {
         _weaponEndPosition = _isOnEnemy ? (_fsm.player.position + new Vector2(_playerAnimation.IsFacingRight() ? 4f : -4f, 0f)) : (_fsm.player.position + new Vector2(0f, 1f));
-        _curvePoint = _weaponEndPosition + new Vector2(_playerAnimation.IsFacingRight() ? 3f : -3f, _isOnEnemy ? 0f : 2f);
+        // _curvePoint = _weaponEndPosition + new Vector2(_playerAnimation.IsFacingRight() ? 3f : -3f, _isOnEnemy ? 0f : 2f);
+        _curvePoint = _weaponStartPosition;
 
         if (!_isOnEnemy)
             _rb.transform.localEulerAngles += (_isReturningRight ? Vector3.forward : Vector3.back) * 2700f * Time.deltaTime; 

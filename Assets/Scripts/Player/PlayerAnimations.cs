@@ -49,10 +49,15 @@ public class PlayerAnimations : MonoBehaviour
             Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => canTurn = e, time, enable, !enable).CancelWith(gameObject));
     }
 
-    public void FreezePlayerAnimation(bool enable, float time)
+    public void FreezePlayerAnimation(bool enable, float time = 0f)
     {
-        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _playerAnimator.enabled = e, time, enable, !enable).CancelWith(gameObject));
-        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _weaponAnimator.enabled = e, time, enable, !enable).CancelWith(gameObject));
+        if (time == 0f) {
+            _playerAnimator.enabled = !enable;
+            _weaponAnimator.enabled = !enable;
+        } else {
+            Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _playerAnimator.enabled = e, time, !enable, enable).CancelWith(gameObject));
+            Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _weaponAnimator.enabled = e, time, !enable, enable).CancelWith(gameObject));
+        }
     }
 
     private void SetPlayerScale(Vector3 scale, float duration = 0f)

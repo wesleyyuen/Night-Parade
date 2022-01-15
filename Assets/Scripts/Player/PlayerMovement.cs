@@ -53,18 +53,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void FreezePlayerPosition(bool shouldFreeze)
+    public void FreezePlayerPosition(bool shouldFreeze, float time = 0f)
     {
-        _isLetRBMove = shouldFreeze;
-        _rb.isKinematic = shouldFreeze;
-        _rb.velocity = shouldFreeze ? Vector2.zero : _rb.velocity;
-    }
-
-    public void FreezePlayerPositionForSeconds(float time)
-    {
-        LetRigidbodyMoveForSeconds(time);
-        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _rb.isKinematic = e, time, true, false).CancelWith(gameObject));
-        Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<Vector2>(e => _rb.velocity = e, time, Vector2.zero, _rb.velocity).CancelWith(gameObject));
+        Vector2 orignal = _rb.velocity;
+        if (time == 0f) {
+            _isLetRBMove = shouldFreeze;
+            _rb.isKinematic = shouldFreeze;
+            _rb.velocity = shouldFreeze ? Vector2.zero : orignal;
+        } else {
+            LetRigidbodyMoveForSeconds(time);
+            Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _rb.isKinematic = e, time, true, false).CancelWith(gameObject));
+            Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<Vector2>(e => _rb.velocity = e, time, Vector2.zero, orignal).CancelWith(gameObject));
+        }
     }
 
     public void LetRigidbodyMoveForSeconds(float time)

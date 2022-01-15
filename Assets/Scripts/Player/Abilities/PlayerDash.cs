@@ -87,14 +87,14 @@ public class PlayerDash : MonoBehaviour
 
         // Pre-Dash Freeze Effect
         _anim.SetJumpFallAnimation();
-        _movement.FreezePlayerPositionForSeconds(freezeDuration);
+        _movement.FreezePlayerPosition(true, freezeDuration);
         yield return new WaitForSeconds(freezeDuration);
 
         ActuallyDash(dir);
         yield return new WaitForSeconds(dashTime);
 
         // Post-Dash Freeze Effect
-        _movement.FreezePlayerPositionForSeconds(freezeDuration / 2);
+        _movement.FreezePlayerPosition(true, freezeDuration / 2);
         yield return new WaitForSeconds(freezeDuration / 2);
 
         // Reset
