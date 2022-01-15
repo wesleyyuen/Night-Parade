@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcf538ad38ed34e4baf11d225a5599a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transitionDuration: 0.25
+  _transitionDuration: 0.4
   _canvasGroup: {fileID: 4370561122562795059}
 --- !u!1 &7359754778593206904
 GameObject:

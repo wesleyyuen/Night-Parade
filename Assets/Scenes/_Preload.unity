@@ -2311,7 +2311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d41104d3228290d4899b55a0144c1393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingScene: 2
+  startingScene: 0
   _enabledTestChamber: 0
 --- !u!4 &789520134
 Transform:

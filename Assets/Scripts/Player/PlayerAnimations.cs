@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using MEC;
 using DG.Tweening;
 
 public class PlayerAnimations : MonoBehaviour
 {
-    [SerializeField] ParticleSystem _dustTrail;
-    PlayerPlatformCollision _grounded;
-    Animator _playerAnimator;
-    WeaponFSM _weaponFSM;
-    Animator _weaponAnimator;
-    Rigidbody2D _rb;
-    Collider2D _collider;
-    PlayerMovement _movement;
-    bool _isSquishing;
-    bool canTurn;
+    [SerializeField] private ParticleSystem _dustTrail;
+    private PlayerPlatformCollision _grounded;
+    private Animator _playerAnimator;
+    private WeaponFSM _weaponFSM;
+    private Animator _weaponAnimator;
+    private Rigidbody2D _rb;
+    private Collider2D _collider;
+    private PlayerMovement _movement;
+    private bool _isSquishing;
+    private bool canTurn;
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class PlayerAnimations : MonoBehaviour
                 _weaponFSM = obj.GetComponent<WeaponFSM>();
                 _weaponAnimator = obj.GetComponent<Animator>();
             }
-            else if (obj.tag == "Sprite")
+            else if (obj.tag == "PlayerSprite")
                 _playerAnimator = obj.GetComponent<Animator>();
         }
         

@@ -8,6 +8,7 @@ public class PlayerDash : MonoBehaviour
     private Rigidbody2D _rb;
     private PlayerAnimations _anim;
     private PlayerMovement _movement;
+    private PlayerHealth _health;
     private PlayerAbilityController _abilities;
     private PlayerPlatformCollision _collision;
     [SerializeField] private float dashSpeed;
@@ -30,6 +31,7 @@ public class PlayerDash : MonoBehaviour
         _rb = GetComponentInParent<Rigidbody2D>();
         _anim = GetComponentInParent<PlayerAnimations>();
         _movement = GetComponentInParent<PlayerMovement>();
+        _health = GetComponentInParent<PlayerHealth>();
         _abilities = GetComponentInParent<PlayerAbilityController>();
         _collision = GetComponentInParent<PlayerPlatformCollision>();
         // _particleRenderer = afterimage.GetComponent<ParticleSystemRenderer>();
@@ -79,6 +81,10 @@ public class PlayerDash : MonoBehaviour
 
     private IEnumerator _Dash(Vector2 dir)
     {
+        _health.isInvulnerable = true;
+        _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, false);
+        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemies"), true);
+
         // Pre-Dash Freeze Effect
         _anim.SetJumpFallAnimation();
         _movement.FreezePlayerPositionForSeconds(freezeDuration);
@@ -88,15 +94,18 @@ public class PlayerDash : MonoBehaviour
         yield return new WaitForSeconds(dashTime);
 
         // Post-Dash Freeze Effect
-        _movement.FreezePlayerPositionForSeconds(freezeDuration);
-        yield return new WaitForSeconds(freezeDuration);
+        _movement.FreezePlayerPositionForSeconds(freezeDuration / 2);
+        yield return new WaitForSeconds(freezeDuration / 2);
 
-        // Reset 
+        // Reset
         _collision.UpdateFallPosition();
-        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemies"), false);
-        _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, true);
+
         _rb.drag = 1f;
         _rb.gravityScale = 1f;
+
+        _health.isInvulnerable = false;
+        _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, true);
+        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemies"), false);
     }
 
     private void ActuallyDash(Vector2 dir)
@@ -106,14 +115,13 @@ public class PlayerDash : MonoBehaviour
         // afterimage.Play();
 
         // Movement
-        _abilities.EnableAbility(PlayerAbilityController.Ability.Jump, false);
-        _movement.LetRigidbodyMoveForSeconds(dashTime + freezeDuration);
+        _movement.LetRigidbodyMoveForSeconds(dashTime + freezeDuration / 2);
+        _movement.LetRigidbodyMoveForSeconds(dashTime);
         _rb.gravityScale = 0f;
         _rb.drag = dashSpeed * 0.1f;
         _rb.velocity = Vector2.zero;
         _rb.angularVelocity = 0f;
         _rb.velocity += dir.normalized * dashSpeed;
-        Physics2D.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Enemies"), true);
     }
 
     private void Counter()
@@ -127,7 +135,7 @@ public class PlayerDash : MonoBehaviour
         foreach (Collider2D hit in parried) {
             // Parry enemy only ONCE by adding them into list
             if (_enemiesParriedIDs.Add (hit.gameObject.GetInstanceID ())) {
-                if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()) {
+                if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead() && enemy.IsAttacking()) {
                     Vector2 hitDir = _anim.IsFacingRight() ? Vector2.right : Vector2.left;
                     enemy.TakeDamage(3f, hitDir);
                 }

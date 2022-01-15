@@ -55,10 +55,10 @@ public class PlayerJump : MonoBehaviour
 
     private void OnJump()
     {
-        if (!_canJump) return;
-
-        _jumpBuffer = _jumpBufferTime;
-        _startsJumping = true;
+        if (_canJump) {
+            _jumpBuffer = _jumpBufferTime;
+            _startsJumping = true;
+        }
     }
 
     private void OnJumpCanceled()

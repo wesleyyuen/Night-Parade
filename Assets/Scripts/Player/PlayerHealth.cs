@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -17,6 +16,7 @@ public class PlayerHealth : MonoBehaviour
     private Rigidbody2D _rb;
     private PlayerAnimations _anim;
     private PlayerMovement _movement;
+    private PlayerAbilityController _abilities;
     private WeaponFSM _weaponFSM;
     private bool _isDead;
 
@@ -28,6 +28,7 @@ public class PlayerHealth : MonoBehaviour
         _rb = GetComponent<Rigidbody2D> ();
         _anim = GetComponent<PlayerAnimations>();
         _movement = GetComponent<PlayerMovement>();
+        _abilities = GetComponent<PlayerAbilityController>();
         _weaponFSM = GetComponentInChildren<WeaponFSM>();
 
         // Change Health UI
@@ -64,6 +65,8 @@ public class PlayerHealth : MonoBehaviour
 
         // Disable Player Control
         Utility.EnablePlayerControl(false, frozenTime);
+        _abilities.EnableAbility(PlayerAbilityController.Ability.Dash, false, frozenTime);
+
         _anim.SetAttackAnimation(0);
         _anim.SetBlockAnimation(false);
         _anim.SetRunAnimation(0f);

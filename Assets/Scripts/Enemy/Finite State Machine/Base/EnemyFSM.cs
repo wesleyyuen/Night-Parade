@@ -197,6 +197,11 @@ public class EnemyFSM : MonoBehaviour
         }
     }
 
+    public bool IsAttacking()
+    {
+        return _currentState == states[StateType.AggroState];
+    }
+
     public bool IsDead()
     {
         return _isDead;

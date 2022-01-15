@@ -14,7 +14,7 @@ public class OkkaData : EnemyData
 
         // Aggression
         aggroDistance = 10f;
-        aggroMovementSpeed = 7f;
+        aggroMovementSpeed = 6f;
         lineOfSightDistance = 15f;
         lineOfSightAngle = 25f;
         lineOfSightOriginOffset = new Vector2(0f, 0.4f);

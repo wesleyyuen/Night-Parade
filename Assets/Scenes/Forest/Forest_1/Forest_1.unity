@@ -5336,7 +5336,7 @@ PrefabInstance:
     - target: {fileID: 6078923901118508107, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7788056637999887352, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
@@ -5347,11 +5347,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player Group
-      objectReference: {fileID: 0}
-    - target: {fileID: 8842165004552972492, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9209045901075620372, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
         type: 3}
@@ -32755,7 +32750,7 @@ GameObject:
   - component: {fileID: 1089013538}
   m_Layer: 8
   m_Name: Background
-  m_TagString: Parallax
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

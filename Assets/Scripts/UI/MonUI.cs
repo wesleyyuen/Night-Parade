@@ -68,9 +68,9 @@ public class MonUI : MonoBehaviour
         canvas.DOFade(1f, fadingDuration);
 
         // Display text
-        yield return new WaitForSeconds (showingDuration * 0.2f);
+        yield return new WaitForSeconds(showingDuration * 0.2f);
         UpdateMonText();
-        yield return new WaitForSeconds (showingDuration * 0.8f);
+        yield return new WaitForSeconds(showingDuration * 0.8f);
 
         canvas.DOFade(0f, fadingDuration);
     }
@@ -80,8 +80,8 @@ public class MonUI : MonoBehaviour
         _playerInventory = FindObjectOfType<PlayerInventory>();
         if (_playerInventory == null) return;
 
-        // Display current coins on hand as text, space at the end to force spacing
-        // monText.text = _playerInventory.coinOnHand.ToString() + " ";
+        // Display current coins on hand as text
+        // Using LeanTween for TextMeshPro
         LeanTween.cancel(monText.gameObject);
         LeanTween.value(float.Parse(monText.text), (float)_playerInventory.MonOnHand, 0.5f)
             .setOnUpdate(SetText)

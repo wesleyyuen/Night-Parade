@@ -34,13 +34,6 @@ public sealed class OkkaAggroState : IEnemyState
         // check Line of Sight
         bool inLineOfSight = _fsm.IsInLineOfSight();
 
-        // Face Player
-        // bool prevIsRightOfPlayer = _isRightOfPlayer;
-        // _isRightOfPlayer = _fsm.transform.position.x > _fsm.player.transform.position.x;
-        // if (prevIsRightOfPlayer != _isRightOfPlayer) {
-        //     _fsm.GFX.FaceTowardsPlayer(1f);
-        // }
-
         // Drop aggro after a certain delay period without LOS
         if (!inLineOfSight) {
             _delayTimer += Time.deltaTime;

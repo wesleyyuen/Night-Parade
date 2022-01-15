@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MEC;
 
 public class PlayerAbilityController : MonoBehaviour
 {
@@ -15,13 +16,13 @@ public class PlayerAbilityController : MonoBehaviour
     public float currStamina { get; private set; }
     public float maxStamina { get; private set; }
     public PlayerPlatformCollision _collision;
-    GameObject _abilitiesGB;
-    PlayerJump _jump;
-    PlayerWallSlide _wallSlide;
-    PlayerWallJump _wallJump;
-    PlayerDash _dash;
-    float _deltaTime;
-    bool _isStopUpdatingStamina;
+    private GameObject _abilitiesGB;
+    private PlayerJump _jump;
+    private PlayerWallSlide _wallSlide;
+    private PlayerWallJump _wallJump;
+    private PlayerDash _dash;
+    private float _deltaTime;
+    private bool _isStopUpdatingStamina;
 
     private void Start()
     {
@@ -61,19 +62,35 @@ public class PlayerAbilityController : MonoBehaviour
     {
         switch (ability) {
             case Ability.Jump:
-                _jump.EnablePlayerJump(enable, time);
+                if (time == 0f) {
+                    _jump.enabled = enable;
+                } else {
+                    Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _jump.enabled = e, time, enable, !enable));
+                }
                 break;
 
             case Ability.WallSlide:
-                _wallSlide.enabled = enable;
+                if (time == 0f) {
+                    _wallSlide.enabled = enable;
+                } else {
+                    Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _wallSlide.enabled = e, time, enable, !enable));
+                }
                 break;
 
             case Ability.WallJump:
-                _wallJump.enabled = enable;
+                if (time == 0f) {
+                    _wallJump.enabled = enable;
+                } else {
+                    Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _wallJump.enabled = e, time, enable, !enable));
+                }
                 break;
                 
             case Ability.Dash:
-                _dash.enabled = enable;
+                if (time == 0f) {
+                    _dash.enabled = enable;
+                } else {
+                    Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _dash.enabled = e, time, enable, !enable));
+                }
                 break;
 
             default:
