@@ -58,9 +58,7 @@ public sealed class OkkaDeathState : IEnemyState
     }
 
     private void CheckAndUnlodgeWeapon()
-    {
-        Debug.Log(GameObject.FindGameObjectWithTag("Weapon").transform.parent?.name);
-        
+    {   
         // Create a copy of children list
         List<Transform> children = new List<Transform>();
         foreach (Transform child in _fsm.transform)
@@ -70,7 +68,6 @@ public sealed class OkkaDeathState : IEnemyState
 
         foreach (Transform child in children)
         {
-            
             if (child.TryGetComponent<WakizashiFSM>(out WakizashiFSM weapon)) {
                 weapon.UnlodgedFromEnemy();
                 break;

@@ -103,7 +103,6 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
         _fsm.transform.parent = _fsm.player.transform;
         _fsm.transform.localPosition = Vector3.zero;
         _fsm.transform.localRotation = Quaternion.identity;
-        _collider.enabled = false;
     }
 
     public void ExitState()
