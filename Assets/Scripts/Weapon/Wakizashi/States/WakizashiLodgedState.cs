@@ -61,10 +61,10 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
     public void Update()
     {
         // Instantly return
-        if (Vector2.Distance(_fsm.transform.position, _fsm.player.position) >= 25f && !_stopUpdating) {
-            _stopUpdating = true;
-            ReturnInstantly();
-        }
+        // if (Vector2.Distance(_fsm.transform.position, _fsm.player.position) >= 25f && !_stopUpdating) {
+        //     _stopUpdating = true;
+        //     ReturnInstantly();
+        // }
 
         if (_isReturning && !_stopUpdating) {
             _stopUpdating = true;

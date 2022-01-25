@@ -45,11 +45,13 @@ public sealed class WakizashiAimState : IWeaponState, IBindInput
 
     public void Update()
     {
+        if (_stopUpdating) return;
+
         if (InputManager.Instance.HasDirectionalInput()) {
             _fsm.throwDirection = InputManager.Instance.GetDirectionalInputVector();
         }
 
-        if (!_stopUpdating && _isThrowing) {
+        if (_isThrowing) {
             _stopUpdating = true;
             _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);
         }

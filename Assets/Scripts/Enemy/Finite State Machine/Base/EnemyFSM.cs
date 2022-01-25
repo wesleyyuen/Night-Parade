@@ -29,8 +29,8 @@ public class EnemyFSM : MonoBehaviour
     public Dictionary<StateType, IEnemyState> states;
     IEnemyState _currentState;
     public IEnemyState previousState {get; private set;}
-    bool _isLetRBMove;
-    bool _isDead;
+    private bool _isLetRBMove;
+    private bool _isDead;
 
     protected virtual void Awake()
     {
@@ -82,7 +82,7 @@ public class EnemyFSM : MonoBehaviour
         if (_currentState == null || player == null) return;
 
         GameObject go = collision.gameObject;
-        if (go.layer == LayerMask.NameToLayer("Player")) {
+        if (!_isDead && go.layer == LayerMask.NameToLayer("Player")) {
             SetState(states[StateType.StillState]);
             go.GetComponent<PlayerHealth>().HandleDamage(enemyData.damageAmount, rb.position);
         }

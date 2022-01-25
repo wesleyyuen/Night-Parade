@@ -9,7 +9,7 @@ public class GameMaster : MonoBehaviour
     public static GameMaster Instance {
         get  {return _instance; }
     }
-    [SerializeField] public Constant.SceneName startingScene;
+    [SerializeField] public Constant.SceneName startingScene = Constant.SceneName.Main_Menu;
     [SerializeField] bool _enabledTestChamber;
     public string prevScene {get; private set;}
     public string currentScene {get; private set;}

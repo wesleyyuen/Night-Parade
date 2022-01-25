@@ -9,6 +9,13 @@
       },
       "hash": "dbe057aecdea1e512bc036e4925e2de414bb3c46"
     },
+    "com.aarthificial.reanimation": {
+      "version": "https://github.com/aarthificial/reanimation.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "228b69e45103b168bf198fbd9bd0c9669774406f"
+    },
     "com.unity.2d.animation": {
       "version": "5.0.10",
       "depth": 0,

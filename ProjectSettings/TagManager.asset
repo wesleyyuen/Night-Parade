@@ -12,7 +12,6 @@ TagManager:
   - SceneTransition
   - Unflippable
   - Wall
-  - GroundEdges
   - UICanvas
   - Weapon
   - Enemies
@@ -21,7 +20,7 @@ TagManager:
   - Wakizashi_L
   - Wakizashi_R
   - Onibi
-  - PlayerSprite
+  - GameOver_BG
   layers:
   - Default
   - TransparentFX
@@ -39,7 +38,7 @@ TagManager:
   - Enemies
   - Collectables
   - Wall
-  - Projectiles
+  - Weapon
   - 
   - 
   - 

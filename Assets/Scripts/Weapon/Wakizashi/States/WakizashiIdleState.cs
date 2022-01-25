@@ -29,15 +29,15 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
     public void BindInput()
     {
         _fsm.InputActions.Player.Attack.started += OnStartAttack;
-        _fsm.InputActions.Player.Throw_SlowTap.started += OnStartThrow;
-        // _fsm.InputActions.Player.Throw_Hold.performed += OnStartAim;
+        _fsm.InputActions.Player.Throw_Tap.performed += OnStartThrow;
+        _fsm.InputActions.Player.Throw_Hold.performed += OnStartAim;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Attack.started -= OnStartAttack;
-        _fsm.InputActions.Player.Throw_SlowTap.started += OnStartThrow;
-        // _fsm.InputActions.Player.Throw_Hold.performed -= OnStartAim;
+        _fsm.InputActions.Player.Throw_Tap.performed += OnStartThrow;
+        _fsm.InputActions.Player.Throw_Hold.performed -= OnStartAim;
     }
 
     public void EnterState()
@@ -62,11 +62,11 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
             _targetState = TargetState.Throw;
     }
 
-    // private void OnStartAim(InputAction.CallbackContext context)
-    // {
-    //     if (_fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0)
-    //         _targetState = TargetState.Aim;
-    // }
+    private void OnStartAim(InputAction.CallbackContext context)
+    {
+        if (_fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0)
+            _targetState = TargetState.Aim;
+    }
 
     public void Update()
     {
@@ -76,9 +76,9 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
                 _fsm.SetState(_fsm.states[WakizashiStateType.Attack]);
                 return;
 
-            // case TargetState.Aim:
-            //     _fsm.SetState(_fsm.states[WakizashiStateType.Aim]);
-            //     return;
+            case TargetState.Aim:
+                _fsm.SetState(_fsm.states[WakizashiStateType.Aim]);
+                return;
 
             case TargetState.Throw:
                 _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);

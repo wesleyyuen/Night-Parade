@@ -19,7 +19,6 @@ public sealed class OkkaDeathState : IEnemyState
         _timer = 0;
         Physics2D.IgnoreCollision(_fsm.player, _fsm.col);
         
-
         // Stop all forces previously applied to it
         _fsm.rb.velocity = Vector2.zero;
         _fsm.rb.angularVelocity = 0f;
@@ -29,6 +28,9 @@ public sealed class OkkaDeathState : IEnemyState
         Vector2 knockBackDir = new Vector2((_fsm.rb.position.x > _fsm.player.transform.position.x) ? 1f : -1f, 0.75f);
         _fsm.ApplyForce(knockBackDir, knockBackForce);
 
+        // Check if Player's Weapon is lodged in this enemy
+        CheckAndUnlodgeWeapon();
+
         _fsm.GFX.PlayDeathEffect(_fsm.enemyData.dieTime);
     }
 
@@ -36,22 +38,14 @@ public sealed class OkkaDeathState : IEnemyState
     {
         _timer += Time.deltaTime;
 
-        if (_timer >= _fsm.enemyData.dieTime && !_isDead)
+        if (_timer >= _fsm.enemyData.dieTime && !_isDead) {
             Die();
+        }
     }
 
     private void Die()
     {
         _isDead = true;
-        
-        // Check if Player's Weapon is lodged in this enemy
-        foreach (Transform child in _fsm.transform)
-        {
-            if (child.TryGetComponent<WakizashiFSM>(out WakizashiFSM weapon)) {
-                weapon.UnlodgedFromEnemy();
-                break;
-            }
-        }
 
         // Drop loots
         if (_fsm.TryGetComponent<EnemyDrop>(out EnemyDrop drop)) {
@@ -61,6 +55,27 @@ public sealed class OkkaDeathState : IEnemyState
         SaveManager.Instance.UpdateSpawnTimestamp(_fsm.gameObject.name, Time.time + _fsm.enemyData.spawnCooldown);
 
         GameObject.Destroy(_fsm.gameObject);
+    }
+
+    private void CheckAndUnlodgeWeapon()
+    {
+        Debug.Log(GameObject.FindGameObjectWithTag("Weapon").transform.parent?.name);
+        
+        // Create a copy of children list
+        List<Transform> children = new List<Transform>();
+        foreach (Transform child in _fsm.transform)
+        {
+            children.Add(child);
+        }
+
+        foreach (Transform child in children)
+        {
+            
+            if (child.TryGetComponent<WakizashiFSM>(out WakizashiFSM weapon)) {
+                weapon.UnlodgedFromEnemy();
+                break;
+            }
+        }
     }
 
     public void FixedUpdate() {}

@@ -91,6 +91,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Throw_Tap"",
+                    ""type"": ""Button"",
+                    ""id"": ""60c8e8e6-960b-4f62-9c72-1fb259864a0c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Throw_Hold"",
                     ""type"": ""Button"",
                     ""id"": ""a2bd55ba-294f-49f0-9f64-d7afcbf76482"",
@@ -232,6 +241,17 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""action"": ""Throw_Hold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5db535cd-805b-4417-af3e-c6fd20a9a04b"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Throw_Tap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -315,6 +335,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Throw_SlowTap = m_Player.FindAction("Throw_SlowTap", throwIfNotFound: true);
+        m_Player_Throw_Tap = m_Player.FindAction("Throw_Tap", throwIfNotFound: true);
         m_Player_Throw_Hold = m_Player.FindAction("Throw_Hold", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -388,6 +409,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Throw_SlowTap;
+    private readonly InputAction m_Player_Throw_Tap;
     private readonly InputAction m_Player_Throw_Hold;
     public struct PlayerActions
     {
@@ -400,6 +422,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @Throw_SlowTap => m_Wrapper.m_Player_Throw_SlowTap;
+        public InputAction @Throw_Tap => m_Wrapper.m_Player_Throw_Tap;
         public InputAction @Throw_Hold => m_Wrapper.m_Player_Throw_Hold;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -431,6 +454,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Throw_SlowTap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_SlowTap;
                 @Throw_SlowTap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_SlowTap;
                 @Throw_SlowTap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_SlowTap;
+                @Throw_Tap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Tap;
+                @Throw_Tap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Tap;
+                @Throw_Tap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Tap;
                 @Throw_Hold.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Hold;
                 @Throw_Hold.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Hold;
                 @Throw_Hold.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Hold;
@@ -459,6 +485,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Throw_SlowTap.started += instance.OnThrow_SlowTap;
                 @Throw_SlowTap.performed += instance.OnThrow_SlowTap;
                 @Throw_SlowTap.canceled += instance.OnThrow_SlowTap;
+                @Throw_Tap.started += instance.OnThrow_Tap;
+                @Throw_Tap.performed += instance.OnThrow_Tap;
+                @Throw_Tap.canceled += instance.OnThrow_Tap;
                 @Throw_Hold.started += instance.OnThrow_Hold;
                 @Throw_Hold.performed += instance.OnThrow_Hold;
                 @Throw_Hold.canceled += instance.OnThrow_Hold;
@@ -550,6 +579,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnThrow_SlowTap(InputAction.CallbackContext context);
+        void OnThrow_Tap(InputAction.CallbackContext context);
         void OnThrow_Hold(InputAction.CallbackContext context);
     }
     public interface IUIActions

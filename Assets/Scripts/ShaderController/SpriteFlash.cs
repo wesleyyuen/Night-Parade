@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using MEC;
 
 // modified from Ilham Effendi
 // https://github.com/ilhamhe/UnitySpriteFlash

@@ -69,6 +69,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Throw_Tap",
+                    "type": "Button",
+                    "id": "60c8e8e6-960b-4f62-9c72-1fb259864a0c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Throw_Hold",
                     "type": "Button",
                     "id": "a2bd55ba-294f-49f0-9f64-d7afcbf76482",
@@ -208,6 +217,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Throw_Hold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5db535cd-805b-4417-af3e-c6fd20a9a04b",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Throw_Tap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -25,7 +25,7 @@ public class PlayerAnimations : MonoBehaviour
                 _weaponFSM = obj.GetComponent<WeaponFSM>();
                 _weaponAnimator = obj.GetComponent<Animator>();
             }
-            else if (obj.tag == "PlayerSprite")
+            else if (obj.tag == "Sprite")
                 _playerAnimator = obj.GetComponent<Animator>();
         }
         
@@ -109,31 +109,31 @@ public class PlayerAnimations : MonoBehaviour
 
     private void SetTrigger(string name)
     {
-        _playerAnimator.SetTrigger(name);
-        _weaponAnimator.SetTrigger(name);
+        _playerAnimator?.SetTrigger(name);
+        _weaponAnimator?.SetTrigger(name);
     }
 
     private void SetBool(string name, bool val)
     {
-        _playerAnimator.SetBool(name, val);
-        _weaponAnimator.SetBool(name, val);
+        _playerAnimator?.SetBool(name, val);
+        _weaponAnimator?.SetBool(name, val);
     }
 
     private void SetFloat(string name, float val)
     {
-        _playerAnimator.SetFloat(name, val);
-        _weaponAnimator.SetFloat(name, val);
+        _playerAnimator?.SetFloat(name, val);
+        _weaponAnimator?.SetFloat(name, val);
     }
 
     private void SetInteger(string name, int val)
     {
-        _playerAnimator.SetInteger(name, val);
-        _weaponAnimator.SetInteger(name, val);
+        _playerAnimator?.SetInteger(name, val);
+        _weaponAnimator?.SetInteger(name, val);
     }
 
     public void FaceRight(bool faceRight)
     {
-        _weaponAnimator.SetBool("FacingRight", faceRight);
+        _weaponAnimator?.SetBool("FacingRight", faceRight);
         SetPlayerScale(new Vector3 (faceRight ? 1f : -1f, _playerAnimator.transform.localScale.y, 1f));
         _collider.offset = new Vector2(faceRight ? 0.12f : -0.12f, 1.5f);
     }
@@ -175,12 +175,12 @@ public class PlayerAnimations : MonoBehaviour
 
     public void SetThrowAnimation()
     {
-        _weaponAnimator.SetBool("IsThrown", true);
+        _weaponAnimator?.SetBool("IsThrown", true);
     }
 
     public void SetUnlodgedAnimation()
     {
-        _weaponAnimator.SetBool("IsThrown", false);
+        _weaponAnimator?.SetBool("IsThrown", false);
     }
 
     public void CreateDustTrail()

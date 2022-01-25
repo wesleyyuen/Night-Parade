@@ -11,7 +11,7 @@ public class PlayerPlatformCollision : MonoBehaviour
     public bool onLeftWall { get; private set; }
     public bool onRightWall { get; private set; }
     [SerializeField] private float colliderRadius;
-    [SerializeField] private PhysicsMaterial2D _oneFriction;
+    // [SerializeField] private PhysicsMaterial2D _oneFriction;
     private PhysicsMaterial2D _originalMaterial;
     private PlayerMovement _movement;
     private PlayerAnimations _animations;

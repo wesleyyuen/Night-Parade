@@ -17,9 +17,8 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     private PlayerAnimations _playerAnimation;
     private PlayerAbilityController _abilityController;
     private NextActionType _nextAction;
-    private const int _kMaxAirAttack = 2; // Light attack as 1; Heavy attack as 2
-    private const int _kMaxComboCount = 2;
-    private int _currentAttackCount;
+    private const int MAX_AIR_COMBO = 2; // Light attack as 1; Heavy attack as 2
+    private const int MAX_COMOBO_COUNT = 2;
     private bool _isListeningForNextAction;
     private bool _playedMissSFX;
     private HashSet<int> _enemiesAttackedIDs;
@@ -36,14 +35,14 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     {
         _fsm.InputActions.Player.Attack.started += OnNextAttack;
         // _fsm.InputActions.Player.Attack.performed += OnNextAttack;
-        _fsm.InputActions.Player.Throw_SlowTap.started += OnNextThrow;
+        // _fsm.InputActions.Player.Throw_SlowTap.started += OnNextThrow;
     }
 
     public void UnbindInput()
     {
         _fsm.InputActions.Player.Attack.started -= OnNextAttack;
         // _fsm.InputActions.Player.Attack.performed -= OnNextAttack;
-        _fsm.InputActions.Player.Throw_SlowTap.started -= OnNextThrow;
+        // _fsm.InputActions.Player.Throw_SlowTap.started -= OnNextThrow;
     }
 
     public void EnterState()
@@ -58,14 +57,14 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         _playedMissSFX = false;
 
         // Begin First Attack
-        SetAttackAnimation(1);
+        _playerAnimation.SetAttackAnimation(1);
         _playerMovement.StepForward(2f);
     }
 
     private void OnNextAttack(InputAction.CallbackContext context)
     {
         // Listen for attack and queue as next action
-        if (_fsm.IsCurrentState(WakizashiStateType.Attack) && context.started && _currentAttackCount > 0) {
+        if (_fsm.IsCurrentState(WakizashiStateType.Attack) && context.started && _playerAnimation.GetCurrentAttackAnimation() > 0) {
             if (_isListeningForNextAction) {
                 _nextAction = NextActionType.Attack;
                 _isListeningForNextAction = false;
@@ -83,7 +82,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     private void OnNextThrow(InputAction.CallbackContext context)
     {
         // Listen for throw and queue as next action
-        if (_fsm.IsCurrentState(WakizashiStateType.Attack) && context.started && _currentAttackCount > 0) {
+        if (_fsm.IsCurrentState(WakizashiStateType.Attack) && context.started && _playerAnimation.GetCurrentAttackAnimation() > 0) {
             if (_isListeningForNextAction) {
                 _nextAction = NextActionType.Throw;
                 _isListeningForNextAction = false;
@@ -96,12 +95,10 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // Needed to constantly turn it off to avoid player moving after taking dmg
         if (Constant.STOP_WHEN_ATTACK) _playerMovement.EnablePlayerMovement(false);
 
-
-        // TODO: player animator updated, wakizashi animation must be calling something to prevent update
         if (_nextAction == NextActionType.Attack && _fsm.attackCooldownTimer <= 0) {
             _fsm.attackCooldownTimer = _fsm.weaponData.attackCooldown;
             _nextAction = NextActionType.None;
-            SetAttackAnimation((_currentAttackCount % _kMaxComboCount) + 1);
+            _playerAnimation.SetAttackAnimation((_playerAnimation.GetCurrentAttackAnimation() % MAX_COMOBO_COUNT) + 1);
             _playerMovement.StepForward(2f);
             _playedMissSFX = false;
         }
@@ -109,14 +106,6 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     public void FixedUpdate()
     {
-    }
-
-    public void ExitState()
-    {
-        _playerAnimation.EnablePlayerTurning(true);
-        SetAttackAnimation(0);
-        _playerMovement.EnablePlayerMovement(true);
-        _enemiesAttackedIDs.Clear();
     }
 
     public void Attack(bool isListeningForNextAttack)
@@ -201,7 +190,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
             if (_enemiesAttackedIDs.Add (hit.gameObject.GetInstanceID ())) {
                 EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
                 if (enemy != null && !enemy.IsDead()) {
-                    enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % _kMaxComboCount) - 1] : _fsm.weaponData.comboDamage[0],
+                    enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % MAX_COMOBO_COUNT) - 1] : _fsm.weaponData.comboDamage[0],
                                      damageDir);
                     attacked = true;
                 }
@@ -247,9 +236,11 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         }
     }
 
-    private void SetAttackAnimation(int count)
+    public void ExitState()
     {
-        _currentAttackCount = count;
-        _playerAnimation.SetAttackAnimation(_currentAttackCount);
+        _playerAnimation.EnablePlayerTurning(true);
+        _playerAnimation.SetAttackAnimation(0);
+        _playerMovement.EnablePlayerMovement(true);
+        _enemiesAttackedIDs.Clear();
     }
 }

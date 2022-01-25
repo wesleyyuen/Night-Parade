@@ -49,9 +49,9 @@ public class WakizashiData : WeaponData
         blockKnockback = 25f;
 
         // Throw
-        throwVelocity = 65f;
-        throwMinDuration = 0.15f;
-        throwMaxDuration = 0.65f;
+        throwVelocity = 60f;
+        throwMinDuration = 0.2f;
+        throwMaxDuration = 0.7f;
         throwDamage = 7f;
         throwCooldown = 0.7f;
 

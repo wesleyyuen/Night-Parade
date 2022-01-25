@@ -4818,7 +4818,7 @@ GameObject:
   - component: {fileID: 6424972661929567907}
   m_Layer: 9
   m_Name: Sprite
-  m_TagString: PlayerSprite
+  m_TagString: Sprite
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10072,7 +10072,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderRadius: 0.1
-  _oneFriction: {fileID: 6200000, guid: b26e62300a67eb0409c0a54a07a367fb, type: 2}
 --- !u!114 &7021459023621631144
 MonoBehaviour:
   m_ObjectHideFlags: 0

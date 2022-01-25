@@ -54,7 +54,7 @@ public class EnemyGFX : MonoBehaviour
 
     public void FaceTowardsPlayer(float delay)
     {
-        Timing.RunCoroutine(_FaceTowardsPlayerCoroutine(delay));
+        Timing.RunCoroutine(_FaceTowardsPlayerCoroutine(delay).CancelWith(gameObject));
     }
 
     private IEnumerator<float> _FaceTowardsPlayerCoroutine(float delay)
@@ -79,7 +79,7 @@ public class EnemyGFX : MonoBehaviour
 
     public void TurnAround(bool isInstant)
     {
-        Timing.RunCoroutine(_TurnAroundCoroutine(isInstant));
+        Timing.RunCoroutine(_TurnAroundCoroutine(isInstant).CancelWith(gameObject));
     }
 
     private IEnumerator<float> _TurnAroundCoroutine(bool isInstant)
@@ -94,7 +94,7 @@ public class EnemyGFX : MonoBehaviour
 
     public void FlashExclaimationMark()
     {
-        Timing.RunCoroutine(_FlashExclaimationMarkCoroutine());
+        Timing.RunCoroutine(_FlashExclaimationMarkCoroutine().CancelWith(gameObject));
     }
 
     private IEnumerator<float> _FlashExclaimationMarkCoroutine()
@@ -111,7 +111,7 @@ public class EnemyGFX : MonoBehaviour
 
     public void FlashQuestionMark()
     {
-        Timing.RunCoroutine(FlashQuestionMarkCoroutine());
+        Timing.RunCoroutine(FlashQuestionMarkCoroutine().CancelWith(gameObject));
     }
 
     private IEnumerator<float> FlashQuestionMarkCoroutine ()
@@ -136,7 +136,7 @@ public class EnemyGFX : MonoBehaviour
     public void PlayDeathEffect(float dieTime)
     {
         _animator.enabled = false;
-        Timing.RunCoroutine(_DeathEffectCoroutine(dieTime));
+        Timing.RunCoroutine(_DeathEffectCoroutine(dieTime).CancelWith(gameObject));
         _deathParticleEffect.Play();
     }
 

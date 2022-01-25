@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7132762557133521195}
   - component: {fileID: 602861054648240978}
   - component: {fileID: 839546733736093822}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Wakizashi
   m_TagString: Weapon
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ MonoBehaviour:
   hasParried: 0
   blockCooldownTimer: 0
   currentBlockTimer: 0
-  isThrownRight: 0
+  throwDirection: {x: 0, y: 0}
   throwCooldownTimer: 0
 --- !u!114 &839546733736093822
 MonoBehaviour:

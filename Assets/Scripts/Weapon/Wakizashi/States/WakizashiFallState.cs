@@ -72,12 +72,6 @@ public sealed class WakizashiFallState : IWeaponState, IBindInput
 
     private void HandleHit(GameObject hit)
     {
-        // Damage Enemy
-        if (hit.gameObject.TryGetComponent<EnemyFSM>(out EnemyFSM enemy)) {
-            WakizashiData data = (WakizashiData)_fsm.weaponData;
-            enemy.TakeDamage(data.throwDamage, _rb.velocity);
-        }
-
         // Lodge it
         if (!_isReturning && !_stopUpdating) {
             _fsm.transform.parent = hit.gameObject.transform;
@@ -85,6 +79,12 @@ public sealed class WakizashiFallState : IWeaponState, IBindInput
             _rb.isKinematic = true;
 
             _fsm.SetState(_fsm.states[WakizashiStateType.Lodged]);
+        }
+
+        // Damage Enemy
+        if (hit.gameObject.TryGetComponent<EnemyFSM>(out EnemyFSM enemy)) {
+            WakizashiData data = (WakizashiData)_fsm.weaponData;
+            enemy.TakeDamage(data.throwDamage, _rb.velocity);
         }
     }
 
