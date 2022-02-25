@@ -24,16 +24,16 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        _fsm.InputActions.Player.Block.canceled += OnReleaseBlock;
-        _fsm.InputActions.Player.Attack.started += OnNextAttack;
-        // _fsm.InputActions.Player.Throw_SlowTap.started += OnNextThrow;
+        InputManager.Instance.Event_GameplayInput_BlockCanceled += OnReleaseBlock;
+        InputManager.Instance.Event_GameplayInput_Attack += OnNextAttack;
+        // InputManager.Instance.Gameplay.ThrowSlowTap.started += OnNextThrow;
     }
 
     public void UnbindInput()
     {
-        _fsm.InputActions.Player.Block.canceled -= OnReleaseBlock;
-        _fsm.InputActions.Player.Attack.started -= OnNextAttack;
-        // _fsm.InputActions.Player.Throw_SlowTap.started -= OnNextThrow;
+        InputManager.Instance.Event_GameplayInput_BlockCanceled -= OnReleaseBlock;
+        InputManager.Instance.Event_GameplayInput_Attack -= OnNextAttack;
+        // InputManager.Instance.Gameplay.ThrowSlowTap.started -= OnNextThrow;
     }
 
     public void EnterState()
@@ -49,18 +49,20 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
         _playerMovement.EnablePlayerMovement(false);
     }
 
-    private void OnReleaseBlock(InputAction.CallbackContext context)
+    private void OnReleaseBlock()
     {
-        if (!_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration)
+        if (!_stopUpdating && !_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer >= _fsm.weaponData.blockMinDuration) {
+            _stopUpdating = true;
             _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
+        }
     }
 
-    private void OnNextAttack(InputAction.CallbackContext context)
+    private void OnNextAttack()
     {
         _hasNextAttack = true;
     }
 
-    private void OnNextThrow(InputAction.CallbackContext context)
+    private void OnNextThrow()
     {
         _hasNextThrow = true;
     }
@@ -72,13 +74,10 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
         _fsm.currentBlockTimer += Time.deltaTime;
         _abilityController.UseStamina();
 
-        float xScale = _playerAnimation.IsFacingRight() ? 1f : -1f;
-
         // Handle Release earlier than InputActions' minDuration
-        if (_fsm.InputActions.Player.Block.ReadValue<float>() <= 0.5f && !_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer < _fsm.weaponData.blockMinDuration) {
+        if (!InputManager.Instance.HasBlockInput() && !_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer < _fsm.weaponData.blockMinDuration) {
             _isBlockReleasedBeforeMinDuration = true;
         }
-
 
         if (_abilityController.currStamina <= 0) {
             _stopUpdating = true;
@@ -100,6 +99,12 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
             return;
         }
 
+        Block();
+    }
+
+    private void Block()
+    {
+        float xScale = _playerAnimation.IsFacingRight() ? 1f : -1f;
         Vector2 blockPoint = (Vector2)_fsm.player.transform.TransformPoint(new Vector3(xScale * _fsm.weaponData.blockPoint.x, _fsm.weaponData.blockPoint.y));
         Collider2D[] blocked = Physics2D.OverlapAreaAll(blockPoint + new Vector2(-_fsm.weaponData.blockRange.x/2, _fsm.weaponData.blockRange.y/2),
                                                         blockPoint + new Vector2(_fsm.weaponData.blockRange.x/2, -_fsm.weaponData.blockRange.y/2),
@@ -113,8 +118,7 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
         }
 
         foreach (Collider2D hit in blocked) {
-            EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
-            if (enemy != null && !enemy.IsDead()) {
+            if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()) {
                 Vector2 dir = new Vector2(xScale, 0f);
                 enemy.ApplyForce(dir, enemy.enemyData.knockBackOnBlockedForce, enemy.enemyData.timeStunnedAfterBlocked);
                 enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterBlocked);

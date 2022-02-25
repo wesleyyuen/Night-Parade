@@ -3,7 +3,9 @@ guid: b85396c8812b84d43b506e2935e852ba
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - softFootstepSFX: {fileID: 11400000, guid: a52425d9846e15440b51601749ac0f93, type: 2}
+  - hardFootstepSFX: {fileID: 11400000, guid: 1144e63818a72e74a8dbca7b7a5fd162, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

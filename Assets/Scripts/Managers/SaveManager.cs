@@ -49,12 +49,9 @@ public class SaveManager : MonoBehaviour
         savedPlayerData = new PlayerData(
             saveFileIndex: 1,
             maxHealth: Constant.STARTING_HEARTS * 4,
-            maxStamina: Constant.STARTING_STAMINA,
             coinsOnHand: 0,
             lastSavePoint: 0,
             playTime: 0f,
-            savedInks: new bool[Constant.NUMBER_OF_AREAS],
-            savedOrbs: 0,
             sceneData: scenes
         );
         savedSceneData = savedPlayerData.SceneData;
@@ -74,17 +71,9 @@ public class SaveManager : MonoBehaviour
             using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate))) {
                 writer.Write(data.SaveFileIndex);
                 writer.Write(data.MaxHealth);
-                writer.Write(data.MaxStamina);
                 writer.Write(data.CoinsOnHand);
                 writer.Write(data.LastSavePoint);
                 writer.Write(data.PlayTime);
-                
-                writer.Write(data.SavedInks.Length);
-                foreach (bool b in data.SavedInks) {
-                    writer.Write(b);
-                }
-
-                writer.Write(data.SavedOrbs);
 
                 writer.Write(data.SceneData.Count);
                 foreach (KeyValuePair<string, SceneData> entry1 in data.SceneData) {
@@ -122,18 +111,9 @@ public class SaveManager : MonoBehaviour
             using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open))) {
                 int _saveFileIndex = reader.ReadInt32();
                 int _maxHealth = reader.ReadInt32();
-                float _maxStamina = reader.ReadSingle();
                 int _coinsOnHand = reader.ReadInt32();
                 int _lastSavePoint = reader.ReadInt32();
                 float _playTime = reader.ReadSingle();
-
-                int _savedInksCount = reader.ReadInt32();
-                bool[] _savedInks = new bool[_savedInksCount];
-                for (int i = 0; i < _savedInksCount; ++i) {
-                    _savedInks[i] = reader.ReadBoolean();
-                }
-                
-                int _savedOrbs = reader.ReadInt32();
 
                 int _sceneProgressCount = reader.ReadInt32();
                 Dictionary<string, SceneData> _sceneData = new Dictionary<string, SceneData>();
@@ -154,12 +134,9 @@ public class SaveManager : MonoBehaviour
                 PlayerData data = new PlayerData(
                     saveFileIndex: _saveFileIndex,
                     maxHealth: _maxHealth,
-                    maxStamina: _maxStamina,
                     coinsOnHand: _coinsOnHand,
                     lastSavePoint: _lastSavePoint,
                     playTime: _playTime,
-                    savedInks: _savedInks,
-                    savedOrbs: _savedOrbs,
                     sceneData: _sceneData
                 );
 

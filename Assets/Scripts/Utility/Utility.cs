@@ -85,7 +85,7 @@ public class Utility : MonoBehaviour
         }
     }
 
-    public static IEnumerator<float> FadeGameObject(GameObject obj, float from, float to, float fadingTime)
+    private static IEnumerator<float> FadeGameObject(GameObject obj, float from, float to, float fadingTime)
     {
         if (fadingTime == 0) {
             SetAlphaRecursively(obj, to);
@@ -136,7 +136,7 @@ public class Utility : MonoBehaviour
         Timing.RunCoroutine(_FadeTextInAndOut(text, 3f, 1f).CancelWith(text.gameObject));
     }
 
-    public static IEnumerator<float> _FadeTextInAndOut(TextMeshProUGUI text, float showingTime, float fadingTime)
+    private static IEnumerator<float> _FadeTextInAndOut(TextMeshProUGUI text, float showingTime, float fadingTime)
     {
         text.gameObject.SetActive(true);
 
@@ -160,31 +160,18 @@ public class Utility : MonoBehaviour
     {
         GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
         WeaponFSM weapon = FindObjectOfType<WeaponFSM>();
-        player.GetComponent<PlayerAnimations>().EnablePlayerTurning(enable, time);
-        player.GetComponent<PlayerMovement>().EnablePlayerMovement(enable, time);
-        player.GetComponent<PlayerAbilityController>().EnableAbility(PlayerAbilityController.Ability.Jump , enable, time);
-        weapon.EnablePlayerCombat(enable, time);
-        weapon.EnablePlayerBlocking(enable, time);
-    }
-
-    public static void FreezePlayer(bool shouldFreeze, float time = 0)
-    {
-        GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
         if (player.TryGetComponent<PlayerAnimations>(out PlayerAnimations animations)) {
-            animations.EnablePlayerTurning(!shouldFreeze, time);
-            // animations.FreezePlayerAnimation(shouldFreeze, time);
+            animations.EnablePlayerTurning(enable, time);
+            animations.FreezePlayerAnimation(!enable, time);
         }
         if (player.TryGetComponent<PlayerMovement>(out PlayerMovement movement)) {
-            movement.EnablePlayerMovement(!shouldFreeze, time);
-            movement.FreezePlayerPosition(shouldFreeze, time);
+            movement.EnablePlayerMovement(enable, time);
         }
         if (player.TryGetComponent<PlayerAbilityController>(out PlayerAbilityController abilities)) {
-            abilities.EnableAbility(PlayerAbilityController.Ability.Jump , !shouldFreeze, time);
-            abilities.EnableAbility(PlayerAbilityController.Ability.Dash , !shouldFreeze, time);
+            abilities.EnableAbility(PlayerAbilityController.Ability.All, enable, time);
         }
-        // WeaponFSM weapon = FindObjectOfType<WeaponFSM>();
-        // weapon.EnablePlayerCombat(false, time);
-        // weapon.EnablePlayerBlocking(false, time);
+        weapon.EnablePlayerCombat(enable, time);
+        weapon.EnablePlayerBlocking(enable, time);
     }
 
     public static void DumpToConsole(object obj)

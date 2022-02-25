@@ -7,6 +7,7 @@ public class PlayerJump : MonoBehaviour
 {
     [Header ("References")]
     Rigidbody2D _rb;
+    PlayerAbilityController _abilities;
     PlayerPlatformCollision _coll;
     PlayerAnimations _anim;
     PlayerMovement _movement;
@@ -25,6 +26,7 @@ public class PlayerJump : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
+        _abilities = GetComponentInParent<PlayerAbilityController>();
         _coll = transform.parent.gameObject.GetComponent<PlayerPlatformCollision>();
         _anim = transform.parent.gameObject.GetComponent<PlayerAnimations>();
         _movement = transform.parent.gameObject.GetComponent<PlayerMovement>();
@@ -33,14 +35,14 @@ public class PlayerJump : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.Event_Input_Jump += OnJump;
-        InputManager.Event_Input_JumpCanceled += OnJumpCanceled;
+        InputManager.Instance.Event_GameplayInput_Jump += OnJump;
+        InputManager.Instance.Event_GameplayInput_JumpCanceled += OnJumpCanceled;
     }
 
     private void OnDisable()
     {
-        InputManager.Event_Input_Jump -= OnJump;
-        InputManager.Event_Input_JumpCanceled -= OnJumpCanceled;
+        InputManager.Instance.Event_GameplayInput_Jump -= OnJump;
+        InputManager.Instance.Event_GameplayInput_JumpCanceled -= OnJumpCanceled;
     }
 
     public void EnablePlayerJump(bool enable, float time = 0f)

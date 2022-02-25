@@ -24,7 +24,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     ""name"": ""InputMaster"",
     ""maps"": [
         {
-            ""name"": ""Player"",
+            ""name"": ""Gameplay"",
             ""id"": ""9412d0fb-bcd4-43f9-bc2d-9c0b7fb6c846"",
             ""actions"": [
                 {
@@ -60,7 +60,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""id"": ""24d0ebb0-30c7-4c71-9daf-ff39b5129742"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press,Hold"",
+                    ""interactions"": ""SlowTap"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -82,7 +82,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Throw_SlowTap"",
+                    ""name"": ""Throw SlowTap"",
                     ""type"": ""Button"",
                     ""id"": ""e3004a99-da93-4463-a188-83a04dad4ee5"",
                     ""expectedControlType"": ""Button"",
@@ -91,7 +91,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Throw_Tap"",
+                    ""name"": ""Throw Tap"",
                     ""type"": ""Button"",
                     ""id"": ""60c8e8e6-960b-4f62-9c72-1fb259864a0c"",
                     ""expectedControlType"": ""Button"",
@@ -100,7 +100,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Throw_Hold"",
+                    ""name"": ""Throw Hold"",
                     ""type"": ""Button"",
                     ""id"": ""a2bd55ba-294f-49f0-9f64-d7afcbf76482"",
                     ""expectedControlType"": ""Button"",
@@ -227,7 +227,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Throw_SlowTap"",
+                    ""action"": ""Throw SlowTap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -238,7 +238,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Throw_Hold"",
+                    ""action"": ""Throw Hold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -249,7 +249,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Throw_Tap"",
+                    ""action"": ""Throw Tap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -284,11 +284,11 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Testing"",
+            ""name"": ""Cheats"",
             ""id"": ""1acc5121-8870-4358-9838-fb52f842d5a4"",
             ""actions"": [
                 {
-                    ""name"": ""Testing Chamber"",
+                    ""name"": ""Test Chamber"",
                     ""type"": ""Button"",
                     ""id"": ""14dd728e-93e8-48ff-865c-c5914eb72645"",
                     ""expectedControlType"": ""Button"",
@@ -305,7 +305,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Testing Chamber"",
+                    ""action"": ""Test Chamber"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -326,23 +326,23 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Player
-        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
-        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
-        m_Player_Block = m_Player.FindAction("Block", throwIfNotFound: true);
-        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
-        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_Throw_SlowTap = m_Player.FindAction("Throw_SlowTap", throwIfNotFound: true);
-        m_Player_Throw_Tap = m_Player.FindAction("Throw_Tap", throwIfNotFound: true);
-        m_Player_Throw_Hold = m_Player.FindAction("Throw_Hold", throwIfNotFound: true);
+        // Gameplay
+        m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
+        m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
+        m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
+        m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
+        m_Gameplay_Block = m_Gameplay.FindAction("Block", throwIfNotFound: true);
+        m_Gameplay_Dash = m_Gameplay.FindAction("Dash", throwIfNotFound: true);
+        m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_ThrowSlowTap = m_Gameplay.FindAction("Throw SlowTap", throwIfNotFound: true);
+        m_Gameplay_ThrowTap = m_Gameplay.FindAction("Throw Tap", throwIfNotFound: true);
+        m_Gameplay_ThrowHold = m_Gameplay.FindAction("Throw Hold", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
-        // Testing
-        m_Testing = asset.FindActionMap("Testing", throwIfNotFound: true);
-        m_Testing_TestingChamber = m_Testing.FindAction("Testing Chamber", throwIfNotFound: true);
+        // Cheats
+        m_Cheats = asset.FindActionMap("Cheats", throwIfNotFound: true);
+        m_Cheats_TestChamber = m_Cheats.FindAction("Test Chamber", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -399,69 +399,69 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Player
-    private readonly InputActionMap m_Player;
-    private IPlayerActions m_PlayerActionsCallbackInterface;
-    private readonly InputAction m_Player_Movement;
-    private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Attack;
-    private readonly InputAction m_Player_Block;
-    private readonly InputAction m_Player_Dash;
-    private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_Throw_SlowTap;
-    private readonly InputAction m_Player_Throw_Tap;
-    private readonly InputAction m_Player_Throw_Hold;
-    public struct PlayerActions
+    // Gameplay
+    private readonly InputActionMap m_Gameplay;
+    private IGameplayActions m_GameplayActionsCallbackInterface;
+    private readonly InputAction m_Gameplay_Movement;
+    private readonly InputAction m_Gameplay_Jump;
+    private readonly InputAction m_Gameplay_Attack;
+    private readonly InputAction m_Gameplay_Block;
+    private readonly InputAction m_Gameplay_Dash;
+    private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_ThrowSlowTap;
+    private readonly InputAction m_Gameplay_ThrowTap;
+    private readonly InputAction m_Gameplay_ThrowHold;
+    public struct GameplayActions
     {
         private @InputMaster m_Wrapper;
-        public PlayerActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_Player_Movement;
-        public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Attack => m_Wrapper.m_Player_Attack;
-        public InputAction @Block => m_Wrapper.m_Player_Block;
-        public InputAction @Dash => m_Wrapper.m_Player_Dash;
-        public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        public InputAction @Throw_SlowTap => m_Wrapper.m_Player_Throw_SlowTap;
-        public InputAction @Throw_Tap => m_Wrapper.m_Player_Throw_Tap;
-        public InputAction @Throw_Hold => m_Wrapper.m_Player_Throw_Hold;
-        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        public GameplayActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
+        public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
+        public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
+        public InputAction @Block => m_Wrapper.m_Gameplay_Block;
+        public InputAction @Dash => m_Wrapper.m_Gameplay_Dash;
+        public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
+        public InputAction @ThrowSlowTap => m_Wrapper.m_Gameplay_ThrowSlowTap;
+        public InputAction @ThrowTap => m_Wrapper.m_Gameplay_ThrowTap;
+        public InputAction @ThrowHold => m_Wrapper.m_Gameplay_ThrowHold;
+        public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-        public void SetCallbacks(IPlayerActions instance)
+        public static implicit operator InputActionMap(GameplayActions set) { return set.Get(); }
+        public void SetCallbacks(IGameplayActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
+            if (m_Wrapper.m_GameplayActionsCallbackInterface != null)
             {
-                @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                @Block.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
-                @Block.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
-                @Block.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBlock;
-                @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
-                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
-                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
-                @Throw_SlowTap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_SlowTap;
-                @Throw_SlowTap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_SlowTap;
-                @Throw_SlowTap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_SlowTap;
-                @Throw_Tap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Tap;
-                @Throw_Tap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Tap;
-                @Throw_Tap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Tap;
-                @Throw_Hold.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Hold;
-                @Throw_Hold.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Hold;
-                @Throw_Hold.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrow_Hold;
+                @Movement.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMovement;
+                @Jump.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnJump;
+                @Attack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttack;
+                @Block.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnBlock;
+                @Block.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnBlock;
+                @Block.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnBlock;
+                @Dash.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
+                @Interact.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @ThrowSlowTap.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThrowSlowTap;
+                @ThrowSlowTap.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThrowSlowTap;
+                @ThrowSlowTap.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThrowSlowTap;
+                @ThrowTap.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThrowTap;
+                @ThrowTap.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThrowTap;
+                @ThrowTap.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThrowTap;
+                @ThrowHold.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThrowHold;
+                @ThrowHold.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThrowHold;
+                @ThrowHold.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThrowHold;
             }
-            m_Wrapper.m_PlayerActionsCallbackInterface = instance;
+            m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Movement.started += instance.OnMovement;
@@ -482,19 +482,19 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                @Throw_SlowTap.started += instance.OnThrow_SlowTap;
-                @Throw_SlowTap.performed += instance.OnThrow_SlowTap;
-                @Throw_SlowTap.canceled += instance.OnThrow_SlowTap;
-                @Throw_Tap.started += instance.OnThrow_Tap;
-                @Throw_Tap.performed += instance.OnThrow_Tap;
-                @Throw_Tap.canceled += instance.OnThrow_Tap;
-                @Throw_Hold.started += instance.OnThrow_Hold;
-                @Throw_Hold.performed += instance.OnThrow_Hold;
-                @Throw_Hold.canceled += instance.OnThrow_Hold;
+                @ThrowSlowTap.started += instance.OnThrowSlowTap;
+                @ThrowSlowTap.performed += instance.OnThrowSlowTap;
+                @ThrowSlowTap.canceled += instance.OnThrowSlowTap;
+                @ThrowTap.started += instance.OnThrowTap;
+                @ThrowTap.performed += instance.OnThrowTap;
+                @ThrowTap.canceled += instance.OnThrowTap;
+                @ThrowHold.started += instance.OnThrowHold;
+                @ThrowHold.performed += instance.OnThrowHold;
+                @ThrowHold.canceled += instance.OnThrowHold;
             }
         }
     }
-    public PlayerActions @Player => new PlayerActions(this);
+    public GameplayActions @Gameplay => new GameplayActions(this);
 
     // UI
     private readonly InputActionMap m_UI;
@@ -529,38 +529,38 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     }
     public UIActions @UI => new UIActions(this);
 
-    // Testing
-    private readonly InputActionMap m_Testing;
-    private ITestingActions m_TestingActionsCallbackInterface;
-    private readonly InputAction m_Testing_TestingChamber;
-    public struct TestingActions
+    // Cheats
+    private readonly InputActionMap m_Cheats;
+    private ICheatsActions m_CheatsActionsCallbackInterface;
+    private readonly InputAction m_Cheats_TestChamber;
+    public struct CheatsActions
     {
         private @InputMaster m_Wrapper;
-        public TestingActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
-        public InputAction @TestingChamber => m_Wrapper.m_Testing_TestingChamber;
-        public InputActionMap Get() { return m_Wrapper.m_Testing; }
+        public CheatsActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TestChamber => m_Wrapper.m_Cheats_TestChamber;
+        public InputActionMap Get() { return m_Wrapper.m_Cheats; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(TestingActions set) { return set.Get(); }
-        public void SetCallbacks(ITestingActions instance)
+        public static implicit operator InputActionMap(CheatsActions set) { return set.Get(); }
+        public void SetCallbacks(ICheatsActions instance)
         {
-            if (m_Wrapper.m_TestingActionsCallbackInterface != null)
+            if (m_Wrapper.m_CheatsActionsCallbackInterface != null)
             {
-                @TestingChamber.started -= m_Wrapper.m_TestingActionsCallbackInterface.OnTestingChamber;
-                @TestingChamber.performed -= m_Wrapper.m_TestingActionsCallbackInterface.OnTestingChamber;
-                @TestingChamber.canceled -= m_Wrapper.m_TestingActionsCallbackInterface.OnTestingChamber;
+                @TestChamber.started -= m_Wrapper.m_CheatsActionsCallbackInterface.OnTestChamber;
+                @TestChamber.performed -= m_Wrapper.m_CheatsActionsCallbackInterface.OnTestChamber;
+                @TestChamber.canceled -= m_Wrapper.m_CheatsActionsCallbackInterface.OnTestChamber;
             }
-            m_Wrapper.m_TestingActionsCallbackInterface = instance;
+            m_Wrapper.m_CheatsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @TestingChamber.started += instance.OnTestingChamber;
-                @TestingChamber.performed += instance.OnTestingChamber;
-                @TestingChamber.canceled += instance.OnTestingChamber;
+                @TestChamber.started += instance.OnTestChamber;
+                @TestChamber.performed += instance.OnTestChamber;
+                @TestChamber.canceled += instance.OnTestChamber;
             }
         }
     }
-    public TestingActions @Testing => new TestingActions(this);
+    public CheatsActions @Cheats => new CheatsActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -570,7 +570,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_KeyboardSchemeIndex];
         }
     }
-    public interface IPlayerActions
+    public interface IGameplayActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
@@ -578,16 +578,16 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         void OnBlock(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnThrow_SlowTap(InputAction.CallbackContext context);
-        void OnThrow_Tap(InputAction.CallbackContext context);
-        void OnThrow_Hold(InputAction.CallbackContext context);
+        void OnThrowSlowTap(InputAction.CallbackContext context);
+        void OnThrowTap(InputAction.CallbackContext context);
+        void OnThrowHold(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
         void OnPause(InputAction.CallbackContext context);
     }
-    public interface ITestingActions
+    public interface ICheatsActions
     {
-        void OnTestingChamber(InputAction.CallbackContext context);
+        void OnTestChamber(InputAction.CallbackContext context);
     }
 }

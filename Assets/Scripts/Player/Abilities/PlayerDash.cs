@@ -5,10 +5,11 @@ using MEC;
 
 public class PlayerDash : MonoBehaviour
 {
+    [Header("References")]
     private Rigidbody2D _rb;
     private PlayerAnimations _anim;
     private PlayerMovement _movement;
-    private PlayerHealth _health;
+    private PlayerHealthMO _health;
     private PlayerAbilityController _abilities;
     private PlayerPlatformCollision _collision;
     [SerializeField] private float dashSpeed;
@@ -31,7 +32,7 @@ public class PlayerDash : MonoBehaviour
         _rb = GetComponentInParent<Rigidbody2D>();
         _anim = GetComponentInParent<PlayerAnimations>();
         _movement = GetComponentInParent<PlayerMovement>();
-        _health = GetComponentInParent<PlayerHealth>();
+        _health = GetComponentInParent<PlayerHealthMO>();
         _abilities = GetComponentInParent<PlayerAbilityController>();
         _collision = GetComponentInParent<PlayerPlatformCollision>();
         // _particleRenderer = afterimage.GetComponent<ParticleSystemRenderer>();
@@ -41,13 +42,13 @@ public class PlayerDash : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.Event_Input_Dash += OnDash;
+        InputManager.Instance.Event_GameplayInput_Dash += OnDash;
         _collision.Event_OnGroundEnter += ResetDash;
     }
 
     private void OnDisable()
     {
-        InputManager.Event_Input_Dash -= OnDash;
+        InputManager.Instance.Event_GameplayInput_Dash -= OnDash;
         _collision.Event_OnGroundEnter -= ResetDash;
     }
 
@@ -58,7 +59,7 @@ public class PlayerDash : MonoBehaviour
 
     private void OnDash()
     {
-        if (enabled && !PauseMenu.isPuased && Time.time > _nextDashTime && _dashLeft > 0) {
+        if (enabled && Time.time > _nextDashTime && _dashLeft > 0) {
             if (!_collision.onGround) {
                 _dashLeft--;
             }
@@ -120,7 +121,6 @@ public class PlayerDash : MonoBehaviour
         _rb.gravityScale = 0f;
         _rb.drag = dashSpeed * 0.1f;
         _rb.velocity = Vector2.zero;
-        _rb.angularVelocity = 0f;
         _rb.velocity += dir.normalized * dashSpeed;
     }
 
@@ -135,9 +135,10 @@ public class PlayerDash : MonoBehaviour
         foreach (Collider2D hit in parried) {
             // Parry enemy only ONCE by adding them into list
             if (_enemiesParriedIDs.Add (hit.gameObject.GetInstanceID ())) {
-                if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead() && enemy.IsAttacking()) {
-                    Vector2 hitDir = _anim.IsFacingRight() ? Vector2.right : Vector2.left;
-                    enemy.TakeDamage(3f, hitDir);
+                if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()/* && enemy.IsAttacking()*/) {
+                    // Vector2 hitDir = _anim.IsFacingRight() ? Vector2.right : Vector2.left;
+                    // enemy.TakeDamage(3f, hitDir);
+                    enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterParried);
                 }
             }
         }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerWallSlide : MonoBehaviour
 {
     Rigidbody2D _rb;
-    PlayerAnimations _anim;
     PlayerPlatformCollision _collision;
     WeaponFSM _weaponFSM;
     [SerializeField] float slideSpeed;
@@ -14,9 +13,9 @@ public class PlayerWallSlide : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
-        _anim = GetComponentInParent<PlayerAnimations>();
-        _weaponFSM = transform.parent.GetComponentInChildren<WeaponFSM>();
         _collision = GetComponentInParent<PlayerPlatformCollision>();
+        _weaponFSM = transform.parent.GetComponentInChildren<WeaponFSM>();
+
         canSlide = true;
     }
 

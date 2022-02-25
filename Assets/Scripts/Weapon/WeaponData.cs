@@ -1,40 +1,40 @@
 using UnityEngine;
-public class WeaponData
+
+public class WeaponData : ScriptableObject
 {
-    // Attack
-    public int kMaxComboCount;
+    [Header("Attack")]
+    public int maxComboCount;
     public float[] comboDamage;
     public float attackCooldown;
     public LayerMask enemyLayers;
 
-    // Hoirizontal
+    [Header("Horizontal Attack")]
     public Vector2 attackPoint;
     public Vector2 attackRange;
     public float horizontalKnockBackForce;
 
-    // Upthrust
+    [Header("Upthrust Attack")]
     public Vector2 upthrustPoint;
     public Vector2 upthrustRange;
     public float upthrustKnockBackForce;
 
-    // Downthrust
+    [Header("Downthrust Attack")]
     public Vector2 downthrustPoint;
     public Vector2 downthrustRange;
     public float downthrustKnockBackForce;
 
-    // Parry
+    [Header("Parry")]
     public float parryWindow;
-    public float parryDamage;
     public float parryKnockback;
 
-    // Block
+    [Header("Block")]
     public Vector2 blockPoint;
     public Vector2 blockRange;
     public float blockMinDuration; // parryWindow < blockMinDuration
     public float blockKnockback;
     public float blockCooldown;
 
-    // Audio
-    public string missSFX;
-    public string hitSFX;
+    [Header("Audio")]
+    public AudioEvent missSFX;
+    public AudioEvent hitSFX;
 }

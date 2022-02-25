@@ -9,15 +9,12 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     {
         None,
         Attack,
-        // Block,
         Throw
     }
     private WakizashiFSM _fsm;
     private PlayerMovement _playerMovement;
     private PlayerAnimations _playerAnimation;
-    private PlayerAbilityController _abilityController;
     private NextActionType _nextAction;
-    private const int MAX_AIR_COMBO = 2; // Light attack as 1; Heavy attack as 2
     private const int MAX_COMOBO_COUNT = 2;
     private bool _isListeningForNextAction;
     private bool _playedMissSFX;
@@ -33,16 +30,16 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        _fsm.InputActions.Player.Attack.started += OnNextAttack;
-        // _fsm.InputActions.Player.Attack.performed += OnNextAttack;
-        // _fsm.InputActions.Player.Throw_SlowTap.started += OnNextThrow;
+        InputManager.Instance.Event_GameplayInput_Attack += OnNextAttack;
+        // InputManager.Instance.Gameplay.Attack.performed += OnNextAttack;
+        // InputManager.Instance.Gameplay.ThrowSlowTap.started += OnNextThrow;
     }
 
     public void UnbindInput()
     {
-        _fsm.InputActions.Player.Attack.started -= OnNextAttack;
-        // _fsm.InputActions.Player.Attack.performed -= OnNextAttack;
-        // _fsm.InputActions.Player.Throw_SlowTap.started -= OnNextThrow;
+        InputManager.Instance.Event_GameplayInput_Attack -= OnNextAttack;
+        // InputManager.Instance.Gameplay.Attack.performed -= OnNextAttack;
+        // InputManager.Instance.Gameplay.ThrowSlowTap.started -= OnNextThrow;
     }
 
     public void EnterState()
@@ -57,15 +54,17 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         _playedMissSFX = false;
 
         // Begin First Attack
+        // _playerAnimation.EnablePlayerTurning(false);
         _playerAnimation.SetAttackAnimation(1);
         _playerMovement.StepForward(2f);
     }
 
-    private void OnNextAttack(InputAction.CallbackContext context)
+    private void OnNextAttack()
     {
         // Listen for attack and queue as next action
-        if (_fsm.IsCurrentState(WakizashiStateType.Attack) && context.started && _playerAnimation.GetCurrentAttackAnimation() > 0) {
+        if (_fsm.IsCurrentState(WakizashiStateType.Attack) && _playerAnimation.GetCurrentAttackAnimation() > 0) {
             if (_isListeningForNextAction) {
+                // _playerAnimation.EnablePlayerTurning(true);
                 _nextAction = NextActionType.Attack;
                 _isListeningForNextAction = false;
             }
@@ -84,6 +83,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // Listen for throw and queue as next action
         if (_fsm.IsCurrentState(WakizashiStateType.Attack) && context.started && _playerAnimation.GetCurrentAttackAnimation() > 0) {
             if (_isListeningForNextAction) {
+                // _playerAnimation.EnablePlayerTurning(true);
                 _nextAction = NextActionType.Throw;
                 _isListeningForNextAction = false;
             }
@@ -97,6 +97,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
         if (_nextAction == NextActionType.Attack && _fsm.attackCooldownTimer <= 0) {
             _fsm.attackCooldownTimer = _fsm.weaponData.attackCooldown;
+            // _playerAnimation.EnablePlayerTurning(false);
             _nextAction = NextActionType.None;
             _playerAnimation.SetAttackAnimation((_playerAnimation.GetCurrentAttackAnimation() % MAX_COMOBO_COUNT) + 1);
             _playerMovement.StepForward(2f);
@@ -182,24 +183,29 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         }
     }
 
-    bool DealDamage(Collider2D[] hitEnemies, Vector2 damageDir)
+    private bool DealDamage(Collider2D[] hitEnemies, Vector2 damageDir)
     {
         bool attacked = false;
-        foreach (Collider2D hit in hitEnemies) {
+        foreach (Collider2D hit in hitEnemies)
+        {
             // Damage enemy/breakables only ONCE by adding them into list
-            if (_enemiesAttackedIDs.Add (hit.gameObject.GetInstanceID ())) {
-                EnemyFSM enemy = hit.GetComponent<EnemyFSM>();
-                if (enemy != null && !enemy.IsDead()) {
-                    enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % MAX_COMOBO_COUNT) - 1] : _fsm.weaponData.comboDamage[0],
-                                     damageDir);
-                    attacked = true;
-                }
+            if (_enemiesAttackedIDs.Add(hit.gameObject.GetInstanceID())) {
+                if (hit.TryGetComponent<IDamageable>(out IDamageable target)) {
+                    if (target.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % MAX_COMOBO_COUNT) - 1] : _fsm.weaponData.comboDamage[0], damageDir)) {
+                        attacked = true;
+                    }
+                    
+                } 
+                // if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()) {
+                //     enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % MAX_COMOBO_COUNT) - 1] : _fsm.weaponData.comboDamage[0],
+                //                      damageDir);
+                //     attacked = true;
+                // }
 
-                BreakableObject breakable = hit.GetComponent<BreakableObject> ();
-                if (breakable != null) {
-                    breakable.TakeDamage(breakable.transform.position.x > _fsm.player.position.x);
-                    attacked = true;
-                }
+                // if (hit.TryGetComponent<BreakableObject>(out BreakableObject breakable)) {
+                //     breakable.TakeDamage(breakable.transform.position.x > _fsm.player.position.x);
+                //     attacked = true;
+                // }
             }
         }
 
@@ -238,7 +244,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     public void ExitState()
     {
-        _playerAnimation.EnablePlayerTurning(true);
+        // _playerAnimation.EnablePlayerTurning(true);
         _playerAnimation.SetAttackAnimation(0);
         _playerMovement.EnablePlayerMovement(true);
         _enemiesAttackedIDs.Clear();

@@ -4,45 +4,34 @@ using UnityEngine.InputSystem;
 // Include both idle + moving states
 public sealed class WakizashiIdleState : IWeaponState, IBindInput
 {
-    private enum TargetState
-    {
-        None,
-        Attack,
-        Aim,
-        Throw
-    }
-    private TargetState _targetState;
     private WakizashiFSM _fsm;
     private Rigidbody2D _rb;
-    private PlayerAnimations _playerAnimation;
-    private PlayerAbilityController _abilityController;
+    private bool _stopUpdating;
 
     public WakizashiIdleState(WakizashiFSM fsm)
     {
         _fsm = fsm;
 
-        _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
-        _abilityController = fsm.GetComponentInParent<PlayerAbilityController>();
         _rb = fsm.GetComponent<Rigidbody2D>();
     }
 
     public void BindInput()
     {
-        _fsm.InputActions.Player.Attack.started += OnStartAttack;
-        _fsm.InputActions.Player.Throw_Tap.performed += OnStartThrow;
-        _fsm.InputActions.Player.Throw_Hold.performed += OnStartAim;
+        InputManager.Instance.Event_GameplayInput_Attack += OnStartAttack;
+        InputManager.Instance.Event_GameplayInput_ThrowTap += OnStartThrow;
+        InputManager.Instance.Event_GameplayInput_ThrowHold += OnStartAim;
     }
 
     public void UnbindInput()
     {
-        _fsm.InputActions.Player.Attack.started -= OnStartAttack;
-        _fsm.InputActions.Player.Throw_Tap.performed += OnStartThrow;
-        _fsm.InputActions.Player.Throw_Hold.performed -= OnStartAim;
+        InputManager.Instance.Event_GameplayInput_Attack -= OnStartAttack;
+        InputManager.Instance.Event_GameplayInput_ThrowTap -= OnStartThrow;
+        InputManager.Instance.Event_GameplayInput_ThrowHold -= OnStartAim;
     }
 
     public void EnterState()
     {
-        _targetState = TargetState.None;
+        _stopUpdating = false;
 
         // Reset forces and transform
         _rb.velocity = Vector2.zero;
@@ -50,44 +39,32 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
         _fsm.transform.localEulerAngles = Vector3.zero;
     }
 
-    private void OnStartAttack(InputAction.CallbackContext context)
+    private void OnStartAttack()
     {
-        if (_fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.canAttack && _fsm.attackCooldownTimer <= 0)
-            _targetState = TargetState.Attack;
+        if (!_stopUpdating && _fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.canAttack && _fsm.attackCooldownTimer <= 0) {
+            _stopUpdating = true;
+            _fsm.SetState(_fsm.states[WakizashiStateType.Attack]);
+        }
     }
 
-    private void OnStartThrow(InputAction.CallbackContext context)
+    private void OnStartThrow()
     {
-        if (_fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0)
-            _targetState = TargetState.Throw;
+        if (!_stopUpdating && _fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0) {
+            _stopUpdating = true;
+            _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);
+        }
     }
 
-    private void OnStartAim(InputAction.CallbackContext context)
+    private void OnStartAim()
     {
-        if (_fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0)
-            _targetState = TargetState.Aim;
+        if (!_stopUpdating && _fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0) {
+            _stopUpdating = true;
+            _fsm.SetState(_fsm.states[WakizashiStateType.Aim]);
+        }
     }
 
     public void Update()
     {
-        switch (_targetState)
-        {
-            case TargetState.Attack:
-                _fsm.SetState(_fsm.states[WakizashiStateType.Attack]);
-                return;
-
-            case TargetState.Aim:
-                _fsm.SetState(_fsm.states[WakizashiStateType.Aim]);
-                return;
-
-            case TargetState.Throw:
-                _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);
-                return;
-            
-            case TargetState.None:
-            default:
-                return;
-        }
     }
 
     public void FixedUpdate()

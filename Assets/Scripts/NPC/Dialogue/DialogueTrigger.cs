@@ -2,9 +2,9 @@
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [SerializeField] bool _isAutoTrigger; // trigger without pressing interact
-    [SerializeField] Dialogue dialogue;
-    [SerializeField] protected float triggerRange;
+    [SerializeField] private bool _isAutoTrigger;
+    [SerializeField] private Dialogue dialogue;
+    [SerializeField] protected Optional<float> _triggerRange;
     [SerializeField] protected Animator textPrompt;
     protected GameObject _player;
     protected bool _isInRange;
@@ -18,12 +18,12 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.Event_Input_Interact += OnTriggerDialogue;
+        InputManager.Instance.Event_GameplayInput_Interact += OnTriggerDialogue;
     }
 
     private void OnDisable()
     {
-        InputManager.Event_Input_Interact -= OnTriggerDialogue;
+        InputManager.Instance.Event_GameplayInput_Interact -= OnTriggerDialogue;
     }
 
     protected virtual void Update()
@@ -31,7 +31,7 @@ public class DialogueTrigger : MonoBehaviour
         if (textPrompt == null || _player == null) return;
 
         bool wasInRange = _isInRange;
-        _isInRange = Vector2.Distance(_player.transform.position, transform.position) <= triggerRange;
+        _isInRange = _triggerRange.Enabled ? Vector2.Distance(_player.transform.position, transform.position) <= _triggerRange.Value : true;
 
         // Trigger Text Prompt
         if (!wasInRange && _isInRange) {

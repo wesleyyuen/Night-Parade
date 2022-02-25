@@ -10,15 +10,13 @@ public class GameMaster : MonoBehaviour
         get  {return _instance; }
     }
     [SerializeField] public Constant.SceneName startingScene = Constant.SceneName.Main_Menu;
-    [SerializeField] bool _enabledTestChamber;
     public string prevScene {get; private set;}
     public string currentScene {get; private set;}
     public event System.Action Event_GameMasterInitalized;
     
     // Static UI Events to avoid OnEnable/OnDisable Null References
-    public static event System.Action Event_UIIntro;
-    public static event System.Action Event_UIOutro;
-    private bool _isInTestingChamber;
+    public event System.Action Event_UIIntro;
+    public event System.Action Event_UIOutro;
 
     private void Awake()
     {
@@ -32,13 +30,6 @@ public class GameMaster : MonoBehaviour
 
         bool isTesting = startingScene != Constant.SceneName.Main_Menu;
         SetUI(isTesting);
-
-        // Handle Input
-        if (_enabledTestChamber) {
-            InputMaster input = new InputMaster();
-            input.Testing.TestingChamber.Enable();
-            input.Testing.TestingChamber.started += OnTestingChamber;
-        }
     }
     
     private void Start()
@@ -46,14 +37,22 @@ public class GameMaster : MonoBehaviour
         Event_GameMasterInitalized?.Invoke();
     }
 
-    private void OnTestingChamber(InputAction.CallbackContext context)
+    private void OnEnable()
     {
-        if (!_isInTestingChamber)
+        InputManager.Instance.Event_CheatInput_TestChamber += OnTestChamber;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.Instance.Event_CheatInput_TestChamber -= OnTestChamber;
+    }
+
+    private void OnTestChamber()
+    {
+        if (currentScene != "_TestingChamber")
             RequestSceneChange("_TestingChamber", ref SaveManager.Instance.savedPlayerData);
         else
             RequestSceneChange(prevScene, ref SaveManager.Instance.savedPlayerData);
-
-        _isInTestingChamber = !_isInTestingChamber;
     }
 
     public void RequestSceneChange(string sceneToLoad, ref PlayerData currPlayerData)
@@ -68,6 +67,7 @@ public class GameMaster : MonoBehaviour
         if (sceneToLoad == mainMenu) {
             SetUI(false);
         } else if (currentScene == mainMenu && sceneToLoad != mainMenu) {
+            AudioManager.Instance.UnpauseAll();
             SetUI(true);
         }
 
@@ -75,13 +75,13 @@ public class GameMaster : MonoBehaviour
         currentScene = sceneToLoad;
 
         // TODO: For some reason BOTH causes flickering
-        // SceneManager.LoadSceneAsync(sceneToLoad);
-        SceneManager.LoadScene(sceneToLoad);
+        SceneManager.LoadSceneAsync(sceneToLoad);
+        // SceneManager.LoadScene(sceneToLoad);
     }
 
     public void RequestSceneChangeToMainMenu()
     {
-        SoundManager.Instance.PauseAll();
+        AudioManager.Instance.PauseAll();
         Event_UIOutro?.Invoke();
         
         PlayerData emptyData = new PlayerData();

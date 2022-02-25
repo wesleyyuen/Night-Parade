@@ -51,7 +51,7 @@ public class Nozuchi : MonoBehaviour
         yield return new WaitForSeconds(fsm.enemyData.dieTime);
 
         FindObjectOfType<BossTrigger>().OpenExit(); // reopen exit
-        GetComponent<EnemyDrop>().SpawnDrops();
+        // GetComponent<EnemyDrop>().SpawnDrops();
         SaveManager.Instance.AddOverallProgress("Nozuchi_Defeated", 1);
         Destroy(gameObject);
     }

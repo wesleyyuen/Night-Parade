@@ -5,34 +5,25 @@ using MEC;
 
 public interface IWeaponState : IState, IUpdateLoop
 {
+    
 }
 
-public class WeaponStateType
+public class WeaponStateType : StateType
 {
     public static readonly WeaponStateType Idle = new WeaponStateType("Idle");
     public static readonly WeaponStateType Attack = new WeaponStateType("Attack");
     public static readonly WeaponStateType Block = new WeaponStateType("Block");
     public static readonly WeaponStateType Parry = new WeaponStateType("Parry");
 
-    public override string ToString()
-    {
-        return Value;
-    }
-
-    protected WeaponStateType(string value)
-    {
-        this.Value = value;
-    }
-
-    public string Value { get; private set; }
+    protected WeaponStateType(string value) : base(value) {}
 }
 
 public class WeaponFSM : MonoBehaviour
 {
     public WeaponData weaponData;
+    // public AudioEventSO hitSFX, missSFX;
     public Rigidbody2D player {get; private set;}
     public Dictionary<WeaponStateType, IWeaponState> states;
-    public InputMaster InputActions;
     protected IWeaponState _currentState;
     [HideInInspector] public GameObject onibi;
     [HideInInspector] public bool canAttack;
@@ -59,11 +50,6 @@ public class WeaponFSM : MonoBehaviour
         hasBlocked = false;
         blockCooldownTimer = weaponData.blockCooldown;
         currentBlockTimer = 0f;
-
-        // Handle Actions
-        InputActions = new InputMaster();
-        InputActions.Player.Attack.Enable();
-        InputActions.Player.Block.Enable();
     }
 
     protected virtual void Start()
@@ -72,9 +58,9 @@ public class WeaponFSM : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (_currentState == null) return;
+        if (player == null) return;
 
-        _currentState.Update();
+        _currentState?.Update();
 
         // Handle Attacking Cooldown
         if (attackCooldownTimer > 0) {
@@ -91,44 +77,38 @@ public class WeaponFSM : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if (_currentState == null) return;
+        if (player == null) return;
 
-        _currentState.FixedUpdate();
-    }
-
-    public bool IsCurrentState(WeaponStateType type)
-    {
-        return _currentState == states[type];
-    }
-
-    public IWeaponState GetStateByType(WeaponStateType type)
-    {
-        return states[type];
+        _currentState?.FixedUpdate();
     }
 
     public void SetState(IWeaponState state)
     {
-        if (_currentState != null) {
-            _currentState.ExitState();
-            previousState = _currentState;
-        }
+        if (state == null || _currentState == state) return;
+
+        _currentState?.ExitState();
+        previousState = _currentState;
 
         _currentState = state;
-        _currentState.EnterState();
+        _currentState?.EnterState();
     }
 
-    public void SetStateAfterDelay(WeaponStateType state, float delay)
-    {
-        Timing.RunCoroutine(_SetStateAfterDelayCoroutine(state, delay));
-    }
 
-    IEnumerator<float> _SetStateAfterDelayCoroutine(WeaponStateType state, float delay)
+    public bool IsCurrentState(WeaponStateType state)
     {
-        // Only Set State if no one set another state before the delay ends
-        IState curr = _currentState;
-        yield return Timing.WaitForSeconds(delay);
-        if (_currentState == curr)
-            SetState(states[state]);
+        if (states.TryGetValue(state, out IWeaponState iState)) {
+            return _currentState == iState;
+        }
+
+        return false;
+    }
+    public IWeaponState GetStateByType(WeaponStateType state)
+    {
+        if (states.TryGetValue(state, out IWeaponState iState)) {
+            return iState;
+        }
+
+        return null;
     }
 
     public void EnablePlayerCombat(bool enable, float time = 0f)
@@ -176,15 +156,20 @@ public class WeaponFSM : MonoBehaviour
     {
     }
 
+    public bool IsAttacking()
+    {
+        return IsCurrentState(WeaponStateType.Attack);
+    }
+
     // Audio
     public void PlayWeaponMissSFX()
     {
-        SoundManager.Instance.PlayOnce(weaponData.missSFX);
+        weaponData.missSFX.Play();
     } 
 
     public void PlayWeaponHitSFX()
     {
-        SoundManager.Instance.PlayOnce(weaponData.hitSFX);
+        weaponData.hitSFX.Play();
     }
 
     private void OnDrawGizmosSelected()

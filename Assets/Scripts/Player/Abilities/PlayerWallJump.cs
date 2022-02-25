@@ -6,7 +6,6 @@ using MEC;
 public class PlayerWallJump : MonoBehaviour
 {
     Rigidbody2D _rb;
-    PlayerAnimations _anim;
     PlayerPlatformCollision _collision;
     PlayerMovement _movement;
     PlayerAnimations _animations;
@@ -18,7 +17,6 @@ public class PlayerWallJump : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
-        _anim = GetComponentInParent<PlayerAnimations>();
         _movement = GetComponentInParent<PlayerMovement>();
         _animations = GetComponentInParent<PlayerAnimations>();
         _collision = GetComponentInParent<PlayerPlatformCollision>();
@@ -29,12 +27,12 @@ public class PlayerWallJump : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.Event_Input_Jump += OnWallJump;
+        InputManager.Instance.Event_GameplayInput_Jump += OnWallJump;
     }
 
     private void OnDisable()
     {
-        InputManager.Event_Input_Jump -= OnWallJump;
+        InputManager.Instance.Event_GameplayInput_Jump -= OnWallJump;
     }
 
     private void OnWallJump()

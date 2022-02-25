@@ -98,8 +98,6 @@ public class PlayerMovement : MonoBehaviour
             _rb.velocity = Vector2.Lerp(_rb.velocity, newVelocity, Time.deltaTime * 0.1f);
         else 
             _rb.velocity = newVelocity;
-
-                    // Debug.Log(_rb.velocity);
     }
 
     public void HandicapMovementForSeconds(float time)
@@ -153,7 +151,6 @@ public class PlayerMovement : MonoBehaviour
         _isLetRBMove = true;
         _animations.EnablePlayerTurning(false);
         _rb.velocity = Vector2.zero;
-        _rb.angularVelocity = 0f;
 
         while (timer < time) {
             timer += Timing.DeltaTime;
@@ -174,7 +171,6 @@ public class PlayerMovement : MonoBehaviour
         Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<float>(e => _rb.drag = e, time == 0 ? 0.1f : time, force * 0.1f, 1f).CancelWith(gameObject));
         
         _rb.velocity = Vector2.zero;
-        _rb.angularVelocity = 0f;
         _rb.AddForce(dir.normalized * force, ForceMode2D.Impulse);
     }
 }

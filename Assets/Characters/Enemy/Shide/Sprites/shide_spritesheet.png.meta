@@ -1,0 +1,497 @@
+fileFormatVersion: 2
+guid: ec1271df7314a264e96553588c35f264
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1264937537354488673
+    second: okka_idle_0
+  - first:
+      213: 3656589509258385259
+    second: okka_idle_1
+  - first:
+      213: -6273152287924363043
+    second: okka_idle_2
+  - first:
+      213: -1222550260570391595
+    second: okka_idle_3
+  - first:
+      213: 5896990085356402998
+    second: okka_patrol_0
+  - first:
+      213: 2760513386425140377
+    second: okka_patrol_1
+  - first:
+      213: 3794513218189370849
+    second: okka_patrol_2
+  - first:
+      213: 4289767309634831248
+    second: okka_patrol_3
+  - first:
+      213: -8490347540212021051
+    second: okka_patrol_4
+  - first:
+      213: -5827595514323610602
+    second: okka_patrol_5
+  - first:
+      213: -1237064034361835733
+    second: okka_patrol_6
+  - first:
+      213: -724958308139482110
+    second: okka_patrol_7
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 8
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 256
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 256
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: okka_idle_0
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 115
+        width: 20
+        height: 12
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -3, y: 5}
+        - {x: -7, y: 1}
+        - {x: -9, y: -4.5}
+        - {x: -9, y: -6}
+        - {x: 7, y: -6}
+        - {x: 9, y: -4}
+        - {x: 9, y: 0}
+        - {x: 1, y: 5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16b52110df5fd8110800000000000000
+      internalID: 1264937537354488673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_idle_1
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 39
+        width: 19
+        height: 13
+      alignment: 9
+      pivot: {x: 0.47368422, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -3.5, y: 5.5}
+        - {x: -7.5, y: 1.5}
+        - {x: -8.5, y: -4.5}
+        - {x: -8.5, y: -6.5}
+        - {x: 6.5, y: -6.5}
+        - {x: 8.5, y: -3.5}
+        - {x: 8.5, y: 0.5}
+        - {x: 0.5, y: 5.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6714c409c0deb230800000000000000
+      internalID: 3656589509258385259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_idle_2
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 98
+        width: 19
+        height: 13
+      alignment: 9
+      pivot: {x: 0.47368422, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -3.5, y: 5.5}
+        - {x: -7.5, y: 1.5}
+        - {x: -8.5, y: -4.5}
+        - {x: -8.5, y: -6.5}
+        - {x: 6.5, y: -6.5}
+        - {x: 8.5, y: -3.5}
+        - {x: 8.5, y: 0.5}
+        - {x: 0.5, y: 5.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd0e6501b3941f8a0800000000000000
+      internalID: -6273152287924363043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_idle_3
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 114
+        width: 20
+        height: 13
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -3, y: 5.5}
+        - {x: -7, y: 1.5}
+        - {x: -9, y: -4.5}
+        - {x: -9, y: -6.5}
+        - {x: 7, y: -6.5}
+        - {x: 9, y: -4.5}
+        - {x: 9, y: -0.5}
+        - {x: 1, y: 5.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dbf3aee301a80fe0800000000000000
+      internalID: -1222550260570391595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_patrol_0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 80
+        width: 21
+        height: 13
+      alignment: 9
+      pivot: {x: 0.47619048, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -3.5, y: 5.5}
+        - {x: -7.5, y: 1.5}
+        - {x: -9.5, y: -4.5}
+        - {x: -9.5, y: -6.5}
+        - {x: 4.5, y: -6.5}
+        - {x: 9.5, y: -4.5}
+        - {x: 9.5, y: 2.5}
+        - {x: 1.5, y: 5.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6393ba13d3156d150800000000000000
+      internalID: 5896990085356402998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_patrol_1
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 69
+        width: 24
+        height: 18
+      alignment: 9
+      pivot: {x: 0.5416667, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -2, y: 4}
+        - {x: -6, y: 0}
+        - {x: -6, y: -5}
+        - {x: -9, y: -7}
+        - {x: -9, y: -9}
+        - {x: 11, y: -9}
+        - {x: 11, y: -2}
+        - {x: 3, y: 4}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 994c4939c405f4620800000000000000
+      internalID: 2760513386425140377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_patrol_2
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 89
+        width: 24
+        height: 18
+      alignment: 9
+      pivot: {x: 0.5833333, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -1, y: 4}
+        - {x: -5, y: 0}
+        - {x: -5, y: -5}
+        - {x: -9, y: -7}
+        - {x: -9, y: -9}
+        - {x: 10, y: -9}
+        - {x: 11, y: -6}
+        - {x: 11, y: -2}
+        - {x: 4, y: 4}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e5a3b1faa1d8a430800000000000000
+      internalID: 3794513218189370849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_patrol_3
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 54
+        width: 20
+        height: 13
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -3, y: 5.5}
+        - {x: -7, y: 1.5}
+        - {x: -9, y: -4.5}
+        - {x: -9, y: -6.5}
+        - {x: -9, y: -6.5}
+        - {x: 7, y: -6.5}
+        - {x: 9, y: -3.5}
+        - {x: 9, y: 0.5}
+        - {x: 1, y: 5.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0930ed3d3a0588b30800000000000000
+      internalID: 4289767309634831248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_patrol_4
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 95
+        width: 21
+        height: 13
+      alignment: 9
+      pivot: {x: 0.47619048, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -3.5, y: 5.5}
+        - {x: -7.5, y: 1.5}
+        - {x: -9.5, y: -4.5}
+        - {x: -9.5, y: -6.5}
+        - {x: 6.5, y: -6.5}
+        - {x: 8.5, y: -5.5}
+        - {x: 9.5, y: -1.5}
+        - {x: 9.5, y: 2.5}
+        - {x: 1.5, y: 5.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c80d0e55e93c2a80800000000000000
+      internalID: -8490347540212021051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_patrol_5
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 113
+        width: 22
+        height: 14
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 10, y: -4}
+        - {x: 10, y: 0}
+        - {x: 2, y: 6}
+        - {x: -3, y: 6}
+        - {x: -7, y: 2}
+        - {x: -7, y: -3}
+        - {x: -10, y: -5}
+        - {x: -10, y: -7}
+        - {x: 8, y: -7}
+      tessellationDetail: 0.82
+      bones: []
+      spriteID: 614d41271c8302fa0800000000000000
+      internalID: -5827595514323610602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_patrol_6
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 109
+        width: 24
+        height: 18
+      alignment: 9
+      pivot: {x: 0.5833333, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -1, y: 4}
+        - {x: -5, y: 0}
+        - {x: -5, y: -5}
+        - {x: -9, y: -7}
+        - {x: -9, y: -9}
+        - {x: 9, y: -9}
+        - {x: 11, y: -6}
+        - {x: 11, y: -2}
+        - {x: 4, y: 4}
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2f7373a0d015dee0800000000000000
+      internalID: -1237064034361835733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: okka_patrol_7
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 65
+        width: 20
+        height: 13
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -3, y: 5.5}
+        - {x: -7, y: 1.5}
+        - {x: -9, y: -4.5}
+        - {x: -9, y: -6.5}
+        - {x: 7, y: -6.5}
+        - {x: 9, y: -3.5}
+        - {x: 9, y: 0}
+        - {x: 1, y: 5.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 204c06e724e60f5f0800000000000000
+      internalID: -724958308139482110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 29c2308b7319440468acaa92611a0ce1
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

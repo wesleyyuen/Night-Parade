@@ -15,20 +15,22 @@ public class MonUI : MonoBehaviour
 
     private void OnEnable()
     {
-        GameMaster gm = FindObjectOfType<GameMaster>();
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
-        GameMaster.Event_UIIntro += Intro;
-        GameMaster.Event_UIOutro += Outro;
+        if (GameMaster.Instance != null) {
+            GameMaster.Instance.Event_UIIntro += Intro;
+            GameMaster.Instance.Event_UIOutro += Outro;
+        } else {
+            Intro();
+        }
     }
 
     private void OnDisable()
     {
-        GameMaster gm = FindObjectOfType<GameMaster>();
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
-        GameMaster.Event_UIIntro -= Intro;
-        GameMaster.Event_UIOutro -= Outro;
+        GameMaster.Instance.Event_UIIntro -= Intro;
+        GameMaster.Instance.Event_UIOutro -= Outro;
     }
 
     // Update Player References and add Observers

@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class PlayerAudio : MonoBehaviour
 {
-    PlayerAnimations _anim;
+    [SerializeField] private AudioEvent softFootstepSFX;
+    [SerializeField] private AudioEvent hardFootstepSFX;
+    private PlayerAnimations _anim;
+    private AudioSource _source;
 
     private void Awake()
     {
         _anim = GetComponentInParent<PlayerAnimations>();
+        _source = GetComponent<AudioSource>();
     }
     
     public void PlayFootstepSFX()
     {
         if (GameMaster.Instance.currentScene == "Forest_Cave")
-            SoundManager.Instance.PlayOnce("Forest_Hard_Footsteps");
+            hardFootstepSFX.Play(_source);
         else
-            SoundManager.Instance.PlayOnce("Forest_Soft_Footsteps");
+            softFootstepSFX.Play(_source);
 
         _anim.CreateDustTrail();
     }
@@ -24,9 +28,9 @@ public class PlayerAudio : MonoBehaviour
     public void PlayLandingSFX()
     {
         if (GameMaster.Instance.currentScene == "Forest_Cave")
-            SoundManager.Instance.PlayOnce("Forest_Hard_Footsteps", 2f);
+            hardFootstepSFX.Play(_source);
         else
-            SoundManager.Instance.PlayOnce("Forest_Soft_Footsteps", 2f);
+            softFootstepSFX.Play(_source);
 
         _anim.CreateDustTrail();
     }

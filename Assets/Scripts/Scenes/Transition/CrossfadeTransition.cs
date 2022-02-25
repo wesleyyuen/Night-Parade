@@ -31,18 +31,18 @@ public class CrossfadeTransition : MonoBehaviour, ISceneTransition
                         });
     }
 
-    public void StartSceneTransitionOut(string levelToLoad, ref PlayerData playerVariables)
+    public void StartSceneTransitionOut(string levelToLoad, ref PlayerData playerData)
     {
         if (_tween != null) _tween.Kill(false);
 
-        PlayerData local = playerVariables;
+        PlayerData player = playerData;
         _canvasGroup.alpha = 0f;
         _tween = _canvasGroup.DOFade(1f, _transitionDuration)
                              .SetEase(Ease.InCubic)
                              .OnComplete(() => {
                                 _canvasGroup.blocksRaycasts = false;
                                 _canvasGroup.interactable = false;
-                                GameMaster.Instance.RequestSceneChange(levelToLoad, ref local);
+                                GameMaster.Instance.RequestSceneChange(levelToLoad, ref player);
                              });
     }
 }

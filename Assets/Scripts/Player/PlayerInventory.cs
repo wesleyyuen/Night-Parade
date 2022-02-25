@@ -8,8 +8,6 @@ public class PlayerInventory : MonoBehaviour
     public int MonOnHand { get { return monOnHand; } }
     private int recentMonDelta;
     public int RecentMonDelta { get { return recentMonDelta; } }
-    public bool[] inks { get; private set; }
-    public int orbs { get; private set; }
     public event System.Action Event_MonChange;
 
     private void Start()
@@ -17,8 +15,6 @@ public class PlayerInventory : MonoBehaviour
         // Get saved data from SaveManager
         monOnHand = SaveManager.Instance.savedPlayerData.CoinsOnHand;
         recentMonDelta = 0;
-        inks = SaveManager.Instance.savedPlayerData.SavedInks;
-        orbs = SaveManager.Instance.savedPlayerData.SavedOrbs;
     }
 
     public void PickUpCoin(int amt)
@@ -29,15 +25,5 @@ public class PlayerInventory : MonoBehaviour
 
         // Update Mon UI
         Event_MonChange?.Invoke();
-    }
-
-    public void PickUpInk(int areaIndex)
-    {
-        inks[areaIndex] = true;
-    }
-
-    public void PickUpOrb()
-    {
-        orbs++;
     }
 }

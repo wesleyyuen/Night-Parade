@@ -4816,6 +4816,7 @@ GameObject:
   - component: {fileID: 7788056637999887352}
   - component: {fileID: 781970615165389076}
   - component: {fileID: 6424972661929567907}
+  - component: {fileID: 5833408059177148133}
   m_Layer: 9
   m_Name: Sprite
   m_TagString: Sprite
@@ -4920,6 +4921,105 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b85396c8812b84d43b506e2935e852ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  softFootstepSFX: {fileID: 11400000, guid: a52425d9846e15440b51601749ac0f93, type: 2}
+  hardFootstepSFX: {fileID: 11400000, guid: 1144e63818a72e74a8dbca7b7a5fd162, type: 2}
+--- !u!82 &5833408059177148133
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133957589241291154}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 5922275362197787889, guid: cfab3f3dc8beeff4f8067dd09ba7052c,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1368627631562068562
 GameObject:
   m_ObjectHideFlags: 0
@@ -10110,9 +10210,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32dbcc8802b5cc949a7d72bfb557ea69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damagedKnockBackForce: 30
-  _cameraShakeMultiplier: 2.25
-  _damageCameraShakeTimer: 0.075
+  Event_onPlayerDamaged: {fileID: 11400000, guid: ecd378922cd6ef14f954f6e6c175fd34,
+    type: 2}
+  _damagedKnockBackForce: 50
+  _cameraShakeMultiplier: 2.5
+  _damageCameraShakeTimer: 0.125
   isInvulnerable: 0
 --- !u!114 &7981419914986359139
 MonoBehaviour:
@@ -10143,7 +10245,7 @@ MonoBehaviour:
   _flashMaterial: {fileID: 2100000, guid: eadbc25d62c93a149a513ce987ecf7d3, type: 2}
   _flashColors:
   - {r: 4, g: 4, b: 4, a: 1}
-  _flashDuration: 0.25
+  _flashDuration: 0.2
   _spriteRenderer: {fileID: 7788056637999887352}
 --- !u!114 &7116837378333149141
 MonoBehaviour:
@@ -10157,7 +10259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab059b7becedc5c42b28b6615ef82477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collision: {fileID: 1123068385866560224}
 --- !u!114 &4308330023035708203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10218,7 +10319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _jumpVelocity: 45
-  _fallMultiplier: 0.6
+  _fallMultiplier: 0.55
   _lowJumpMultiplier: 4
   _jumpBufferTime: 0.15
   _coyoteTime: 0.125

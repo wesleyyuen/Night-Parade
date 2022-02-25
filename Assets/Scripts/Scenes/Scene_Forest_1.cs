@@ -7,6 +7,7 @@ public class Scene_Forest_1 : SceneScript
         Cave,
         Save
     }
+    [SerializeField] private AudioEvent _ambient;
     [SerializeField] private SpawnPoint spawnPoint;
     [SerializeField] private Transform caveSpawnPoint;
     [SerializeField] private Transform saveSpawnPoint;
@@ -15,8 +16,9 @@ public class Scene_Forest_1 : SceneScript
         base.Start();
         
         // Handle BGM
-        if (GameMaster.Instance.prevScene != "Forest_Cave")
-            SoundManager.Instance.FadeIn("Forest_Ambience", 1f);
+        if (GameMaster.Instance.prevScene != "Forest_Cave") {
+            _ambient.Play();
+        }
 
         if (GameMaster.Instance.prevScene == "Main_Menu"
             || spawnPoint == SpawnPoint.Save) {

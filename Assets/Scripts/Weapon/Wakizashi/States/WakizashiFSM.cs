@@ -11,9 +11,7 @@ public sealed class WakizashiStateType : WeaponStateType
   public static readonly WakizashiStateType Lodged = new WakizashiStateType("Lodged");
   public static readonly WakizashiStateType Fall = new WakizashiStateType("Fall");
 
-  private WakizashiStateType(string value) : base(value)
-  {
-  }
+  private WakizashiStateType(string value) : base(value) { }
 }
 
 public sealed class WakizashiFSM : WeaponFSM
@@ -32,8 +30,6 @@ public sealed class WakizashiFSM : WeaponFSM
 
     protected override void Awake()
     {
-        weaponData = new WakizashiData();
-
         _idleState = new WakizashiIdleState(this);
         _attackState = new WakizashiAttackState(this);
         _parryState = new WakizashiParryState(this);
@@ -49,11 +45,6 @@ public sealed class WakizashiFSM : WeaponFSM
         throwCooldownTimer = data.throwCooldown;
 
         base.Awake();
-
-        // Enable Input Mappings
-        InputActions.Player.Throw_Tap.Enable();
-        InputActions.Player.Throw_SlowTap.Enable();
-        InputActions.Player.Throw_Hold.Enable();
 
         states.Add(WakizashiStateType.Idle, _idleState);
         states.Add(WakizashiStateType.Attack, _attackState);
@@ -79,17 +70,8 @@ public sealed class WakizashiFSM : WeaponFSM
         }
 
         // Bind inputs for action that can be trigger from all states
-        InputActions.Player.Block.started += OnStartBlock;
-
-        // InputActions.Player.Throw_Tap.started += OnThrowTapStarted;
-        // InputActions.Player.Throw_Tap.performed += OnThrowTapPerformed;
-        // InputActions.Player.Throw_Tap.canceled += OnThrowTapCanceled;
-        // InputActions.Player.Throw_SlowTap.started += OnThrowSlowTapStarted;
-        // InputActions.Player.Throw_SlowTap.performed += OnThrowSlowTapPerformed;
-        // InputActions.Player.Throw_SlowTap.canceled += OnThrowSlowTapCanceled;
-        // InputActions.Player.Throw_Hold.started += OnThrowHoldStarted;
-        // InputActions.Player.Throw_Hold.performed += OnThrowHoldPerformed;
-        // InputActions.Player.Throw_Hold.canceled += OnThrowHoldCanceled;
+        InputManager.Instance.Event_GameplayInput_Block += OnStartBlock;
+        // InputActions.Gameplay.Block.started += OnStartBlock;
     }
 
     private void OnDisable()
@@ -103,58 +85,60 @@ public sealed class WakizashiFSM : WeaponFSM
         }
 
         // Unbind inputs for action that can be trigger from all states
-        InputActions.Player.Block.started -= OnStartBlock;
+        InputManager.Instance.Event_GameplayInput_Block -= OnStartBlock;
+        // InputActions.Gameplay.Block.started -= OnStartBlock;
     }
 
-    private void OnStartBlock(InputAction.CallbackContext context)
+    private void OnStartBlock()
     {
-        if (!IsCurrentState(WakizashiStateType.Parry) && !IsCurrentState(WakizashiStateType.Block) && IsOnPlayer() && canBlock && blockCooldownTimer <= 0)
+        if (!IsCurrentState(WakizashiStateType.Parry) && !IsCurrentState(WakizashiStateType.Block) && IsOnPlayer() && canBlock && blockCooldownTimer <= 0) {
             SetState(states[WakizashiStateType.Parry]);
+        }
     }
 
     // private void OnThrowTapStarted(InputAction.CallbackContext context)
     // {
-    //     Debug.Log("<color=green>Throw_Tap - Started</color>");
+    //     Debug.Log("<color=green>ThrowTap - Started</color>");
     // }
 
     //     private void OnThrowTapPerformed(InputAction.CallbackContext context)
     // {
-    //     Debug.Log("<color=green>Throw_Tap - Performed</color>");
+    //     Debug.Log("<color=green>ThrowTap - Performed</color>");
     // }
 
     //     private void OnThrowTapCanceled(InputAction.CallbackContext context)
     // {
-    //     Debug.Log("<color=green>Throw_Tap - Canceled</color>");
+    //     Debug.Log("<color=green>ThrowTap - Canceled</color>");
     // }
 
     //     private void OnThrowSlowTapStarted(InputAction.CallbackContext context)
     // {
-    //     Debug.Log("<color=blue>Throw_SlowTap - Started</color>");
+    //     Debug.Log("<color=blue>ThrowSlowTap - Started</color>");
     // }
 
     //     private void OnThrowSlowTapPerformed(InputAction.CallbackContext context)
     // {
-    //     Debug.Log("<color=blue>Throw_SlowTap - Performed</color>");
+    //     Debug.Log("<color=blue>ThrowSlowTap - Performed</color>");
     // }
 
     //     private void OnThrowSlowTapCanceled(InputAction.CallbackContext context)
     // {
-    //     Debug.Log("<color=blue>Throw_SlowTap - Canceled</color>");
+    //     Debug.Log("<color=blue>ThrowSlowTap - Canceled</color>");
     // }
 
     //     private void OnThrowHoldStarted(InputAction.CallbackContext context)
     // {
-    //     Debug.Log("<color=purple>Throw_Hold - Started</color>");
+    //     Debug.Log("<color=purple>ThrowHold - Started</color>");
     // }
 
     //     private void OnThrowHoldPerformed(InputAction.CallbackContext context)
     // {
-    //     Debug.Log("<color=purple>Throw_Hold - Performed</color>");
+    //     Debug.Log("<color=purple>ThrowHold - Performed</color>");
     // }
 
     //     private void OnThrowHoldCanceled(InputAction.CallbackContext context)
     // {
-    //     Debug.Log("<color=purple>Throw_Hold - Canceled</color>");
+    //     Debug.Log("<color=purple>ThrowHold - Canceled</color>");
     // }
 
     protected override void Update()

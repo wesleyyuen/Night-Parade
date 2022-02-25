@@ -7,6 +7,7 @@ public class Scene_Forest_Cave : SceneScript
         NotTesting,
         Forest_1
     }
+    [SerializeField] private AudioEvent _ambient;
     [SerializeField] private SpawnPoint _spawnPoint;
     [SerializeField] private Transform _forest1SpawnPoint;
     [SerializeField] private TextMeshProUGUI forestText;
@@ -16,8 +17,9 @@ public class Scene_Forest_Cave : SceneScript
         base.Start();
 
         // Handle BGM
-        if (GameMaster.Instance.prevScene != "Forest_1")
-            SoundManager.Instance.FadeIn("Forest_Ambience", 1f);
+        if (GameMaster.Instance.prevScene != "Forest_1") {
+            _ambient.Play();
+        }
 
         if (GameMaster.Instance.prevScene == "Main_Menu") {
             _spawnPoint = SpawnPoint.NotTesting;

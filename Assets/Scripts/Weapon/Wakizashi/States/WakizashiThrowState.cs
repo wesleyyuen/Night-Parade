@@ -24,14 +24,14 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        _fsm.InputActions.Player.Throw_Tap.started += OnStartReturn;
-        _fsm.InputActions.Player.Throw_SlowTap.performed += OnStartReturn;
+        InputManager.Instance.Event_GameplayInput_ThrowTap += OnStartReturn;
+        InputManager.Instance.Event_GameplayInput_ThrowSlowTap += OnStartReturn;
     }
 
     public void UnbindInput()
     {
-        _fsm.InputActions.Player.Throw_Tap.started += OnStartReturn;
-        _fsm.InputActions.Player.Throw_SlowTap.performed -= OnStartReturn;
+        InputManager.Instance.Event_GameplayInput_ThrowTap -= OnStartReturn;
+        InputManager.Instance.Event_GameplayInput_ThrowSlowTap -= OnStartReturn;
     }
  
     public void EnterState()
@@ -49,10 +49,11 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         _fsm.throwCooldownTimer = _data.throwCooldown;
 
         // play animation
-        Utility.FreezePlayer(true, _data.throwMinDuration);
         _playerAnimation.SetThrowAnimation();
+        
+        Utility.EnablePlayerControl(false);
 
-        _collider.enabled = true;
+        // _collider.enabled = true;
 
         // Detach from player
         _fsm.transform.localPosition = new Vector2(0f, 1.5f);
@@ -62,10 +63,11 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         Timing.RunCoroutine(_ActuallyThrow(!wasAiming).CancelWith(_fsm.gameObject));
     }
 
-    private void OnStartReturn(InputAction.CallbackContext context)
+    private void OnStartReturn()
     {
-        if (_fsm.IsCurrentState(WakizashiStateType.Throw) && !_isReturning)
+        if (_fsm.IsCurrentState(WakizashiStateType.Throw) && !_isReturning) {
             _isReturning = true;
+        }
     }
 
     private IEnumerator<float> _ActuallyThrow(bool shouldSelfReturn)
@@ -84,6 +86,8 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
             // Apply Gravity
             _rb.isKinematic = false;
         }
+        
+        Utility.EnablePlayerControl(true);
     }
 
     public void Update()
@@ -96,6 +100,7 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         }
 
         // Rotate
+        // _fsm.transform.Rotate(_fsm.transform.localEulerAngles + (_fsm.throwDirection.x > 0f ? Vector3.back : Vector3.forward) * 1f * Time.deltaTime, Space.Self);
         _rb.transform.localEulerAngles += (_fsm.throwDirection.x > 0f ? Vector3.back : Vector3.forward) * 2700f * Time.deltaTime; 
     }
 

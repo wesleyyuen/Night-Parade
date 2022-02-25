@@ -6,29 +6,24 @@ public class PauseMenu : MonoBehaviour
     public static bool isPuased = false;
     [SerializeField] GameObject pauseMenuUI;
     [SerializeField] GameObject optionsMenuUI;
-    InputMaster _input;
 
     private void Awake()
     {
-        _input = new InputMaster();
-
-        _input.UI.Pause.performed += OnPauseOrResume;
-
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
 
     private void OnEnable()
     {
-        _input.UI.Pause.Enable();
+        InputManager.Instance.Event_UIInput_Pause += OnPauseOrResume;
     }
 
     private void OnDisable()
     {
-        _input.UI.Pause.Disable();
+        InputManager.Instance.Event_UIInput_Pause -= OnPauseOrResume;
     }
 
-    private void OnPauseOrResume(InputAction.CallbackContext context)
+    private void OnPauseOrResume()
     {
         if (GameMaster.Instance.currentScene != "Main_Menu") {
             if (isPuased)
@@ -47,9 +42,10 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         // Handle player control
+        // InputManager.Instance.EnableGameplayInput();
         if (!DialogueManager.Instance.isTalking)
             Utility.EnablePlayerControl(true);
-        SoundManager.Instance.UnpauseAll();
+        AudioManager.Instance.UnpauseAll();
 
         TimeManager.Instance.SetTimeScale(1f);
         pauseMenuUI.SetActive(false);
@@ -65,15 +61,21 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
 
         // Stop player control
+        // InputManager.Instance.EnableMenuInput();
         Utility.EnablePlayerControl(false);
-        SoundManager.Instance.PauseAll();
+        AudioManager.Instance.PauseAll();
 
         TimeManager.Instance.SetTimeScale(0f);
         pauseMenuUI.SetActive(true);
         optionsMenuUI.SetActive(false);
     }
 
-    private void QuitToMainMenu()
+    public void Continue()
+    {
+        Resume();
+    }
+
+    public void QuitToMainMenu()
     {
         TimeManager.Instance.SetTimeScale(1f);
         isPuased = false;

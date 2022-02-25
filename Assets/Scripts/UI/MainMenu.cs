@@ -28,16 +28,13 @@ public class MainMenu : MonoBehaviour
         PlayerData playerData = new PlayerData(
             saveFileIndex: 1,
             maxHealth: Constant.STARTING_HEARTS * 4,
-            maxStamina: Constant.STARTING_STAMINA,
             coinsOnHand: 0,
             lastSavePoint: 0,
             playTime: 0f,
-            savedInks: new bool[Constant.NUMBER_OF_AREAS],
-            savedOrbs: 0,
             sceneData: scenes 
         );
 
-        GameMaster.Instance.RequestSceneChange(Constant.SceneName.Forest_Cave.ToString(), ref playerData);
+        GameMaster.Instance.RequestSceneChange(Constant.STARTING_SCENE.ToString(), ref playerData);
     }
 
     public void LoadGameFile(int index)
@@ -50,6 +47,7 @@ public class MainMenu : MonoBehaviour
         SaveManager.Instance.savedPlayerData = playerData;
         SaveManager.Instance.savedSceneData = playerData.SceneData;
         string sceneName = System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(playerData.LastSavePoint));
+        
         GameMaster.Instance.RequestSceneChange(sceneName, ref playerData);
     }
 

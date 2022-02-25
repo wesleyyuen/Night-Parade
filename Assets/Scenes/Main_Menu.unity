@@ -2557,7 +2557,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 772685789}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VolumeControl, Assembly-CSharp
         m_MethodName: SetVolume
         m_Mode: 0
@@ -3390,7 +3390,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 772685788}
-  - component: {fileID: 772685789}
   m_Layer: 5
   m_Name: Options Menu
   m_TagString: Untagged
@@ -3418,22 +3417,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 58.2}
+  m_AnchoredPosition: {x: 0, y: 60}
   m_SizeDelta: {x: 600, y: 420}
   m_Pivot: {x: 1, y: 0}
---- !u!114 &772685789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 772685787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b74cef6628d004cadce249f8e89438, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mixer: {fileID: 24100000, guid: cfab3f3dc8beeff4f8067dd09ba7052c, type: 2}
 --- !u!1 &774649021
 GameObject:
   m_ObjectHideFlags: 0
@@ -3926,7 +3912,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.83331585, g: 1, b: 0.5525606, a: 1}
+  m_Color: {r: 0.72237194, g: 1, b: 0.9924682, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5935,7 +5921,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -62.099976, y: 123.66}
+  m_AnchoredPosition: {x: -62.099854, y: 123.660034}
   m_SizeDelta: {x: 600, y: 420}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1560059926
@@ -5950,45 +5936,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d357939861950a41a33542b1502b76e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveSlot1: {fileID: 314403223}
-  saveSlot1Mon: {fileID: 1606506614}
-  saveSlot1Hearts:
-  - {fileID: 1663016465}
-  - {fileID: 1038110785}
-  - {fileID: 1017197816}
-  - {fileID: 774649023}
-  - {fileID: 2092984698}
-  - {fileID: 101281203}
-  - {fileID: 343467125}
-  - {fileID: 1294723125}
-  - {fileID: 1645387906}
-  saveSlot1Time: {fileID: 12055529}
-  saveSlot2: {fileID: 1572124618}
-  saveSlot2Mon: {fileID: 377377243}
-  saveSlot2Hearts:
-  - {fileID: 868467168}
-  - {fileID: 2039808960}
-  - {fileID: 1794959526}
-  - {fileID: 190314878}
-  - {fileID: 618089582}
-  - {fileID: 1347247197}
-  - {fileID: 629225629}
-  - {fileID: 1916926662}
-  - {fileID: 103699297}
-  saveSlot2Time: {fileID: 819001038}
-  saveSlot3: {fileID: 1401280425}
-  saveSlot3Mon: {fileID: 1533270230}
-  saveSlot3Hearts:
-  - {fileID: 1722095813}
-  - {fileID: 1419899103}
-  - {fileID: 496985798}
-  - {fileID: 145092119}
-  - {fileID: 1164882373}
-  - {fileID: 1463894485}
-  - {fileID: 1673468600}
-  - {fileID: 840011317}
-  - {fileID: 1585703690}
-  saveSlot3Time: {fileID: 1472022192}
+  saveSlot1:
+    button: {fileID: 314403223}
+    mons: {fileID: 1606506614}
+    hearts:
+    - {fileID: 1663016465}
+    - {fileID: 1038110785}
+    - {fileID: 1017197816}
+    - {fileID: 774649023}
+    - {fileID: 2092984698}
+    - {fileID: 101281203}
+    - {fileID: 343467125}
+    - {fileID: 1294723125}
+    - {fileID: 1645387906}
+    time: {fileID: 12055529}
+  saveSlot2:
+    button: {fileID: 1572124618}
+    mons: {fileID: 377377243}
+    hearts:
+    - {fileID: 868467168}
+    - {fileID: 2039808960}
+    - {fileID: 1794959526}
+    - {fileID: 190314878}
+    - {fileID: 618089582}
+    - {fileID: 1347247197}
+    - {fileID: 629225629}
+    - {fileID: 1916926662}
+    - {fileID: 103699297}
+    time: {fileID: 819001038}
+  saveSlot3:
+    button: {fileID: 1401280425}
+    mons: {fileID: 1533270230}
+    hearts:
+    - {fileID: 1722095813}
+    - {fileID: 1419899103}
+    - {fileID: 496985798}
+    - {fileID: 145092119}
+    - {fileID: 1164882373}
+    - {fileID: 1463894485}
+    - {fileID: 1673468600}
+    - {fileID: 840011317}
+    - {fileID: 1585703690}
+    time: {fileID: 1472022192}
   fullHeart: {fileID: 5938912915919555698, guid: 8ffb12488225eaf4d94449de9c57f958,
     type: 3}
 --- !u!1 &1572124616

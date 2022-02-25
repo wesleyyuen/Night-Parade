@@ -85,15 +85,15 @@ public class PlayerAnimations : MonoBehaviour
     {
         SetJumpFallAnimation();
 
-        if (!canTurn) return;
-
         Vector3 prevLocalScale = _playerAnimator.transform.localScale;
 
         // Flip sprite
-        if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right) && prevLocalScale.x != 1f) {
-            FaceRight(true); 
-        } else if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left) && prevLocalScale.x != -1f) {
-            FaceRight(false);
+        if (canTurn) {
+            if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right) && prevLocalScale.x != 1f) {
+                FaceRight(true); 
+            } else if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left) && prevLocalScale.x != -1f) {
+                FaceRight(false);
+            }
         }
         if (!_isSquishing)
             FaceRight(_playerAnimator.transform.localScale.x == 1f);

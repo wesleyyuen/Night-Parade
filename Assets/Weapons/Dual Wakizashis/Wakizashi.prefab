@@ -166,6 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41516678c5ae6d549bf10481b3f1674a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: a2800edaf5e276c41a5cc347ffdfea7b, type: 2}
+  input: {fileID: 11400000, guid: 66e0351000655364e9cad50db5cfe437, type: 2}
   onibi: {fileID: 0}
   canAttack: 0
   attackCooldownTimer: 0

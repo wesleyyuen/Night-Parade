@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BreakableObject : MonoBehaviour
+public class BreakableObject : MonoBehaviour, IDamageable
 {
     [SerializeField] string keyString;
     [SerializeField] int numOfHitsToDestroy;
@@ -26,17 +26,19 @@ public class BreakableObject : MonoBehaviour
         currentHealth = numOfHitsToDestroy;
     }
 
-    public virtual void TakeDamage(bool fromLeft)
+    public virtual bool TakeDamage(float damage, Vector2 direction)
     {
         if (side == BreakableSide.both || // attack from either side is fine
-            (fromLeft && side == BreakableSide.left) || // attack from left
-            (!fromLeft && side == BreakableSide.right)) { // attack from right
+            (direction.x > 0f && side == BreakableSide.left) || // attack from left
+            (direction.x < 0f && side == BreakableSide.right)) { // attack from right
             currentHealth--;
             if (currentHealth <= 0) {
                 Break();
             }
+            return true;
         } else {
             // TODO: Play weapon clink effect
+            return false;
         }
     }
 

@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using MEC;
 using DG.Tweening;
 
 public class HealthUI : MonoBehaviour
 {
-    PlayerHealth _playerHealth;
     [SerializeField] Material _flashMaterial;
     [SerializeField] Image[] hearts;
     [SerializeField] Sprite fullHeart;
@@ -30,35 +28,16 @@ public class HealthUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // GameMaster gm = FindObjectOfType<GameMaster>();
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
-        GameMaster.Event_UIIntro += Intro;
-        GameMaster.Event_UIOutro += Outro;
+        EventManager.Instance.Event_PlayerDamaged += UpdateHeartsUI;
+        GameMaster.Instance.Event_UIIntro += Intro;
+        GameMaster.Instance.Event_UIOutro += Outro;
     }
 
     private void OnDisable()
     {
-        // GameMaster gm = FindObjectOfType<GameMaster>();
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
-        GameMaster.Event_UIIntro -= Intro;
-        GameMaster.Event_UIOutro -= Outro;
-    }
-
-    // Update Player References and add Observers
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        _playerHealth = FindObjectOfType<PlayerHealth>();
-        if (_playerHealth)
-            _playerHealth.Event_HealthChange += UpdateHeartsUI;
-    }
-
-    // Remove Observers
-    private void OnSceneUnloaded(Scene scene)
-    {
-        if (_playerHealth)
-            _playerHealth.Event_HealthChange -= UpdateHeartsUI;
+        EventManager.Instance.Event_PlayerDamaged -= UpdateHeartsUI;
+        GameMaster.Instance.Event_UIIntro -= Intro;
+        GameMaster.Instance.Event_UIOutro -= Outro;
     }
 
     private void Intro()
@@ -88,17 +67,16 @@ public class HealthUI : MonoBehaviour
         }
     }
 
-    public void UpdateHeartsUI(int prevHealth, float duration = 0.75f)
+    public void UpdateHeartsUI(int prevHealth, int currHealth, int maxHealth, float duration)
     {
-        int health = _playerHealth.currHealth;
+        if (currHealth <= 0) return;
 
-        if (health <= 0) return;
+        int numOfFullHearts = currHealth / 4;
+        int maxHearts = maxHealth / 4;
 
-        int numOfFullHearts = health / 4;
-        int maxHearts = _playerHealth.maxHealth / 4;
-
-        if (duration > 0f)
-            Timing.RunCoroutine(_FlashHeart(true, duration, prevHealth).CancelWith(gameObject));
+        if (duration > 0f) {
+            Timing.RunCoroutine(_FlashHeart(true, duration, prevHealth, currHealth, maxHealth).CancelWith(gameObject));
+        }
 
         // Actually change sprites
         for (int i = 0; i < hearts.Length; i++) {
@@ -108,31 +86,31 @@ public class HealthUI : MonoBehaviour
             hearts[i].enabled = i < maxHearts;
         }
         // Handle Reminder
-        int reminder = health % 4;
+        int reminder = currHealth % 4;
         if (reminder != 0) {
             hearts[numOfFullHearts].sprite = (reminder == 3) ? threeQuartersHeart
                                            : (reminder == 2) ? halfHeart
                                            : quarterHeart;
         }
 
-        if (duration > 0f)
-            Timing.RunCoroutine(_FlashHeart(false, duration, prevHealth).CancelWith(gameObject));
+        if (duration > 0f) {
+            Timing.RunCoroutine(_FlashHeart(false, duration, prevHealth, currHealth, maxHealth).CancelWith(gameObject));
+        }
     }
 
-    IEnumerator<float> _FlashHeart(bool fadeIn, float duration, int prevHealth)
+    IEnumerator<float> _FlashHeart(bool fadeIn, float duration, int prevHealth, int currHealth, int maxHealth)
     {
         float from = fadeIn ? 0f : 1f;
         float to = fadeIn ? 1f : 0f;
-        int health = _playerHealth.currHealth;
-        int numOfFullHearts = health / 4;
-        int maxHearts = _playerHealth.maxHealth / 4;
-        int reminder = health % 4;
+        int numOfFullHearts = currHealth / 4;
+        int maxHearts = maxHealth / 4;
+        int reminder = currHealth % 4;
 
         for (float t = 0f; t < 1f; t += Timing.DeltaTime / duration) {
             for (int i = 0; i < hearts.Length; i++) {
                 if (i >= maxHearts) continue;
                     
-                if (ShouldHeartBeUpdatedAtIndex(i, prevHealth, health)) {
+                if (ShouldHeartBeUpdatedAtIndex(i, prevHealth, currHealth)) {
                     hearts[i].material.SetFloat("_FlashAmount", Mathf.SmoothStep(from, to, t));
                 }
             }

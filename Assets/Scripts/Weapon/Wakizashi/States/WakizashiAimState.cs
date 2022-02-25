@@ -17,12 +17,12 @@ public sealed class WakizashiAimState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        _fsm.InputActions.Player.Throw_SlowTap.performed += OnStartThrow;
+        InputManager.Instance.Event_GameplayInput_ThrowSlowTap += OnStartThrow;
     }
 
     public void UnbindInput()
     {
-        _fsm.InputActions.Player.Throw_SlowTap.performed -= OnStartThrow;
+        InputManager.Instance.Event_GameplayInput_ThrowSlowTap -= OnStartThrow;
     }
  
     public void EnterState()
@@ -33,14 +33,14 @@ public sealed class WakizashiAimState : IWeaponState, IBindInput
         bool hasInput = InputManager.Instance.HasDirectionalInput();
         _fsm.throwDirection = hasInput ? InputManager.Instance.GetDirectionalInputVector() : _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
 
-        Utility.FreezePlayer(true);
-        _playerAnimation.FreezePlayerAnimation(true);
+        Utility.EnablePlayerControl(false);
     }
 
-    private void OnStartThrow(InputAction.CallbackContext context)
+    private void OnStartThrow()
     {
-        if (_fsm.IsCurrentState(WakizashiStateType.Aim) && !_isThrowing)
+        if (_fsm.IsCurrentState(WakizashiStateType.Aim) && !_isThrowing) {
             _isThrowing = true;
+        }
     }
 
     public void Update()
@@ -63,7 +63,6 @@ public sealed class WakizashiAimState : IWeaponState, IBindInput
 
     public void ExitState()
     {
-        Utility.FreezePlayer(false);
-        _playerAnimation.FreezePlayerAnimation(false);
+        Utility.EnablePlayerControl(true);
     }
 }

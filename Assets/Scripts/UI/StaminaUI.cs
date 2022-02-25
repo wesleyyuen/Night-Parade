@@ -16,16 +16,14 @@ public class StaminaUI : MonoBehaviour
 
     private void OnEnable()
     {
-        GameMaster gm = FindObjectOfType<GameMaster>();
-        GameMaster.Event_UIIntro += Intro;
-        GameMaster.Event_UIOutro += Outro;
+        GameMaster.Instance.Event_UIIntro += Intro;
+        GameMaster.Instance.Event_UIOutro += Outro;
     }
 
     private void OnDisable()
     {
-        GameMaster gm = FindObjectOfType<GameMaster>();
-        GameMaster.Event_UIIntro -= Intro;
-        GameMaster.Event_UIOutro -= Outro;
+        GameMaster.Instance.Event_UIIntro -= Intro;
+        GameMaster.Instance.Event_UIOutro -= Outro;
     }
 
     private void Intro()

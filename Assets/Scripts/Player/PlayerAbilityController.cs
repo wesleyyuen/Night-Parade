@@ -8,6 +8,7 @@ public class PlayerAbilityController : MonoBehaviour
     // New ability scripts in child of player
     // This controller manages their activations
     public enum Ability {
+        All,
         Jump,
         WallSlide,
         WallJump,
@@ -15,7 +16,6 @@ public class PlayerAbilityController : MonoBehaviour
     }
     public float currStamina { get; private set; }
     public float maxStamina { get; private set; }
-    public PlayerPlatformCollision _collision;
     private GameObject _abilitiesGB;
     private PlayerJump _jump;
     private PlayerWallSlide _wallSlide;
@@ -26,8 +26,8 @@ public class PlayerAbilityController : MonoBehaviour
 
     private void Start()
     {
-        currStamina = SaveManager.Instance.savedPlayerData.CurrentStamina;
-        maxStamina = SaveManager.Instance.savedPlayerData.MaxStamina;
+        currStamina = 0;
+        maxStamina = 0;
 
         _isStopUpdatingStamina = !Constant.HAS_STAMINA;
 
@@ -61,6 +61,20 @@ public class PlayerAbilityController : MonoBehaviour
     public void EnableAbility(Ability ability, bool enable, float time = 0)
     {
         switch (ability) {
+            case Ability.All:
+                if (time == 0f) {
+                    _jump.enabled = enable;
+                    _wallSlide.enabled = enable;
+                    _wallJump.enabled = enable;
+                    _dash.enabled = enable;
+                } else {
+                    Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _jump.enabled = e, time, enable, !enable));
+                    Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _wallSlide.enabled = e, time, enable, !enable));
+                    Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _wallJump.enabled = e, time, enable, !enable));
+                    Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<bool>(e => _dash.enabled = e, time, enable, !enable));
+                }
+                break;
+
             case Ability.Jump:
                 if (time == 0f) {
                     _jump.enabled = enable;

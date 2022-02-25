@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd5bb5e1205b7b479129236c4549980, type: 3}
+  m_Name: WakizashiData
+  m_EditorClassIdentifier: 
+  maxComboCount: 3
+  comboDamage:
+  - 5
+  - 5
+  - 5
+  attackCooldown: 0.4
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 12288
+  attackPoint: {x: 2.25, y: 1.5}
+  attackRange: {x: 3, y: 2.85}
+  horizontalKnockBackForce: 5
+  upthrustPoint: {x: 0, y: 1.5}
+  upthrustRange: {x: 3, y: 3}
+  upthrustKnockBackForce: 5
+  downthrustPoint: {x: 0, y: -1.35}
+  downthrustRange: {x: 3, y: 3}
+  downthrustKnockBackForce: 90
+  parryWindow: 0.15
+  parryKnockback: 10
+  blockPoint: {x: 1, y: 1.5}
+  blockRange: {x: 0.4, y: 2.85}
+  blockMinDuration: 0.5
+  blockKnockback: 25
+  blockCooldown: 0.5
+  missSFX: {fileID: 11400000, guid: b89a9c022f668a140b606ac88e4026bd, type: 2}
+  hitSFX: {fileID: 11400000, guid: 92bb8beece6c7ea479b916adc7121b12, type: 2}
+  throwVelocity: 60
+  throwMinDuration: 0.2
+  throwDamage: 7
+  throwCooldown: 0.7

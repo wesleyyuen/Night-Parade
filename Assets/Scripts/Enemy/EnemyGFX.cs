@@ -94,7 +94,7 @@ public class EnemyGFX : MonoBehaviour
 
     public void FlashExclaimationMark()
     {
-        Timing.RunCoroutine(_FlashExclaimationMarkCoroutine().CancelWith(gameObject));
+        // Timing.RunCoroutine(_FlashExclaimationMarkCoroutine().CancelWith(gameObject));
     }
 
     private IEnumerator<float> _FlashExclaimationMarkCoroutine()
@@ -111,7 +111,7 @@ public class EnemyGFX : MonoBehaviour
 
     public void FlashQuestionMark()
     {
-        Timing.RunCoroutine(FlashQuestionMarkCoroutine().CancelWith(gameObject));
+        // Timing.RunCoroutine(FlashQuestionMarkCoroutine().CancelWith(gameObject));
     }
 
     private IEnumerator<float> FlashQuestionMarkCoroutine ()

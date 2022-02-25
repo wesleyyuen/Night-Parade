@@ -10,7 +10,6 @@ public sealed class WakizashiParryState : IWeaponState
     private PlayerAnimations _playerAnimation;
     private PlayerAbilityController _abilityController;
     private SpriteFlash _flash;
-    private bool _toIdle;
 
     public WakizashiParryState(WakizashiFSM fsm)
     {
@@ -25,7 +24,6 @@ public sealed class WakizashiParryState : IWeaponState
 
     public void EnterState()
     {
-        _toIdle = false;
         _enemiesParriedIDs.Clear();
 
         _playerAnimation.SetBlockAnimation(true);
@@ -43,12 +41,16 @@ public sealed class WakizashiParryState : IWeaponState
         _abilityController.UseStamina();
     
         if (_abilityController.currStamina <= 0) {
-            _toIdle = true;
             _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
         } else if (_fsm.currentBlockTimer >= _fsm.weaponData.parryWindow) {
             _fsm.SetState(_fsm.states[WakizashiStateType.Block]);
         }
 
+        Parry();
+    }
+
+    private void Parry()
+    {
         Vector2 parryPoint = (Vector2) _fsm.player.transform.TransformPoint(new Vector3((_playerAnimation.IsFacingRight() ? 1f : -1f) * _fsm.weaponData.blockPoint.x, _fsm.weaponData.blockPoint.y));
         Collider2D[] parried = Physics2D.OverlapAreaAll(parryPoint + new Vector2(-_fsm.weaponData.blockRange.x/2, _fsm.weaponData.blockRange.y/2),
                                                         parryPoint + new Vector2(_fsm.weaponData.blockRange.x/2, -_fsm.weaponData.blockRange.y/2),
@@ -59,35 +61,33 @@ public sealed class WakizashiParryState : IWeaponState
 
         TimeManager.Instance.SlowTimeForSeconds(0.3f, 0.5f);
 
+        Vector2 hitDir = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
         foreach (Collider2D hit in parried) {
             // Parry enemy only ONCE by adding them into list
-            if (_enemiesParriedIDs.Add (hit.gameObject.GetInstanceID ())) {
+            if (_enemiesParriedIDs.Add(hit.gameObject.GetInstanceID())) {
                 if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()) {
-                    Vector2 hitDir = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
                     // enemy.TakeDamage(_fsm.weaponData.parryDamage, hitDir);
 
-                    enemy.ApplyForce(-hitDir, enemy.enemyData.knockBackOnParriedForce, enemy.enemyData.timeStunnedAfterParried);
+                    enemy.ApplyForce(hitDir, enemy.enemyData.knockBackOnParriedForce, enemy.enemyData.timeStunnedAfterParried);
                     enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterParried);
-
-                    // TODO: parry animation
-
-                    _fsm.SetStateAfterDelay(WakizashiStateType.Idle, 1f);
                 }
             }
         }
+
+        _playerMovement.ApplyKnockback(-hitDir , _fsm.weaponData.parryKnockback, 0.05f);
     }
+
 
     public void FixedUpdate()
     {
+        
     }
 
     public void ExitState()
     {
-        _playerAnimation.SetBlockAnimation(false);
         _fsm.hasBlocked = false;
-        if (_toIdle) {
-            _playerMovement.EnablePlayerMovement(true);
-            _playerAnimation.EnablePlayerTurning(true);
-        }
+        _playerAnimation.SetBlockAnimation(false);
+        _playerMovement.EnablePlayerMovement(true);
+        _playerAnimation.EnablePlayerTurning(true);
     }
 }

@@ -8,6 +8,7 @@ public class Constant : MonoBehaviour
         Forest_Cave,
         Forest_1
     }
+    public static SceneName STARTING_SCENE = SceneName.Forest_Cave;
 
     public static int STARTING_HEARTS = 3;
     public static float STARTING_STAMINA = 3f;
@@ -18,5 +19,5 @@ public class Constant : MonoBehaviour
     public static bool HAS_TIMED_COMBO = false;
     public static bool HAS_STAMINA = false;
     public static bool STOP_WHEN_ATTACK = true;
-    public static bool ATTACK_STUNS_ENEMY = true;
+    public static bool ATTACK_STUNS_ENEMY = false;
 }

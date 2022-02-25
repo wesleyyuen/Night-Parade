@@ -5,31 +5,24 @@ using DG.Tweening;
 public sealed class WakizashiLodgedState : IWeaponState, IBindInput
 {
     private WakizashiFSM _fsm;
-    private Collider2D _collider;
-    private Rigidbody2D _rb;
     private PlayerAnimations _playerAnimation;
-    private int _layerMasks;
     private bool _isReturning, _stopUpdating;
 
     public WakizashiLodgedState(WakizashiFSM fsm)
     {
         _fsm = fsm;
 
-        _rb = fsm.GetComponent<Rigidbody2D>();
-        _collider = fsm.GetComponent<Collider2D>();
         _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
-        _layerMasks = 1 << LayerMask.NameToLayer("Player");
-
     }
 
     public void BindInput()
     {
-        _fsm.InputActions.Player.Throw_SlowTap.started += OnStartReturn;
+        InputManager.Instance.Event_GameplayInput_ThrowSlowTap += OnStartReturn;
     }
 
     public void UnbindInput()
     {
-        _fsm.InputActions.Player.Throw_SlowTap.started -= OnStartReturn;
+        InputManager.Instance.Event_GameplayInput_ThrowSlowTap -= OnStartReturn;
     }
 
     public void EnterState()
@@ -52,19 +45,20 @@ public sealed class WakizashiLodgedState : IWeaponState, IBindInput
         }
     }
 
-    private void OnStartReturn(InputAction.CallbackContext context)
+    private void OnStartReturn()
     {
-        if (_fsm.IsCurrentState(WakizashiStateType.Lodged) && !_isReturning)
+        if (_fsm.IsCurrentState(WakizashiStateType.Lodged)) {
             _isReturning = true;
+        }
     }
 
     public void Update()
     {
         // Instantly return
-        // if (Vector2.Distance(_fsm.transform.position, _fsm.player.position) >= 25f && !_stopUpdating) {
-        //     _stopUpdating = true;
-        //     ReturnInstantly();
-        // }
+        if (Vector2.Distance(_fsm.transform.position, _fsm.player.position) >= 35f && !_stopUpdating) {
+            _stopUpdating = true;
+            ReturnInstantly();
+        }
 
         if (_isReturning && !_stopUpdating) {
             _stopUpdating = true;
