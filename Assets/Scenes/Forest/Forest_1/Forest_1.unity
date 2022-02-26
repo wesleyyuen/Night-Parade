@@ -7373,6 +7373,24 @@ MonoBehaviour:
   m_InstancedGameObject: {fileID: 0}
   m_Flags: 3
   m_ColliderType: 1
+--- !u!1 &406108469 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4584774948389085381, guid: 3e5934aa7c5591a4c8dbfb002d02cc2d,
+    type: 3}
+  m_PrefabInstance: {fileID: 56412913}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &406108470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406108469}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c001c469bc4d35c4ead1ccfd58790bad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &408562265
 GameObject:
   m_ObjectHideFlags: 0
@@ -31748,6 +31766,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1041491257}
   - component: {fileID: 1041491258}
+  - component: {fileID: 1041491259}
   m_Layer: 0
   m_Name: Scene
   m_TagString: SceneScript
@@ -31788,6 +31807,37 @@ MonoBehaviour:
   spawnPoint: 0
   caveSpawnPoint: {fileID: 1560349204}
   saveSpawnPoint: {fileID: 385931528}
+--- !u!114 &1041491259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041491256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers: []
+  _installerPrefabs: []
+  _autoRun: 1
+  OnPreInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  _parentNewObjectsUnderSceneContext: 0
+  _contractNames: []
+  _parentContractNames: []
 --- !u!1 &1051567076
 GameObject:
   m_ObjectHideFlags: 0

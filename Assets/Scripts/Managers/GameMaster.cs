@@ -91,7 +91,7 @@ public class GameMaster : MonoBehaviour
     // can remove if play mode from _preload
     public void SetUI(bool boolean)
     {
-        DialogueManager.Instance.enabled = boolean;
+        // DialogueManager.Instance.enabled = boolean;
 
         // Handle cursor
         Cursor.visible = !boolean;

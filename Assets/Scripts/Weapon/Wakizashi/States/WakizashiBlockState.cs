@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public sealed class WakizashiBlockState : IWeaponState, IBindInput
 {
-    private WakizashiFSM _fsm;
+    private readonly WakizashiFSM _fsm;
     private PlayerMovement _playerMovement;
     private PlayerAnimations _playerAnimation;
     private PlayerAbilityController _abilityController;
@@ -17,6 +17,7 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
     public WakizashiBlockState(WakizashiFSM fsm)
     {
         _fsm = fsm;
+        
         _abilityController = fsm.GetComponentInParent<PlayerAbilityController>();
         _playerMovement = fsm.GetComponentInParent<PlayerMovement>();
         _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();

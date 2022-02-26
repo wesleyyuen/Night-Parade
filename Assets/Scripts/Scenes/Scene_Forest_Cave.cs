@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Scene_Forest_Cave : SceneScript
+public class Scene_Forest_Cave : SceneInstaller
 {
     private enum SpawnPoint {
         NotTesting,

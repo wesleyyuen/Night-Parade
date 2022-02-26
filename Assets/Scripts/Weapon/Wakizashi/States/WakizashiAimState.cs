@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public sealed class WakizashiAimState : IWeaponState, IBindInput
 {
-    private WakizashiFSM _fsm;
+    private readonly WakizashiFSM _fsm;
     private PlayerAnimations _playerAnimation;
     private bool _isThrowing, _stopUpdating;
 

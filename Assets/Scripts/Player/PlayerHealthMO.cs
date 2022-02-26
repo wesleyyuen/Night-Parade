@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class PlayerHealthMO : MonoBehaviour
 {
@@ -16,6 +17,14 @@ public class PlayerHealthMO : MonoBehaviour
     private WeaponFSM _weaponFSM;
     private bool _isDead;
 
+    private IEventManager _eventManager;
+
+    [Inject]
+    public void Initialize(IEventManager eventManager)
+    {
+        _eventManager = eventManager;
+    }
+
     private void Start()
     {
         currHealth = SaveManager.Instance.savedPlayerData.CurrentHealth;
@@ -28,7 +37,7 @@ public class PlayerHealthMO : MonoBehaviour
         _weaponFSM = GetComponentInChildren<WeaponFSM>();
 
         // Change Health UI
-        EventManager.Instance.OnPlayerDamaged(currHealth, currHealth, maxHealth, 0f);
+        _eventManager.OnPlayerDamaged(currHealth, currHealth, maxHealth, 0f);
     }
 
     public void HandleDamage(int damage, Vector2 enemyPos)
@@ -57,8 +66,7 @@ public class PlayerHealthMO : MonoBehaviour
         }
 
         // Notify Observers
-        EventManager.Instance.OnPlayerDamaged(prevHealth, currHealth, maxHealth);
-        // Event_HealthChange?.Invoke(prevHealth);
+        _eventManager.OnPlayerDamaged(prevHealth, currHealth, maxHealth);
 
         // Disable Player Control
         Utility.EnablePlayerControl(false, frozenTime);
@@ -91,7 +99,7 @@ public class PlayerHealthMO : MonoBehaviour
             currHealth = Mathf.Min(currHealth, maxHealth);
 
             // Change Health UI
-            EventManager.Instance.OnPlayerDamaged(prevHealth, currHealth, maxHealth);
+            _eventManager.OnPlayerDamaged(prevHealth, currHealth, maxHealth);
         }
     }
 
@@ -103,7 +111,7 @@ public class PlayerHealthMO : MonoBehaviour
             currHealth = maxHealth;
 
             // Change Health UI
-            EventManager.Instance.OnPlayerDamaged(prevHealth, currHealth, maxHealth);
+            _eventManager.OnPlayerDamaged(prevHealth, currHealth, maxHealth);
         }
     }
 

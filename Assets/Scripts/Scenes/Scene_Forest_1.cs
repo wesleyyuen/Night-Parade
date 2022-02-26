@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Scene_Forest_1 : SceneScript
+public class Scene_Forest_1 : SceneInstaller
 {
     private enum SpawnPoint {
         NotTesting,

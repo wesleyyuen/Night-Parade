@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneScript : MonoBehaviour
+public class SceneInstaller : MonoBehaviour
 {
     [SerializeField] protected Transform _playerGroup;
     [SerializeField] protected GameObject _transitionGO;

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using MEC;
 using DG.Tweening;
+using Zenject;
 
 public class HealthUI : MonoBehaviour
 {
@@ -13,6 +14,14 @@ public class HealthUI : MonoBehaviour
     [SerializeField] Sprite halfHeart;
     [SerializeField] Sprite quarterHeart;
     [SerializeField] Sprite emptyHeart;
+
+    private IEventManager _eventManager;
+
+    [Inject]
+    public void Initialize(IEventManager eventManager)
+    {
+        _eventManager = eventManager;
+    }
     
     private void Awake()
     {
@@ -28,14 +37,14 @@ public class HealthUI : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Instance.Event_PlayerDamaged += UpdateHeartsUI;
+        _eventManager.Event_PlayerDamaged += UpdateHeartsUI;
         GameMaster.Instance.Event_UIIntro += Intro;
         GameMaster.Instance.Event_UIOutro += Outro;
     }
 
     private void OnDisable()
     {
-        EventManager.Instance.Event_PlayerDamaged -= UpdateHeartsUI;
+        _eventManager.Event_PlayerDamaged -= UpdateHeartsUI;
         GameMaster.Instance.Event_UIIntro -= Intro;
         GameMaster.Instance.Event_UIOutro -= Outro;
     }

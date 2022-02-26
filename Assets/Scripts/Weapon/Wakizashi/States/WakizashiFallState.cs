@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public sealed class WakizashiFallState : IWeaponState, IBindInput
 {
-    private WakizashiFSM _fsm;
+    private readonly WakizashiFSM _fsm;
     private Collider2D _collider;
     private Rigidbody2D _rb;
     private PlayerAnimations _playerAnimation;

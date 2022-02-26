@@ -11,7 +11,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         Attack,
         Throw
     }
-    private WakizashiFSM _fsm;
+    private readonly WakizashiFSM _fsm;
     private PlayerMovement _playerMovement;
     private PlayerAnimations _playerAnimation;
     private NextActionType _nextAction;

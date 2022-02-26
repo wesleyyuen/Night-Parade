@@ -1,17 +1,20 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+// using Zenject;
 using TMPro;
 using MEC;
 using DG.Tweening;
 
 public class MonUI : MonoBehaviour
 {
-    PlayerInventory _playerInventory;
-    [SerializeField] TextMeshProUGUI monText;
-    [SerializeField] CanvasGroup canvas;
-    [SerializeField] float showingDuration;
-    [SerializeField] float fadingDuration;
+    private PlayerInventory _playerInventory;
+    [SerializeField] private TextMeshProUGUI monText;
+    [SerializeField] private CanvasGroup canvas;
+    [SerializeField] private float showingDuration;
+    [SerializeField] private float fadingDuration;
+
+    // [Inject]
 
     private void OnEnable()
     {

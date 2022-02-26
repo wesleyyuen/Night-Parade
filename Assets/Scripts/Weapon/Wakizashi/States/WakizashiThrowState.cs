@@ -5,7 +5,7 @@ using MEC;
 
 public sealed class WakizashiThrowState : IWeaponState, IBindInput
 {
-    private WakizashiFSM _fsm;
+    private readonly WakizashiFSM _fsm;
     private WakizashiData _data;
     private Rigidbody2D _rb;
     private Collider2D _collider;
