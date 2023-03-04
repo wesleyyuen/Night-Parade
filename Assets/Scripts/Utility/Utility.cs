@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
-using UnityEngine.Experimental.Rendering.Universal;
 using MEC;
 using TMPro;
 using DG.Tweening;
@@ -28,7 +27,7 @@ public class Utility : MonoBehaviour
     public static void SetAlphaRecursively(GameObject obj, float alpha, bool isRecursive = true)
     {
         SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-        Light2D light = obj.GetComponent<Light2D>();
+        UnityEngine.Rendering.Universal.Light2D light = obj.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
         ParticleSystem particles = obj.GetComponent<ParticleSystem>();
         TMP_Text text = obj.GetComponent<TMP_Text>();
         Image image = obj.GetComponent<Image>();
@@ -93,7 +92,7 @@ public class Utility : MonoBehaviour
         }
 
         SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-        Light2D light = obj.GetComponent<Light2D>();
+        UnityEngine.Rendering.Universal.Light2D light = obj.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
         ParticleSystem particles = obj.GetComponent<ParticleSystem>();
         TMP_Text text = obj.GetComponent<TMP_Text>();
         Image image = obj.GetComponent<Image>();
@@ -156,13 +155,16 @@ public class Utility : MonoBehaviour
         text.gameObject.SetActive(false);
     }
 
-    public static void EnablePlayerControl(bool enable, float time = 0)
+    public static void EnablePlayerControl(bool enable, float time = 0, bool shouldFreezeAnim = false)
     {
         GameObject player = FindObjectOfType<PlayerMovement>().gameObject;
         WeaponFSM weapon = FindObjectOfType<WeaponFSM>();
         if (player.TryGetComponent<PlayerAnimations>(out PlayerAnimations animations)) {
             animations.EnablePlayerTurning(enable, time);
-            animations.FreezePlayerAnimation(!enable, time);
+            if (shouldFreezeAnim)
+            {
+                animations.FreezePlayerAnimation(!enable, time);
+            }
         }
         if (player.TryGetComponent<PlayerMovement>(out PlayerMovement movement)) {
             movement.EnablePlayerMovement(enable, time);

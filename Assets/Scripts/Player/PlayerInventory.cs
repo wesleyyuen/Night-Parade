@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -8,7 +9,13 @@ public class PlayerInventory : MonoBehaviour
     public int MonOnHand { get { return monOnHand; } }
     private int recentMonDelta;
     public int RecentMonDelta { get { return recentMonDelta; } }
-    public event System.Action Event_MonChange;
+    private EventManager _eventManager;
+
+    [Inject]
+    public void Initialize(EventManager eventManager)
+    {
+        _eventManager = eventManager;
+    }
 
     private void Start()
     {
@@ -19,11 +26,13 @@ public class PlayerInventory : MonoBehaviour
 
     public void PickUpCoin(int amt)
     {
+        int prev = monOnHand;
+
         // TODO: mon deltas listen for 3 seconds before adding to monOnHand  
         recentMonDelta = amt;
         monOnHand += amt;
 
         // Update Mon UI
-        Event_MonChange?.Invoke();
+        _eventManager.OnPlayerMonIncreased(prev, monOnHand);
     }
 }

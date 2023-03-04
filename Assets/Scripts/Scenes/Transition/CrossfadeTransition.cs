@@ -13,14 +13,9 @@ public class CrossfadeTransition : MonoBehaviour, ISceneTransition
         get => _transitionDuration;
     }
 
-    private void Awake()
-    {
-        _canvasGroup.alpha = 1f;
-    }
-    
     public void StartSceneTransitionIn()
     {
-        if (_tween != null) _tween.Kill(false);
+        if (_tween != null) _tween.Kill(true);
 
         _canvasGroup.alpha = 1f;
         _tween = _canvasGroup.DOFade(0f, _transitionDuration)
@@ -33,7 +28,7 @@ public class CrossfadeTransition : MonoBehaviour, ISceneTransition
 
     public void StartSceneTransitionOut(string levelToLoad, ref PlayerData playerData)
     {
-        if (_tween != null) _tween.Kill(false);
+        if (_tween != null) _tween.Kill(true);
 
         PlayerData player = playerData;
         _canvasGroup.alpha = 0f;

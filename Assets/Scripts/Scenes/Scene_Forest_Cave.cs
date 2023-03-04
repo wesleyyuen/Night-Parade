@@ -7,7 +7,7 @@ public class Scene_Forest_Cave : SceneInstaller
         NotTesting,
         Forest_1
     }
-    [SerializeField] private AudioEvent _ambient;
+    [SerializeField] private AmbientAudioEvent _ambient;
     [SerializeField] private SpawnPoint _spawnPoint;
     [SerializeField] private Transform _forest1SpawnPoint;
     [SerializeField] private TextMeshProUGUI forestText;

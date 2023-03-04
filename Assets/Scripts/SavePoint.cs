@@ -4,7 +4,7 @@
     {
         if (_isInRange && !DialogueManager.Instance.isTalking) {
             // Fully Heal player
-            _player.GetComponent<PlayerHealthMO>().FullHeal();
+            _player.GetComponent<PlayerHealth>().FullHeal();
 
             // Manually Save
             if (SaveManager.Save(_player)) {

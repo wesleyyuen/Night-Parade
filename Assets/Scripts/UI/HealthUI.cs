@@ -7,6 +7,7 @@ using Zenject;
 
 public class HealthUI : MonoBehaviour
 {
+    private EventManager _eventManager;
     [SerializeField] Material _flashMaterial;
     [SerializeField] Image[] hearts;
     [SerializeField] Sprite fullHeart;
@@ -15,10 +16,8 @@ public class HealthUI : MonoBehaviour
     [SerializeField] Sprite quarterHeart;
     [SerializeField] Sprite emptyHeart;
 
-    private IEventManager _eventManager;
-
     [Inject]
-    public void Initialize(IEventManager eventManager)
+    public void Initialize(EventManager eventManager)
     {
         _eventManager = eventManager;
     }
@@ -37,16 +36,16 @@ public class HealthUI : MonoBehaviour
 
     private void OnEnable()
     {
-        _eventManager.Event_PlayerDamaged += UpdateHeartsUI;
-        GameMaster.Instance.Event_UIIntro += Intro;
-        GameMaster.Instance.Event_UIOutro += Outro;
+        _eventManager.Event_OnPlayerDamaged += UpdateHeartsUI;
+        _eventManager.Event_OnUIIntro += Intro;
+        _eventManager.Event_OnUIOutro += Outro;
     }
 
     private void OnDisable()
     {
-        _eventManager.Event_PlayerDamaged -= UpdateHeartsUI;
-        GameMaster.Instance.Event_UIIntro -= Intro;
-        GameMaster.Instance.Event_UIOutro -= Outro;
+        _eventManager.Event_OnPlayerDamaged -= UpdateHeartsUI;
+        _eventManager.Event_OnUIIntro -= Intro;
+        _eventManager.Event_OnUIOutro -= Outro;
     }
 
     private void Intro()

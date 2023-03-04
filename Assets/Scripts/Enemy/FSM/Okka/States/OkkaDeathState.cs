@@ -23,7 +23,6 @@ public sealed class OkkaDeathState : IEnemyState
         _fsm.rb.velocity = Vector2.zero;
 
         // Apply Knock back
-        float knockBackForce = _fsm.enemyData.knockBackOnTakingDamageForce * 2.5f;
         bool knockBackToRight;
         if (float.TryParse(_fsm.stateParameter, out float xDir)) {
             knockBackToRight = xDir > 0f;
@@ -31,7 +30,7 @@ public sealed class OkkaDeathState : IEnemyState
             knockBackToRight = _fsm.rb.position.x > _fsm.player.transform.position.x;
         }
         Vector2 knockBackDir = new Vector2(knockBackToRight ? 1f : -1f, 0.75f);
-        _fsm.ApplyForce(knockBackDir, knockBackForce);
+        _fsm.ApplyForce(knockBackDir, _fsm.enemyData.knockBackOnTakingDamageForce * 1.75f);
 
         _fsm.GFX.PlayDeathEffect(_fsm.enemyData.dieTime);
     }

@@ -1,14 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class PlayerWallSlide : MonoBehaviour
 {
-    Rigidbody2D _rb;
-    PlayerPlatformCollision _collision;
-    WeaponFSM _weaponFSM;
-    [SerializeField] float slideSpeed;
+    private InputManager _inputManager;
+    private Rigidbody2D _rb;
+    private PlayerPlatformCollision _collision;
+    private WeaponFSM _weaponFSM;
+    [SerializeField] private float slideSpeed;
+    // TODO: use event instead
     [HideInInspector] public bool canSlide;
+
+    [Inject]
+    public void Initialize(InputManager inputManager)
+    {
+        _inputManager = inputManager;
+    }
 
     private void Awake()
     {
@@ -29,8 +38,8 @@ public class PlayerWallSlide : MonoBehaviour
         // Must be falling
         if (!_collision.onGround && _collision.onWall && _rb.velocity.y < 0) {
             // Must be pressing against wall
-            if ((_collision.onLeftWall && InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left))
-             || (_collision.onRightWall && InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right)) ) {
+            if ((_collision.onLeftWall && _inputManager.HasDirectionalInput(InputManager.DirectionInput.Left))
+             || (_collision.onRightWall && _inputManager.HasDirectionalInput(InputManager.DirectionInput.Right)) ) {
                 WallSlide(slideSpeed);
             }
         }

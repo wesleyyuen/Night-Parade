@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class DialogueTrigger : MonoBehaviour
 {
+    private InputManager _inputManager;
     [SerializeField] private bool _isAutoTrigger;
     [SerializeField] private Dialogue dialogue;
     [SerializeField] protected Optional<float> _triggerRange;
@@ -10,6 +12,11 @@ public class DialogueTrigger : MonoBehaviour
     protected bool _isInRange;
     protected bool _isDialogueTriggered;
 
+    [Inject]
+    public void Initialize(InputManager inputManager)
+    {
+        _inputManager = inputManager;
+    }
 
     private void Awake()
     {
@@ -18,12 +25,12 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.Instance.Event_GameplayInput_Interact += OnTriggerDialogue;
+        _inputManager.Event_GameplayInput_Interact += OnTriggerDialogue;
     }
 
     private void OnDisable()
     {
-        InputManager.Instance.Event_GameplayInput_Interact -= OnTriggerDialogue;
+        _inputManager.Event_GameplayInput_Interact -= OnTriggerDialogue;
     }
 
     protected virtual void Update()

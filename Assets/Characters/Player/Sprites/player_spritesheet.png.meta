@@ -270,6 +270,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -1084,6 +1085,41 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      player_idle_07: -7718075202434357713
+      player_run_6: -5844229392406826400
+      player_attack_0: -8403806705498589453
+      player_jumping_0: -7980971809977678539
+      player_block_0: 1853529871507610518
+      player_idle_05: 2437086898252886616
+      player_falling_0: -6339154150686768515
+      player_idle_00: 4126361020569692968
+      player_idle_11: -5707783572576921085
+      player_idle_08: 7453621945606656366
+      player_idle_12: 2693905912463514280
+      player_block_1: -6449076795859281417
+      player_run_1: -4148961355465977301
+      player_run_3: 4230258538296812781
+      player_idle_10: 6596592610696640285
+      player_attack_1: -4700962206925797956
+      player_idle_06: 5535087283207449811
+      player_run_7: -2270108244896127765
+      player_run_0: -938658608654533949
+      player_idle_09: 9209960373400063527
+      player_run_2: 8204335442217980708
+      player_idle_13: -8277566817519787266
+      player_block_2: -4330518384087368845
+      player_attack_end_0: 3627921327622383112
+      player_attack_4: 4796735922052937764
+      player_idle_03: 4595225399512931535
+      player_run_4: 1805687361805048230
+      player_idle_02: -5688421476121381043
+      player_idle_04: 281898474786923749
+      player_attack_2: -2858461255669054906
+      player_run_5: -8277223436960721367
+      player_idle_01: -5120725153556008476
+      player_attack_3: -737162690956582579
+      player_block_3: -9136565869553687789
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

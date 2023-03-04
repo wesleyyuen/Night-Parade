@@ -1,17 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public sealed class OkkaStateType : RegularEnemyStateType
-{
-    private OkkaStateType(string value) : base(value) { }
-}
-
 public class OkkaFSM : EnemyFSM
 {
     private OkkaPatrolState _patrolState;
     private OkkaAggroState _aggroState;
-    private OkkaAttackState _attackState;
+    // private OkkaAttackState _attackState;
     private OkkaStunnedState _stunnedState;
     private OkkaDeathState _deathState;
     
@@ -39,4 +30,9 @@ public class OkkaFSM : EnemyFSM
         // return IsCurrentState(RegularEnemyStateType.Aggro);
         return false;
     }
+}
+
+public sealed class OkkaStateType : RegularEnemyStateType
+{
+    private OkkaStateType(string value) : base(value) { }
 }

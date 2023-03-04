@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using UnityEngine;
+using Zenject;
 using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour
@@ -9,14 +8,19 @@ public class GameMaster : MonoBehaviour
     public static GameMaster Instance {
         get  {return _instance; }
     }
+    private EventManager _eventManager;
+    private InputManager _inputManager;
     [SerializeField] public Constant.SceneName startingScene = Constant.SceneName.Main_Menu;
     public string prevScene {get; private set;}
     public string currentScene {get; private set;}
-    public event System.Action Event_GameMasterInitalized;
-    
-    // Static UI Events to avoid OnEnable/OnDisable Null References
-    public event System.Action Event_UIIntro;
-    public event System.Action Event_UIOutro;
+    public static event System.Action Event_GameMasterInitalized;
+
+    [Inject]
+    public void Initialize(EventManager eventManager, InputManager inputManager)
+    {
+        _eventManager = eventManager;
+        _inputManager = inputManager;
+    }
 
     private void Awake()
     {
@@ -27,24 +31,24 @@ public class GameMaster : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
-
-        bool isTesting = startingScene != Constant.SceneName.Main_Menu;
-        SetUI(isTesting);
     }
     
     private void Start()
     {
         Event_GameMasterInitalized?.Invoke();
+        
+        bool isTesting = startingScene != Constant.SceneName.Main_Menu && startingScene != Constant.SceneName._TestingChamber;
+        SetUI(isTesting);
     }
 
     private void OnEnable()
     {
-        InputManager.Instance.Event_CheatInput_TestChamber += OnTestChamber;
+        _inputManager.Event_CheatInput_TestChamber += OnTestChamber;
     }
 
     private void OnDisable()
     {
-        InputManager.Instance.Event_CheatInput_TestChamber -= OnTestChamber;
+        _inputManager.Event_CheatInput_TestChamber -= OnTestChamber;
     }
 
     private void OnTestChamber()
@@ -74,15 +78,15 @@ public class GameMaster : MonoBehaviour
         prevScene = currentScene;
         currentScene = sceneToLoad;
 
-        // TODO: For some reason BOTH causes flickering
-        SceneManager.LoadSceneAsync(sceneToLoad);
-        // SceneManager.LoadScene(sceneToLoad);
+        // TODO: For some reason BOTH causes flickering 
+        // yield return SceneManager.LoadSceneAsync(sceneToLoad);
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     public void RequestSceneChangeToMainMenu()
     {
         AudioManager.Instance.PauseAll();
-        Event_UIOutro?.Invoke();
+        _eventManager.OnUIOutro();
         
         PlayerData emptyData = new PlayerData();
         RequestSceneChange(Constant.SceneName.Main_Menu.ToString(), ref emptyData);
@@ -98,9 +102,9 @@ public class GameMaster : MonoBehaviour
         Cursor.lockState = boolean ? CursorLockMode.Locked : CursorLockMode.Confined;
 
         if (boolean) {
-            Event_UIIntro?.Invoke();
+            _eventManager.OnUIIntro();
         } else {
-            Event_UIOutro?.Invoke();
+            _eventManager.OnUIOutro();
         }
 
         // GameObject dialogueUI = GameObject.FindGameObjectWithTag("DialogueUI");

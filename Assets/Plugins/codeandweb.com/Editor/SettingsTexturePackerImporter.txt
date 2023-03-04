@@ -4,17 +4,20 @@ tpsheetFileNames:
 - Assets/Characters/Enemy/Okka/Sprites/okka_spritesheet.tpsheet
 - Assets/Characters/Enemy/Shide/Sprites/shide_spritesheet.tpsheet
 - Assets/Characters/Player/Sprites/player_spritesheet.tpsheet
+- Assets/Environments/Tilemap/Forest/Sprites/Grass Shades/forest_grass_shades_atlas.tpsheet
 - Assets/Graphics/Characters/Enemy/Okka/okka_spritesheet.tpsheet
-- Assets/Tilemap/Forest/Sprites/Grass Shades/forest_grass_shades_atlas.tpsheet
+- Assets/Weapons/Dual Wakizashis/Sprites/wakizashi_spritesheet.tpsheet
 - Assets/Weapons/Wakizashi/Sprites/wakizashi_spritesheet.tpsheet
 textureFileNames:
 - Assets/Characters/Enemy/Okka/Sprites/okka_spritesheet.png
 - Assets/Characters/Enemy/Shide/Sprites/okka_spritesheet.png
 - Assets/Characters/Player/Sprites/player_spritesheet.png
+- Assets/Environments/Tilemap/Forest/Sprites/Grass Shades/forest_grass_shades_atlas.png
 - Assets/Graphics/Characters/Enemy/Okka/okka_spritesheet.png
-- Assets/Tilemap/Forest/Sprites/Grass Shades/forest_grass_shades_atlas.png
+- Assets/Weapons/Dual Wakizashis/Sprites/wakizashi_spritesheet.png
 - Assets/Weapons/Wakizashi/Sprites/wakizashi_spritesheet.png
 normalmapFileNames:
+- 
 - 
 - 
 - 

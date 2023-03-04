@@ -1,68 +1,68 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
-using DG.Tweening;
+// using UnityEngine;
 
-public sealed class WakizashiAimState : IWeaponState, IBindInput
-{
-    private readonly WakizashiFSM _fsm;
-    private PlayerAnimations _playerAnimation;
-    private bool _isThrowing, _stopUpdating;
+// public sealed class WakizashiAimState : IWeaponState, IBindInput
+// {
+//     private InputManager _inputManager;
+//     private readonly WakizashiFSM _fsm;
+//     private PlayerAnimations _playerAnimation;
+//     private bool _isThrowing, _stopUpdating;
 
-    public WakizashiAimState(WakizashiFSM fsm)
-    {
-        _fsm = fsm;
+//     public WakizashiAimState(WakizashiFSM fsm, InputManager inputManager)
+//     {
+//         _fsm = fsm;
+//         _inputManager = inputManager;
 
-        _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
-    }
+//         _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
+//     }
 
-    public void BindInput()
-    {
-        InputManager.Instance.Event_GameplayInput_ThrowSlowTap += OnStartThrow;
-    }
+//     public void BindInput()
+//     {
+//         _inputManager.Event_GameplayInput_ThrowSlowTap += OnStartThrow;
+//     }
 
-    public void UnbindInput()
-    {
-        InputManager.Instance.Event_GameplayInput_ThrowSlowTap -= OnStartThrow;
-    }
+//     public void UnbindInput()
+//     {
+//         _inputManager.Event_GameplayInput_ThrowSlowTap -= OnStartThrow;
+//     }
  
-    public void EnterState()
-    {
-        _isThrowing = false;
-        _stopUpdating = false;
+//     public void EnterState()
+//     {
+//         _isThrowing = false;
+//         _stopUpdating = false;
 
-        bool hasInput = InputManager.Instance.HasDirectionalInput();
-        _fsm.throwDirection = hasInput ? InputManager.Instance.GetDirectionalInputVector() : _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
+//         bool hasInput = _inputManager.HasDirectionalInput();
+//         _fsm.throwDirection = hasInput ? _inputManager.GetDirectionalInputVector() : _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
 
-        Utility.EnablePlayerControl(false);
-    }
+//         Utility.EnablePlayerControl(false);
+//     }
 
-    private void OnStartThrow()
-    {
-        if (_fsm.IsCurrentState(WakizashiStateType.Aim) && !_isThrowing) {
-            _isThrowing = true;
-        }
-    }
+//     private void OnStartThrow()
+//     {
+//         if (_fsm.IsCurrentState(WakizashiStateType.Aim) && !_isThrowing) {
+//             _isThrowing = true;
+//         }
+//     }
 
-    public void Update()
-    {
-        if (_stopUpdating) return;
+//     public void Update()
+//     {
+//         if (_stopUpdating) return;
 
-        if (InputManager.Instance.HasDirectionalInput()) {
-            _fsm.throwDirection = InputManager.Instance.GetDirectionalInputVector();
-        }
+//         if (_inputManager.HasDirectionalInput()) {
+//             _fsm.throwDirection = _inputManager.GetDirectionalInputVector();
+//         }
 
-        if (_isThrowing) {
-            _stopUpdating = true;
-            _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);
-        }
-    }
+//         if (_isThrowing) {
+//             _stopUpdating = true;
+//             _fsm.SetState(_fsm.states[WakizashiStateType.Throw]);
+//         }
+//     }
 
-    public void FixedUpdate()
-    {
-    }
+//     public void FixedUpdate()
+//     {
+//     }
 
-    public void ExitState()
-    {
-        Utility.EnablePlayerControl(true);
-    }
-}
+//     public void ExitState()
+//     {
+//         Utility.EnablePlayerControl(true);
+//     }
+// }

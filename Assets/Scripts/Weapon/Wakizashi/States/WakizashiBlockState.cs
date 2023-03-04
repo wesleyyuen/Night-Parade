@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public sealed class WakizashiBlockState : IWeaponState, IBindInput
 {
+    private InputManager _inputManager;
     private readonly WakizashiFSM _fsm;
     private PlayerMovement _playerMovement;
     private PlayerAnimations _playerAnimation;
@@ -14,9 +14,10 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
     private bool _hasNextAttack, _hasNextThrow;
     private bool _stopUpdating;
 
-    public WakizashiBlockState(WakizashiFSM fsm)
+    public WakizashiBlockState(WakizashiFSM fsm, InputManager inputManager)
     {
         _fsm = fsm;
+        _inputManager = inputManager;
         
         _abilityController = fsm.GetComponentInParent<PlayerAbilityController>();
         _playerMovement = fsm.GetComponentInParent<PlayerMovement>();
@@ -25,16 +26,16 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        InputManager.Instance.Event_GameplayInput_BlockCanceled += OnReleaseBlock;
-        InputManager.Instance.Event_GameplayInput_Attack += OnNextAttack;
-        // InputManager.Instance.Gameplay.ThrowSlowTap.started += OnNextThrow;
+        _inputManager.Event_GameplayInput_BlockCanceled += OnReleaseBlock;
+        _inputManager.Event_GameplayInput_Attack += OnNextAttack;
+        // _inputManager.Gameplay.ThrowSlowTap.started += OnNextThrow;
     }
 
     public void UnbindInput()
     {
-        InputManager.Instance.Event_GameplayInput_BlockCanceled -= OnReleaseBlock;
-        InputManager.Instance.Event_GameplayInput_Attack -= OnNextAttack;
-        // InputManager.Instance.Gameplay.ThrowSlowTap.started -= OnNextThrow;
+        _inputManager.Event_GameplayInput_BlockCanceled -= OnReleaseBlock;
+        _inputManager.Event_GameplayInput_Attack -= OnNextAttack;
+        // _inputManager.Gameplay.ThrowSlowTap.started -= OnNextThrow;
     }
 
     public void EnterState()
@@ -76,7 +77,7 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
         _abilityController.UseStamina();
 
         // Handle Release earlier than InputActions' minDuration
-        if (!InputManager.Instance.HasBlockInput() && !_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer < _fsm.weaponData.blockMinDuration) {
+        if (!_inputManager.HasBlockInput() && !_isBlockReleasedBeforeMinDuration && _fsm.currentBlockTimer < _fsm.weaponData.blockMinDuration) {
             _isBlockReleasedBeforeMinDuration = true;
         }
 

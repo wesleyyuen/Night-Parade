@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
+using Zenject;
 
 public class PauseMenu : MonoBehaviour
 {
+    private InputManager _inputManager;
     public static bool isPuased = false;
     [SerializeField] GameObject pauseMenuUI;
     [SerializeField] GameObject optionsMenuUI;
+
+    [Inject]
+    public void Initialize(InputManager inputManager)
+    {
+        _inputManager = inputManager;
+    }
 
     private void Awake()
     {
@@ -15,12 +22,12 @@ public class PauseMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.Instance.Event_UIInput_Pause += OnPauseOrResume;
+        _inputManager.Event_UIInput_Pause += OnPauseOrResume;
     }
 
     private void OnDisable()
     {
-        InputManager.Instance.Event_UIInput_Pause -= OnPauseOrResume;
+        _inputManager.Event_UIInput_Pause -= OnPauseOrResume;
     }
 
     private void OnPauseOrResume()
@@ -42,9 +49,9 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         // Handle player control
-        // InputManager.Instance.EnableGameplayInput();
+        // _inputManager.EnableGameplayInput();
         if (!DialogueManager.Instance.isTalking)
-            Utility.EnablePlayerControl(true);
+            Utility.EnablePlayerControl(true, shouldFreezeAnim: true);
         AudioManager.Instance.UnpauseAll();
 
         TimeManager.Instance.SetTimeScale(1f);
@@ -61,8 +68,8 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
 
         // Stop player control
-        // InputManager.Instance.EnableMenuInput();
-        Utility.EnablePlayerControl(false);
+        // _inputManager.EnableMenuInput();
+        Utility.EnablePlayerControl(false, shouldFreezeAnim: true);
         AudioManager.Instance.PauseAll();
 
         TimeManager.Instance.SetTimeScale(0f);

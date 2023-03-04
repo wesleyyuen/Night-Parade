@@ -60,6 +60,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -489,6 +490,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      okka_idle_3: -1222550260570391595
+      okka_patrol_7: -724958308139482110
+      okka_idle_0: 1264937537354488673
+      okka_patrol_4: -8490347540212021051
+      okka_idle_2: -6273152287924363043
+      okka_patrol_2: 3794513218189370849
+      okka_patrol_3: 4289767309634831248
+      okka_idle_1: 3656589509258385259
+      okka_patrol_1: 2760513386425140377
+      okka_patrol_6: -1237064034361835733
+      okka_patrol_5: -5827595514323610602
+      okka_patrol_0: 5896990085356402998
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

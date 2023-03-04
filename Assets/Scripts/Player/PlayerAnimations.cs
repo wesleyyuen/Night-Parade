@@ -2,9 +2,11 @@
 using UnityEngine;
 using MEC;
 using DG.Tweening;
+using Zenject;
 
 public class PlayerAnimations : MonoBehaviour
 {
+    private InputManager _inputManager;
     [SerializeField] private ParticleSystem _dustTrail;
     private PlayerPlatformCollision _grounded;
     private Animator _playerAnimator;
@@ -15,6 +17,12 @@ public class PlayerAnimations : MonoBehaviour
     private PlayerMovement _movement;
     private bool _isSquishing;
     private bool canTurn;
+
+    [Inject]
+    public void Initialize(InputManager inputManager)
+    {
+        _inputManager = inputManager;
+    }
 
     private void Awake()
     {
@@ -89,9 +97,9 @@ public class PlayerAnimations : MonoBehaviour
 
         // Flip sprite
         if (canTurn) {
-            if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right) && prevLocalScale.x != 1f) {
+            if (_inputManager.HasDirectionalInput(InputManager.DirectionInput.Right) && prevLocalScale.x != 1f) {
                 FaceRight(true); 
-            } else if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left) && prevLocalScale.x != -1f) {
+            } else if (_inputManager.HasDirectionalInput(InputManager.DirectionInput.Left) && prevLocalScale.x != -1f) {
                 FaceRight(false);
             }
         }
@@ -101,8 +109,8 @@ public class PlayerAnimations : MonoBehaviour
         // Set animations
         if (_movement.canWalk) {
             float input = 0f;
-            if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Right)) input = 1f;
-            else if (InputManager.Instance.HasDirectionalInput(InputManager.DirectionInput.Left)) input = -1f;
+            if (_inputManager.HasDirectionalInput(InputManager.DirectionInput.Right)) input = 1f;
+            else if (_inputManager.HasDirectionalInput(InputManager.DirectionInput.Left)) input = -1f;
             SetRunAnimation(input);
         }
     }
@@ -156,7 +164,7 @@ public class PlayerAnimations : MonoBehaviour
 
     public void SetAttackAnimation(int count)
     {
-        SetInteger("DirectionalInput", (int) InputManager.Instance.GetDirectionalInput());
+        SetInteger("DirectionalInput", (int) _inputManager.GetDirectionalInput());
         SetInteger("AttackCount", count);
         if (count != 0) {
             SetTrigger("Attack");
@@ -185,7 +193,7 @@ public class PlayerAnimations : MonoBehaviour
 
     public void CreateDustTrail()
     {
-        _dustTrail.Play();
+        _dustTrail?.Play();
     }
 
     public void Squish(float duration, Vector2 to)

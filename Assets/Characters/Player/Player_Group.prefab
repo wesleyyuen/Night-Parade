@@ -10210,8 +10210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32dbcc8802b5cc949a7d72bfb557ea69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Event_onPlayerDamaged: {fileID: 11400000, guid: ecd378922cd6ef14f954f6e6c175fd34,
-    type: 2}
   _damagedKnockBackForce: 50
   _cameraShakeMultiplier: 2.5
   _damageCameraShakeTimer: 0.125
@@ -10259,6 +10257,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab059b7becedc5c42b28b6615ef82477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _abilityAccess:
+  - ability: 0
+    component: {fileID: 2041433566063267575}
+    hasAccess: 1
+  - ability: 1
+    component: {fileID: 2538564034545995052}
+    hasAccess: 0
+  - ability: 2
+    component: {fileID: 7948314669877384146}
+    hasAccess: 0
+  - ability: 3
+    component: {fileID: 4335142053317917803}
+    hasAccess: 1
+  - ability: 4
+    component: {fileID: 2102494299507649654}
+    hasAccess: 0
 --- !u!114 &4308330023035708203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10281,9 +10295,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2879578091249280811}
   - component: {fileID: 2041433566063267575}
-  - component: {fileID: 4335142053317917803}
   - component: {fileID: 2538564034545995052}
   - component: {fileID: 7948314669877384146}
+  - component: {fileID: 4335142053317917803}
+  - component: {fileID: 2102494299507649654}
   m_Layer: 9
   m_Name: Abilities
   m_TagString: Untagged
@@ -10323,23 +10338,6 @@ MonoBehaviour:
   _lowJumpMultiplier: 4
   _jumpBufferTime: 0.15
   _coyoteTime: 0.125
---- !u!114 &4335142053317917803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7341647568417064945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b83c5c173e79a3644a62638230743c07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dashSpeed: 200
-  dashTime: 0.1
-  cooldown: 0.6
-  freezeDuration: 0.075
-  _counterWindow: 0.075
 --- !u!114 &2538564034545995052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10366,9 +10364,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcafdf852bc352e43a3362e739969c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpDirection: {x: 1, y: 1.3}
-  _jumpForce: 35
+  _jumpDirection: {x: 1, y: 1.5}
+  _jumpForce: 40
   _movementDisableTime: 0.25
+--- !u!114 &4335142053317917803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7341647568417064945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83c5c173e79a3644a62638230743c07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashSpeed: 200
+  dashTime: 0.1
+  cooldown: 0.6
+  freezeDuration: 0.075
+  _counterWindow: 0.075
+--- !u!114 &2102494299507649654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7341647568417064945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcae09c95b5a24345953889326f187bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rewindDuration: 0.6
 --- !u!1 &8023338476404892031
 GameObject:
   m_ObjectHideFlags: 0

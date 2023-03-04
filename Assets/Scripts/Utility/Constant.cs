@@ -4,6 +4,8 @@ public class Constant : MonoBehaviour
     // Class that holds static constants/Game Behavior Flags for ease of playtesting
     public enum SceneName
     {
+        _TestingChamber,
+
         Main_Menu,
         Forest_Cave,
         Forest_1

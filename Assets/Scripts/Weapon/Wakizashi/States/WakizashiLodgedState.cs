@@ -1,28 +1,28 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using DG.Tweening;
 
 public sealed class WakizashiLodgedState : IWeaponState, IBindInput
 {
+    private InputManager _inputManager;
     private WakizashiFSM _fsm;
     private PlayerAnimations _playerAnimation;
     private bool _isReturning, _stopUpdating;
 
-    public WakizashiLodgedState(WakizashiFSM fsm)
+    public WakizashiLodgedState(WakizashiFSM fsm, InputManager inputManager)
     {
         _fsm = fsm;
+        _inputManager = inputManager;
 
         _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
     }
 
     public void BindInput()
     {
-        InputManager.Instance.Event_GameplayInput_ThrowSlowTap += OnStartReturn;
+        _inputManager.Event_GameplayInput_ThrowTap += OnStartReturn;
     }
 
     public void UnbindInput()
     {
-        InputManager.Instance.Event_GameplayInput_ThrowSlowTap -= OnStartReturn;
+        _inputManager.Event_GameplayInput_ThrowTap -= OnStartReturn;
     }
 
     public void EnterState()

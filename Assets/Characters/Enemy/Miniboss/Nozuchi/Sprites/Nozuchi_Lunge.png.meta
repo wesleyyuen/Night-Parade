@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -292,6 +293,14 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Nozuchi_Lunge_2: -2968398427584792576
+      Nozuchi_Lunge_3: -8444762589336093375
+      Nozuchi_Lunge_5: -5185460139294812305
+      Nozuchi_Lunge_0: -6230753390806953172
+      Nozuchi_Lunge_1: 8361582582727575959
+      Nozuchi_Lunge_4: 8431266263853700875
+      Nozuchi_Lunge_6: 8967395627045917251
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

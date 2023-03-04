@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class PlayerPlatformCollision : MonoBehaviour
 {  
+    private EventManager _eventManager;
     public bool onGround { get; private set; }
-    public event System.Action Event_OnGroundEnter;
     // public bool onSlope { get; private set; }
     // public Vector2 slopeVector { get; private set; }
     // public Vector2 slopeNormal { get; private set; }
@@ -26,6 +27,12 @@ public class PlayerPlatformCollision : MonoBehaviour
     private int _groundLayerMask, _wallLayerMask;
     private float _lastYVelocity, _fallStartYPos;
     private bool _startedFalling;
+
+    [Inject]
+    public void Initialize(EventManager eventManager)
+    {
+        _eventManager = eventManager;
+    }
 
     private void Awake()
     {
@@ -114,7 +121,7 @@ public class PlayerPlatformCollision : MonoBehaviour
     
     private void OnGroundEnter()
     {
-        Event_OnGroundEnter?.Invoke();
+        _eventManager?.OnPlayerGroundEntered();
         
         // Handle Big Fall
         const float bigFallHeight = 20f;

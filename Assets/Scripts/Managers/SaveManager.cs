@@ -28,12 +28,12 @@ public class SaveManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameMaster.Instance.Event_GameMasterInitalized += LoadStartingScene;
+        GameMaster.Event_GameMasterInitalized += LoadStartingScene;
     }
 
     private void OnDisable()
     {
-        GameMaster.Instance.Event_GameMasterInitalized -= LoadStartingScene;
+        GameMaster.Event_GameMasterInitalized -= LoadStartingScene;
     }
 
     private void LoadStartingScene()

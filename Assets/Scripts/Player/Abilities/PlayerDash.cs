@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 using MEC;
 
 public class PlayerDash : MonoBehaviour
 {
     [Header("References")]
+    private EventManager _eventManager;
+    private InputManager _inputManager;
     private Rigidbody2D _rb;
     private PlayerAnimations _anim;
     private PlayerMovement _movement;
-    private PlayerHealthMO _health;
+    private PlayerHealth _health;
     private PlayerAbilityController _abilities;
     private PlayerPlatformCollision _collision;
     [SerializeField] private float dashSpeed;
@@ -17,9 +20,9 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private float cooldown;
     [SerializeField] private float freezeDuration;
     [SerializeField] private float _counterWindow;
-    // [SerializeField] private ParticleSystem afterimage;
+    // [SerializeField] private ParticleSystem _afterimage;
     private HashSet<int> _enemiesParriedIDs = new HashSet<int>();
-    // private ParticleSystemRenderer _particleRenderer;
+    private ParticleSystemRenderer _particleRenderer;
     private Vector2 _blockPoint = new Vector2(0.95f, 1.45f);
     private Vector2 _blockRange = new Vector2(0.4f, 2.85f);
     private const int MAX_DASH = 1;
@@ -27,29 +30,36 @@ public class PlayerDash : MonoBehaviour
     private float _nextDashTime;
     private float _counterTimer;
 
+    [Inject]
+    public void Initialize(EventManager eventManager, InputManager inputManager)
+    {
+        _eventManager = eventManager;
+        _inputManager = inputManager;
+    }
+
     private void Awake()
     {
         _rb = GetComponentInParent<Rigidbody2D>();
         _anim = GetComponentInParent<PlayerAnimations>();
         _movement = GetComponentInParent<PlayerMovement>();
-        _health = GetComponentInParent<PlayerHealthMO>();
+        _health = GetComponentInParent<PlayerHealth>();
         _abilities = GetComponentInParent<PlayerAbilityController>();
         _collision = GetComponentInParent<PlayerPlatformCollision>();
-        // _particleRenderer = afterimage.GetComponent<ParticleSystemRenderer>();
+        // _particleRenderer = _afterimage?.GetComponent<ParticleSystemRenderer>();
 
         _dashLeft = MAX_DASH;
     }
 
     private void OnEnable()
     {
-        InputManager.Instance.Event_GameplayInput_Dash += OnDash;
-        _collision.Event_OnGroundEnter += ResetDash;
+        _inputManager.Event_GameplayInput_Dash += OnDash;
+        _eventManager.Event_OnPlayerGroundEntered += ResetDash;
     }
 
     private void OnDisable()
     {
-        InputManager.Instance.Event_GameplayInput_Dash -= OnDash;
-        _collision.Event_OnGroundEnter -= ResetDash;
+        _inputManager.Event_GameplayInput_Dash -= OnDash;
+        _eventManager.Event_OnPlayerGroundEntered -= ResetDash;
     }
 
     private void ResetDash()
@@ -112,8 +122,10 @@ public class PlayerDash : MonoBehaviour
     private void ActuallyDash(Vector2 dir)
     {
         // After Image Effects
-        // _particleRenderer.flip = new Vector3(dir.x > 0 ? 0f : 1f, 0f, 0f);
-        // afterimage.Play();
+        // if (_afterimage) {
+        //     _particleRenderer.flip = new Vector3(dir.x > 0 ? 0f : 1f, 0f, 0f);
+        //     _afterimage.Play();
+        // }
 
         // Movement
         _movement.LetRigidbodyMoveForSeconds(dashTime + freezeDuration / 2);

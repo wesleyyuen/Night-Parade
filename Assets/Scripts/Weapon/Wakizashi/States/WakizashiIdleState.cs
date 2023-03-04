@@ -1,32 +1,33 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 // Include both idle + moving states
 public sealed class WakizashiIdleState : IWeaponState, IBindInput
 {
+    private InputManager _inputManager;
     private WakizashiFSM _fsm;
     private Rigidbody2D _rb;
     private bool _stopUpdating;
 
-    public WakizashiIdleState(WakizashiFSM fsm)
+    public WakizashiIdleState(WakizashiFSM fsm, InputManager inputManager)
     {
         _fsm = fsm;
+        _inputManager = inputManager;
 
         _rb = fsm.GetComponent<Rigidbody2D>();
     }
 
     public void BindInput()
     {
-        InputManager.Instance.Event_GameplayInput_Attack += OnStartAttack;
-        InputManager.Instance.Event_GameplayInput_ThrowTap += OnStartThrow;
-        InputManager.Instance.Event_GameplayInput_ThrowHold += OnStartAim;
+        _inputManager.Event_GameplayInput_Attack += OnStartAttack;
+        _inputManager.Event_GameplayInput_ThrowTap += OnStartThrow;
+        // _inputManager.Event_GameplayInput_ThrowHold += OnStartAim;
     }
 
     public void UnbindInput()
     {
-        InputManager.Instance.Event_GameplayInput_Attack -= OnStartAttack;
-        InputManager.Instance.Event_GameplayInput_ThrowTap -= OnStartThrow;
-        InputManager.Instance.Event_GameplayInput_ThrowHold -= OnStartAim;
+        _inputManager.Event_GameplayInput_Attack -= OnStartAttack;
+        _inputManager.Event_GameplayInput_ThrowTap -= OnStartThrow;
+        // _inputManager.Event_GameplayInput_ThrowHold -= OnStartAim;
     }
 
     public void EnterState()
@@ -55,13 +56,13 @@ public sealed class WakizashiIdleState : IWeaponState, IBindInput
         }
     }
 
-    private void OnStartAim()
-    {
-        if (!_stopUpdating && _fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0) {
-            _stopUpdating = true;
-            _fsm.SetState(_fsm.states[WakizashiStateType.Aim]);
-        }
-    }
+    // private void OnStartAim()
+    // {
+    //     if (!_stopUpdating && _fsm.IsCurrentState(WakizashiStateType.Idle) && _fsm.throwCooldownTimer <= 0) {
+    //         _stopUpdating = true;
+    //         _fsm.SetState(_fsm.states[WakizashiStateType.Aim]);
+    //     }
+    // }
 
     public void Update()
     {

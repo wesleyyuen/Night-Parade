@@ -5,11 +5,10 @@ using MEC;
 
 public class EnemyGFX : MonoBehaviour
 {
-    Transform _player;
-    Animator _animator;
-    SpriteRenderer _spriteRenderer;
-    public float turningTime;
-    bool _isTurning;
+    private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
+    private Transform _player;
+    private bool _isTurning;
     [SerializeField] protected SpriteRenderer _exclaimationMark;
     [SerializeField] protected SpriteRenderer _questionMark;
     [SerializeField] protected ParticleSystem _deathParticleEffect;
@@ -77,53 +76,13 @@ public class EnemyGFX : MonoBehaviour
         }
     }
 
-    public void TurnAround(bool isInstant)
-    {
-        Timing.RunCoroutine(_TurnAroundCoroutine(isInstant).CancelWith(gameObject));
-    }
-
-    private IEnumerator<float> _TurnAroundCoroutine(bool isInstant)
+    public void TurnAround()
     {
         _isTurning = true;
-        yield return Timing.WaitForSeconds(isInstant ? 0.0f : turningTime);
         _spriteRenderer.transform.localScale = new Vector3(-_spriteRenderer.transform.localScale.x, 1f, 1f);
         _questionMark.transform.localScale = new Vector3(_spriteRenderer.transform.localScale.x, 1f, 1f);
 
         _isTurning = false;
-    }
-
-    public void FlashExclaimationMark()
-    {
-        // Timing.RunCoroutine(_FlashExclaimationMarkCoroutine().CancelWith(gameObject));
-    }
-
-    private IEnumerator<float> _FlashExclaimationMarkCoroutine()
-    {
-        _questionMark.enabled = false;
-        _exclaimationMark.enabled = true;
-        float flashTime = turningTime;
-
-        // Flash at least 0.5 seconds
-        if (flashTime < 0.5f) flashTime = 0.5f;
-        yield return Timing.WaitForSeconds(flashTime);
-        _exclaimationMark.enabled = false;
-    }
-
-    public void FlashQuestionMark()
-    {
-        // Timing.RunCoroutine(FlashQuestionMarkCoroutine().CancelWith(gameObject));
-    }
-
-    private IEnumerator<float> FlashQuestionMarkCoroutine ()
-    {
-        _exclaimationMark.GetComponent<SpriteRenderer>().enabled = false;
-        _questionMark.enabled = true;
-        float flashTime = turningTime;
-
-        // Flash at least 0.5 seconds
-        if (flashTime < 0.5f) flashTime = 0.5f;
-        yield return Timing.WaitForSeconds(flashTime);
-        _questionMark.enabled = false;
     }
 
     public void PlayDamagedEffect()

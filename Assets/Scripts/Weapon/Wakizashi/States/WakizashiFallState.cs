@@ -1,18 +1,18 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using DG.Tweening;
 
 public sealed class WakizashiFallState : IWeaponState, IBindInput
 {
+    private InputManager _inputManager;
     private readonly WakizashiFSM _fsm;
     private Collider2D _collider;
     private Rigidbody2D _rb;
     private PlayerAnimations _playerAnimation;
     private bool _isReturning, _stopUpdating;
 
-    public WakizashiFallState(WakizashiFSM fsm)
+    public WakizashiFallState(WakizashiFSM fsm, InputManager inputManager)
     {
         _fsm = fsm;
+        _inputManager = inputManager;
 
         _rb = fsm.GetComponent<Rigidbody2D>();
         _collider = fsm.GetComponent<Collider2D>();
@@ -21,12 +21,12 @@ public sealed class WakizashiFallState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        InputManager.Instance.Event_GameplayInput_ThrowSlowTap += OnStartReturn;
+        _inputManager.Event_GameplayInput_ThrowSlowTap += OnStartReturn;
     }
 
     public void UnbindInput()
     {
-        InputManager.Instance.Event_GameplayInput_ThrowSlowTap -= OnStartReturn;
+        _inputManager.Event_GameplayInput_ThrowSlowTap -= OnStartReturn;
     }
 
     public void EnterState()

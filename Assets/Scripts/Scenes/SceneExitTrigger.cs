@@ -14,14 +14,11 @@ public class SceneExitTrigger : MonoBehaviour
             PlayerMovement movement = player.GetComponent<PlayerMovement>();
 
             // Force Continue player's animation until off screen
-            Utility.EnablePlayerControl(false, 0);
+            Utility.EnablePlayerControl(false);
             if (player.GetComponent<PlayerPlatformCollision>().onGround) {
-                animations.SetRunAnimation(collider.gameObject.transform.localScale.x);
                 movement.MoveForwardForSeconds(2f);
-            } else {
-                animations.SetJumpFallAnimation();
             }
-
+            
             Scene currentScene = SceneManager.GetActiveScene();
 
             // Save player states and variables for next scene

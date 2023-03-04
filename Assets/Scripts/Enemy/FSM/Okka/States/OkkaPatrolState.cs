@@ -35,6 +35,7 @@ public sealed class OkkaPatrolState : IEnemyState
     }
 
     // TODO: Can this be optimized further?
+    // TODO: USE rigidbody.sweeptest() instead of raycast twice?
     public void FixedUpdate()
     {
         Vector2 groundDetectionPoint = new Vector2 (_fsm.GFX.GetEnemyScale().x == 1f ? _fsm.col.bounds.max.x + _DETECTION_OFFSET: _fsm.col.bounds.min.x - _DETECTION_OFFSET, _fsm.col.bounds.center.y);
@@ -50,7 +51,7 @@ public sealed class OkkaPatrolState : IEnemyState
 
         if (shouldTurnAround && _turnCooldownTimer <= 0f) {
             _turnCooldownTimer = _TURN_COOLDOWN;
-            _fsm.GFX.TurnAround(true);
+            _fsm.GFX.TurnAround();
         }
 
         // Move forward

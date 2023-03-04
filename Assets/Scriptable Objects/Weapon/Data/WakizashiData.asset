@@ -17,12 +17,12 @@ MonoBehaviour:
   - 5
   - 5
   - 5
-  attackCooldown: 0.4
+  attackCooldown: 0.375
   enemyLayers:
     serializedVersion: 2
     m_Bits: 12288
   attackPoint: {x: 2.25, y: 1.5}
-  attackRange: {x: 3, y: 2.85}
+  attackRange: {x: 4, y: 2.85}
   horizontalKnockBackForce: 5
   upthrustPoint: {x: 0, y: 1.5}
   upthrustRange: {x: 3, y: 3}
@@ -39,7 +39,7 @@ MonoBehaviour:
   blockCooldown: 0.5
   missSFX: {fileID: 11400000, guid: b89a9c022f668a140b606ac88e4026bd, type: 2}
   hitSFX: {fileID: 11400000, guid: 92bb8beece6c7ea479b916adc7121b12, type: 2}
-  throwVelocity: 60
+  throwVelocity: 65
   throwMinDuration: 0.2
   throwDamage: 7
   throwCooldown: 0.7

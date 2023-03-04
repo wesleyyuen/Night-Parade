@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Zenject;
 
 public sealed class WakizashiStateType : WeaponStateType
 {
-  public static readonly WakizashiStateType Aim = new WakizashiStateType("Aim");
+//   public static readonly WakizashiStateType Aim = new WakizashiStateType("Aim");
   public static readonly WakizashiStateType Throw = new WakizashiStateType("Thrown");
   public static readonly WakizashiStateType Return = new WakizashiStateType("Return");
   public static readonly WakizashiStateType Lodged = new WakizashiStateType("Lodged");
@@ -16,11 +16,12 @@ public sealed class WakizashiStateType : WeaponStateType
 
 public sealed class WakizashiFSM : WeaponFSM
 {
+    private InputManager _inputManager;
     private WakizashiIdleState _idleState;
     private WakizashiAttackState _attackState;
     private WakizashiParryState _parryState;
     private WakizashiBlockState _blockState;
-    private WakizashiAimState _aimState;
+    // private WakizashiAimState _aimState;
     private WakizashiThrowState _throwState;
     private WakizashiReturnState _returnState;
     private WakizashiLodgedState _lodgedState;
@@ -28,17 +29,23 @@ public sealed class WakizashiFSM : WeaponFSM
     [HideInInspector] public Vector2 throwDirection;
     [HideInInspector] public float throwCooldownTimer;
 
+    [Inject]
+    public void Initialize(InputManager inputManager)
+    {
+        _inputManager = inputManager;
+    }
+
     protected override void Awake()
     {
-        _idleState = new WakizashiIdleState(this);
-        _attackState = new WakizashiAttackState(this);
+        _idleState = new WakizashiIdleState(this, _inputManager);
+        _attackState = new WakizashiAttackState(this, _inputManager);
         _parryState = new WakizashiParryState(this);
-        _blockState = new WakizashiBlockState(this);
-        _aimState = new WakizashiAimState(this);
-        _throwState = new WakizashiThrowState(this);
+        _blockState = new WakizashiBlockState(this, _inputManager);
+        // _aimState = new WakizashiAimState(this, _inputManager);
+        _throwState = new WakizashiThrowState(this, _inputManager);
         _returnState = new WakizashiReturnState(this);
-        _lodgedState = new WakizashiLodgedState(this);
-        _fallState = new WakizashiFallState(this);
+        _lodgedState = new WakizashiLodgedState(this, _inputManager);
+        _fallState = new WakizashiFallState(this, _inputManager);
 
         throwDirection = Vector2.zero;
         WakizashiData data = (WakizashiData)weaponData;
@@ -50,7 +57,7 @@ public sealed class WakizashiFSM : WeaponFSM
         states.Add(WakizashiStateType.Attack, _attackState);
         states.Add(WakizashiStateType.Parry, _parryState);
         states.Add(WakizashiStateType.Block, _blockState);
-        states.Add(WakizashiStateType.Aim, _aimState);
+        // states.Add(WakizashiStateType.Aim, _aimState);
         states.Add(WakizashiStateType.Throw, _throwState);
         states.Add(WakizashiStateType.Return, _returnState);
         states.Add(WakizashiStateType.Lodged, _lodgedState);
@@ -70,8 +77,7 @@ public sealed class WakizashiFSM : WeaponFSM
         }
 
         // Bind inputs for action that can be trigger from all states
-        InputManager.Instance.Event_GameplayInput_Block += OnStartBlock;
-        // InputActions.Gameplay.Block.started += OnStartBlock;
+        _inputManager.Event_GameplayInput_Block += OnStartBlock;
     }
 
     private void OnDisable()
@@ -85,8 +91,7 @@ public sealed class WakizashiFSM : WeaponFSM
         }
 
         // Unbind inputs for action that can be trigger from all states
-        InputManager.Instance.Event_GameplayInput_Block -= OnStartBlock;
-        // InputActions.Gameplay.Block.started -= OnStartBlock;
+        _inputManager.Event_GameplayInput_Block -= OnStartBlock;
     }
 
     private void OnStartBlock()
@@ -95,51 +100,6 @@ public sealed class WakizashiFSM : WeaponFSM
             SetState(states[WakizashiStateType.Parry]);
         }
     }
-
-    // private void OnThrowTapStarted(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("<color=green>ThrowTap - Started</color>");
-    // }
-
-    //     private void OnThrowTapPerformed(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("<color=green>ThrowTap - Performed</color>");
-    // }
-
-    //     private void OnThrowTapCanceled(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("<color=green>ThrowTap - Canceled</color>");
-    // }
-
-    //     private void OnThrowSlowTapStarted(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("<color=blue>ThrowSlowTap - Started</color>");
-    // }
-
-    //     private void OnThrowSlowTapPerformed(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("<color=blue>ThrowSlowTap - Performed</color>");
-    // }
-
-    //     private void OnThrowSlowTapCanceled(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("<color=blue>ThrowSlowTap - Canceled</color>");
-    // }
-
-    //     private void OnThrowHoldStarted(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("<color=purple>ThrowHold - Started</color>");
-    // }
-
-    //     private void OnThrowHoldPerformed(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("<color=purple>ThrowHold - Performed</color>");
-    // }
-
-    //     private void OnThrowHoldCanceled(InputAction.CallbackContext context)
-    // {
-    //     Debug.Log("<color=purple>ThrowHold - Canceled</color>");
-    // }
 
     protected override void Update()
     {

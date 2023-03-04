@@ -24,7 +24,7 @@ public class SoundtrackAudioEvent : AudioEvent
         if (fadeDuration > 0f) {
             Timing.RunCoroutine(_FadeVolume(source, 0f, source.volume, fadeDuration));
         }
-        source.PlayOneShot(source.clip);
+        source.Play();
     }
 
     private IEnumerator<float> _FadeVolume(AudioSource source, float from, float to, float duration)

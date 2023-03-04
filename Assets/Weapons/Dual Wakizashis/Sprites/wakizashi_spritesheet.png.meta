@@ -324,6 +324,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -1599,6 +1600,64 @@ TextureImporter:
     secondaryTextures:
     - texture: {fileID: 2800000, guid: f2fe2c91778d31748a3a4f7e84f709ca, type: 3}
       name: _Emission
+    nameFileIdTable:
+      wakizashi_downthrust_1: -7957608349330079110
+      wakizashi_throw: -346323406881120123
+      wakizashi_run_r_7: -4744066216419824185
+      wakizashi_idle_l_00: -7999573205321087204
+      wakizashi_attack_3: 580542360679017147
+      wakizashi_idle_r_02: -4273230865524730458
+      wakizashi_idle_r_01: 6847864533026804624
+      wakizashi_attack_4: -7697036289221115065
+      wakizashi_upthrust_4: -1224577042617236010
+      wakizashi_downthrust_0: -262113945469232703
+      wakizashi_upthrust_1: 5510627537538255250
+      wakizashi_idle_r_10: 5267759237983605421
+      wakizashi_run_r_5: -4967031545484825093
+      wakizashi_idle_r_12: -5058884495428036248
+      wakizashi_idle_r_00: 3821746489759318809
+      wakizashi_idle_r_04: -5315590624096754735
+      wakizashi_attack_0: -5484858739611455443
+      wakizashi_idle_r_06: 2064618850304614660
+      wakizashi_upthrust_3: 507011403230303599
+      wakizashi_run_l_6: -8218838306489675341
+      wakizashi_idle_r_11: -76276735930432178
+      wakizashi_downthrust_4: -665850589715031560
+      wakizashi_upthrust_0: -6676710624034080966
+      wakizashi_block_1: -3310570246707934803
+      wakizashi_run_r_3: 1965150346958622902
+      wakizashi_downthrust_2: -8545314072725504776
+      wakizashi_run_l_5: 8944402105935116807
+      wakizashi_run_l_0: 2705999010619587342
+      wakizashi_attack_1: -5709281141954299574
+      wakizashi_idle_r_03: 8123104126769384476
+      wakizashi_run_r_2: 8474420106031419915
+      wakizashi_attack_end_0: 5877670696545445905
+      wakizashi_run_r_0: 4711507099968350089
+      wakizashi_upthrust_2: -8321031587092376580
+      wakizashi_run_r_6: -8947239189613075456
+      wakizashi_idle_r_08: 8988633746485825752
+      wakizashi_falling_0: 3742884045939048228
+      wakizashi_attack_2: 3809896713651752963
+      wakizashi_idle_r_07: -1688891964705710651
+      wakizashi_run_l_4: -201538526590362094
+      wakizashi_idle_r_09: -2626616098038002864
+      wakizashi_run_l_7: 5529037247325311379
+      wakizashi_run_r_4: -14700366534916408
+      wakizashi_attack_7: -2163401228145648973
+      wakizashi_jumping_0: 6721035804144214716
+      wakizashi_run_l_3: 2641593714819942948
+      wakizashi_attack_8: -1804011794912196696
+      wakizashi_downthrust_3: 6116966411346893633
+      wakizashi_idle_r_05: -4419598075974021622
+      wakizashi_run_l_2: 4619139503943889412
+      wakizashi_attack_6: -9062855852231158338
+      wakizashi_idle_l_01: 4969464190373444467
+      wakizashi_attack_5: -5812474446417020312
+      wakizashi_run_l_1: -1847441814971818573
+      wakizashi_block_0: 2212678379330939097
+      wakizashi_idle_r_13: -7440199265033570503
+      wakizashi_run_r_1: -5885996317499712087
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

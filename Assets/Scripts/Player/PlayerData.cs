@@ -42,7 +42,7 @@ public class PlayerData
     {
         SaveFileIndex = loadIndex;
 
-        if (player.TryGetComponent<PlayerHealthMO>(out PlayerHealthMO health)) {
+        if (player.TryGetComponent<PlayerHealth>(out PlayerHealth health)) {
             CurrentHealth = health.currHealth;
             MaxHealth = health.maxHealth;
         }
@@ -63,15 +63,5 @@ public class PlayerData
     public bool IsValid()
     {
         return SaveFileIndex != 0;
-    }
-
-    public void Invalidate()
-    {
-        SaveFileIndex = 0;
-    }
-
-    public void Reset()
-    {
-
     }
 }

@@ -7,7 +7,7 @@ public class Scene_Forest_1 : SceneInstaller
         Cave,
         Save
     }
-    [SerializeField] private AudioEvent _ambient;
+    [SerializeField] private AmbientAudioEvent _ambient;
     [SerializeField] private SpawnPoint spawnPoint;
     [SerializeField] private Transform caveSpawnPoint;
     [SerializeField] private Transform saveSpawnPoint;

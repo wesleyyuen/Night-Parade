@@ -52,10 +52,6 @@ public class WeaponFSM : MonoBehaviour
         currentBlockTimer = 0f;
     }
 
-    protected virtual void Start()
-    {
-    }
-
     protected virtual void Update()
     {
         if (player == null) return;
@@ -177,7 +173,7 @@ public class WeaponFSM : MonoBehaviour
         if (weaponData != null) {
             // Show Attack Range
             Gizmos.color = Color.red;
-            // Gizmos.DrawWireCube(transform.TransformPoint(weaponData.attackPoint), weaponData.attackRange);
+            Gizmos.DrawWireCube(transform.TransformPoint(weaponData.attackPoint), weaponData.attackRange);
 
             // Show Upthrust Range
             // Gizmos.DrawWireCube(transform.TransformPoint(weaponData.upthrustPoint), weaponData.upthrustRange);

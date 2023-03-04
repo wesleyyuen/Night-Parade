@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using MEC;
 
 public sealed class WakizashiThrowState : IWeaponState, IBindInput
 {
+    private InputManager _inputManager;
     private readonly WakizashiFSM _fsm;
     private WakizashiData _data;
     private Rigidbody2D _rb;
@@ -12,10 +12,11 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
     private PlayerAnimations _playerAnimation;
     private bool _isReturning, _stopUpdating;
 
-    public WakizashiThrowState(WakizashiFSM fsm)
+    public WakizashiThrowState(WakizashiFSM fsm, InputManager inputManager)
     {
         _fsm = fsm;
         _data = (WakizashiData)fsm.weaponData;
+        _inputManager = inputManager;
 
         _rb = fsm.GetComponent<Rigidbody2D>();
         _collider = fsm.GetComponent<Collider2D>();
@@ -24,34 +25,37 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        InputManager.Instance.Event_GameplayInput_ThrowTap += OnStartReturn;
-        InputManager.Instance.Event_GameplayInput_ThrowSlowTap += OnStartReturn;
+        // _inputManager.Event_GameplayInput_ThrowTap += OnStartReturn;
+        // _inputManager.Event_GameplayInput_ThrowSlowTap += OnStartReturn;
     }
 
     public void UnbindInput()
     {
-        InputManager.Instance.Event_GameplayInput_ThrowTap -= OnStartReturn;
-        InputManager.Instance.Event_GameplayInput_ThrowSlowTap -= OnStartReturn;
+        // _inputManager.Event_GameplayInput_ThrowTap -= OnStartReturn;
+        // _inputManager.Event_GameplayInput_ThrowSlowTap -= OnStartReturn;
     }
  
     public void EnterState()
     {
         _isReturning = false;
         _stopUpdating = false;
-        bool wasAiming = _fsm.previousState == _fsm.states[WakizashiStateType.Aim];
-
-        if (_fsm.throwDirection == Vector2.zero) {
-            _fsm.throwDirection = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
-            if (wasAiming) _fsm.throwDirection += new Vector2(0f, 0.15f);
-            _fsm.throwDirection.Normalize();
-        }
-        
-        _fsm.throwCooldownTimer = _data.throwCooldown;
 
         // play animation
         _playerAnimation.SetThrowAnimation();
         
-        Utility.EnablePlayerControl(false);
+        // bool wasAiming = _fsm.previousState == _fsm.states[WakizashiStateType.Aim];
+
+        // if (_fsm.throwDirection == Vector2.zero) {
+            _fsm.throwDirection = _playerAnimation.IsFacingRight() ? Vector2.right : Vector2.left;
+            // if (wasAiming) _fsm.throwDirection += new Vector2(0f, 0.15f);
+        //     _fsm.throwDirection.Normalize();
+        // }
+        
+        _fsm.throwCooldownTimer = _data.throwCooldown;
+
+
+        
+        Utility.EnablePlayerControl(false, shouldFreezeAnim: true);
 
         // _collider.enabled = true;
 
@@ -60,7 +64,7 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         _fsm.transform.parent = null;
 
         // Actually Throw
-        Timing.RunCoroutine(_ActuallyThrow(!wasAiming).CancelWith(_fsm.gameObject));
+        Timing.RunCoroutine(_ActuallyThrow().CancelWith(_fsm.gameObject));
     }
 
     private void OnStartReturn()
@@ -70,7 +74,7 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         }
     }
 
-    private IEnumerator<float> _ActuallyThrow(bool shouldSelfReturn)
+    private IEnumerator<float> _ActuallyThrow()
     {
         _rb.isKinematic = true;
         _rb.velocity = Vector2.zero;
@@ -80,14 +84,14 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
 
         yield return Timing.WaitForSeconds(_data.throwMinDuration);
 
-        if (shouldSelfReturn) {
+        // if (shouldSelfReturn) {
             _isReturning = true;
-        } else {
+        // } else {
             // Apply Gravity
-            _rb.isKinematic = false;
-        }
+            // _rb.isKinematic = false;
+        // }
         
-        Utility.EnablePlayerControl(true);
+        Utility.EnablePlayerControl(true, shouldFreezeAnim: true);
     }
 
     public void Update()

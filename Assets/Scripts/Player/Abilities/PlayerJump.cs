@@ -2,26 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MEC;
+using Zenject;
 
 public class PlayerJump : MonoBehaviour
 {
     [Header ("References")]
-    Rigidbody2D _rb;
-    PlayerAbilityController _abilities;
-    PlayerPlatformCollision _coll;
-    PlayerAnimations _anim;
-    PlayerMovement _movement;
+    private InputManager _inputManager;
+    private Rigidbody2D _rb;
+    private PlayerAbilityController _abilities;
+    private PlayerPlatformCollision _coll;
+    private PlayerAnimations _anim;
+    private PlayerMovement _movement;
 
     [Header ("Jumping Settings")]
-    [SerializeField] float _jumpVelocity;
-    [SerializeField] float _fallMultiplier;
-    [SerializeField] float _lowJumpMultiplier;
-    [SerializeField] float _jumpBufferTime;
-    [SerializeField] float _coyoteTime;
-    bool _canJump = true;
-    float _jumpBuffer;
-    float _coyoteTimer;
-    bool _startsJumping;
+    [SerializeField] private float _jumpVelocity;
+    [SerializeField] private float _fallMultiplier;
+    [SerializeField] private float _lowJumpMultiplier;
+    [SerializeField] private float _jumpBufferTime;
+    [SerializeField] private float _coyoteTime;
+    private bool _canJump = true;
+    private float _jumpBuffer;
+    private float _coyoteTimer;
+    private bool _startsJumping;
+
+    [Inject]
+    public void Initialize(InputManager inputManager)
+    {
+        _inputManager = inputManager;
+    }
 
     private void Awake()
     {
@@ -30,19 +38,18 @@ public class PlayerJump : MonoBehaviour
         _coll = transform.parent.gameObject.GetComponent<PlayerPlatformCollision>();
         _anim = transform.parent.gameObject.GetComponent<PlayerAnimations>();
         _movement = transform.parent.gameObject.GetComponent<PlayerMovement>();
-        _canJump = true;
     }
 
     private void OnEnable()
     {
-        InputManager.Instance.Event_GameplayInput_Jump += OnJump;
-        InputManager.Instance.Event_GameplayInput_JumpCanceled += OnJumpCanceled;
+        _inputManager.Event_GameplayInput_Jump += OnJump;
+        _inputManager.Event_GameplayInput_JumpCanceled += OnJumpCanceled;
     }
 
     private void OnDisable()
     {
-        InputManager.Instance.Event_GameplayInput_Jump -= OnJump;
-        InputManager.Instance.Event_GameplayInput_JumpCanceled -= OnJumpCanceled;
+        _inputManager.Event_GameplayInput_Jump -= OnJump;
+        _inputManager.Event_GameplayInput_JumpCanceled -= OnJumpCanceled;
     }
 
     public void EnablePlayerJump(bool enable, float time = 0f)
@@ -101,7 +108,7 @@ public class PlayerJump : MonoBehaviour
         // Low Jump
         if (_rb.velocity.y < 0) {
             _rb.velocity += Vector2.up * Physics2D.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
-        } else if (_rb.velocity.y > 0 && !InputManager.Instance.HasJumpInput()) {
+        } else if (_rb.velocity.y > 0 && !_inputManager.HasJumpInput()) {
             _rb.velocity += Vector2.up * Physics2D.gravity.y * (_lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }

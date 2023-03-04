@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15462036ff17e4340ae3273a3b65b13d, type: 3}
+  m_Name: _DummyData
+  m_EditorClassIdentifier: 
+  maxHealth: 100000
+  patrolSpeed: 0
+  patrolDistance: 0
+  aggroMovementSpeed: 0
+  noLOSAggroDistance: 0
+  lineOfSightDistance: 0
+  lineOfSightAngle: 0
+  lineOfSightOriginOffset: {x: 0, y: 0.4}
+  lineOfSightBreakDelay: 0
+  timeStunnedAfterLOSBreak: 0
+  damageAmount: 0
+  attackDistance: 0
+  attackForce: 0
+  attackChargeTime: 0
+  attackTime: 0
+  timeStunnedAfterDamagingPlayer: 0
+  knockBackOnParriedForce: 0
+  timeStunnedAfterParried: 0
+  knockBackOnBlockedForce: 0
+  timeStunnedAfterBlocked: 0
+  knockBackOnTakingDamageForce: 17
+  timeStunnedAfterTakingDamage: 0.35
+  dieTime: 0.75
+  spawnCooldown: 0
+  dropSpawnOffset: {x: 0, y: 0.7}
+  dropSpawnForce: {x: 500, y: 800}
+  mon: {fileID: 615396422470690540, guid: 8d2e5dd9eca69244eb52a9dbd6b50599, type: 3}
+  numOfCoinsDrop: 1
+  coinsDropPercent: 0.8
+  heart: {fileID: 1201029992307220987, guid: 67b4dd017a688d04b8e1273bc72b4e68, type: 3}
+  numOfHeartsDrop: 1
+  heartDropPercent: 0.6
+  specialDrop:
+    enabled: 0
+    value: {fileID: 0}
+  specialDropSpawnOffset: {x: 0, y: 0}

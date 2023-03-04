@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity​Engine.Experimental.Rendering.Universal;
 using MEC;
+using Zenject;
 
 public class PlayerMovement : MonoBehaviour
 {
     [Header ("References")]
+    private InputManager _inputManager;
     private PlayerPlatformCollision _coll;
     private Rigidbody2D _rb;
     private PlayerAnimations _animations;
@@ -19,6 +21,12 @@ public class PlayerMovement : MonoBehaviour
     public bool isHandicapped {get; set;}
     private bool _isLetRBMove;
     private float _originalMovementSpeed;
+
+    [Inject]
+    public void Initialize(InputManager inputManager)
+    {
+        _inputManager = inputManager;
+    }
 
     private void Awake()
     {
@@ -82,12 +90,12 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        float horizotalInput = InputManager.Instance.GetDirectionalInputVector().x;
+        float horizotalInput = _inputManager.GetDirectionalInputVector().x;
         Vector2 newVelocity = _rb.velocity;
         
         // Move player
         // TODO: up slope still seems a bit slower then normal movement/upslope
-        // if (_coll.onGround && _coll.onSlope && !InputManager.Instance.HasJumpInput()) {
+        // if (_coll.onGround && _coll.onSlope && !_inputManager.HasJumpInput()) {
         //     newVelocity = new Vector2(horizotalInput * _movementSpeed, _rb.velocity.y);
         //     newVelocity = Vector3.ProjectOnPlane(newVelocity, _coll.slopeNormal);
         // }
@@ -105,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
         Timing.RunCoroutine(_HandicapMovementCoroutine(time).CancelWith(gameObject));
     }
 
-    IEnumerator<float> _HandicapMovementCoroutine(float time)
+    private IEnumerator<float> _HandicapMovementCoroutine(float time)
     {
         isHandicapped = true;
 
@@ -119,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
         Timing.RunCoroutine(_MoveForwardForSecondsCoroutine(time, _animations.IsFacingRight()).CancelWith(gameObject));
     }
 
-    IEnumerator<float> _MoveForwardForSecondsCoroutine(float time, bool toRight)
+    private IEnumerator<float> _MoveForwardForSecondsCoroutine(float time, bool toRight)
     {
         float timer = 0f;
 
@@ -140,11 +148,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void StepForward(float dist)
     {
-        if (Constant.STOP_WHEN_ATTACK && _coll.onGround && InputManager.Instance.GetDirectionalInputVector().x != 0)
+        if (Constant.STOP_WHEN_ATTACK && _coll.onGround && _inputManager.GetDirectionalInputVector().x != 0)
             Timing.RunCoroutine(_StepForwardCoroutine(_movementSpeed * 3f, 0.035f).CancelWith(gameObject));
     }
 
-    IEnumerator<float> _StepForwardCoroutine(float speed, float time)
+    private IEnumerator<float> _StepForwardCoroutine(float speed, float time)
     {
         float timer = 0f;
 

@@ -1,13 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 using MEC;
+using Zenject;
 using DG.Tweening;
 
 public class StaminaUI : MonoBehaviour
 {
+    private EventManager _eventManager;
     [SerializeField] CanvasGroup UIObject;
     [SerializeField] Image barFill;
     const float kFadeDuration = 0.85f;
+
+    [Inject]
+    public void Initialize(EventManager eventManager)
+    {
+        _eventManager = eventManager;
+    }
 
     private void Awake()
     {
@@ -16,14 +24,18 @@ public class StaminaUI : MonoBehaviour
 
     private void OnEnable()
     {
-        GameMaster.Instance.Event_UIIntro += Intro;
-        GameMaster.Instance.Event_UIOutro += Outro;
+        // GameMaster.Instance.Event_UIIntro += Intro;
+        // GameMaster.Instance.Event_UIOutro += Outro;
+                _eventManager.Event_OnUIIntro += Intro;
+        _eventManager.Event_OnUIOutro += Outro;
     }
 
     private void OnDisable()
     {
-        GameMaster.Instance.Event_UIIntro -= Intro;
-        GameMaster.Instance.Event_UIOutro -= Outro;
+                _eventManager.Event_OnUIIntro -= Intro;
+        _eventManager.Event_OnUIOutro -= Outro;
+        // GameMaster.Instance.Event_UIIntro -= Intro;
+        // GameMaster.Instance.Event_UIOutro -= Outro;
     }
 
     private void Intro()

@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using MEC;
 
 public sealed class WakizashiAttackState : IWeaponState, IBindInput
 {
+    private InputManager _inputManager;
     private enum NextActionType
     {
         None,
@@ -16,13 +17,16 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
     private PlayerAnimations _playerAnimation;
     private NextActionType _nextAction;
     private const int MAX_COMOBO_COUNT = 2;
+    private const float ATTACK_STEP_DIST = 3f;
     private bool _isListeningForNextAction;
     private bool _playedMissSFX;
     private HashSet<int> _enemiesAttackedIDs;
 
-    public WakizashiAttackState(WakizashiFSM fsm)
+    public WakizashiAttackState(WakizashiFSM fsm, InputManager inputManager)
     {
         _fsm = fsm;
+        _inputManager = inputManager;
+
         _enemiesAttackedIDs = new HashSet<int>();
         _playerMovement = fsm.GetComponentInParent<PlayerMovement>();
         _playerAnimation = fsm.GetComponentInParent<PlayerAnimations>();
@@ -30,16 +34,14 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     public void BindInput()
     {
-        InputManager.Instance.Event_GameplayInput_Attack += OnNextAttack;
-        // InputManager.Instance.Gameplay.Attack.performed += OnNextAttack;
-        // InputManager.Instance.Gameplay.ThrowSlowTap.started += OnNextThrow;
+        _inputManager.Event_GameplayInput_Attack += OnNextAttack;
+        _inputManager.Event_GameplayInput_ChargeAttack += OnChargeAttack;
     }
 
     public void UnbindInput()
     {
-        InputManager.Instance.Event_GameplayInput_Attack -= OnNextAttack;
-        // InputManager.Instance.Gameplay.Attack.performed -= OnNextAttack;
-        // InputManager.Instance.Gameplay.ThrowSlowTap.started -= OnNextThrow;
+        _inputManager.Event_GameplayInput_Attack -= OnNextAttack;
+        _inputManager.Event_GameplayInput_ChargeAttack -= OnChargeAttack;
     }
 
     public void EnterState()
@@ -56,7 +58,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         // Begin First Attack
         // _playerAnimation.EnablePlayerTurning(false);
         _playerAnimation.SetAttackAnimation(1);
-        _playerMovement.StepForward(2f);
+        _playerMovement.StepForward(ATTACK_STEP_DIST);
     }
 
     private void OnNextAttack()
@@ -69,24 +71,11 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
                 _isListeningForNextAction = false;
             }
         }
-        // else if (context.performed) {
-        //     OnChargeAttack();
-        // }
     }
 
-    // private void OnChargeAttack()
-    // {
-    // }
-
-    private void OnNextThrow(InputAction.CallbackContext context)
+    private void OnChargeAttack()
     {
-        // Listen for throw and queue as next action
-        if (_fsm.IsCurrentState(WakizashiStateType.Attack) && context.started && _playerAnimation.GetCurrentAttackAnimation() > 0) {
-            if (_isListeningForNextAction) {
-                // _playerAnimation.EnablePlayerTurning(true);
-                _nextAction = NextActionType.Throw;
-                _isListeningForNextAction = false;
-            }
+        if (_fsm.IsCurrentState(WakizashiStateType.Attack)) {
         }
     }
 
@@ -100,7 +89,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
             // _playerAnimation.EnablePlayerTurning(false);
             _nextAction = NextActionType.None;
             _playerAnimation.SetAttackAnimation((_playerAnimation.GetCurrentAttackAnimation() % MAX_COMOBO_COUNT) + 1);
-            _playerMovement.StepForward(2f);
+            _playerMovement.StepForward(ATTACK_STEP_DIST);
             _playedMissSFX = false;
         }
     }
@@ -130,7 +119,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         if (DealDamage(hitEnemies, hitDir)) {
             // Utility.FreezePlayer(0.05f);
             _playerMovement.ApplyKnockback(-hitDir, _fsm.weaponData.horizontalKnockBackForce, 0.05f);
-            CameraShake.Instance.ShakeCamera(1f, 0.1f);
+            OnAttackHitCameraShake();
             _fsm.PlayWeaponHitSFX();
         }
     }
@@ -154,7 +143,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         if (DealDamage(hitEnemies, Vector2.up)) {
             // Utility.FreezePlayer(0.05f);
             _playerMovement.ApplyKnockback(Vector2.down, _fsm.weaponData.upthrustKnockBackForce, 0.05f);
-            CameraShake.Instance.ShakeCamera(1f, 0.1f);
+            OnAttackHitCameraShake();
             _fsm.PlayWeaponHitSFX();
         }
     }
@@ -178,7 +167,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
         if (DealDamage(hitEnemies, Vector2.down)) {
             // Utility.FreezePlayer(0.05f);
             _playerMovement.ApplyKnockback(Vector2.up, _fsm.weaponData.downthrustKnockBackForce, 0.05f);
-            CameraShake.Instance.ShakeCamera(1f, 0.1f);
+            OnAttackHitCameraShake();
             _fsm.PlayWeaponHitSFX();
         }
     }
@@ -196,20 +185,15 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
                     }
                     
                 } 
-                // if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()) {
-                //     enemy.TakeDamage(Constant.HAS_TIMED_COMBO ? _fsm.weaponData.comboDamage[(_playerAnimation.GetCurrentAttackAnimation() % MAX_COMOBO_COUNT) - 1] : _fsm.weaponData.comboDamage[0],
-                //                      damageDir);
-                //     attacked = true;
-                // }
-
-                // if (hit.TryGetComponent<BreakableObject>(out BreakableObject breakable)) {
-                //     breakable.TakeDamage(breakable.transform.position.x > _fsm.player.position.x);
-                //     attacked = true;
-                // }
             }
         }
 
         return attacked;
+    }
+
+    private void OnAttackHitCameraShake()
+    {
+        CameraShake.Instance.ShakeCamera(1.5f, 0.1f);
     }
 
     public void EndAttack()
@@ -234,6 +218,7 @@ public sealed class WakizashiAttackState : IWeaponState, IBindInput
 
     public void OnNoNextAction()
     {
+        // Debug.Log(_isListeningForNextAction);
         if (_isListeningForNextAction) {
             _fsm.SetState(_fsm.states[WakizashiStateType.Idle]);
         }
