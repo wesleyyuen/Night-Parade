@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity​Engine.Experimental.Rendering.Universal;
 using MEC;
 using Zenject;
 
@@ -13,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rb;
     private PlayerAnimations _animations;
     private PlayerAudio _audio;
-    private PixelPerfectCamera _ppc;
+    // private PixelPerfectCamera _ppc;
 
     [Header ("Movement Settings")]
     [SerializeField] private float _movementSpeed = 14f;
@@ -34,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _animations = GetComponent<PlayerAnimations>();
         _audio = GetComponentInChildren<PlayerAudio>();
-        _ppc = Camera.main.GetComponent<PixelPerfectCamera>();
+        // _ppc = Camera.main.GetComponent<PixelPerfectCamera>();
 
         canWalk = true;
         _isLetRBMove = false;

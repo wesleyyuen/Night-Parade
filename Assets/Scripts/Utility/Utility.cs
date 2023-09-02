@@ -27,7 +27,7 @@ public class Utility : MonoBehaviour
     public static void SetAlphaRecursively(GameObject obj, float alpha, bool isRecursive = true)
     {
         SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-        UnityEngine.Rendering.Universal.Light2D light = obj.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+        // UnityEngine.Rendering.Universal.Light2D light = obj.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
         ParticleSystem particles = obj.GetComponent<ParticleSystem>();
         TMP_Text text = obj.GetComponent<TMP_Text>();
         Image image = obj.GetComponent<Image>();
@@ -38,8 +38,8 @@ public class Utility : MonoBehaviour
             sr.color = new Color (sr.color.r, sr.color.g, sr.color.b, alpha);
 
         // Light
-        if (light != null)
-            light.color = new Color (light.color.r, light.color.g, light.color.b, alpha);
+        // if (GetComponent<Light>() != null)
+        //     GetComponent<Light>().color = new Color (GetComponent<Light>().color.r, GetComponent<Light>().color.g, GetComponent<Light>().color.b, alpha);
 
         // Particle System
         if (particles != null) {
@@ -92,7 +92,7 @@ public class Utility : MonoBehaviour
         }
 
         SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-        UnityEngine.Rendering.Universal.Light2D light = obj.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+        // UnityEngine.Rendering.Universal.Light2D light = obj.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
         ParticleSystem particles = obj.GetComponent<ParticleSystem>();
         TMP_Text text = obj.GetComponent<TMP_Text>();
         Image image = obj.GetComponent<Image>();
@@ -104,8 +104,8 @@ public class Utility : MonoBehaviour
                 sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, Mathf.SmoothStep(from, to, t));
 
             // Light
-            if (light != null)
-                light.color = new Color(light.color.r, light.color.g, light.color.b, Mathf.SmoothStep(from, to, t));
+            // if (light != null)
+            //     light.color = new Color(light.color.r, light.color.g, light.color.b, Mathf.SmoothStep(from, to, t));
 
             // Particle System
             if (particles != null) {
