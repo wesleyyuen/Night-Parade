@@ -198,3 +198,63 @@ The following packages were updated:
   com.unity.test-framework from version 1.1.31 to 1.1.33
   com.unity.timeline from version 1.6.4 to 1.7.5
   com.unity.toolchain.win-x86_64-linux-x86_64 from version 0.1.21-preview to 2.0.4
+
+=== Fri Sep 22 21:23:35 2023
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ide.rider from version 3.0.12 to 3.0.24
+  com.unity.ide.visualstudio from version 2.0.14 to 2.0.18
+  com.unity.test-framework from version 1.1.31 to 1.1.33
+  com.unity.timeline from version 1.6.4 to 1.7.5
+  com.unity.xr.legacyinputhelpers from version 2.1.9 to 2.1.10
+
+=== Fri Sep 22 21:23:35 2023
+
+Packages were changed.
+Update Mode: mergeDefaultDependencies
+
+The following packages were added:
+  com.unity.ide.rider@3.0.24
+  com.unity.ide.visualstudio@2.0.18
+  com.unity.xr.legacyinputhelpers@2.1.10
+
+=== Fri Sep 22 21:42:14 2023
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ide.rider from version 3.0.12 to 3.0.24
+  com.unity.ide.visualstudio from version 2.0.14 to 2.0.18
+  com.unity.test-framework from version 1.1.31 to 1.1.33
+  com.unity.timeline from version 1.6.4 to 1.7.5
+  com.unity.xr.legacyinputhelpers from version 2.1.9 to 2.1.10
+
+=== Fri Sep 22 21:42:14 2023
+
+Packages were changed.
+Update Mode: mergeDefaultDependencies
+
+The following packages were added:
+  com.unity.ide.visualstudio@2.0.18
+
+=== Fri Sep 22 22:40:52 2023
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ide.rider from version 3.0.12 to 3.0.18
+  com.unity.ide.visualstudio from version 2.0.14 to 2.0.17
+  com.unity.xr.legacyinputhelpers from version 2.1.9 to 2.1.10
+
+=== Fri Sep 22 23:18:50 2023
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.render-pipelines.universal from version 12.1.10 to 14.0.8
