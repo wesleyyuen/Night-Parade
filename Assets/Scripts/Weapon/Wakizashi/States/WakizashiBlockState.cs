@@ -120,7 +120,7 @@ public sealed class WakizashiBlockState : IWeaponState, IBindInput
         }
 
         foreach (Collider2D hit in blocked) {
-            if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()) {
+            if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead) {
                 Vector2 dir = new Vector2(xScale, 0f);
                 enemy.ApplyForce(dir, enemy.enemyData.knockBackOnBlockedForce, enemy.enemyData.timeStunnedAfterBlocked);
                 enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterBlocked);

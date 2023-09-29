@@ -42,7 +42,7 @@ public sealed class WakizashiReturnState : IWeaponState
         _target = _isOnEnemy ? _fsm.transform.parent.GetComponent<Rigidbody2D>() : _rb;
         _lerpTime = 0f;
         float dist = Vector2.Distance(_weaponEndPosition, _target.position);
-        DOTween.To(() => _lerpTime, x => _lerpTime = x, 1f, RETURN_DURATION_PER_UNIT * dist).SetEase(Ease.InCubic);
+        DOTween.To(() => _lerpTime, x => _lerpTime = x, 1f, RETURN_DURATION_PER_UNIT * dist).SetEase(Ease.OutQuint);
     }
 
     private void OnReturnComplete()

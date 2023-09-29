@@ -21,5 +21,5 @@ public class Constant : MonoBehaviour
     public static bool HAS_TIMED_COMBO = false;
     public static bool HAS_STAMINA = false;
     public static bool STOP_WHEN_ATTACK = true;
-    public static bool ATTACK_STUNS_ENEMY = false;
+    public static bool ATTACK_STUNS_ENEMY = true;
 }

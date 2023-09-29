@@ -32,9 +32,9 @@ MonoBehaviour:
   timeStunnedAfterParried: 1.5
   knockBackOnBlockedForce: 6
   timeStunnedAfterBlocked: 0.6
-  knockBackOnTakingDamageForce: 17
-  timeStunnedAfterTakingDamage: 0.35
-  dieTime: 0.75
+  knockBackOnTakingDamageForce: 15
+  timeStunnedAfterTakingDamage: 0.3
+  dieTime: 0.7
   spawnCooldown: 90
   dropSpawnOffset: {x: 0, y: 0.7}
   dropSpawnForce: {x: 500, y: 800}

@@ -65,7 +65,7 @@ public sealed class WakizashiParryState : IWeaponState
         foreach (Collider2D hit in parried) {
             // Parry enemy only ONCE by adding them into list
             if (_enemiesParriedIDs.Add(hit.gameObject.GetInstanceID())) {
-                if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()) {
+                if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead) {
                     // enemy.TakeDamage(_fsm.weaponData.parryDamage, hitDir);
 
                     enemy.ApplyForce(hitDir, enemy.enemyData.knockBackOnParriedForce, enemy.enemyData.timeStunnedAfterParried);

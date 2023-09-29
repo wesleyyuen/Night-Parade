@@ -147,7 +147,7 @@ public class PlayerDash : MonoBehaviour
         foreach (Collider2D hit in parried) {
             // Parry enemy only ONCE by adding them into list
             if (_enemiesParriedIDs.Add (hit.gameObject.GetInstanceID ())) {
-                if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead()/* && enemy.IsAttacking()*/) {
+                if (hit.TryGetComponent<EnemyFSM>(out EnemyFSM enemy) && !enemy.IsDead/* && enemy.IsAttacking()*/) {
                     // Vector2 hitDir = _anim.IsFacingRight() ? Vector2.right : Vector2.left;
                     // enemy.TakeDamage(3f, hitDir);
                     enemy.StunForSeconds(enemy.enemyData.timeStunnedAfterParried);

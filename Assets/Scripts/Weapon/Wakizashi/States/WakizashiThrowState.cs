@@ -52,14 +52,13 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         // }
         
         _fsm.throwCooldownTimer = _data.throwCooldown;
-
-
         
         Utility.EnablePlayerControl(false, shouldFreezeAnim: true);
 
         // _collider.enabled = true;
 
         // Detach from player
+        // Vertical offset to visually match player's hands
         _fsm.transform.localPosition = new Vector2(0f, 1.5f);
         _fsm.transform.parent = null;
 
@@ -67,20 +66,20 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
         Timing.RunCoroutine(_ActuallyThrow().CancelWith(_fsm.gameObject));
     }
 
-    private void OnStartReturn()
-    {
-        if (_fsm.IsCurrentState(WakizashiStateType.Throw) && !_isReturning) {
-            _isReturning = true;
-        }
-    }
+    // private void OnStartReturn()
+    // {
+    //     if (_fsm.IsCurrentState(WakizashiStateType.Throw) && !_isReturning) {
+    //         _isReturning = true;
+    //     }
+    // }
 
     private IEnumerator<float> _ActuallyThrow()
     {
         _rb.isKinematic = true;
-        _rb.velocity = Vector2.zero;
 
         // Straight Trajectory
-        _rb.velocity = _fsm.throwDirection * _data.throwVelocity;
+        var velocity = _fsm.throwDirection * _data.throwVelocity;
+        _rb.velocity = velocity;
 
         yield return Timing.WaitForSeconds(_data.throwMinDuration);
 
@@ -105,7 +104,7 @@ public sealed class WakizashiThrowState : IWeaponState, IBindInput
 
         // Rotate
         // _fsm.transform.Rotate(_fsm.transform.localEulerAngles + (_fsm.throwDirection.x > 0f ? Vector3.back : Vector3.forward) * 1f * Time.deltaTime, Space.Self);
-        _rb.transform.localEulerAngles += (_fsm.throwDirection.x > 0f ? Vector3.back : Vector3.forward) * 2700f * Time.deltaTime; 
+        _rb.transform.localEulerAngles += (_fsm.throwDirection.x > 0f ? Vector3.back : Vector3.forward) * (2700f * Time.deltaTime); 
     }
 
     public void FixedUpdate()

@@ -57,8 +57,8 @@ public abstract class EnemyFSM : MonoBehaviour, IDamageable
         // Don't spawn enemies if before timestamp
         SceneData data = SaveManager.Instance.GetSceneData(GameMaster.Instance.currentScene);
         Dictionary<string, float> timestamps = data.EnemySpawnTimestamps;
-        if (timestamps.ContainsKey(gameObject.name)) {
-            if (Time.time < timestamps[gameObject.name])
+        if (timestamps.TryGetValue(gameObject.name, out var timestamp)) {
+            if (Time.time < timestamp)
                 Destroy(gameObject);
         } else {
             SaveManager.Instance.UpdateSpawnTimestamp(gameObject.name, 0f);
@@ -75,28 +75,28 @@ public abstract class EnemyFSM : MonoBehaviour, IDamageable
 
     protected virtual void Update()
     {
-        if (player == null || _isLetRBMove) return;
+        if (!player || _isLetRBMove) return;
 
         _currentState?.Update();
     }
 
     protected virtual void FixedUpdate()
     {
-        if (player == null || _isLetRBMove) return;
+        if (!player || _isLetRBMove) return;
 
         _currentState?.FixedUpdate();
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if (player == null) return;
+        if (!player) return;
         
         _currentState?.OnCollisionEnter2D(collision);
     }
 
     protected virtual void OnCollisionStay2D(Collision2D collision)
     {
-        if (player == null) return;
+        if (!player) return;
 
         GameObject go = collision.gameObject;
         if (!_isDead && go.layer == LayerMask.NameToLayer("Player")) {
@@ -109,7 +109,7 @@ public abstract class EnemyFSM : MonoBehaviour, IDamageable
 
     protected virtual void OnCollisionExit2D(Collision2D collision)
     {
-        if (player == null) return;
+        if (!player) return;
 
         _currentState?.OnCollisionExit2D(collision);
     }
@@ -145,7 +145,7 @@ public abstract class EnemyFSM : MonoBehaviour, IDamageable
 
     public void StunForSeconds(float duration)
     {
-        if (states.Count == 0 || IsCurrentState(EnemyStateType.Stunned)) return;
+        if (duration == 0 || states.Count == 0 || IsCurrentState(EnemyStateType.Stunned)) return;
 
         stateParameter = duration.ToString();
         SetState(states[EnemyStateType.Stunned]);
@@ -198,6 +198,8 @@ public abstract class EnemyFSM : MonoBehaviour, IDamageable
 
     public void ApplyForceWithDelay(Vector2 dir, float force, float delay = 0)
     {
+        if (force == 0) return;
+
         Timing.RunCoroutine(_ApplyForceWithDelay(dir, force, delay));
     }
 
@@ -243,8 +245,5 @@ public abstract class EnemyFSM : MonoBehaviour, IDamageable
 
     public abstract bool IsAttacking();
 
-    public bool IsDead()
-    {
-        return _isDead;
-    }
+    public bool IsDead => _isDead;
 }

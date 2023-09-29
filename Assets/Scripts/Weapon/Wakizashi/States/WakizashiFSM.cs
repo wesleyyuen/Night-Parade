@@ -70,8 +70,7 @@ public sealed class WakizashiFSM : WeaponFSM
     {
         // Bind inputs for states
         foreach (var s in states) {
-            IBindInput i = s.Value as IBindInput;
-            if (i != null) {
+            if (s.Value is IBindInput i) {
                 i.BindInput();
             }
         }
@@ -84,8 +83,7 @@ public sealed class WakizashiFSM : WeaponFSM
     {
         // Unbind Inputs for states
         foreach (var s in states) {
-            IBindInput i = s.Value as IBindInput;
-            if (i != null) {
+            if (s.Value is IBindInput i) {
                 i.UnbindInput();
             }
         }
@@ -96,8 +94,8 @@ public sealed class WakizashiFSM : WeaponFSM
 
     private void OnStartBlock()
     {
-        if (!IsCurrentState(WakizashiStateType.Parry) && !IsCurrentState(WakizashiStateType.Block) && IsOnPlayer() && canBlock && blockCooldownTimer <= 0) {
-            SetState(states[WakizashiStateType.Parry]);
+        if (!IsCurrentState(WeaponStateType.Parry) && !IsCurrentState(WeaponStateType.Block) && IsOnPlayer() && canBlock && blockCooldownTimer <= 0) {
+            SetState(states[WeaponStateType.Parry]);
         }
     }
 
@@ -127,7 +125,7 @@ public sealed class WakizashiFSM : WeaponFSM
     // Called from Animation frames
     protected override void Attack(int isListeningForNextAttack)
     {
-        if (IsCurrentState(WakizashiStateType.Attack)) {
+        if (IsCurrentState(WeaponStateType.Attack)) {
             if (_currentState is WakizashiAttackState state) {
                 state.Attack(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
             }
@@ -137,7 +135,7 @@ public sealed class WakizashiFSM : WeaponFSM
     // Called from Animation frames
     protected override void Upthrust(int isListeningForNextAttack)
     {
-        if (IsCurrentState(WakizashiStateType.Attack)) {
+        if (IsCurrentState(WeaponStateType.Attack)) {
             if (_currentState is WakizashiAttackState state) {
                 state.Upthrust(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
             }
@@ -147,7 +145,7 @@ public sealed class WakizashiFSM : WeaponFSM
     // Called from Animation frames
     protected override void Downthrust(int isListeningForNextAttack)
     {
-        if (IsCurrentState(WakizashiStateType.Attack)) {
+        if (IsCurrentState(WeaponStateType.Attack)) {
             if (_currentState is WakizashiAttackState state) {
                 state.Downthrust(Constant.HAS_TIMED_COMBO ? isListeningForNextAttack != 0 : true);
             }
@@ -157,7 +155,7 @@ public sealed class WakizashiFSM : WeaponFSM
     // Called from animation frame
     protected override void EndAttack()
     {
-        if (IsCurrentState(WakizashiStateType.Attack)) {
+        if (IsCurrentState(WeaponStateType.Attack)) {
             if (_currentState is WakizashiAttackState state) {
                 state.EndAttack();
             }
@@ -167,7 +165,7 @@ public sealed class WakizashiFSM : WeaponFSM
     // Called from animation frame
     protected override void OnNoNextAction()
     {
-        if (IsCurrentState(WakizashiStateType.Attack)) {
+        if (IsCurrentState(WeaponStateType.Attack)) {
             if (_currentState is WakizashiAttackState state) {
                 state.OnNoNextAction();
             }

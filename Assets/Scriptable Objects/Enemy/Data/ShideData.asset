@@ -32,6 +32,7 @@ MonoBehaviour:
   timeStunnedAfterParried: 1
   knockBackOnBlockedForce: 1
   timeStunnedAfterBlocked: 0.25
+  isStunnedOnTakingDamage: 1
   knockBackOnTakingDamageForce: 5
   timeStunnedAfterTakingDamage: 0.25
   dieTime: 0.75
